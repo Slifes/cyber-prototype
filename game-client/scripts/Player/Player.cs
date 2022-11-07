@@ -6,6 +6,12 @@ public partial class Player : CharacterBody3D
 	public const float Speed = 1.0f;
 	public const float JumpVelocity = 4.5f;
 
+	enum PlayerState
+	{
+		Idle,
+		Walking
+	}
+
 	Vector2 mouseMoveCameraInitial = Vector2.Zero;
 
 	MultiplayerSynchronizer synchronizer;
@@ -20,6 +26,8 @@ public partial class Player : CharacterBody3D
 
 	bool mouseCameraPressed = false;
 
+	PlayerState state;
+
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
@@ -27,7 +35,6 @@ public partial class Player : CharacterBody3D
 	{
 		network = (PlayerNetwork)GetNode("Network");
 		synchronizer = (MultiplayerSynchronizer)GetNode("Network/MultiplayerSynchronizer");
-		GD.Print(Name);
 		synchronizer.SetMultiplayerAuthority(Int32.Parse(Name));
 
 		mesh = (MeshInstance3D)GetNode("MeshInstance3D");

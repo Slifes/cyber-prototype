@@ -16,7 +16,7 @@ properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/sync = true
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_5o53v")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -32,7 +32,9 @@ shape = SubResource("CapsuleShape3D_0f2vn")
 script = ExtResource("2_1nq71")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Network"]
+replication_interval = 0.033
 replication_config = SubResource("SceneReplicationConfig_5ulyi")
+visibility_update_mode = 1
 
 [node name="Camera" type="Node3D" parent="."]
 

@@ -7,5 +7,8 @@ public partial class PlayerNetwork : Node
 	public Vector3 position;
 	
 	[Export]
-	public Vector3 Rotation;
+	public Vector3 Direction;
+
+	[Export]
+	public int State;
 }

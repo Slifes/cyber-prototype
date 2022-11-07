@@ -1,10 +1,6 @@
 extends Node
 
-enum Step {
-	Qrcode,
-	MintHeart,
-}
-
+@onready var wallet = $"../../Wallet"
 @onready var step_sequence = [
 	$STEP_QRCODE,
 	$STEP_HEART
@@ -12,8 +8,6 @@ enum Step {
 
 var current_step = -1
 var current_node
-
-@onready var wallet = $"../../Wallet"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

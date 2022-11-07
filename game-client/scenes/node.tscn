@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://o25oqurxploy"]
+[gd_scene load_steps=8 format=3 uid="uid://o25oqurxploy"]
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_rwu5l"]
 [ext_resource type="Script" path="res://scripts/Spawner.cs" id="2_joik2"]
+[ext_resource type="PackedScene" uid="uid://ckuj8l531urs0" path="res://actors/mobs/kirt.tscn" id="3_nrkhw"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_1kpws"]
 
@@ -37,7 +38,7 @@ mesh = SubResource("BoxMesh_1kpws")
 shape = SubResource("ConcavePolygonShape3D_ouxb0")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.460589, 0.877931)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43223, 0.743542, 2.28159)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_56xau")
@@ -48,7 +49,6 @@ mesh = SubResource("BoxMesh_m5g5b")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.743892, 0.6683, 0, -0.6683, 0.743892, 0, 2.66148, 0)
-visible = false
 shadow_enabled = true
 sky_mode = 1
 
@@ -58,3 +58,12 @@ light_energy = 0.631
 light_specular = 0.0
 shadow_enabled = true
 omni_range = 3.68642
+
+[node name="Kirt" parent="." instance=ExtResource("3_nrkhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.672, 0.1, -0.796)
+
+[node name="Kirt2" parent="." instance=ExtResource("3_nrkhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.97017, 0.1, -0.796)
+
+[node name="Kirt3" parent="." instance=ExtResource("3_nrkhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.01934, 0.1, -0.796)

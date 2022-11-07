@@ -79,8 +79,10 @@ public partial class Player : CharacterBody3D
 
 			Vector3 direction = (mesh.Transform.basis * new Vector3(inputDir.x, 0, inputDir.y)).Normalized();
 
-			velocity.x = direction.x * Speed;
+            velocity.x = direction.x * Speed;
 			velocity.z = direction.z * Speed;
+
+			network.Direction = direction;
 		}
 		else
 		{
@@ -98,6 +100,5 @@ public partial class Player : CharacterBody3D
 		_RotateCamera(delta);
 		_MoveCharacter(delta);
 
-		network.position = GlobalPosition;
 	}
 }

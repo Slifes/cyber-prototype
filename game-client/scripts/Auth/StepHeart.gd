@@ -19,3 +19,5 @@ func _mint_pressed():
 func _mint_tx(tx_id):
 	print("arrived")
 	print(tx_id)
+	
+	get_tree().change_scene_to_file("res://scenes/node.tscn")
