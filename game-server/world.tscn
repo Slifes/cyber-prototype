@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyykbb8cqfg41"]
+
+[ext_resource type="Script" path="res://scripts/Networking.gd" id="1_i4ulw"]
+[ext_resource type="Script" path="res://scripts/Spawn.gd" id="2_oxq5h"]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_i4ulw")
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://actors/Player.tscn")
+spawn_path = NodePath("../Players")
+script = ExtResource("2_oxq5h")

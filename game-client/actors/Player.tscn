@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://ywvsq68hsga3"]
+
+[ext_resource type="Script" path="res://scripts/Player/Player.cs" id="1_7j0fj"]
+[ext_resource type="Script" path="res://scripts/Player/PlayerNetwork.cs" id="2_wiurp"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wvpaq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wahlt"]
+albedo_color = Color(1, 0.207843, 0.333333, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0f2vn"]
+height = 1.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_5ulyi"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_7j0fj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("BoxMesh_wvpaq")
+surface_material_override/0 = SubResource("StandardMaterial3D_wahlt")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_0f2vn")
+
+[node name="Network" type="Node" parent="."]
+script = ExtResource("2_wiurp")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Network"]
+replication_config = SubResource("SceneReplicationConfig_5ulyi")
+
+[node name="Camera" type="Node3D" parent="."]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00321129)
+light_color = Color(1, 0.886275, 0.607843, 1)
+spot_range = 1.49966
+spot_angle = 26.2875
+
+[node name="Camera3D" type="Camera3D" parent="Camera"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 1, 0.5)
+fov = 80.0
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.295565, 0)
+light_color = Color(0.596078, 0.596078, 0.596078, 1)
+omni_range = 0.3192
