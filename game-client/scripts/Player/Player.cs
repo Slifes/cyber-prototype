@@ -27,6 +27,7 @@ public partial class Player : CharacterBody3D
 	{
 		network = (PlayerNetwork)GetNode("Network");
 		synchronizer = (MultiplayerSynchronizer)GetNode("Network/MultiplayerSynchronizer");
+		GD.Print(Name);
 		synchronizer.SetMultiplayerAuthority(Int32.Parse(Name));
 
 		mesh = (MeshInstance3D)GetNode("MeshInstance3D");

@@ -1,7 +1,7 @@
 extends Node
 
 @export
-var PlayerScene = load("res://Player.tscn")
+var PlayerScene = load("res://actors/Player.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _enter_tree():

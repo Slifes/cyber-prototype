@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://ywvsq68hsga3"]
 
-[ext_resource type="Script" path="res://scripts/Player/Player.cs" id="1_7j0fj"]
-[ext_resource type="Script" path="res://scripts/Player/PlayerNetwork.cs" id="2_wiurp"]
+[ext_resource type="Script" path="res://scripts/Player/Player.cs" id="1_5o53v"]
+[ext_resource type="Script" path="res://scripts/Player/PlayerNetwork.cs" id="2_1nq71"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_wvpaq"]
 
@@ -17,7 +17,7 @@ properties/0/spawn = true
 properties/0/sync = true
 
 [node name="Player" type="CharacterBody3D"]
-script = ExtResource("1_7j0fj")
+script = ExtResource("1_5o53v")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
@@ -29,7 +29,7 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_0f2vn")
 
 [node name="Network" type="Node" parent="."]
-script = ExtResource("2_wiurp")
+script = ExtResource("2_1nq71")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Network"]
 replication_config = SubResource("SceneReplicationConfig_5ulyi")
