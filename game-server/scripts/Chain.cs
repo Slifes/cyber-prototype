@@ -1,12 +1,15 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading;
 using Nethereum.Contracts;
 using Nethereum.Web3;
 using Nethereum.Hex.HexTypes;
-using GameServer.scripts.Heart;
-using System.Collections.Generic;
-using System.Threading;
 using Nethereum.BlockchainProcessing;
+
+using GameServer.scripts.Heart;
+
 
 namespace GameServer.scripts
 {
@@ -48,7 +51,7 @@ namespace GameServer.scripts
 			);
 		}
 
-		public async void pool()
+		public async Task<bool> Pool()
 		{
 			var t = await web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
 
@@ -65,20 +68,22 @@ namespace GameServer.scripts
 
 				GD.Print("Block from: ", syncState.LastBlockVerified);
 				GD.Print("Block to: ", syncState.CurrentBlockNumber);
-				GD.Print("Events count", events.Count);
+				GD.Print("Events count: ", events.Count);
 
 				syncState.LastBlockVerified = syncState.CurrentBlockNumber;
 			}
 
 			foreach (var e in events)
 			{
-				GD.Print("New NFT minted");
+				GD.Print("--------------- New NFT minted ---------------");
 				GD.Print("From: ", e.Event.From);
 				GD.Print("To: ", e.Event.To);
 				GD.Print("TokenID: ", e.Event.TokenId);
 			}
 
 			events.Clear();
+
+			return true;
 		}
 
 		private Contract GetHeartContract()

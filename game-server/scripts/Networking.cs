@@ -1,6 +1,7 @@
 using GameServer.scripts;
 using Godot;
 using System;
+using System.Linq;
 
 public partial class Networking : Node3D
 {
@@ -32,7 +33,12 @@ public partial class Networking : Node3D
 
 		using(var ctx = new ServerContext())
 		{
-			spawner.Spawn(id);
+			var character = ctx.Characters.Where(t => t.Id == id).ToList();
+
+			if (character.Count > 0)
+			{
+				spawner.Spawn(id);
+			}
 		}
 	}
 

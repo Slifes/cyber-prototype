@@ -9,7 +9,14 @@ namespace GameServer.scripts
         public DbSet<Character> Characters { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder
-            .UseNpgsql("Host=localhost;Database=game;Username=postgres;Password=Postgres");
+            .UseNpgsql("Host=localhost;Database=game_server;Username=postgres;Password=postgres");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Character>();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 
     public class Session

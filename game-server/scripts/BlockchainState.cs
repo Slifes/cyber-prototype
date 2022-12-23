@@ -1,28 +1,25 @@
 using GameServer.scripts;
 using Godot;
 
-using Thread = Godot.Thread;
-
 public partial class BlockchainState : Node3D
 {
-	public override void _Ready()
+    Chain chain = new();
+
+    bool finished = true;
+
+	public override void _Process(double delta)
 	{
-		var thread = new Thread();
+		base._Process(delta);
 
-		Error err = thread.Start(new Callable(this, "StartChain"));
-
-		GD.Print(err);
-	}
-
-	void StartChain()
-	{
-		Chain chain = new();
-
-		while (true)
-		{
-			chain.pool();
-
-			OS.DelayMsec(5000);
-		}
-	}
+        if (finished)
+        {
+            GD.Print("Started to look");
+            finished = false;
+			chain.Pool().ContinueWith(t =>
+            {
+                GD.Print("Finished to look");
+                finished = true;
+            });
+        }
+    }
 }
