@@ -11,8 +11,6 @@ data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0
 
 [sub_resource type="Environment" id="Environment_56xau"]
 ambient_light_source = 2
-ambient_light_color = Color(0.192157, 0.121569, 0.0313726, 1)
-fog_enabled = true
 fog_light_color = Color(0.247059, 0.607843, 0.556863, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_m5g5b"]
@@ -49,6 +47,7 @@ mesh = SubResource("BoxMesh_m5g5b")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.743892, 0.6683, 0, -0.6683, 0.743892, 0, 2.66148, 0)
+visible = false
 shadow_enabled = true
 sky_mode = 1
 

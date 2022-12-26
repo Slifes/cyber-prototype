@@ -93,6 +93,8 @@ public partial class Player : CharacterBody3D
 		Velocity = velocity;
 
 		MoveAndSlide();
+
+		network.position = GlobalPosition;
 	}
 
 	void _AuthorityController(double delta)
