@@ -1,26 +1,63 @@
-# A Docker Compose must always start with the version tag.
-# We use '3' because it's the last version.
 version: '3'
 
-# You should know that Docker Compose works with services.
-# 1 service = 1 container.
-# For example, a service, a server, a client, a database...
-# We use the keyword 'services' to start to create services.
 services:
-  # The name of our service is "database"
-  # but you can use the name of your choice.
-  # Note: This may change the commands you are going to use a little bit.
+
+  django:
+    container_name: django
+    build:
+      context: .
+      dockerfile: auth/Dockerfile
+      target: dev
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./auth:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env.dev
+    depends_on:
+      - broker
+      - database
+
+  broker:
+    image: redis
+    restart: on-failure
+    ports:
+      - "6379:6379"
+
+  celery-beat:
+    build:
+      context: ./
+      dockerfile: auth/Dockerfile
+      target: dev
+    command: celery -A project beat -l INFO
+    restart: on-failure
+    volumes:
+      - ./auth:/app
+    depends_on:
+      - broker
+      - database
+    env_file:
+      - .env.dev
+
+  celery:
+    build:
+      context: ./
+      dockerfile: auth/Dockerfile
+      target: dev
+    command: celery -A project worker -l INFO
+    restart: on-failure
+    volumes:
+      - ./auth:/app
+    depends_on:
+      - broker
+      - database
+    env_file:
+      - .env.dev
+
   database:
-    # Official Postgres image from DockerHub (we use the last version)
     image: 'postgres:latest'
 
-    # By default, a Postgres database is running on the 5432 port.
-    # If we want to access the database from our computer (outside the container),
-    # we must share the port with our computer's port.
-    # The syntax is [port we want on our machine]:[port we want to retrieve in the container]
-    # Note: You are free to change your computer's port,
-    # but take into consideration that it will change the way
-    # you are connecting to your database.
     ports:
       - 5432:5432
 

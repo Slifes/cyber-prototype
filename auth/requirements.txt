@@ -1,0 +1,13 @@
+Django==4.1.4
+djangorestframework==3.14.0
+django-ethereum-events==4.2.0
+dj-database-url==0.5.0
+python-decouple==3.6
+psycopg2-binary==2.9.3
+gunicorn==20.1.0
+celery==5.2.7
+Redis==4.4.0
+pysha3==1.0.2
+eth-account==0.5.9
+eth-utils==1.10.0
+eth-hash==0.3.3
