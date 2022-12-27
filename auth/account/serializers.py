@@ -5,6 +5,7 @@ from web3 import Web3
 
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
 from rest_framework import serializers
 
 from .utils import validate_eth_address, recover_to_addr
@@ -15,7 +16,7 @@ class CharacterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Token
-        fields = ('address', 'token_id', )
+        fields = ('id', 'owner', 'token_id', )
 
 
 class AuthenticationSerializer(serializers.ModelSerializer):
@@ -45,7 +46,7 @@ class AuthenticationSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, attrs):
-        address = attrs['address']
+        address = attrs['address'].lower()
         signature = attrs['signature']
         msg = Web3.toHex(text='1')
 
@@ -76,9 +77,18 @@ class SessionMapSerializer(serializers.ModelSerializer):
         model = SessionMap
         fields = ('character', 'auth_token', 'expire_at')
 
+    def validate_character(self, value):
+        request = self.context['request']
+        user = request.user_server
+
+        if value.owner != user.address:
+            raise serializers.ValidationError(_("Invalid Character"))
+        
+        return value
+
     def create(self, validated_data):
-        # return SessionMap.objects.create(
-        #     character=validated_data['character'],
-        #     auth_token=
-        # )
-        pass
+        return SessionMap.objects.create(
+            character=validated_data['character'],
+            auth_token=secrets.token_urlsafe(20),
+            expire_at=timezone.now() + timezone.timedelta(minutes=10)
+        )

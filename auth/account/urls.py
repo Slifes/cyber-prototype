@@ -5,5 +5,5 @@ from . import views
 urlpatterns = [
     path('authenticate/', views.authenticate_view, name="authenticate"),
     path('tokens/', views.character_list, name="tokens"),
-    path('sesion_map/', views.session_create, name="session-map")
+    path('session/', views.session_create, name="session-map")
 ]

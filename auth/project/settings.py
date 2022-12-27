@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'solo',
     'rest_framework',
+    'django_celery_beat',
     'django_ethereum_events',
     # 'web3auth.apps.Web3AuthConfig',
 
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'account.middleware.GameAuthenticationMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -140,7 +143,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     'ethereum_events': {
         'task': 'django_ethereum_events.tasks.event_listener',
-        'schedule': crontab(minute='*/1')  # run every minute
+        'schedule': crontab(minute='*/5')  # run every minute
     }
 }
 

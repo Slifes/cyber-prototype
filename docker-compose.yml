@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-
   django:
     container_name: django
     build:
@@ -25,27 +24,12 @@ services:
     ports:
       - "6379:6379"
 
-  celery-beat:
-    build:
-      context: ./
-      dockerfile: auth/Dockerfile
-      target: dev
-    command: celery -A project beat -l INFO
-    restart: on-failure
-    volumes:
-      - ./auth:/app
-    depends_on:
-      - broker
-      - database
-    env_file:
-      - .env.dev
-
   celery:
     build:
       context: ./
       dockerfile: auth/Dockerfile
       target: dev
-    command: celery -A project worker -l INFO
+    command: celery -A project worker --beat --scheduler django --loglevel=info
     restart: on-failure
     volumes:
       - ./auth:/app
