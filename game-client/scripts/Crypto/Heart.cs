@@ -4,7 +4,6 @@ using Godot;
 using Nethereum.Contracts;
 using Nethereum.Hex.HexTypes;
 using Nethereum.Web3;
-using WalletConnectSharp.NEthereum;
 
 namespace Teste.scripts.Crypto
 {

@@ -7,10 +7,13 @@ var _wallet
 
 func active(wallet):
 	_wallet = wallet
-	_qrcode.texture.content = wallet.URI()
+	_wallet.connect("WalletQRCode", _print_qrcode)
 	_wallet.connect("WalletConnected", _step_qrcode_connected);
 
 func _step_qrcode_connected():
 	_wallet.disconnect("WalletConnected", _step_qrcode_connected)
 	
 	step_manager.step_finished()
+
+func _print_qrcode(qrcode):
+	_qrcode.texture.content = qrcode

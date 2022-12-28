@@ -1,12 +1,18 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teste", "Teste.csproj", "{51D45F14-23FA-4595-8FB2-B00EA3E7160F}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teste", "Teste.csproj", "{51D45F14-23FA-4595-8FB2-B00EA3E7160F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalletConnectSharp.Sign", "..\..\WalletConnectSharpV2\WalletConnectSharp.Sign\WalletConnectSharp.Sign.csproj", "{9C53C97C-59A3-447C-9132-BD21E4B3AC47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-	Debug|Any CPU = Debug|Any CPU
-	ExportDebug|Any CPU = ExportDebug|Any CPU
-	ExportRelease|Any CPU = ExportRelease|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{51D45F14-23FA-4595-8FB2-B00EA3E7160F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -15,5 +21,21 @@ Global
 		{51D45F14-23FA-4595-8FB2-B00EA3E7160F}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{51D45F14-23FA-4595-8FB2-B00EA3E7160F}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{51D45F14-23FA-4595-8FB2-B00EA3E7160F}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{51D45F14-23FA-4595-8FB2-B00EA3E7160F}.Release|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{51D45F14-23FA-4595-8FB2-B00EA3E7160F}.Release|Any CPU.Build.0 = ExportRelease|Any CPU
+		{9C53C97C-59A3-447C-9132-BD21E4B3AC47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C53C97C-59A3-447C-9132-BD21E4B3AC47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C53C97C-59A3-447C-9132-BD21E4B3AC47}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C53C97C-59A3-447C-9132-BD21E4B3AC47}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{9C53C97C-59A3-447C-9132-BD21E4B3AC47}.ExportRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{9C53C97C-59A3-447C-9132-BD21E4B3AC47}.ExportRelease|Any CPU.Build.0 = Release|Any CPU
+		{9C53C97C-59A3-447C-9132-BD21E4B3AC47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C53C97C-59A3-447C-9132-BD21E4B3AC47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {728BC682-B04D-4864-840E-C4E1C96A6AA0}
 	EndGlobalSection
 EndGlobal

@@ -1,28 +1,29 @@
 using Godot;
-using Nethereum.Contracts;
-using Nethereum.Hex.HexTypes;
-using Nethereum.Web3;
+using Nethereum.Hex.HexConvertors.Extensions;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Teste.scripts.Crypto;
 using WalletConnectSharp.Core;
-using WalletConnectSharp.Core.Models;
-using WalletConnectSharp.Desktop;
-using WalletConnectSharp.NEthereum;
+using WalletConnectSharp.Sign;
+using WalletConnectSharp.Sign.Models;
+using WalletConnectSharp.Sign.Models.Engine;
+using WalletConnectSharp.Storage;
+using Nethereum.Web3;
+using WalletConnectSharp.Network.Models;
+using System.Collections.Generic;
+using WalletConnectSharp.Network;
 
 public partial class Wallet2 : Node
 {
-	ClientMeta meta;
-	WalletConnect w;
-
-	bool initialized;
-	bool connected;
-	bool oneShot;
-
-	Web3 web3;
+	AuthClient auth;
 
 	Heart heart;
+
+	ConnectedData connectedData;
+
+	WalletConnectSignClient client;
+
+	SessionStruct session;
 
 	[Signal]
 	public delegate void WalletQRCodeEventHandler(Variant value);
@@ -30,75 +31,132 @@ public partial class Wallet2 : Node
 	[Signal]
 	public delegate void WalletConnectedEventHandler();
 
-	// Called when the node enters the scene tree for the first time.
+	const String RPC_URI = "https://rpc-mumbai.maticvigil.com/";
+
 	public override void _Ready()
 	{
-		meta = new ClientMeta()
+		auth = (AuthClient)GetNode("../AuthClient");
+	}
+
+	public async Task StartWalletConnect()
+	{
+		var options = new SignClientOptions()
 		{
-			Description = "Game Application",
-			Name = "Web 3 Test",
-			Icons = new[] { "https://app.warriders.com/favicon.ico" },
-			URL = "https://aron.com"
+			ProjectId = "31055fdb9030439bf05e43df2957c0bb",
+			Metadata = new Metadata()
+			{
+				Description = "game description",
+				Icons = new[] { "https://walletconnect.com/meta/favicon.ico" },
+				Name = "MMO",
+				Url = "localhost"
+			},
+			Storage = new InMemoryStorage()
 		};
 
-		w = new WalletConnect(meta);
-	}
+		client = await WalletConnectSignClient.Init(options);
 
-	public String URI()
-	{
-		return w.URI;
-	}
-
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		if (!initialized)
+		connectedData = await client.Connect(new ConnectParams()
 		{
-			this.EmitSignal("WalletQRCode", Variant.CreateFrom(w.URI));
-
-			GD.Print("HUEhuehue");
-
-			w.Connect().ContinueWith(t =>
+			RequiredNamespaces = new RequiredNamespaces()
 			{
-				web3 = new Web3(w.CreateProvider(new Uri("https://rpc-mumbai.maticvigil.com/")));
-				GD.Print("Created Web3");
-
-				heart = new Heart(web3);
-
-				connected = true;
-			});
-
-			initialized = true;
-		}
-
-		if(connected && !oneShot)
-		{
-			this.EmitSignal("WalletConnected");
-			oneShot = true;
-		}
+				{
+					"eip155", new RequiredNamespace()
+					{
+						Methods = new []
+						{
+							"eth_sendTransaction",
+							"eth_signTransaction",
+							"eth_sign",
+							"personal_sign",
+							"eth_signTypedData",
+						},
+						Chains = new []
+						{
+							"eip155:1"
+						},
+						Events = new[]
+						{
+							"chainChanged",
+							"accountsChanged"
+						}
+					}
+				}
+			}
+		});
 	}
 
 	public void MintHeart(Node2D target)
 	{
-		heart.MintHeart(target, w.Accounts[0]);
+		// heart.MintHeart(target, w.Accounts[0]);
+	}
+
+	public async void ConnectToWallet()
+	{
+		try
+		{
+			await StartWalletConnect();
+
+			var uri = connectedData.Uri;
+
+			GD.Print(uri);
+
+			CallDeferred("emit_signal", "WalletQRCode", Variant.CreateFrom(uri));
+
+			GD.Print("Waiting approval");
+
+			session = await connectedData.Approval;
+
+			GD.Print("Approved");
+
+			// heart = new Heart(GetWeb3());
+
+			CallDeferred("emit_signal", "WalletConnected");
+
+			// w.SaveSession(new FileStream("session", FileMode.Create));
+
+		} catch (Exception e)
+		{
+			GD.Print("Wallet connect failed: ", e);
+		}
+	}
+
+	[RpcMethodAttribute("personal_sign")]
+	class PersonalSignRequest: List<string>
+	{
+
+	}
+
+	private async void _RequestSignature()
+	{
+		try
+		{
+			var account = session.Namespaces["eip155"].Accounts[0];
+
+			var accountSplit = account.Split(":");
+
+			GD.Print("account: ", accountSplit[accountSplit.Length - 1]);
+
+			var signature = await client.Request<PersonalSignRequest, string>(session.Topic, new PersonalSignRequest() { HexStringUTF8ConvertorExtensions.ToHexUTF8("1"), account });
+
+			GD.Print("signature: ", signature);
+
+			var response = await auth.SendAuthRequest(accountSplit[accountSplit.Length - 1], signature);
+
+			GD.Print("token: ", response.token);
+
+		} catch(Exception e)
+		{
+			GD.Print("Request Signature failed", e);
+		}
 	}
 
 	public void RequestSignature()
 	{
-		w.EthSign(w.Accounts[0], "Aron beleza").ContinueWith(t =>
-		{
-			if (t.IsFaulted || t.IsCanceled)
-			{
-				GD.Print("Error");
-			}
-			else
-			{
-				if (t.Result != null)
-				{
-					GD.Print(t.Result);
-				}
-			}
-		}, TaskContinuationOptions.NotOnFaulted);
+		_RequestSignature();
+	}
+
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
 	}
 }

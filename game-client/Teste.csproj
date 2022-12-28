@@ -1,11 +1,43 @@
-<Project Sdk="Godot.NET.Sdk/4.0.0-beta">
+﻿<Project Sdk="Godot.NET.Sdk/4.0.0-beta">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="WalletConnect.Core" Version="1.7.2" />
-    <PackageReference Include="WalletConnect.Desktop" Version="1.7.2" />
-    <PackageReference Include="WalletConnect.NEthereum" Version="1.7.2" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.1" />
+    <PackageReference Include="Nethereum.Contracts" Version="4.12.0" />
+    <PackageReference Include="Nethereum.Web3" Version="4.12.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Websocket.Client" Version="4.4.43" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Reactive">
+      <HintPath>..\..\WalletConnectSharpV2\WalletConnectSharp.Core\bin\Release\net6.0\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="WalletConnectSharp.Common">
+      <HintPath>..\..\WalletConnectSharpV2\WalletConnectSharp.Sign\bin\Release\net6.0\WalletConnectSharp.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="WalletConnectSharp.Core">
+      <HintPath>..\..\WalletConnectSharpV2\WalletConnectSharp.Sign\bin\Release\net6.0\WalletConnectSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="WalletConnectSharp.Crypto">
+      <HintPath>..\..\WalletConnectSharpV2\WalletConnectSharp.Sign\bin\Release\net6.0\WalletConnectSharp.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="WalletConnectSharp.Events">
+      <HintPath>..\..\WalletConnectSharpV2\WalletConnectSharp.Sign\bin\Release\net6.0\WalletConnectSharp.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="WalletConnectSharp.Network">
+      <HintPath>..\..\WalletConnectSharpV2\WalletConnectSharp.Sign\bin\Release\net6.0\WalletConnectSharp.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="WalletConnectSharp.Network.Websocket">
+      <HintPath>..\..\WalletConnectSharpV2\WalletConnectSharp.Sign\bin\Release\net6.0\WalletConnectSharp.Network.Websocket.dll</HintPath>
+    </Reference>
+    <Reference Include="WalletConnectSharp.Sign">
+      <HintPath>..\..\WalletConnectSharpV2\WalletConnectSharp.Sign\bin\Release\net6.0\WalletConnectSharp.Sign.dll</HintPath>
+    </Reference>
+    <Reference Include="WalletConnectSharp.Storage">
+      <HintPath>..\..\WalletConnectSharpV2\WalletConnectSharp.Sign\bin\Release\net6.0\WalletConnectSharp.Storage.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

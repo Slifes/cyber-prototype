@@ -3,6 +3,7 @@ extends Node
 @onready var wallet = $"../../Wallet"
 @onready var step_sequence = [
 	$STEP_QRCODE,
+	$STEP_SIGN,
 	$STEP_HEART
 ]
 
@@ -11,6 +12,7 @@ var current_node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	wallet.ConnectToWallet()
 	_next_step()
 
 func _next_step():
