@@ -6,114 +6,185 @@
 [ext_resource type="Script" path="res://scripts/Auth/StepSign.gd" id="3_ojimv"]
 [ext_resource type="Texture2D" uid="uid://cpt1lxaix07k4" path="res://icon.svg" id="5_kenkl"]
 
-[sub_resource type="Image" id="Image_0dlo6"]
+[sub_resource type="Image" id="Image_33vco"]
 data = {
-"data": PackedByteArray(255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255),
+"data": PackedByteArray(255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255),
 "format": "RGB8",
 "height": 23,
 "mipmaps": false,
 "width": 23
 }
 
-[sub_resource type="QRCodeTexture2D" id="QRCodeTexture2D_f3ty1"]
-image = SubResource("Image_0dlo6")
-content = "teste"
+[sub_resource type="QRCodeTexture2D" id="QRCodeTexture2D_qxtxb"]
+image = SubResource("Image_33vco")
+content = "sadsa"
 
 [node name="Node2D" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-353.0]
 
-[node name="Auth" type="Node" parent="."]
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(575, 327)
+scale = Vector2(0.98883, 1)
+current = true
+
+[node name="STEP_MANAGER" type="Node" parent="."]
 script = ExtResource("1_ucyw7")
 
-[node name="STEP_QRCODE" type="Node2D" parent="Auth"]
+[node name="STEP_QRCODE" type="Node2D" parent="STEP_MANAGER"]
 visible = false
 script = ExtResource("2_hifdh")
 
-[node name="QRCode" type="Sprite2D" parent="Auth/STEP_QRCODE"]
-position = Vector2(448, 164)
-scale = Vector2(4.24194, 4.44262)
-texture = SubResource("QRCodeTexture2D_f3ty1")
-centered = false
+[node name="Control" type="Control" parent="STEP_MANAGER/STEP_QRCODE"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 645.0
 
-[node name="STEP_SIGN" type="Node2D" parent="Auth"]
+[node name="CenterContainer" type="CenterContainer" parent="STEP_MANAGER/STEP_QRCODE/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+use_top_left = true
+
+[node name="QRCode" type="TextureRect" parent="STEP_MANAGER/STEP_QRCODE/Control/CenterContainer"]
+visible = false
+texture_filter = 3
+texture_repeat = 1
+custom_minimum_size = Vector2(200, 200)
+layout_direction = 2
+layout_mode = 2
+texture = SubResource("QRCodeTexture2D_qxtxb")
+
+[node name="STEP_SIGN" type="Node2D" parent="STEP_MANAGER"]
 visible = false
 script = ExtResource("3_ojimv")
 
-[node name="Control" type="Control" parent="Auth/STEP_SIGN"]
+[node name="Control" type="Control" parent="STEP_MANAGER/STEP_SIGN"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Button" type="Button" parent="Auth/STEP_SIGN/Control"]
-layout_mode = 0
-offset_left = 397.0
-offset_top = 267.0
-offset_right = 697.0
-offset_bottom = 367.0
-text = "Sign
+[node name="CenterContainer" type="CenterContainer" parent="STEP_MANAGER/STEP_SIGN/Control"]
+layout_mode = 1
+offset_right = 1152.0
+offset_bottom = 651.0
+
+[node name="Button" type="Button" parent="STEP_MANAGER/STEP_SIGN/Control/CenterContainer"]
+layout_mode = 2
+text = "Sign to login
 "
 
-[node name="STEP_HEART" type="Node2D" parent="Auth"]
+[node name="STEP_HEART" type="Node2D" parent="STEP_MANAGER"]
+visible = false
 script = ExtResource("3_hf04q")
 
-[node name="Control" type="Control" parent="Auth/STEP_HEART"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="STEP_MANAGER/STEP_HEART"]
+layout_direction = 2
+offset_right = 1156.0
+offset_bottom = 642.0
+stretch_mode = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Auth/STEP_HEART/Control"]
-layout_mode = 0
-offset_left = 54.0
-offset_top = 69.0
-offset_right = 1110.0
-offset_bottom = 404.0
+[node name="Control" type="VBoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer"]
+layout_mode = 2
+alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Auth/STEP_HEART/Control/ScrollContainer"]
-clip_contents = true
+[node name="ScrollContainer" type="ScrollContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control"]
+custom_minimum_size = Vector2(500, 200)
 layout_direction = 2
 layout_mode = 2
 
-[node name="BoxContainer" type="BoxContainer" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer"]
 layout_mode = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer/BoxContainer"]
-position = Vector2(65, 71)
-texture = ExtResource("5_kenkl")
-
-[node name="BoxContainer2" type="BoxContainer" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer"]
+[node name="BoxContainer" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer/BoxContainer2"]
-position = Vector2(65, 71)
-texture = ExtResource("5_kenkl")
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
 
-[node name="BoxContainer3" type="BoxContainer" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer"]
+[node name="BoxContainer2" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer/BoxContainer3"]
-position = Vector2(65, 71)
-texture = ExtResource("5_kenkl")
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer2"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
 
-[node name="BoxContainer4" type="BoxContainer" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer"]
+[node name="BoxContainer3" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer/BoxContainer4"]
-position = Vector2(65, 71)
-texture = ExtResource("5_kenkl")
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer3"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
 
-[node name="BoxContainer5" type="BoxContainer" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer"]
+[node name="BoxContainer4" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Auth/STEP_HEART/Control/ScrollContainer/VBoxContainer/BoxContainer5"]
-position = Vector2(252, 69)
-texture = ExtResource("5_kenkl")
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer4"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
 
-[node name="Button" type="Button" parent="Auth/STEP_HEART/Control"]
-layout_mode = 0
-offset_left = 387.0
-offset_top = 477.0
-offset_right = 741.0
-offset_bottom = 535.0
+[node name="BoxContainer5" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer5"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
+
+[node name="BoxContainer6" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer6"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
+
+[node name="BoxContainer7" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer7"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
+
+[node name="BoxContainer8" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer8"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
+
+[node name="BoxContainer9" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer9"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
+
+[node name="BoxContainer10" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer10"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
+
+[node name="BoxContainer11" type="BoxContainer" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control/ScrollContainer/VBoxContainer/BoxContainer11"]
+layout_mode = 2
+texture_normal = ExtResource("5_kenkl")
+
+[node name="HSeparator" type="HSeparator" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="STEP_MANAGER/STEP_HEART/AspectRatioContainer/Control"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
 text = "Mint Heart"

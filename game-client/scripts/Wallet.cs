@@ -9,35 +9,59 @@ using WalletConnectSharp.Sign.Models.Engine;
 using WalletConnectSharp.Storage;
 using WalletConnectSharp.Network.Models;
 using System.Collections.Generic;
+using Microsoft.IdentityModel.Tokens;
+using WalletConnectSharp.Events;
 
-public partial class Wallet2 : Node
+public partial class Wallet : Node
 {
 	AuthClient auth;
 
-	Heart heart;
-
-	ConnectedData connectedData;
-
 	WalletConnectSignClient client;
-
-	bool actived;
 
 	SessionStruct session;
 
-	[Signal]
+	public string SelectedAccount { 
+		get
+		{
+			if (session.Topic.IsNullOrEmpty())
+			{
+				return "";
+			}
+
+			return session.Namespaces["eip155"].Accounts[0];
+        }
+	}
+
+
+	public string Account
+	{
+		get
+		{
+			string address = SelectedAccount;
+
+            var accountSplit = address.Split(":");
+
+            return accountSplit[^1];
+        }
+	}
+
+    [RpcMethodAttribute("personal_sign")]
+    class PersonalSignRequest : List<string> { }
+
+    [Signal]
 	public delegate void WalletQRCodeEventHandler(Variant value);
 
 	[Signal]
 	public delegate void WalletConnectedEventHandler();
 
-	const String RPC_URI = "https://rpc-mumbai.maticvigil.com/";
+	const string RPC_URI = "https://rpc-mumbai.maticvigil.com/";
 
 	public override void _Ready()
 	{
 		auth = (AuthClient)GetNode("../AuthClient");
 	}
 
-	public async Task StartWalletConnect()
+	public async Task<ConnectedData> StartWalletConnect()
 	{
 		var options = new SignClientOptions()
 		{
@@ -54,12 +78,8 @@ public partial class Wallet2 : Node
 
 		client = await WalletConnectSignClient.Init(options);
 
-		String topic = null;
-
-		connectedData = await client.Connect(new ConnectParams()
+		return await client.Connect(new ConnectParams()
 		{
-			PairingTopic = topic,
-
 			RequiredNamespaces = new RequiredNamespaces()
 			{
 				{
@@ -88,26 +108,17 @@ public partial class Wallet2 : Node
 		});
 	}
 
-	public void MintHeart(Node2D target)
-	{
-		// heart.MintHeart(target, w.Accounts[0]);
-	}
-
 	public async void ConnectToWallet()
 	{
 		try
 		{
-			await StartWalletConnect();
+			var connectedData = await StartWalletConnect();
 
-			if (!actived)
-			{
-				var uri = connectedData.Uri;
+			var uri = connectedData.Uri;
 
-				GD.Print(uri);
+			GD.Print(uri);
 
-				CallDeferred("emit_signal", "WalletQRCode", Variant.CreateFrom(uri));
-
-			}
+			CallDeferred("emit_signal", "WalletQRCode", Variant.CreateFrom(uri));
 
 			GD.Print("Waiting approval");
 
@@ -117,48 +128,43 @@ public partial class Wallet2 : Node
 
 			CallDeferred("emit_signal", "WalletConnected");
 
-			GD.Print(session.Topic);
-
 		} catch (Exception e)
 		{
 			GD.Print("Wallet connect failed: ", e);
 		}
 	}
 
-	[RpcMethodAttribute("personal_sign")]
-	class PersonalSignRequest: List<string> { }
-
-	private async void _RequestSignature(Node2D target)
-	{
+    public async void Authenticate(Node2D target)
+    {
 		try
 		{
-			var account = session.Namespaces["eip155"].Accounts[0];
+			string signature = await RequestSignature(target);
 
-			var accountSplit = account.Split(":");
+			var connected = await auth.Connect(Account, signature);
 
-			GD.Print("account: ", accountSplit[accountSplit.Length - 1]);
-
-			var signature = await client.Request<PersonalSignRequest, string>(session.Topic, new PersonalSignRequest() {
-				HexStringUTF8ConvertorExtensions.ToHexUTF8("1"),
-				account
-			});
-
-			GD.Print("signature: ", signature);
-
-			var response = await auth.SendAuthRequest(accountSplit[accountSplit.Length - 1], signature);
-
-			GD.Print("token: ", response.token);
-
-			target.CallDeferred("emit_signal", "_on_authenticated");
-
-		} catch(Exception e)
-		{
-			GD.Print("Request Signature failed", e);
+			if (connected)
+			{
+				GD.Print("Connected to auth server!");
+				target.CallDeferred("emit_signal", "_on_authenticated");
+			}
 		}
-	}
+		catch(Exception e)
+		{
+			GD.Print("Failed to authenticate: ", e);
+		}
+    }
 
-	public void RequestSignature(Node2D target)
+    private async Task<string> RequestSignature(Node2D target)
 	{
-		_RequestSignature(target);
+		GD.Print("account: ", Account);
+
+		var signature = await client.Request<PersonalSignRequest, string>(session.Topic, new PersonalSignRequest() {
+			HexStringUTF8ConvertorExtensions.ToHexUTF8("1"),
+			SelectedAccount
+		});
+
+		GD.Print("signature: ", signature);
+
+		return signature;
 	}
 }

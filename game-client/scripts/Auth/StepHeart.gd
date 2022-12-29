@@ -3,7 +3,7 @@ extends Node2D
 var _wallet
 
 @onready var step_manager = get_parent()
-@onready var button = $Control/Button
+@onready var button = $AspectRatioContainer/Control/Button
 
 signal _mint_txsended()
 

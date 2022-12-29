@@ -12,7 +12,6 @@ var current_node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	wallet.ConnectToWallet()
 	_next_step()
 
 func _next_step():
