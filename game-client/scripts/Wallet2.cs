@@ -3,15 +3,12 @@ using Nethereum.Hex.HexConvertors.Extensions;
 using System;
 using System.Threading.Tasks;
 using Teste.scripts.Crypto;
-using WalletConnectSharp.Core;
 using WalletConnectSharp.Sign;
 using WalletConnectSharp.Sign.Models;
 using WalletConnectSharp.Sign.Models.Engine;
 using WalletConnectSharp.Storage;
-using Nethereum.Web3;
 using WalletConnectSharp.Network.Models;
 using System.Collections.Generic;
-using WalletConnectSharp.Network;
 
 public partial class Wallet2 : Node
 {
@@ -22,6 +19,8 @@ public partial class Wallet2 : Node
 	ConnectedData connectedData;
 
 	WalletConnectSignClient client;
+
+	bool actived;
 
 	SessionStruct session;
 
@@ -55,8 +54,12 @@ public partial class Wallet2 : Node
 
 		client = await WalletConnectSignClient.Init(options);
 
+		String topic = null;
+
 		connectedData = await client.Connect(new ConnectParams()
 		{
+			PairingTopic = topic,
+
 			RequiredNamespaces = new RequiredNamespaces()
 			{
 				{
@@ -96,11 +99,15 @@ public partial class Wallet2 : Node
 		{
 			await StartWalletConnect();
 
-			var uri = connectedData.Uri;
+			if (!actived)
+			{
+				var uri = connectedData.Uri;
 
-			GD.Print(uri);
+				GD.Print(uri);
 
-			CallDeferred("emit_signal", "WalletQRCode", Variant.CreateFrom(uri));
+				CallDeferred("emit_signal", "WalletQRCode", Variant.CreateFrom(uri));
+
+			}
 
 			GD.Print("Waiting approval");
 
@@ -108,11 +115,9 @@ public partial class Wallet2 : Node
 
 			GD.Print("Approved");
 
-			// heart = new Heart(GetWeb3());
-
 			CallDeferred("emit_signal", "WalletConnected");
 
-			// w.SaveSession(new FileStream("session", FileMode.Create));
+			GD.Print(session.Topic);
 
 		} catch (Exception e)
 		{
@@ -121,12 +126,9 @@ public partial class Wallet2 : Node
 	}
 
 	[RpcMethodAttribute("personal_sign")]
-	class PersonalSignRequest: List<string>
-	{
+	class PersonalSignRequest: List<string> { }
 
-	}
-
-	private async void _RequestSignature()
+	private async void _RequestSignature(Node2D target)
 	{
 		try
 		{
@@ -136,7 +138,10 @@ public partial class Wallet2 : Node
 
 			GD.Print("account: ", accountSplit[accountSplit.Length - 1]);
 
-			var signature = await client.Request<PersonalSignRequest, string>(session.Topic, new PersonalSignRequest() { HexStringUTF8ConvertorExtensions.ToHexUTF8("1"), account });
+			var signature = await client.Request<PersonalSignRequest, string>(session.Topic, new PersonalSignRequest() {
+				HexStringUTF8ConvertorExtensions.ToHexUTF8("1"),
+				account
+			});
 
 			GD.Print("signature: ", signature);
 
@@ -144,19 +149,16 @@ public partial class Wallet2 : Node
 
 			GD.Print("token: ", response.token);
 
+			target.CallDeferred("emit_signal", "_on_authenticated");
+
 		} catch(Exception e)
 		{
 			GD.Print("Request Signature failed", e);
 		}
 	}
 
-	public void RequestSignature()
+	public void RequestSignature(Node2D target)
 	{
-		_RequestSignature();
-	}
-
-	public override void _Process(double delta)
-	{
-		base._Process(delta);
+		_RequestSignature(target);
 	}
 }
