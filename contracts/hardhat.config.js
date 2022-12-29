@@ -18,10 +18,7 @@ task('accounts', 'Prints the list of accounts', async () => {
 
 const platformPrivateKey =
   process.env.PRIVATE_KEY ||
-  'df3e90a7e37fe9b948bcb92531d743b6f17df24af78493ac3ab7d0935238b68d'
-const oraclePrivateKey =
-  process.env.ORACLE_PRIVATE_KEY ||
-  'e2a7a378c6c6dff822361ab053e4bd2647a9fed6f0e94008d10af7decb90d956'
+  '274574b211915960436709a6f032d258106d4fa9d63b35a8158598da4f00dedc'
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -33,16 +30,13 @@ module.exports = {
       live: true,
       url: "https://rpc-mumbai.maticvigil.com",
       saveDeployments: true,
-      accounts: [platformPrivateKey, oraclePrivateKey],
+      accounts: [platformPrivateKey],
       tags: ["staging"],
     },
   },
   namedAccounts: {
     deployer: {
-      default: '0x70B790EAb258d82E18BB440978D84feF2dfE3F7B',
-    },
-    oracle: {
-      default: '0xabEfE9cd95bC0b2d8E81c5cAdED024a6b121834a',
+      default: '0x2b9d37c2B65B33ea2D081879dfB12A842F2C7506',
     },
   },
   solidity: {

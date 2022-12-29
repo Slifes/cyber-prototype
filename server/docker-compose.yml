@@ -5,7 +5,7 @@ services:
     container_name: django
     build:
       context: .
-      dockerfile: auth/Dockerfile
+      dockerfile: auth-server/Dockerfile
       target: dev
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -27,7 +27,7 @@ services:
   celery:
     build:
       context: ./
-      dockerfile: auth/Dockerfile
+      dockerfile: auth-server/Dockerfile
       target: dev
     command: celery -A project worker --beat --scheduler django --loglevel=info
     restart: on-failure
