@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://o25oqurxploy"]
+[gd_scene load_steps=7 format=3 uid="uid://o25oqurxploy"]
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_rwu5l"]
 [ext_resource type="Script" path="res://scripts/Spawner.cs" id="2_joik2"]
-[ext_resource type="PackedScene" uid="uid://ckuj8l531urs0" path="res://actors/mobs/kirt.tscn" id="3_nrkhw"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_1kpws"]
 
@@ -57,12 +56,3 @@ light_energy = 0.631
 light_specular = 0.0
 shadow_enabled = true
 omni_range = 3.68642
-
-[node name="Kirt" parent="." instance=ExtResource("3_nrkhw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.672, 0.1, -0.796)
-
-[node name="Kirt2" parent="." instance=ExtResource("3_nrkhw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.97017, 0.1, -0.796)
-
-[node name="Kirt3" parent="." instance=ExtResource("3_nrkhw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.01934, 0.1, -0.796)

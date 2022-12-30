@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace GameServer.scripts
 {
@@ -8,22 +10,36 @@ namespace GameServer.scripts
 	{
 		public DbSet<Character> Characters { get; set; }
 
+        public DbSet<Session> Sessions { get; set; }
+
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder
 			.UseNpgsql("Host=localhost;Database=game_server;Username=postgres;Password=postgres");
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Character>();
+			var table = modelBuilder.Entity<Session>()
+				.ToTable("account_sessionmap");
 
-			base.OnModelCreating(modelBuilder);
+			table.Property(x => x.AuthToken)
+                .HasColumnName("auth_token");
+
+            table.Property(x => x.Id)
+                .HasColumnName("id");
+
+            //table.Property(x => x.ExpireAt)
+            //    .HasColumnName("expire_at");
+
+            base.OnModelCreating(modelBuilder);
 		}
 	}
 
 	public class Session
 	{
-		public int Id { get; set; }
+		public ulong Id { get; set; }
 
-		public Character character;
+		public string AuthToken { get; set; }
+
+		// public string ExpireAt { get; set; }
 	}
 
 	public class Character

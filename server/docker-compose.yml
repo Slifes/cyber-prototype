@@ -2,14 +2,13 @@ version: '3'
 
 services:
   django:
-    container_name: django
     build:
       context: .
       dockerfile: auth-server/Dockerfile
       target: dev
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./auth:/app
+      - ./auth-server:/app
     ports:
       - "8000:8000"
     env_file:
@@ -32,7 +31,7 @@ services:
     command: celery -A project worker --beat --scheduler django --loglevel=info
     restart: on-failure
     volumes:
-      - ./auth:/app
+      - ./auth-server:/app
     depends_on:
       - broker
       - database

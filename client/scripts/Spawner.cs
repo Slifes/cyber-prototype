@@ -14,7 +14,7 @@ public partial class Spawner : MultiplayerSpawner
 	{
 		var player = playerResource.Instantiate();
 
-		// GD.Print(data);
+		GD.Print(data);
 
 		player.Name = data.ToString();
 

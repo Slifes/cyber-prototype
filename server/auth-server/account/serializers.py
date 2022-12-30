@@ -43,7 +43,7 @@ class AuthenticationSerializer(serializers.ModelSerializer):
         if validate_eth_address(value):
             raise serializers.ValidationError(_("Invalid address"))
 
-        return value
+        return value.lower()
 
     def validate(self, attrs):
         address = attrs['address'].lower()

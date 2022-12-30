@@ -17,7 +17,7 @@ RUN apk add --update --no-cache \
 # Localtime
 RUN cp /usr/share/zoneinfo/Etc/GMT+3 /etc/localtime
 
-COPY auth/requirements.txt .
+COPY auth-server/requirements.txt .
 
 RUN python -m pip install --upgrade pip
 

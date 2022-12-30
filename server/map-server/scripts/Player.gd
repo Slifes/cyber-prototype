@@ -12,12 +12,3 @@ func Hello():
 func Pong():
 	print("ID: ", $Network/MultiplayerSynchronizer.get_multiplayer_authority())
 	print("Pong: ", multiplayer.get_remote_sender_id())
-
-var f = 0
-
-func _process(delta):
-	f = f + delta
-	
-	if f > 1:
-		rpc("Hello")
-		f = 0

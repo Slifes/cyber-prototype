@@ -12,26 +12,26 @@ public partial class Player : CharacterBody3D
 	[Export]
 	float MouseWheelDownLimit = 100;
 
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        if (@event is InputEventMouseButton)
-        {
-            InputEventMouseButton emb = (InputEventMouseButton)@event;
-            if (emb.IsPressed())
-            {
-                if (emb.ButtonIndex == MouseButton.WheelUp && camera3d.Fov > MouseWheelUpLimit)
-                {
-                    camera3d.Fov -= MouseWheelVelocity;
-                }
-                if (emb.ButtonIndex == MouseButton.WheelDown && camera3d.Fov < MouseWheelDownLimit)
-                {
-                    camera3d.Fov += MouseWheelVelocity;
-                }
-            }
-        }
-    }
+	public override void _UnhandledInput(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton)
+		{
+			InputEventMouseButton emb = (InputEventMouseButton)@event;
+			if (emb.IsPressed())
+			{
+				if (emb.ButtonIndex == MouseButton.WheelUp && camera3d.Fov > MouseWheelUpLimit)
+				{
+					camera3d.Fov -= MouseWheelVelocity;
+				}
+				if (emb.ButtonIndex == MouseButton.WheelDown && camera3d.Fov < MouseWheelDownLimit)
+				{
+					camera3d.Fov += MouseWheelVelocity;
+				}
+			}
+		}
+	}
 
-    void _RotateCamera(double delta)
+	void _RotateCamera(double delta)
 	{
 		bool isPressed = Input.IsMouseButtonPressed(MouseButton.Right);
 
@@ -79,10 +79,10 @@ public partial class Player : CharacterBody3D
 
 			Vector3 direction = (mesh.Transform.basis * new Vector3(inputDir.x, 0, inputDir.y)).Normalized();
 
-            velocity.x = direction.x * Speed;
+			velocity.x = direction.x * Speed;
 			velocity.z = direction.z * Speed;
 
-			network.Direction = direction;
+			// network.Direction = direction;
 		}
 		else
 		{

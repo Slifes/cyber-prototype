@@ -29,11 +29,14 @@ public partial class Player : CharacterBody3D
 	PlayerState state;
 
 	// Get the gravity from the project settings to be synced with RigidBody nodes.
-	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+	public float gravity = 9.9f;// ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
 	public override void _Ready()
 	{
+		GD.Print("NEw player: ", Name);
+
 		network = (PlayerNetwork)GetNode("Network");
+
 		synchronizer = (MultiplayerSynchronizer)GetNode("Network/MultiplayerSynchronizer");
 		synchronizer.SetMultiplayerAuthority(Int32.Parse(Name));
 
@@ -43,6 +46,7 @@ public partial class Player : CharacterBody3D
 		camera3d = (Camera3D)camera.GetNode("Camera3D");
 
 		camera3d.Current = synchronizer.IsMultiplayerAuthority();
+		GD.Print("Camera: ", synchronizer.IsMultiplayerAuthority());
 	}
 
 	[RPC]
