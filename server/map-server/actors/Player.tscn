@@ -3,21 +3,21 @@
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1_12y5l"]
 [ext_resource type="Script" path="res://scripts/Network.gd" id="2_k5wed"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_l4l2d"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_gxbyo"]
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_fs5nu"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_k48pv"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
-properties/0/sync = true
+properties/0/sync = false
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_12y5l")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_l4l2d")
+shape = SubResource("BoxShape3D_gxbyo")
 
 [node name="Network" type="Node" parent="."]
 script = ExtResource("2_k5wed")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Network"]
-replication_config = SubResource("SceneReplicationConfig_fs5nu")
+replication_config = SubResource("SceneReplicationConfig_k48pv")

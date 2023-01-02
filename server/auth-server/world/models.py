@@ -3,6 +3,11 @@ from django.db import models
 
 class Character(models.Model):
 
+    token = models.ForeignKey(
+        "account.Token",
+        on_delete=models.CASCADE
+    )
+
     name = models.CharField(
         verbose_name="Name",
         max_length=32

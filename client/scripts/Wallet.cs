@@ -2,7 +2,6 @@ using Godot;
 using Nethereum.Hex.HexConvertors.Extensions;
 using System;
 using System.Threading.Tasks;
-using Teste.scripts.Crypto;
 using WalletConnectSharp.Sign;
 using WalletConnectSharp.Sign.Models;
 using WalletConnectSharp.Sign.Models.Engine;
@@ -10,7 +9,6 @@ using WalletConnectSharp.Storage;
 using WalletConnectSharp.Network.Models;
 using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
-using WalletConnectSharp.Events;
 
 public partial class Wallet : Node
 {
@@ -77,6 +75,13 @@ public partial class Wallet : Node
 		};
 
 		client = await WalletConnectSignClient.Init(options);
+
+		client.Events.ListenFor(EngineEvents.SessionDelete, async () =>
+		{
+			GD.Print("Session deleted");
+
+			session.Topic = null;
+		});
 
 		return await client.Connect(new ConnectParams()
 		{

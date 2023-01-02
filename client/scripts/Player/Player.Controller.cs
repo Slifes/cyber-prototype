@@ -12,6 +12,8 @@ public partial class Player : CharacterBody3D
 	[Export]
 	float MouseWheelDownLimit = 100;
 
+	float time = 0.0f;
+
 	public override void _UnhandledInput(InputEvent @event)
 	{
 		if (@event is InputEventMouseButton)
@@ -94,7 +96,19 @@ public partial class Player : CharacterBody3D
 
 		MoveAndSlide();
 
-		network.position = GlobalPosition;
+		if(Velocity != Vector3.Zero)
+		{
+			if (time > 0.01)
+			{
+				network.position = GlobalPosition;
+				RpcId(1, "ReceiveState", new Vector3(GlobalPosition.x, 0.3f, GlobalPosition.z));
+				time = 0;
+			}
+			else
+			{
+				time += (float)delta;
+			}
+		}
 	}
 
 	void _AuthorityController(double delta)

@@ -2,8 +2,9 @@ extends Node2D
 
 var _wallet
 
-@onready var auth = $"../../../AuthClient"
 @onready var step_manager = get_parent()
+@onready var auth = $"../../../AuthClient"
+@onready var scene_manager = $"../../../SceneManager"
 @onready var button = $AspectRatioContainer/Control/Button
 @onready var char_container = $AspectRatioContainer/Control/ScrollContainer/VBoxContainer
 
@@ -55,4 +56,4 @@ func _session_map(token):
 	goto_map()
 
 func goto_map():
-	get_tree().change_scene_to_file("res://scenes/node.tscn")
+	scene_manager.ChangeState("world")

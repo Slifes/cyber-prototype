@@ -26,6 +26,9 @@ namespace GameServer.scripts
             table.Property(x => x.Id)
                 .HasColumnName("id");
 
+			table.Property(x => x.CharacterId)
+				.HasColumnName("character_id");
+
             //table.Property(x => x.ExpireAt)
             //    .HasColumnName("expire_at");
 
@@ -38,6 +41,8 @@ namespace GameServer.scripts
 		public ulong Id { get; set; }
 
 		public string AuthToken { get; set; }
+
+		public uint CharacterId { get; set; }
 
 		// public string ExpireAt { get; set; }
 	}

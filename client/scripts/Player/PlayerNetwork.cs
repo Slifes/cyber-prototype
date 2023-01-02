@@ -1,8 +1,7 @@
-using Godot;
-using System;
+﻿using Godot;
 
-public partial class PlayerNetwork : Node
+partial class PlayerNetwork: Node
 {
-	[Export]
-	public Vector3 position;
+    [Export]
+    public Vector3 position;
 }

@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://cyykbb8cqfg41"]
+[gd_scene load_steps=4 format=3 uid="uid://cyykbb8cqfg41"]
 
 [ext_resource type="Script" path="res://scripts/Networking.cs" id="1_et8se"]
 [ext_resource type="Script" path="res://scripts/Spawn.gd" id="2_oxq5h"]
+[ext_resource type="Script" path="res://scripts/WorldState.cs" id="2_rkymy"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_et8se")
+
+[node name="WorldState" type="Node3D" parent="."]
+script = ExtResource("2_rkymy")
 
 [node name="Players" type="Node3D" parent="."]
 

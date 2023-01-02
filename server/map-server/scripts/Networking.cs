@@ -11,11 +11,15 @@ public partial class Networking : Node3D
 
 	Dictionary<long, Peer> peers = new();
 
+	Node3D players;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _EnterTree()
 	{
+		GetTree().SetMultiplayer(new SceneMultiplayer());
+
 		GD.Print("Trying to connect");
-		multiplayerPeer = new ENetMultiplayerPeer();
+		multiplayerPeer = new ENetMultiplayerPeer();	
 
 		Multiplayer.PeerConnected += _PeerConnected;
 		Multiplayer.PeerDisconnected += _PeerDisconnected;
@@ -23,12 +27,15 @@ public partial class Networking : Node3D
 		multiplayerPeer.CreateServer(4242);
 
 		Multiplayer.MultiplayerPeer = multiplayerPeer;
+
 		GD.Print("Deu pau");
 	}
 
 	public override void _Ready()
 	{
 		spawner = (MultiplayerSpawner)GetNode("MultiplayerSpawner");
+
+		players = (Node3D)GetNode("Players");
 	}
 
 	void _PeerConnected(long id)
@@ -43,33 +50,38 @@ public partial class Networking : Node3D
 	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void onSessionMap(Variant auth_token)
 	{
-		GD.Print("SessioMap");
+		GD.Print("Requesting: Entering map.");
+
+		int remoteId = Multiplayer.GetRemoteSenderId();
+
 		string token = auth_token.ToString();
 
-		using (var db = new ServerContext())
+		using var db = new ServerContext();
+		var sessions = db.Sessions.Where(x => x.AuthToken == token);
+
+		if (!sessions.Any())
 		{
-			var sessions = db.Sessions.Where(x => x.AuthToken == token);
-
-			foreach (var session in sessions)
-			{
-				GD.Print("session map found");
-				GD.Print(session.Id);
-				GD.Print(session.AuthToken);
-
-				spawner.Spawn(Multiplayer.GetRemoteSenderId());
-			}
-
-			// Multiplayer.MultiplayerPeer.DisconnectPeer(Multiplayer.GetRemoteSenderId());
-
-			GD.Print(auth_token);
+			Multiplayer.MultiplayerPeer.DisconnectPeer(remoteId);
 		}
+
+		foreach (var session in sessions)
+		{
+			GD.Print("session map found");
+			GD.Print(session.Id);
+			GD.Print(session.AuthToken);
+			GD.Print(session.CharacterId);
+
+			spawner.Spawn(remoteId);
+		}
+
+		GD.Print(auth_token);
 	}
 
 	void _PeerDisconnected(long id)
 	{
 		GD.Print("Disconnected: ", id);
 
-		
+		players.GetNode(id.ToString()).QueueFree();
 
 		peers.Remove(id);
 	}

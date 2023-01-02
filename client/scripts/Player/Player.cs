@@ -14,9 +14,9 @@ public partial class Player : CharacterBody3D
 
 	Vector2 mouseMoveCameraInitial = Vector2.Zero;
 
-	MultiplayerSynchronizer synchronizer;
-
 	PlayerNetwork network;
+
+	MultiplayerSynchronizer synchronizer;
 
 	Node3D camera;
 
@@ -47,6 +47,7 @@ public partial class Player : CharacterBody3D
 
 		camera3d.Current = synchronizer.IsMultiplayerAuthority();
 		GD.Print("Camera: ", synchronizer.IsMultiplayerAuthority());
+
 	}
 
 	[RPC]
@@ -60,13 +61,13 @@ public partial class Player : CharacterBody3D
 	[RPC]
 	public void Pong() { }
 
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void ReceiveState(Variant position) { }
+
+
 	public override void _PhysicsProcess(double delta)
 	{
-		if (!synchronizer.IsMultiplayerAuthority())
-		{
-			GlobalPosition = network.position;
-		}
-		else
+		if (synchronizer.IsMultiplayerAuthority())
 		{
 			_AuthorityController(delta);
 		}

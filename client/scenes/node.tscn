@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://o25oqurxploy"]
+[gd_scene load_steps=8 format=3 uid="uid://o25oqurxploy"]
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_rwu5l"]
+[ext_resource type="Script" path="res://scripts/WorldState.cs" id="2_5n8lh"]
 [ext_resource type="Script" path="res://scripts/Spawner.cs" id="2_joik2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_1kpws"]
@@ -17,8 +18,11 @@ fog_light_color = Color(0.247059, 0.607843, 0.556863, 1)
 [node name="World" type="Node3D"]
 script = ExtResource("1_rwu5l")
 
+[node name="WorldState" type="Node3D" parent="."]
+script = ExtResource("2_5n8lh")
+
 [node name="Players" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201287, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://actors/Player.tscn")
