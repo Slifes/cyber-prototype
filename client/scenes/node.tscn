@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_rwu5l"]
 [ext_resource type="Script" path="res://scripts/WorldState.cs" id="2_5n8lh"]
-[ext_resource type="Script" path="res://scripts/Spawner.cs" id="2_joik2"]
+[ext_resource type="Script" path="res://scripts/SpawnerCustom.cs" id="3_2wp7q"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_1kpws"]
 
@@ -23,11 +23,7 @@ script = ExtResource("2_5n8lh")
 
 [node name="Players" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://actors/Player.tscn")
-spawn_path = NodePath("../Players")
-script = ExtResource("2_joik2")
+script = ExtResource("3_2wp7q")
 
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(20, 0, 0, 0, 0.1, 0, 0, 0, 20, 0, 0, 0)

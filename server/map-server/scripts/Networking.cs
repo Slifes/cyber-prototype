@@ -7,11 +7,9 @@ public partial class Networking : Node3D
 {
 	ENetMultiplayerPeer multiplayerPeer;
 
-	MultiplayerSpawner spawner;
+	SpawnerCustom spawner;
 
 	Dictionary<long, Peer> peers = new();
-
-	Node3D players;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _EnterTree()
@@ -33,9 +31,7 @@ public partial class Networking : Node3D
 
 	public override void _Ready()
 	{
-		spawner = (MultiplayerSpawner)GetNode("MultiplayerSpawner");
-
-		players = (Node3D)GetNode("Players");
+		spawner = GetNode<SpawnerCustom>("Players");
 	}
 
 	void _PeerConnected(long id)
@@ -81,7 +77,7 @@ public partial class Networking : Node3D
 	{
 		GD.Print("Disconnected: ", id);
 
-		players.GetNode(id.ToString()).QueueFree();
+		spawner.Unspawn(id);
 
 		peers.Remove(id);
 	}

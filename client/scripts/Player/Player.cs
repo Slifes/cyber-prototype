@@ -14,7 +14,7 @@ public partial class Player : CharacterBody3D
 
 	Vector2 mouseMoveCameraInitial = Vector2.Zero;
 
-	PlayerNetwork network;
+	//PlayerNetwork network;
 
 	MultiplayerSynchronizer synchronizer;
 
@@ -35,39 +35,30 @@ public partial class Player : CharacterBody3D
 	{
 		GD.Print("NEw player: ", Name);
 
-		network = (PlayerNetwork)GetNode("Network");
+		//network = (PlayerNetwork)GetNode("Network");
 
-		synchronizer = (MultiplayerSynchronizer)GetNode("Network/MultiplayerSynchronizer");
-		synchronizer.SetMultiplayerAuthority(Int32.Parse(Name));
+		// synchronizer = (MultiplayerSynchronizer)GetNode("Network/MultiplayerSynchronizer");
+		// synchronizer.SetMultiplayerAuthority(Int32.Parse(Name));
+
+		SetMultiplayerAuthority(Int32.Parse(Name));
 
 		mesh = (MeshInstance3D)GetNode("MeshInstance3D");
 		camera = (Node3D)GetNode("Camera");
 
 		camera3d = (Camera3D)camera.GetNode("Camera3D");
 
-		camera3d.Current = synchronizer.IsMultiplayerAuthority();
-		GD.Print("Camera: ", synchronizer.IsMultiplayerAuthority());
+		camera3d.Current = IsMultiplayerAuthority();
+
+		GD.Print("Camera: ", IsMultiplayerAuthority());
 
 	}
-
-	[RPC]
-	public void Hello()
-	{
-		GD.Print("Hello: ", Multiplayer.GetRemoteSenderId());
-
-		RpcId(1, "Pong");
-	}
-
-	[RPC]
-	public void Pong() { }
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void ReceiveState(Variant position) { }
 
-
 	public override void _PhysicsProcess(double delta)
 	{
-		if (synchronizer.IsMultiplayerAuthority())
+		if (IsMultiplayerAuthority())
 		{
 			_AuthorityController(delta);
 		}

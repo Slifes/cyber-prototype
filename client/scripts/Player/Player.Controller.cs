@@ -100,7 +100,7 @@ public partial class Player : CharacterBody3D
 		{
 			if (time > 0.01)
 			{
-				network.position = GlobalPosition;
+				// network.position = GlobalPosition;
 				RpcId(1, "ReceiveState", new Vector3(GlobalPosition.x, 0.3f, GlobalPosition.z));
 				time = 0;
 			}

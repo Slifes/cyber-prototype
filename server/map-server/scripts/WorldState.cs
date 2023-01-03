@@ -14,15 +14,16 @@ partial class WorldState : Node3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		RpcId(0, "ReceiveWorldState", Time.GetUnixTimeFromSystem() * 1000.0, GetPlayerState());
+		UpdatePlayersWithWorldState();
 	}
 
-	private Dictionary<Variant, Variant> GetPlayerState()
+	private void UpdatePlayersWithWorldState()
 	{
-		Dictionary<Variant, Variant> playerState = new();
+		Dictionary dic = new();
 
 		var playerCount = players.GetChildCount();
-		GD.Print("playercount: ", playerCount);
+
+		var timestamp = Time.GetUnixTimeFromSystem() * 1000.0;
 
 		for (var i = 0; i < playerCount; i++)
 		{
@@ -30,17 +31,45 @@ partial class WorldState : Node3D
 
 			Godot.Collections.Dictionary<Variant, Variant> player = new()
 			{
-				{"position", Variant.CreateFrom(playerNode.GlobalPosition)}
+				{"position", Variant.CreateFrom(playerNode.GlobalPosition)},
 			};
 
-			playerState.Add(Variant.CreateFrom(playerNode.Name), Variant.CreateFrom(player));
+			dic.Add(playerNode.Name, player);
 		}
 
-		GD.Print(playerState);
+		for (var i = 0; i < playerCount; i++)
+		{
+			var data = new Dictionary<Variant, Variant>();
 
-		return playerState;
+			var playerNode = (Player)players.GetChild(i);
+
+			var nearest = playerNode.GetNearestPlayers();
+
+			foreach (var player in nearest.Keys)
+			{
+				data.Add(player, dic[player]);
+			}
+
+			RpcId(int.Parse(playerNode.Name), "ReceiveWorldState", timestamp, data);
+		}
+	}
+
+	public void SendActorEnteredZone(int remoteId, Variant actorId, Variant position)
+	{
+		RpcId(remoteId, "ActorEnteredZone", actorId, position);
+	}
+
+	public void SendActorExitedZone(int remoteId, Variant actorId)
+	{
+		RpcId(remoteId, "ActorExitedZone", actorId);
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void ReceiveWorldState(double timestamp, Variant players) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ActorEnteredZone(Variant id, Variant position) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ActorExitedZone(Variant id) { }
 }

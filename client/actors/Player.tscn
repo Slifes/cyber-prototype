@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://ywvsq68hsga3"]
+[gd_scene load_steps=5 format=3 uid="uid://ywvsq68hsga3"]
 
 [ext_resource type="Script" path="res://scripts/Player/Player.cs" id="1_5o53v"]
-[ext_resource type="Script" path="res://scripts/Player/PlayerNetwork.cs" id="2_ljcgj"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_wvpaq"]
 
@@ -10,11 +9,6 @@ albedo_color = Color(1, 0.207843, 0.333333, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0f2vn"]
 height = 1.0
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_5ulyi"]
-properties/0/path = NodePath(".:position")
-properties/0/spawn = true
-properties/0/sync = false
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_5o53v")
@@ -27,14 +21,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_wahlt")
 [node name="CollisionShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_0f2vn")
-
-[node name="Network" type="Node" parent="."]
-script = ExtResource("2_ljcgj")
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Network"]
-replication_interval = 0.05
-replication_config = SubResource("SceneReplicationConfig_5ulyi")
-visibility_update_mode = 1
 
 [node name="Camera" type="Node3D" parent="."]
 
