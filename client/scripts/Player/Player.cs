@@ -14,6 +14,8 @@ public partial class Player : CharacterBody3D
 
 	Vector2 mouseMoveCameraInitial = Vector2.Zero;
 
+	public Vector3 InitialPosition = Vector3.Zero;
+
 	//PlayerNetwork network;
 
 	MultiplayerSynchronizer synchronizer;
@@ -22,7 +24,7 @@ public partial class Player : CharacterBody3D
 
 	Camera3D camera3d;
 
-	MeshInstance3D mesh;
+	Node3D body;
 
 	bool mouseCameraPressed = false;
 
@@ -33,28 +35,20 @@ public partial class Player : CharacterBody3D
 
 	public override void _Ready()
 	{
-		GD.Print("NEw player: ", Name);
+		body = GetNode<Node3D>("Body");
+		camera = GetNode<Node3D>("Camera");
 
-		//network = (PlayerNetwork)GetNode("Network");
-
-		// synchronizer = (MultiplayerSynchronizer)GetNode("Network/MultiplayerSynchronizer");
-		// synchronizer.SetMultiplayerAuthority(Int32.Parse(Name));
-
-		SetMultiplayerAuthority(Int32.Parse(Name));
-
-		mesh = (MeshInstance3D)GetNode("MeshInstance3D");
-		camera = (Node3D)GetNode("Camera");
-
-		camera3d = (Camera3D)camera.GetNode("Camera3D");
-
+		camera3d = camera.GetNode<Camera3D>("Camera3D");
 		camera3d.Current = IsMultiplayerAuthority();
 
-		GD.Print("Camera: ", IsMultiplayerAuthority());
+		if (InitialPosition != Vector3.Zero)
+		{
+			GlobalPosition = InitialPosition;
+		}
 
+		GD.Print("New player: ", Name);
+		GD.Print("Authority: ", IsMultiplayerAuthority());
 	}
-
-	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void ReceiveState(Variant position) { }
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -63,4 +57,17 @@ public partial class Player : CharacterBody3D
 			_AuthorityController(delta);
 		}
 	}
+
+	public Vector3 GetActorRotation()
+	{
+		return body.Rotation;
+	}
+
+	public void SetActorRotation(Vector3 rotation)
+	{
+		body.Rotation = rotation;
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void ReceiveState(Variant position, Variant rotation) { }
 }

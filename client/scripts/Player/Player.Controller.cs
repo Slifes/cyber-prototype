@@ -77,9 +77,9 @@ public partial class Player : CharacterBody3D
 
 		if (inputDir != Vector2.Zero)
 		{
-			mesh.Rotation = camera.Rotation;
+			body.Rotation = camera.Rotation;
 
-			Vector3 direction = (mesh.Transform.basis * new Vector3(inputDir.x, 0, inputDir.y)).Normalized();
+			Vector3 direction = (body.Transform.basis * new Vector3(inputDir.x, 0, inputDir.y)).Normalized();
 
 			velocity.x = direction.x * Speed;
 			velocity.z = direction.z * Speed;
@@ -101,7 +101,7 @@ public partial class Player : CharacterBody3D
 			if (time > 0.01)
 			{
 				// network.position = GlobalPosition;
-				RpcId(1, "ReceiveState", new Vector3(GlobalPosition.x, 0.3f, GlobalPosition.z));
+				RpcId(1, "ReceiveState", new Vector3(GlobalPosition.x, 0.3f, GlobalPosition.z), GetActorRotation());
 				time = 0;
 			}
 			else

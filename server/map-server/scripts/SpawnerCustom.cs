@@ -1,32 +1,32 @@
-﻿using Godot;
+using Godot;
 
 partial class SpawnerCustom : Node3D
 {
-    PackedScene playerScene;
+	PackedScene playerScene;
 
-    public override void _Ready()
-    {
-        playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
-    }
+	public override void _Ready()
+	{
+		playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
+	}
 
-    public void Spawn(Variant name)
-    {
-        if (!HasNode(name.ToString()))
-        {
-            var player = (CharacterBody3D)playerScene.Instantiate();
+	public void Spawn(Variant name)
+	{
+		if (!HasNode(name.ToString()))
+		{
+			var player = (CharacterBody3D)playerScene.Instantiate();
 
-            player.Name = name.ToString();
-            // player.GlobalPosition = position;
+			player.Name = name.ToString();
+			// player.GlobalPosition = position;
 
-            AddChild(player);
-        }
-    }
+			AddChild(player);
+		}
+	}
 
-    public void Unspawn(Variant name)
-    {
-        if (HasNode(name.ToString()))
-        {
-            RemoveChild(GetNode(name.ToString()));
-        }
-    }
+	public void Unspawn(Variant name)
+	{
+		if (HasNode(name.ToString()))
+		{
+			RemoveChild(GetNode(name.ToString()));
+		}
+	}
 }

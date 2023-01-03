@@ -27,11 +27,12 @@ partial class WorldState : Node3D
 
 		for (var i = 0; i < playerCount; i++)
 		{
-			var playerNode = (CharacterBody3D)players.GetChild(i);
+			var playerNode = (Player)players.GetChild(i);
 
 			Godot.Collections.Dictionary<Variant, Variant> player = new()
 			{
 				{"position", Variant.CreateFrom(playerNode.GlobalPosition)},
+				{"rotation", Variant.CreateFrom(playerNode.ActorRotation) }
 			};
 
 			dic.Add(playerNode.Name, player);
@@ -64,6 +65,11 @@ partial class WorldState : Node3D
 		RpcId(remoteId, "ActorExitedZone", actorId);
 	}
 
+	public void SendPlayableActor(int remoteId, Variant actorId)
+	{
+		RpcId(remoteId, "SpawnActorPlayable", actorId);
+	}
+
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void ReceiveWorldState(double timestamp, Variant players) { }
 
@@ -72,4 +78,7 @@ partial class WorldState : Node3D
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void ActorExitedZone(Variant id) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void SpawnActorPlayable(Variant id) { }
 }

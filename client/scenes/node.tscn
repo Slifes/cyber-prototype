@@ -56,3 +56,20 @@ light_energy = 0.631
 light_specular = 0.0
 shadow_enabled = true
 omni_range = 3.68642
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1153.0
+offset_bottom = 651.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI"]
+layout_mode = 0
+offset_left = 1041.0
+offset_top = 11.0
+offset_right = 1156.0
+offset_bottom = 51.0
+text = "Latencia: 20"
+scroll_active = false
+tab_size = 8
+deselect_on_focus_loss_enabled = false

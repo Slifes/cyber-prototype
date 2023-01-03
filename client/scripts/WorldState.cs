@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 
@@ -7,25 +6,37 @@ partial class WorldState: Node3D
 	struct State
 	{
 		public double timestamp;
-		public Godot.Collections.Dictionary<Variant, Variant> players;
+		public Dictionary<Variant, Variant> players;
 	}
 
 	SpawnerCustom spawner;
 
-	List<State> states;
+	Node3D Network;
+
+	System.Collections.Generic.List<State> states;
 
 	int InterpolationOffset = 100;
 
+	public double Now
+	{
+		get
+		{
+			return Time.GetUnixTimeFromSystem() * 1000.0;
+		}
+	}
+
 	public override void _Ready()
 	{
+		Network = GetParent<Node3D>();
+
 		spawner = GetNode<SpawnerCustom>("../Players");
 
-		states = new List<State>();
+		states = new System.Collections.Generic.List<State>();
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		var renderTime = (Time.GetUnixTimeFromSystem() * 1000.0) - InterpolationOffset;
+		var renderTime = Network.Get("client_clock").AsDouble() - InterpolationOffset;
 
 		if (states.Count > 1)
 		{
@@ -72,9 +83,13 @@ partial class WorldState: Node3D
 				var position = (Vector3)playerObj["position"];
 				var position1 = (Vector3)playerObj1["position"];
 
-				var node = (CharacterBody3D)spawner.GetNode(name);
+				var rotation = (Vector3)playerObj["rotation"];
+				var rotation1 = (Vector3)playerObj1["rotation"];
+
+				var node = spawner.GetNode<Player>(name);
 
 				node.GlobalPosition = position.Lerp(position1, interpolationFactor);
+				node.SetActorRotation(rotation.Lerp(rotation1, interpolationFactor));
 			}
 		}
 	}
@@ -82,8 +97,6 @@ partial class WorldState: Node3D
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void ReceiveWorldState(double timestamp, Variant players)
 	{
-		GD.Print(timestamp);
-
 		states.Add(new State
 		{
 			timestamp = timestamp,
@@ -103,5 +116,11 @@ partial class WorldState: Node3D
 	{
 		GD.Print("Player exited zone: ", id);
 		spawner.Unspawn(id);
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void SpawnActorPlayable(Variant id)
+	{
+		spawner.SpawnPlayableActor(id, Vector3.Up);
 	}
 }

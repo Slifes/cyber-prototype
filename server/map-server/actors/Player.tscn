@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_w6l3a"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_608ej"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_tdukm"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_75jem"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_qnddn"]
 size = Vector3(3.13453, 1, 2.88149)
 
 [node name="Player" type="CharacterBody3D"]
@@ -13,11 +13,11 @@ collision_mask = 3
 script = ExtResource("1_w6l3a")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_608ej")
+shape = SubResource("BoxShape3D_tdukm")
 
 [node name="AABB" type="Area3D" parent="."]
 collision_layer = 4
 collision_mask = 6
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AABB"]
-shape = SubResource("BoxShape3D_75jem")
+shape = SubResource("BoxShape3D_qnddn")

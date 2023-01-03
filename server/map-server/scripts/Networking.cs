@@ -9,6 +9,8 @@ public partial class Networking : Node3D
 
 	SpawnerCustom spawner;
 
+	WorldState worldState;
+
 	Dictionary<long, Peer> peers = new();
 
 	// Called when the node enters the scene tree for the first time.
@@ -16,22 +18,20 @@ public partial class Networking : Node3D
 	{
 		GetTree().SetMultiplayer(new SceneMultiplayer());
 
-		GD.Print("Trying to connect");
 		multiplayerPeer = new ENetMultiplayerPeer();	
 
 		Multiplayer.PeerConnected += _PeerConnected;
 		Multiplayer.PeerDisconnected += _PeerDisconnected;
 
-		multiplayerPeer.CreateServer(4242);
+		multiplayerPeer.CreateServer(4242, 1000);
 
 		Multiplayer.MultiplayerPeer = multiplayerPeer;
-
-		GD.Print("Deu pau");
 	}
 
 	public override void _Ready()
 	{
 		spawner = GetNode<SpawnerCustom>("Players");
+		worldState = GetNode<WorldState>("WorldState");
 	}
 
 	void _PeerConnected(long id)
@@ -42,6 +42,35 @@ public partial class Networking : Node3D
 
 		peers.Add(id, peer);
 	}
+
+	void _PeerDisconnected(long id)
+	{
+		GD.Print("Disconnected: ", id);
+
+		spawner.Unspawn(id);
+
+		peers.Remove(id);
+	}
+
+	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void CheckLatency(Variant clientTime)
+	{
+		RpcId(Multiplayer.GetRemoteSenderId(), "ReturnLatency", clientTime);
+	}
+
+	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ReturnLatency(Variant serverTime, Variant clientTime) { }
+
+	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void FetchServerTime(Variant clientTime)
+	{
+		double now = Time.GetUnixTimeFromSystem() * 1000.0;
+
+		RpcId(Multiplayer.GetRemoteSenderId(), "ReturnServerTime", now, clientTime);
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ReturnServerTime(Variant serverTime, Variant clientTime) { }
 
 	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void onSessionMap(Variant auth_token)
@@ -68,17 +97,10 @@ public partial class Networking : Node3D
 			GD.Print(session.CharacterId);
 
 			spawner.Spawn(remoteId);
+
+			worldState.SendPlayableActor(remoteId, Variant.CreateFrom(remoteId));
 		}
 
 		GD.Print(auth_token);
-	}
-
-	void _PeerDisconnected(long id)
-	{
-		GD.Print("Disconnected: ", id);
-
-		spawner.Unspawn(id);
-
-		peers.Remove(id);
 	}
 }
