@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using System.Collections.Generic;
 
 public partial class Player : CharacterBody3D
 {
@@ -16,8 +16,6 @@ public partial class Player : CharacterBody3D
 
 	public Vector3 InitialPosition = Vector3.Zero;
 
-	//PlayerNetwork network;
-
 	MultiplayerSynchronizer synchronizer;
 
 	Node3D camera;
@@ -25,6 +23,10 @@ public partial class Player : CharacterBody3D
 	Camera3D camera3d;
 
 	Node3D body;
+
+	Node3D skillNode;
+
+	List<Node3D> skills; 
 
 	bool mouseCameraPressed = false;
 
@@ -41,6 +43,8 @@ public partial class Player : CharacterBody3D
 		camera3d = camera.GetNode<Camera3D>("Camera3D");
 		camera3d.Current = IsMultiplayerAuthority();
 
+		skillNode = GetNode<Node3D>("Body/Skill");
+
 		if (InitialPosition != Vector3.Zero)
 		{
 			GlobalPosition = InitialPosition;
@@ -48,6 +52,8 @@ public partial class Player : CharacterBody3D
 
 		GD.Print("New player: ", Name);
 		GD.Print("Authority: ", IsMultiplayerAuthority());
+
+		ResourceLoader.LoadThreadedRequest("res://skills/normal_attack.tscn");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -69,5 +75,8 @@ public partial class Player : CharacterBody3D
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void ReceiveState(Variant position, Variant rotation) { }
+	public void Moving(Variant position, Variant rotation) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void MoveStopped(Variant position, Variant rotation) { }
 }

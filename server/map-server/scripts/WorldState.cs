@@ -1,5 +1,6 @@
 using Godot;
 using Godot.Collections;
+using System;
 
 partial class WorldState : Node3D
 {
@@ -7,9 +8,14 @@ partial class WorldState : Node3D
 
 	Array<Variant> worldStates;
 
+	public static double Now()
+	{
+		return Time.GetUnixTimeFromSystem() * 1000.0;
+	}
+
 	public override void _Ready()
 	{
-		players = (Node3D)GetNode("../Players");
+		players = GetNode<Node3D>("../Players");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -29,13 +35,13 @@ partial class WorldState : Node3D
 		{
 			var playerNode = (Player)players.GetChild(i);
 
-			Godot.Collections.Dictionary<Variant, Variant> player = new()
+			Godot.Collections.Array<Variant> player = new()
 			{
-				{"position", Variant.CreateFrom(playerNode.GlobalPosition)},
-				{"rotation", Variant.CreateFrom(playerNode.ActorRotation) }
+				Variant.CreateFrom(playerNode.GlobalPosition),
+				Variant.CreateFrom(playerNode.ActorRotation)
 			};
 
-			dic.Add(playerNode.Name, player);
+			dic.Add(Int32.Parse(playerNode.Name), player);
 		}
 
 		for (var i = 0; i < playerCount; i++)
@@ -48,7 +54,7 @@ partial class WorldState : Node3D
 
 			foreach (var player in nearest.Keys)
 			{
-				data.Add(player, dic[player]);
+				data.Add(player, dic[player.AsInt32()]);
 			}
 
 			RpcId(int.Parse(playerNode.Name), "ReceiveWorldState", timestamp, data);
@@ -81,4 +87,25 @@ partial class WorldState : Node3D
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void SpawnActorPlayable(Variant id) { }
+
+	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void RequestSkill(Variant id)
+	{
+		GD.Print("Received Request skill: ", Multiplayer.GetRemoteSenderId());
+		var player = players.GetNode<Player>(Multiplayer.GetRemoteSenderId().ToString());
+
+		var nearest = player.GetNearestPlayers();
+
+		RpcId(Multiplayer.GetRemoteSenderId(), "SkillApproved", Multiplayer.GetRemoteSenderId(), id);
+
+		foreach (var p in nearest.Values)
+		{
+			RpcId(((Player)p).ActorID, "SkillApproved", player.ActorID, id);
+		}
+
+		player.RunSkill(id);
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void SkillApproved(Variant playerId, Variant skillId) { }
 }

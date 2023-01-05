@@ -11,6 +11,7 @@ albedo_color = Color(1, 0.207843, 0.333333, 1)
 height = 1.0
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
+collision_layer = 2
 script = ExtResource("1_5o53v")
 
 [node name="Body" type="Node3D" parent="."]
@@ -31,6 +32,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00321129)
 light_color = Color(1, 0.886275, 0.607843, 1)
 spot_range = 1.49966
 spot_angle = 26.2875
+
+[node name="Skill" type="Node3D" parent="Body"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="CollisionShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)

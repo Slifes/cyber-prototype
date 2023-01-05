@@ -12,6 +12,12 @@ script = ExtResource("1_et8se")
 script = ExtResource("2_rkymy")
 
 [node name="Players" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("3_r0tv6")
 
+[node name="NPCs" type="Node3D" parent="."]
+
 [node name="Map" parent="." instance=ExtResource("4_ae8pc")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.100674, 0.994919, 0, -0.994919, 0.100674, 0, 9.20577, 0)

@@ -1,0 +1,4 @@
+﻿interface ISkill
+{
+    void RunAnimation();
+}

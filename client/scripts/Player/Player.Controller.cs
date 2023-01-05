@@ -31,6 +31,8 @@ public partial class Player : CharacterBody3D
 				}
 			}
 		}
+
+		InputSkill();
 	}
 
 	void _RotateCamera(double delta)
@@ -83,8 +85,6 @@ public partial class Player : CharacterBody3D
 
 			velocity.x = direction.x * Speed;
 			velocity.z = direction.z * Speed;
-
-			// network.Direction = direction;
 		}
 		else
 		{
@@ -96,25 +96,32 @@ public partial class Player : CharacterBody3D
 
 		MoveAndSlide();
 
-		if(Velocity != Vector3.Zero)
+		time += (float)delta;
+
+		if (Velocity == Vector3.Zero)
 		{
-			if (time > 0.01)
-			{
-				// network.position = GlobalPosition;
-				RpcId(1, "ReceiveState", new Vector3(GlobalPosition.x, 0.3f, GlobalPosition.z), GetActorRotation());
-				time = 0;
-			}
-			else
-			{
-				time += (float)delta;
-			}
+			SendMoveStopped();
+		} else if (time > 1.0f/20.0f)
+		{
+			SendMoving();
+
+			time = 0.0f;
 		}
+	}
+
+	void SendMoving()
+	{
+		RpcId(1, "Moving", GlobalPosition, GetActorRotation());
+	}
+
+	void SendMoveStopped()
+	{
+		RpcId(1, "MoveStopped", GlobalPosition, GetActorRotation());
 	}
 
 	void _AuthorityController(double delta)
 	{
 		_RotateCamera(delta);
 		_MoveCharacter(delta);
-
 	}
 }

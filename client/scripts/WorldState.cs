@@ -17,12 +17,9 @@ partial class WorldState: Node3D
 
 	int InterpolationOffset = 100;
 
-	public double Now
+	public static double Now()
 	{
-		get
-		{
-			return Time.GetUnixTimeFromSystem() * 1000.0;
-		}
+		return Time.GetUnixTimeFromSystem() * 1000.0;
 	}
 
 	public override void _Ready()
@@ -77,14 +74,14 @@ partial class WorldState: Node3D
 
 			if (spawner.HasNode(name))
 			{
-				var playerObj = player0[player].AsGodotDictionary<Variant, Variant>();
-				var playerObj1 = player1[player].AsGodotDictionary<Variant, Variant>();
+				var playerObj = player0[player].AsVector3Array();
+				var playerObj1 = player1[player].AsVector3Array();
 
-				var position = (Vector3)playerObj["position"];
-				var position1 = (Vector3)playerObj1["position"];
+				var position = playerObj[0];
+				var position1 = playerObj1[0];
 
-				var rotation = (Vector3)playerObj["rotation"];
-				var rotation1 = (Vector3)playerObj1["rotation"];
+				var rotation = playerObj[1];
+				var rotation1 = playerObj1[1];
 
 				var node = spawner.GetNode<Player>(name);
 
@@ -122,5 +119,25 @@ partial class WorldState: Node3D
 	public void SpawnActorPlayable(Variant id)
 	{
 		spawner.SpawnPlayableActor(id, Vector3.Up);
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void RequestSkill(Variant id) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void SkillApproved(Variant playerId, Variant skillId)
+	{
+		GD.Print("REceived skill approved");
+		var node = spawner.GetNode(playerId.ToString());
+
+		if (node != null)
+		{
+			node.Call("RunSkill", skillId);
+		}
+	}
+
+	public void SendRequestSkill(Variant id)
+	{
+		RpcId(1, "RequestSkill", id);
 	}
 }
