@@ -13,7 +13,13 @@ partial class SpawnerCustom : Node3D
 	{
 		if (!HasNode(name.ToString()))
 		{
-			var player = (CharacterBody3D)playerScene.Instantiate();
+			var player = playerScene.InstantiateOrNull<Player>();
+
+			if (player == null)
+			{
+				GD.Print("Failed to instantiate player");
+				return;
+			}
 
 			player.Name = name.ToString();
 			// player.GlobalPosition = position;

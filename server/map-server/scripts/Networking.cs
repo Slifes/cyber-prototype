@@ -18,7 +18,7 @@ public partial class Networking : Node3D
 	{
 		GetTree().SetMultiplayer(new SceneMultiplayer());
 
-		multiplayerPeer = new ENetMultiplayerPeer();	
+		multiplayerPeer = new ENetMultiplayerPeer();
 
 		Multiplayer.PeerConnected += _PeerConnected;
 		Multiplayer.PeerDisconnected += _PeerDisconnected;
@@ -81,7 +81,7 @@ public partial class Networking : Node3D
 
 		string token = auth_token.ToString();
 
-		using var db = new ServerContext();
+		/*using var db = new ServerContext();
 		var sessions = db.Sessions.Where(x => x.AuthToken == token);
 
 		if (!sessions.Any())
@@ -99,8 +99,17 @@ public partial class Networking : Node3D
 			spawner.Spawn(remoteId);
 
 			worldState.SendPlayableActor(remoteId, Variant.CreateFrom(remoteId));
-		}
+		}*/
+
+		CallDeferred("Spawn", remoteId);
 
 		GD.Print(auth_token);
+	}
+
+	void Spawn(int remoteId)
+	{
+		spawner.Spawn(remoteId);
+
+		worldState.SendPlayableActor(remoteId, Variant.CreateFrom(remoteId));
 	}
 }

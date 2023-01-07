@@ -1,6 +1,8 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 partial class WorldState : Node3D
 {
@@ -20,7 +22,7 @@ partial class WorldState : Node3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		UpdatePlayersWithWorldState();
+		// UpdatePlayersWithWorldState();
 	}
 
 	private void UpdatePlayersWithWorldState()
@@ -35,26 +37,43 @@ partial class WorldState : Node3D
 		{
 			var playerNode = (Player)players.GetChild(i);
 
-			Godot.Collections.Array<Variant> player = new()
+			if (playerNode.Changed)
 			{
-				Variant.CreateFrom(playerNode.GlobalPosition),
-				Variant.CreateFrom(playerNode.ActorRotation)
-			};
+				Godot.Collections.Array<Variant> player = new()
+				{
+					Variant.CreateFrom(playerNode.GlobalPosition),
+					Variant.CreateFrom(playerNode.ActorRotation)
+				};
 
-			dic.Add(Int32.Parse(playerNode.Name), player);
+				dic.Add(playerNode.ActorID, player);
+
+				playerNode.Changed = false;
+			}
 		}
+
+		var playersChangedKeys = dic.Keys;
 
 		for (var i = 0; i < playerCount; i++)
 		{
-			var data = new Dictionary<Variant, Variant>();
+			var data = new Godot.Collections.Dictionary<Variant, Variant>();
 
 			var playerNode = (Player)players.GetChild(i);
 
 			var nearest = playerNode.GetNearestPlayers();
 
-			foreach (var player in nearest.Keys)
+			var keys = new List<int>();
+
+			for (var a = 0; a < nearest.Count; a++)
 			{
-				data.Add(player, dic[player.AsInt32()]);
+				if (playersChangedKeys.Contains(a))
+				{
+					keys.Add(a);
+				}
+			}
+
+			foreach (var player in keys)
+			{
+				data.Add(player, dic[player]);
 			}
 
 			RpcId(int.Parse(playerNode.Name), "ReceiveWorldState", timestamp, data);
@@ -74,6 +93,26 @@ partial class WorldState : Node3D
 	public void SendPlayableActor(int remoteId, Variant actorId)
 	{
 		RpcId(remoteId, "SpawnActorPlayable", actorId);
+	}
+
+	public void SendPacketToPlayerNear(Player player, string func, params Variant[] args)
+	{
+		var nearest = player.GetNearestPlayers();
+
+		foreach (var near in nearest)
+		{
+			RpcId(near, func, args);
+		}
+	}
+
+	public void SendServerMovement(Player player, Vector3 position, float yaw)
+	{
+		SendPacketToPlayerNear(player, "ReceiveMovement", player.ActorID, position, yaw, Now());
+	}
+
+	public void SendServerMovementStopped(Player player, Vector3 position, float yaw)
+	{
+		SendPacketToPlayerNear(player, "ReceiveMovementStopped", player.ActorID, position, yaw, Now());
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -96,16 +135,24 @@ partial class WorldState : Node3D
 
 		var nearest = player.GetNearestPlayers();
 
-		RpcId(Multiplayer.GetRemoteSenderId(), "SkillApproved", Multiplayer.GetRemoteSenderId(), id);
+		var now = Variant.CreateFrom(Now());
 
-		foreach (var p in nearest.Values)
+		RpcId(player.ActorID, "SkillApproved", player.ActorID, id, now);
+
+		foreach (var p in nearest)
 		{
-			RpcId(((Player)p).ActorID, "SkillApproved", player.ActorID, id);
+			RpcId(p, "SkillApproved", player.ActorID, id, now);
 		}
 
 		player.RunSkill(id);
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void SkillApproved(Variant playerId, Variant skillId) { }
+	public void SkillApproved(Variant playerId, Variant skillId, Variant timestamp) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void ReceiveMovement(Variant actorId, Variant position, Variant yaw, Variant timestamp) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void ReceiveMovementStopped(Variant actorId, Variant position, Variant yaw, Variant timestamp) { }
 }

@@ -77,8 +77,8 @@ public partial class AuthClient: Node2D
 		{
 			Dictionary obj = new();
 
-            obj.Add("id", character.id);
-            obj.Add("token_id", character.token_id);
+			obj.Add("id", character.id);
+			obj.Add("token_id", character.token_id);
 
 			characterArray.Add(Variant.CreateFrom(obj));
 		}
@@ -134,7 +134,7 @@ public partial class AuthClient: Node2D
 	{
 		var data = new
 		{
-            character = characterId
+			character = characterId
 		};
 
 		var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");

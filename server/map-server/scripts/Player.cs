@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Godot;
 using Godot.Collections;
 
@@ -12,26 +13,39 @@ partial class Player: CharacterBody3D
 
 	private int _id = 0;
 
+	public bool Changed { get; set; }
+
 	public int ActorID { get { return _id; } }
 
 	Area3D aabb;
 
 	WorldState worldState;
 
+	Node3D body;
+
+	Node3D skillNode;
+
 	State state;
 
-	float lastTickMovement;
+	float LastTickMovement;
 
 	float Speed = 20.0f;
 
 	public float gravity = 9.9f;// ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
-	public Vector3 ActorRotation { get; set; }
+	public Vector3 ActorRotation {
+		get {
+			return body.Rotation;
+		}
+		set
+		{
+			body.Rotation = value;
+		}
+	}
 
-	[Export]
-	Dictionary<Variant, CharacterBody3D> nearest;
+	Array<int> nearest;
 
-	public Dictionary<Variant, CharacterBody3D> GetNearestPlayers()
+	public Array<int> GetNearestPlayers()
 	{
 		return nearest;
 	}
@@ -41,6 +55,9 @@ partial class Player: CharacterBody3D
 		_id = Int32.Parse(Name);
 
 		SetMultiplayerAuthority(_id);
+
+		body = GetNode<Node3D>("Body");
+		skillNode = GetNode<Node3D>("Body/Skill");
 
 		worldState = GetNode<WorldState>("../../WorldState");
 
@@ -53,70 +70,59 @@ partial class Player: CharacterBody3D
 
 	private void OnBodyEntered(Node3D body)
 	{
-		if (body.Name != Name && !nearest.ContainsKey(body.Name))
-		{
-			nearest.Add(body.Name, (CharacterBody3D)body);
+		var actor = ((Player)body);
 
-			worldState.CallDeferred("SendActorEnteredZone", int.Parse(Name), body.Name, (Variant)body.GlobalPosition);
+		if (body.Name != Name && !nearest.Contains(actor.ActorID))
+		{
+			nearest.Add(actor.ActorID);
+
+			worldState.CallDeferred("SendActorEnteredZone", ActorID, body.Name, (Variant)body.GlobalPosition);
 		}
 	}
 
 	private void OnBodyExited(Node3D body)
 	{
-		if (body.Name != Name && nearest.ContainsKey(body.Name))
+		if (body == null)
 		{
-			nearest.Remove(body.Name);
+			return;
+		}
+
+		var actor = ((Player)body);
+		
+		if (body.Name != Name && nearest.Contains(actor.ActorID))
+		{
+			nearest.Remove(actor.ActorID);
 
 			worldState.CallDeferred("SendActorExitedZone", int.Parse(Name), body.Name);
 		}
 	}
 
-	private void Move(Vector3 position, Vector3 rotation, int nextState)
+	private void Move(Vector2 position, float rotation, int nextState)
 	{
 		double now = WorldState.Now();
 
-		Vector3 currentPosition = GlobalPosition;
-
-		// float distance = currentPosition.DistanceTo(position);
-
-		/*if (state == State.Walk)
-		{
-			var delta = (float)now - lastTickMovement;
-
-			var seconds = delta / 1000;
-
-			GD.Print("PlayerID: ", ActorID);
-			GD.Print("seconds delay: ", seconds);
-			GD.Print("Seed seconds: ", Speed * seconds);
-			GD.Print("Distance: ", distance);
-
-			if (distance > Speed * 2 * seconds)
-			{
-				GD.Print("Cheating...");
-
-				Multiplayer.MultiplayerPeer.DisconnectPeer(_id);
-
-				return;
-			}
-		}*/
-
-		GlobalPosition = position;// new Vector3(position.x, GlobalPosition.y, position.y);
-		ActorRotation = rotation;
-		lastTickMovement = (float)now;
+		GlobalPosition = new Vector3(position.x, GlobalPosition.y, position.y);
+		ActorRotation = new Vector3(0, rotation, 0);
+		LastTickMovement = (float)now;
 		state = (State)nextState;
+
+		Changed = true;
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void Moving(Variant position, Variant rotation)
+	public void SendMovement(Variant position, Variant yaw)
 	{
-		CallDeferred("Move", (Vector3)position, (Vector3)rotation, (int)State.Walk);
+		Move((Vector2)position, (float)yaw, (int)State.Walk);
+
+		worldState.SendServerMovement(this, GlobalPosition, (float)yaw);
 	}
 
-
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void MoveStopped(Variant position, Variant rotation)
+	public void SendMovementStopped(Variant position, Variant yaw)
 	{
-		CallDeferred("Move", (Vector3)position, (Vector3)rotation, (int)State.Idle);
+		Move((Vector2)position, (float)yaw, (int)State.Idle);
+
+		worldState.SendServerMovementStopped(this, GlobalPosition, (float)yaw);
 	}
 
 	public void RunSkill(Variant id)
@@ -125,27 +131,26 @@ partial class Player: CharacterBody3D
 
 		var d = p.Instantiate();
 
-		GetNode<Node3D>("Skill").AddChild(d);
+		skillNode.AddChild(d);
 
 		d.GetNode<AnimationPlayer>("Animation").Play();
 	}
 
-	/*	public override void _PhysicsProcess(double delta)
+	public override void _PhysicsProcess(double delta)
 	{
 		Vector3 velocity = Velocity;
 
 		// Add the gravity.
 		if (!IsOnFloor())
 		{
-			GD.Print("Is in floor");
 			velocity.y -= gravity * (float)delta;
+
+			Velocity = velocity;
+
+			MoveAndSlide();
+		} else
+		{
+			Velocity = Vector3.Zero;
 		}
-
-		Velocity = velocity;
-
-		MoveAndSlide();
-
-		GD.Print("Player: ", Name);
-		GD.Print("Floor: ", GlobalPosition.y);
-	}*/
+	}
 }

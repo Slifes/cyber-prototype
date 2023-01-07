@@ -8,7 +8,8 @@
 albedo_color = Color(1, 0.207843, 0.333333, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0f2vn"]
-height = 1.0
+radius = 0.05
+height = 0.12
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 collision_layer = 2
@@ -37,7 +38,6 @@ spot_angle = 26.2875
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="CollisionShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_0f2vn")
 
 [node name="Camera" type="Node3D" parent="."]

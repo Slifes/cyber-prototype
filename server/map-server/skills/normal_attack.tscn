@@ -1,9 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://jcnmxm7smcpl"]
+[gd_scene load_steps=6 format=3 uid="uid://jcnmxm7smcpl"]
 
 [ext_resource type="Script" path="res://skills/normal_attack_server.gd" id="1_vp5i5"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_0y0d7"]
-size = Vector3(0.05, 0.05, 0.4)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_sov62"]
 points = PackedVector3Array(0.025, 0.025, 0.2, 0.025, -0.025, 0.2, 0.025, 0.025, -0.2, -0.025, 0.025, 0.2, -0.025, -0.025, 0.2, 0.025, -0.025, -0.2, -0.025, 0.025, -0.2, -0.025, -0.025, -0.2)
@@ -53,10 +50,6 @@ transform = Transform3D(-3.61999e-06, 0, 1, 0, 1, 0, -1, 0, -3.61999e-06, 0, 0, 
 
 [node name="Body" type="Node3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0077e-09, 0, 0.299454)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot/Body"]
-mesh = SubResource("BoxMesh_0y0d7")
-skeleton = NodePath("../../..")
 
 [node name="Area3D" type="Area3D" parent="Pivot/Body"]
 collision_layer = 8

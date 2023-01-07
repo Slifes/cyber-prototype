@@ -26,6 +26,8 @@ public partial class Player : CharacterBody3D
 
 	Node3D skillNode;
 
+	Node3D networking;
+
 	List<Node3D> skills; 
 
 	bool mouseCameraPressed = false;
@@ -45,9 +47,12 @@ public partial class Player : CharacterBody3D
 
 		skillNode = GetNode<Node3D>("Body/Skill");
 
+		// networking = GetNode<Node3D>("../../World");
+
 		if (InitialPosition != Vector3.Zero)
 		{
-			GlobalPosition = InitialPosition;
+			LastUpdateTime = WorldState.Now();
+			UpdatePosition(InitialPosition);
 		}
 
 		GD.Print("New player: ", Name);
@@ -58,8 +63,10 @@ public partial class Player : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (IsMultiplayerAuthority())
+		if (!IsMultiplayerAuthority())
 		{
+			_ServerUpdatePosition((float)delta);
+		} else {
 			_AuthorityController(delta);
 		}
 	}
@@ -75,8 +82,8 @@ public partial class Player : CharacterBody3D
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void Moving(Variant position, Variant rotation) { }
+	public void SendMovement(Variant position, Variant yaw) { }
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void MoveStopped(Variant position, Variant rotation) { }
+	public void SendMovementStopped(Variant position, Variant yaw) { }
 }

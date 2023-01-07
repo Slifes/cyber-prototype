@@ -1,5 +1,14 @@
+using System.Reactive;
 using Godot;
 using Godot.Collections;
+
+struct Action
+{
+	public string ActorId;
+	public string Function;
+	public Variant[] Data;
+	public double Timestamp;
+}
 
 partial class WorldState: Node3D
 {
@@ -15,6 +24,8 @@ partial class WorldState: Node3D
 
 	System.Collections.Generic.List<State> states;
 
+	System.Collections.Generic.List<Action> actions;
+
 	int InterpolationOffset = 100;
 
 	public static double Now()
@@ -28,14 +39,17 @@ partial class WorldState: Node3D
 
 		spawner = GetNode<SpawnerCustom>("../Players");
 
-		states = new System.Collections.Generic.List<State>();
+		states = new();
+
+		actions = new();
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		var renderTime = Network.Get("client_clock").AsDouble() - InterpolationOffset;
+		double clientClock = Network.Get("client_clock").AsDouble();
+		double renderTime = clientClock - InterpolationOffset;
 
-		if (states.Count > 1)
+		/*if (states.Count > 1)
 		{
 			while(states.Count > 2 && renderTime > states[1].timestamp)
 			{
@@ -55,6 +69,31 @@ partial class WorldState: Node3D
 				nextState.players,
 				interpolationFactor
 			);
+		}*/
+
+		RunActions(renderTime);
+	}
+
+	private void RunActions(double timestamp)
+	{
+		for (var i = actions.Count -1; i > -1; i--)
+		{
+			var action = actions[i];
+
+			if (timestamp > action.Timestamp)
+			{
+				if ((timestamp - action.Timestamp) < 100)
+				{
+					var node = spawner.GetNode(action.ActorId);
+
+					if (node != null)
+					{
+						node.Call(action.Function, action.Data);
+					}
+				}
+
+				actions.RemoveAt(i);
+			}
 		}
 	}
 
@@ -72,7 +111,7 @@ partial class WorldState: Node3D
 				continue;
 			}
 
-			if (spawner.HasNode(name))
+			if (spawner.HasNode(name) && player0.ContainsKey(player) && player1.ContainsKey(player))
 			{
 				var playerObj = player0[player].AsVector3Array();
 				var playerObj1 = player1[player].AsVector3Array();
@@ -94,11 +133,11 @@ partial class WorldState: Node3D
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void ReceiveWorldState(double timestamp, Variant players)
 	{
-		states.Add(new State
+		/*states.Add(new State
 		{
 			timestamp = timestamp,
 			players = players.AsGodotDictionary<Variant, Variant>()
-		});
+		});*/
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -125,15 +164,52 @@ partial class WorldState: Node3D
 	public void RequestSkill(Variant id) { }
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void SkillApproved(Variant playerId, Variant skillId)
+	public void SkillApproved(Variant playerId, Variant skillId, Variant timestamp)
 	{
-		GD.Print("REceived skill approved");
-		var node = spawner.GetNode(playerId.ToString());
+		GD.Print("Received skill approved");
 
-		if (node != null)
+		actions.Add(new Action
 		{
-			node.Call("RunSkill", skillId);
-		}
+			ActorId = playerId.ToString(),
+
+			Function = "RunSkill",
+
+			Data = new Variant[1] { skillId },
+
+			Timestamp = (double)timestamp
+		});
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void ReceiveMovement(Variant actorId, Variant position, Variant yaw, Variant timestamp) {
+
+		actions.Add(new Action
+		{
+			ActorId = actorId.ToString(),
+			Function = "ServerMovement",
+			Data = new Variant[2]
+			{
+				position,
+				yaw
+			},
+			Timestamp = (double)timestamp
+		});
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void ReceiveMovementStopped(Variant actorId, Variant position, Variant yaw, Variant timestamp)
+	{
+		actions.Add(new Action
+		{
+			ActorId = actorId.ToString(),
+			Function = "ServerMovementStopped",
+			Data = new Variant[2]
+			{
+				position,
+				yaw
+			},
+			Timestamp = (double)timestamp
+		});
 	}
 
 	public void SendRequestSkill(Variant id)

@@ -13,6 +13,8 @@ public partial class Player : CharacterBody3D
 	float MouseWheelDownLimit = 100;
 
 	float time = 0.0f;
+		
+	bool moveStoppedSended = false;
 
 	public override void _UnhandledInput(InputEvent @event)
 	{
@@ -32,7 +34,10 @@ public partial class Player : CharacterBody3D
 			}
 		}
 
-		InputSkill();
+		if (IsMultiplayerAuthority())
+		{
+			InputSkill();
+		}
 	}
 
 	void _RotateCamera(double delta)
@@ -85,6 +90,8 @@ public partial class Player : CharacterBody3D
 
 			velocity.x = direction.x * Speed;
 			velocity.z = direction.z * Speed;
+
+			moveStoppedSended = false;
 		}
 		else
 		{
@@ -100,7 +107,12 @@ public partial class Player : CharacterBody3D
 
 		if (Velocity == Vector3.Zero)
 		{
-			SendMoveStopped();
+			if (!moveStoppedSended)
+			{
+				SendMoveStopped();
+				moveStoppedSended = true;
+			}
+
 		} else if (time > 1.0f/20.0f)
 		{
 			SendMoving();
@@ -111,12 +123,12 @@ public partial class Player : CharacterBody3D
 
 	void SendMoving()
 	{
-		RpcId(1, "Moving", GlobalPosition, GetActorRotation());
+		RpcId(1, "SendMovement", new Vector2(GlobalPosition.x, GlobalPosition.z), GetActorRotation().y);
 	}
 
 	void SendMoveStopped()
 	{
-		RpcId(1, "MoveStopped", GlobalPosition, GetActorRotation());
+		RpcId(1, "SendMovementStopped", new Vector2(GlobalPosition.x, GlobalPosition.z), GetActorRotation().y);
 	}
 
 	void _AuthorityController(double delta)

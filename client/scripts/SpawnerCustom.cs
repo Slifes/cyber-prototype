@@ -14,13 +14,19 @@ partial class SpawnerCustom: Node3D
 	{
 		if (!HasNode(name.ToString()))
 		{
-			var player = (Player)playerScene.Instantiate();
+			var player = playerScene.InstantiateOrNull<Player>();
 
-			player.Name = name.ToString();
-			player.InitialPosition = position;
-			player.SetMultiplayerAuthority(Int32.Parse(name.ToString()));
+			if (player != null)
+			{
+				player.Name = name.ToString();
+				player.InitialPosition = position;
+				player.SetMultiplayerAuthority(Int32.Parse(name.ToString()));
 
-			AddChild(player);
+				AddChild(player);
+			} else
+			{
+				GD.Print("Failed to instantiate a player!");
+			}
 		}
 	}
 
@@ -28,12 +34,17 @@ partial class SpawnerCustom: Node3D
 	{
 		if (!HasNode(name.ToString()))
 		{
-			var player = (Player)playerScene.Instantiate();
+			var player = playerScene.InstantiateOrNull<Player>();
 
-			player.Name = name.ToString();
-			player.InitialPosition = position;
+			if (player != null)
+			{
+				player.Name = name.ToString();
+				player.InitialPosition = position;
 
-			AddChild(player);
+				AddChild(player);
+			}
+
+			GD.Print("Instante");
 		}
 	}
 
