@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-public partial class Player : CharacterBody3D
+partial class Player : Actor
 {
 	public const float Speed = 1.0f;
 	public const float JumpVelocity = 4.5f;
@@ -26,19 +26,20 @@ public partial class Player : CharacterBody3D
 
 	Node3D skillNode;
 
-	Node3D networking;
-
 	List<Node3D> skills; 
 
 	bool mouseCameraPressed = false;
 
 	PlayerState state;
 
-	// Get the gravity from the project settings to be synced with RigidBody nodes.
 	public float gravity = 9.9f;// ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
 	public override void _Ready()
 	{
+		base._Ready();
+
+		_type = ActorType.Player;
+
 		body = GetNode<Node3D>("Body");
 		camera = GetNode<Node3D>("Camera");
 
@@ -47,11 +48,9 @@ public partial class Player : CharacterBody3D
 
 		skillNode = GetNode<Node3D>("Body/Skill");
 
-		// networking = GetNode<Node3D>("../../World");
-
 		if (InitialPosition != Vector3.Zero)
 		{
-			LastUpdateTime = WorldState.Now();
+			LastUpdateTime = ServerBridge.Now();
 			UpdatePosition(InitialPosition);
 		}
 
@@ -81,9 +80,14 @@ public partial class Player : CharacterBody3D
 		body.Rotation = rotation;
 	}
 
+	#region send_movement
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void SendMovement(Variant position, Variant yaw) { }
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void SendMovementStopped(Variant position, Variant yaw) { }
+	#endregion
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ServerCurrentStats(Variant hp, Variant maxHp, Variant sp, Variant maxSp) { }
 }

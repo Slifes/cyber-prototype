@@ -1,37 +1,20 @@
 ﻿using Godot;
 
-partial class Player : CharacterBody3D
+partial class Player
 {
-    [Export]
     float PredictionDecayFactor = 0.9f;
 
-    [Export]
-    float PredictionUpdateRate = 0.1f;
-
-    double LastUpdateTime = WorldState.Now();
+    double LastUpdateTime = ServerBridge.Now();
 
     Vector3 PredictedVelocity = Vector3.Zero;
 
-    Vector3 PredictedPosition = Vector3.Zero;
-
     Vector3 LastPositionUpdated = Vector3.Zero;
-
 
     bool isMoving = false;
 
-    void UpdatePrediction(float delta)
-    {
-        //var elapsedTime = (float)(WorldState.Now() - LastUpdateTime);
-
-        PredictedPosition = GlobalPosition + PredictedVelocity * (delta * 1000);
-
-        // GD.Print("PredictedPosition: ", PredictedPosition);
-        // GD.Print("Elapsed: ", ((float)elapsedTime) / 1000);
-    }
-
     void UpdatePosition(Vector3 newPosition)
     {
-        var now = WorldState.Now();
+        var now = ServerBridge.Now();
 
         PredictedVelocity = (newPosition - GlobalPosition) / (float)(now - LastUpdateTime);
 
@@ -41,23 +24,18 @@ partial class Player : CharacterBody3D
 
         LastPositionUpdated = newPosition;
 
-        PredictedPosition = newPosition;
-
-        LastUpdateTime = WorldState.Now();
+        LastUpdateTime = ServerBridge.Now();
     }
 
     void InterpolatePosition()
     {
-        var elapsedTime = (float)(WorldState.Now() - LastUpdateTime);
+        var elapsedTime = (float)(ServerBridge.Now() - LastUpdateTime);
 
         GlobalPosition = ((LastPositionUpdated + (PredictedVelocity * elapsedTime)) * PredictionDecayFactor) + (LastPositionUpdated * (1 - PredictionDecayFactor));
     }
 
     void ServerMovement(Variant position, Variant yaw)
     {
-		GD.Print("Position: ", position);
-        GD.Print("yaw: ", yaw);
-
         isMoving = true;
         UpdatePosition((Vector3)position);
         SetActorRotation(new Vector3(0, (float)yaw, 0));
@@ -65,7 +43,6 @@ partial class Player : CharacterBody3D
 
     void ServerMovementStopped(Variant position, Variant yaw)
     {
-        GD.Print("Stopped");
         isMoving = false;
         UpdatePosition((Vector3)position);
         SetActorRotation(new Vector3(0, (float)yaw, 0));
@@ -75,7 +52,6 @@ partial class Player : CharacterBody3D
     {
         if (isMoving)
         {
-            //UpdatePrediction(delta);
             InterpolatePosition();
         }
     }

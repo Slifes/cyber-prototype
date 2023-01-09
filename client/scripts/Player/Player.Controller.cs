@@ -1,16 +1,16 @@
 using Godot;
 using System;
 
-public partial class Player : CharacterBody3D
+partial class Player
 {
 	[Export]
-	float MouseWheelVelocity = 2.0f;
+	float MouseWheelVelocity = .5f;
 
 	[Export]
-	float MouseWheelUpLimit = 60;
+	float MouseWheelUpLimit = 10;
 
 	[Export]
-	float MouseWheelDownLimit = 100;
+	float MouseWheelDownLimit = 0.5f;
 
 	float time = 0.0f;
 		
@@ -23,13 +23,13 @@ public partial class Player : CharacterBody3D
 			InputEventMouseButton emb = (InputEventMouseButton)@event;
 			if (emb.IsPressed())
 			{
-				if (emb.ButtonIndex == MouseButton.WheelUp && camera3d.Fov > MouseWheelUpLimit)
+				if (emb.ButtonIndex == MouseButton.WheelUp && camera3d.Size > MouseWheelUpLimit)
 				{
-					camera3d.Fov -= MouseWheelVelocity;
+					camera3d.Size -= MouseWheelVelocity;
 				}
-				if (emb.ButtonIndex == MouseButton.WheelDown && camera3d.Fov < MouseWheelDownLimit)
+				if (emb.ButtonIndex == MouseButton.WheelDown && camera3d.Size < MouseWheelDownLimit)
 				{
-					camera3d.Fov += MouseWheelVelocity;
+					camera3d.Size += MouseWheelVelocity;
 				}
 			}
 		}

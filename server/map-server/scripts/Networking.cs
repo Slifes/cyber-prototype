@@ -1,19 +1,13 @@
-using GameServer.scripts;
 using Godot;
-using System.Collections.Generic;
-using System.Linq;
 
 public partial class Networking : Node3D
 {
 	ENetMultiplayerPeer multiplayerPeer;
 
-	SpawnerCustom spawner;
+	CharacterSpawner spawner;
 
-	WorldState worldState;
+	ServerBridge serverBridge;
 
-	Dictionary<long, Peer> peers = new();
-
-	// Called when the node enters the scene tree for the first time.
 	public override void _EnterTree()
 	{
 		GetTree().SetMultiplayer(new SceneMultiplayer());
@@ -30,17 +24,13 @@ public partial class Networking : Node3D
 
 	public override void _Ready()
 	{
-		spawner = GetNode<SpawnerCustom>("Players");
-		worldState = GetNode<WorldState>("WorldState");
+		spawner = GetNode<CharacterSpawner>("Players");
+		serverBridge = GetNode<ServerBridge>("Server");
 	}
 
 	void _PeerConnected(long id)
 	{
 		GD.Print("Connected: ", id);
-
-		Peer peer = new Peer(id);
-
-		peers.Add(id, peer);
 	}
 
 	void _PeerDisconnected(long id)
@@ -48,8 +38,13 @@ public partial class Networking : Node3D
 		GD.Print("Disconnected: ", id);
 
 		spawner.Unspawn(id);
+	}
 
-		peers.Remove(id);
+	void Spawn(int remoteId)
+	{
+		var actor = spawner.Spawn(remoteId);
+
+		serverBridge.SendPlayableActor(remoteId, actor);
 	}
 
 	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -104,12 +99,5 @@ public partial class Networking : Node3D
 		CallDeferred("Spawn", remoteId);
 
 		GD.Print(auth_token);
-	}
-
-	void Spawn(int remoteId)
-	{
-		spawner.Spawn(remoteId);
-
-		worldState.SendPlayableActor(remoteId, Variant.CreateFrom(remoteId));
 	}
 }

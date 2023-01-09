@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bntpvyilsgp2x"]
+
+[ext_resource type="Script" path="res://scripts/spawner/MobSpawner.cs" id="1_1plgo"]
+[ext_resource type="PackedScene" uid="uid://cblwqaghn65hf" path="res://actors/Kirt.tscn" id="2_3t60m"]
+
+[node name="Node" type="Node3D"]
+script = ExtResource("1_1plgo")
+MobScene = ExtResource("2_3t60m")
+MobCount = 2
+X = 5.0
+Y = 5.0

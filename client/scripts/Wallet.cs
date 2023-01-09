@@ -139,7 +139,7 @@ public partial class Wallet : Node
 		}
 	}
 
-    public async void Authenticate(Node2D target)
+    public async void Authenticate(Control target)
     {
 		try
 		{
@@ -159,7 +159,7 @@ public partial class Wallet : Node
 		}
     }
 
-    private async Task<string> RequestSignature(Node2D target)
+    private async Task<string> RequestSignature(Control target)
 	{
 		GD.Print("account: ", Account);
 

@@ -8,10 +8,8 @@ using Nethereum.Web3;
 using Nethereum.Hex.HexTypes;
 using Nethereum.BlockchainProcessing;
 
-using GameServer.scripts.Heart;
 
-
-namespace GameServer.scripts
+namespace GameServer.scripts.blockchain
 {
 	public class Chain
 	{
@@ -20,7 +18,7 @@ namespace GameServer.scripts
 			public uint LastBlockVerified { get; set; }
 			public uint CurrentBlockNumber { get; set; }
 		}
-		
+
 		Web3 web3;
 
 		BlockchainProcessor processor;
@@ -29,8 +27,8 @@ namespace GameServer.scripts
 
 		SyncState syncState;
 
-		const String CONTRACT_ADDRESS = "0xEbe678C8389bC74Ed1A7BD91407A03E96BAAB1bD";
-		const String HTTP_PROVIDER = "https://rpc-mumbai.maticvigil.com/";
+		const string CONTRACT_ADDRESS = "0xEbe678C8389bC74Ed1A7BD91407A03E96BAAB1bD";
+		const string HTTP_PROVIDER = "https://rpc-mumbai.maticvigil.com/";
 
 		public Chain()
 		{
@@ -38,7 +36,8 @@ namespace GameServer.scripts
 
 			syncState = new SyncState();
 
-			web3.Eth.Blocks.GetBlockNumber.SendRequestAsync().ContinueWith(t => {
+			web3.Eth.Blocks.GetBlockNumber.SendRequestAsync().ContinueWith(t =>
+			{
 				syncState.LastBlockVerified = (uint)t.Result.ToUlong() - 1;
 				syncState.CurrentBlockNumber = (uint)t.Result.ToUlong();
 			});

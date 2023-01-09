@@ -111,7 +111,4 @@ libraries = {
 "": SubResource("AnimationLibrary_tbogy")
 }
 
-[node name="Network" type="Node" parent="."]
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Network"]
-root_path = NodePath("../..")
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

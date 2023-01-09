@@ -1,6 +1,6 @@
 using Godot;
 
-partial class SpawnerCustom : Node3D
+partial class CharacterSpawner : Node3D
 {
 	PackedScene playerScene;
 
@@ -9,7 +9,7 @@ partial class SpawnerCustom : Node3D
 		playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
 	}
 
-	public void Spawn(Variant name)
+	public Actor Spawn(Variant name)
 	{
 		if (!HasNode(name.ToString()))
 		{
@@ -18,14 +18,18 @@ partial class SpawnerCustom : Node3D
 			if (player == null)
 			{
 				GD.Print("Failed to instantiate player");
-				return;
+				return null;
 			}
 
 			player.Name = name.ToString();
 			// player.GlobalPosition = position;
 
 			AddChild(player);
+
+			return player;
 		}
+
+		return null;
 	}
 
 	public void Unspawn(Variant name)

@@ -40,7 +40,7 @@ public partial class SceneManager : Node
 			GetTree().ChangeSceneToFile("res://scenes/intro.tscn");
 		} else if (_state == State.World)
 		{
-			GetTree().ChangeSceneToFile("res://scenes/node.tscn");
+			GetTree().ChangeSceneToFile("res://scenes/world.tscn");
 		}
 
 		currentState = _state;

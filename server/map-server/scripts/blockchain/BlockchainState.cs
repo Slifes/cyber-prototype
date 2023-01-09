@@ -1,4 +1,4 @@
-using GameServer.scripts;
+using GameServer.scripts.blockchain;
 using Godot;
 
 public partial class BlockchainState : Node3D

@@ -8,7 +8,7 @@ namespace GameServer.scripts
 	{
 		public DbSet<Character> Characters { get; set; }
 
-        public DbSet<Session> Sessions { get; set; }
+		public DbSet<Session> Sessions { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder
 			.UseNpgsql("Host=localhost;Database=game_server;Username=postgres;Password=postgres");
@@ -19,18 +19,18 @@ namespace GameServer.scripts
 				.ToTable("account_sessionmap");
 
 			table.Property(x => x.AuthToken)
-                .HasColumnName("auth_token");
+				.HasColumnName("auth_token");
 
-            table.Property(x => x.Id)
-                .HasColumnName("id");
+			table.Property(x => x.Id)
+				.HasColumnName("id");
 
 			table.Property(x => x.CharacterId)
 				.HasColumnName("character_id");
 
-            //table.Property(x => x.ExpireAt)
-            //    .HasColumnName("expire_at");
+			//table.Property(x => x.ExpireAt)
+			//    .HasColumnName("expire_at");
 
-            base.OnModelCreating(modelBuilder);
+			base.OnModelCreating(modelBuilder);
 		}
 	}
 

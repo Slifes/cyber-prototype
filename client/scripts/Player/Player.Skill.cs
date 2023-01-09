@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-public partial class Player
+partial class Player
 {
     public void RunSkill(Variant index)
     {
@@ -22,10 +22,10 @@ public partial class Player
 
     public void InputSkill()
     {
-        if (Input.IsActionJustReleased("attack"))
+        if (Input.IsMouseButtonPressed(MouseButton.Left))
         {
             GD.Print("Inputskill");
-            GetNode<WorldState>("../../WorldState").SendRequestSkill(0);
+            GetNode<ServerBridge>("../../Server").SendRequestSkill(0);
         }
     }
 }

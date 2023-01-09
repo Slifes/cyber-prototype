@@ -108,7 +108,7 @@ public partial class AuthClient: Node2D
 
 		var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
 
-		var response = await client.PostAsync("http://localhost:8000/auth/authenticate/", content);
+		var response = await client.PostAsync("http://44.211.197.19/auth/authenticate/", content);
 
 		var responseString = await response.Content.ReadAsStringAsync();
 
@@ -117,7 +117,7 @@ public partial class AuthClient: Node2D
 
 	private async Task<List<CharacterData>> getCharacters()
 	{
-		using var requestMessage = new HttpRequestMessage(HttpMethod.Get, "http://localhost:8000/auth/tokens/");
+		using var requestMessage = new HttpRequestMessage(HttpMethod.Get, "http://44.211.197.19/auth/tokens/");
 
 		requestMessage.Headers.Add("X-Auth-Server", _authToken);
 
@@ -141,7 +141,7 @@ public partial class AuthClient: Node2D
 
 		content.Headers.Add("X-Auth-Server", _authToken);
 
-		var response = await client.PostAsync("http://localhost:8000/auth/session/", content);
+		var response = await client.PostAsync("http://44.211.197.19/auth/session/", content);
 
 		var responseString = await response.Content.ReadAsStringAsync();
 

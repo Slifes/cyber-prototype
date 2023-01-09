@@ -4,7 +4,7 @@ partial class NormalAttack: Node3D
 {
 	AnimationPlayer anim;
 
-	/*public override void _Ready()
+	public override void _Ready()
 	{
 		anim = GetNode<AnimationPlayer>("Animation");
 		// anim.AnimationFinished += OnAnimationFinished;
@@ -14,9 +14,9 @@ partial class NormalAttack: Node3D
 	{
 		GD.Print("name: ", name);
 	}
-	
+
 	public void RunAnimation()
 	{
 		anim.Play();
-	}*/
+	}
 }

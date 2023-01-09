@@ -1,21 +1,21 @@
 [gd_scene load_steps=4 format=3 uid="uid://clrmtuwtd7p75"]
 
-[ext_resource type="Script" path="res://scripts/Player.cs" id="1_w6l3a"]
+[ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_dex2u"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mf5ch"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ri0iu"]
 radius = 0.06
 height = 0.12
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4si2d"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1t0ce"]
 size = Vector3(3.13453, 1, 2.88149)
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 9
-script = ExtResource("1_w6l3a")
+script = ExtResource("1_dex2u")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_mf5ch")
+shape = SubResource("CapsuleShape3D_ri0iu")
 
 [node name="Body" type="Node3D" parent="."]
 
@@ -27,4 +27,4 @@ collision_layer = 4
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AABB"]
-shape = SubResource("BoxShape3D_4si2d")
+shape = SubResource("BoxShape3D_1t0ce")

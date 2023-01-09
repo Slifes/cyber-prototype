@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
 using Godot;
 using Godot.Collections;
 
-partial class Player: CharacterBody3D
+partial class Player: Actor
 {
 	enum State
 	{
@@ -11,15 +10,9 @@ partial class Player: CharacterBody3D
 		Walk
 	}
 
-	private int _id = 0;
-
-	public bool Changed { get; set; }
-
-	public int ActorID { get { return _id; } }
-
 	Area3D aabb;
 
-	WorldState worldState;
+	ServerBridge serverBridge;
 
 	Node3D body;
 
@@ -27,9 +20,11 @@ partial class Player: CharacterBody3D
 
 	State state;
 
-	float LastTickMovement;
-
 	float Speed = 20.0f;
+
+	Array<int> nearestPlayers;
+
+	Array<int> nearest;
 
 	public float gravity = 9.9f;// ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
@@ -43,40 +38,50 @@ partial class Player: CharacterBody3D
 		}
 	}
 
-	Array<int> nearest;
-
 	public Array<int> GetNearestPlayers()
 	{
-		return nearest;
+		return nearestPlayers;
 	}
 
 	public override void _Ready()
 	{
-		_id = Int32.Parse(Name);
+		base._Ready();
 
-		SetMultiplayerAuthority(_id);
+		_type = ActorType.Player;
+
+		SetMultiplayerAuthority(_actorId);
 
 		body = GetNode<Node3D>("Body");
 		skillNode = GetNode<Node3D>("Body/Skill");
 
-		worldState = GetNode<WorldState>("../../WorldState");
+		serverBridge = GetNode<ServerBridge>("../../Server");
 
 		aabb = GetNode<Area3D>("AABB");
 		aabb.BodyEntered += OnBodyEntered;
 		aabb.BodyExited += OnBodyExited;
 
 		nearest = new();
+
+		nearestPlayers = new();
 	}
 
 	private void OnBodyEntered(Node3D body)
 	{
-		var actor = ((Player)body);
+		var actor = (Actor)body;
+
+		GD.Print("Body: ", body.Name);
+		GD.Print("ACtorId: ", actor.ActorID);
 
 		if (body.Name != Name && !nearest.Contains(actor.ActorID))
 		{
 			nearest.Add(actor.ActorID);
 
-			worldState.CallDeferred("SendActorEnteredZone", ActorID, body.Name, (Variant)body.GlobalPosition);
+			if (actor.IsPlayer())
+			{
+				nearestPlayers.Add(actor.ActorID);
+			}
+
+			serverBridge.SendActorEnteredZone(ActorID, actor);
 		}
 	}
 
@@ -87,26 +92,26 @@ partial class Player: CharacterBody3D
 			return;
 		}
 
-		var actor = ((Player)body);
+		var actor = (Actor)body;
 		
 		if (body.Name != Name && nearest.Contains(actor.ActorID))
 		{
 			nearest.Remove(actor.ActorID);
 
-			worldState.CallDeferred("SendActorExitedZone", int.Parse(Name), body.Name);
+			if (actor.IsPlayer())
+			{
+				nearestPlayers.Remove(actor.ActorID);
+			}
+
+			serverBridge.SendActorExitedZone(ActorID, actor);
 		}
 	}
 
 	private void Move(Vector2 position, float rotation, int nextState)
 	{
-		double now = WorldState.Now();
-
 		GlobalPosition = new Vector3(position.x, GlobalPosition.y, position.y);
 		ActorRotation = new Vector3(0, rotation, 0);
-		LastTickMovement = (float)now;
 		state = (State)nextState;
-
-		Changed = true;
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -114,7 +119,7 @@ partial class Player: CharacterBody3D
 	{
 		Move((Vector2)position, (float)yaw, (int)State.Walk);
 
-		worldState.SendServerMovement(this, GlobalPosition, (float)yaw);
+		serverBridge.SendServerMovement(this, GlobalPosition, (float)yaw);
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -122,8 +127,11 @@ partial class Player: CharacterBody3D
 	{
 		Move((Vector2)position, (float)yaw, (int)State.Idle);
 
-		worldState.SendServerMovementStopped(this, GlobalPosition, (float)yaw);
+		serverBridge.SendServerMovementStopped(this, GlobalPosition, (float)yaw);
 	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ServerCurrentStats(Variant hp, Variant maxHp, Variant sp, Variant maxSp) { }
 
 	public void RunSkill(Variant id)
 	{
@@ -152,5 +160,20 @@ partial class Player: CharacterBody3D
 		{
 			Velocity = Vector3.Zero;
 		}
+	}
+
+	public void ApplyDamage(int damage)
+	{
+		currentHP -= damage;
+
+		if (currentHP <= 0)
+		{
+			GD.Print("Died");
+		}
+	}
+
+	public void ConsomeSP(int sp)
+	{
+		currentSP -= sp;
 	}
 }

@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-partial class SpawnerCustom: Node3D
+partial class CharacterSpawner: Node3D
 {
 	PackedScene playerScene;
 
@@ -10,7 +10,7 @@ partial class SpawnerCustom: Node3D
 		playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
 	}
 
-	public void SpawnPlayableActor(Variant name, Vector3 position)
+	public void SpawnPlayableActor(Variant name, Vector3 position, Variant data)
 	{
 		if (!HasNode(name.ToString()))
 		{
@@ -30,7 +30,7 @@ partial class SpawnerCustom: Node3D
 		}
 	}
 
-	public void Spawn(Variant name, Vector3 position)
+	public void Spawn(Variant name, Vector3 position, Variant data)
 	{
 		if (!HasNode(name.ToString()))
 		{
