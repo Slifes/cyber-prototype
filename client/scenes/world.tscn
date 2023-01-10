@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cu6y2igwk2x0c"]
+[gd_scene load_steps=7 format=3 uid="uid://b7glvsx857rxa"]
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_1af4m"]
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_hlg1x"]
 [ext_resource type="Script" path="res://scripts/Spawner/CharacterSpawner.cs" id="3_t4dub"]
 [ext_resource type="PackedScene" uid="uid://c1diiei6qulof" path="res://maps/main.tscn" id="4_8g7r1"]
 [ext_resource type="Script" path="res://scripts/Spawner/MobSpawner.cs" id="5_33hkt"]
+[ext_resource type="Script" path="res://scripts/UI/HealthStats.cs" id="6_dpuci"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_1af4m")
@@ -29,7 +30,6 @@ offset_right = 1153.0
 offset_bottom = 651.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UI"]
-layout_mode = 0
 offset_left = 1018.0
 offset_top = 15.0
 offset_right = 1133.0
@@ -39,24 +39,23 @@ scroll_active = false
 tab_size = 8
 deselect_on_focus_loss_enabled = false
 
-[node name="stats" type="Control" parent="UI"]
-layout_mode = 1
+[node name="HealthStats" type="Control" parent="UI"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("6_dpuci")
 
-[node name="HP" type="ColorRect" parent="UI/stats"]
-layout_mode = 0
+[node name="HP" type="ColorRect" parent="UI/HealthStats"]
 offset_left = 11.0
 offset_top = 20.0
 offset_right = 303.0
 offset_bottom = 29.0
 color = Color(0.678431, 0.678431, 0.678431, 1)
 
-[node name="Current" type="ColorRect" parent="UI/stats/HP"]
-layout_mode = 1
+[node name="Current" type="ColorRect" parent="UI/HealthStats/HP"]
 anchors_preset = -1
 anchor_right = 0.260274
 anchor_bottom = 1.0
@@ -65,16 +64,14 @@ grow_vertical = 2
 color = Color(0.584314, 1, 0.627451, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="SP" type="ColorRect" parent="UI/stats"]
-layout_mode = 0
+[node name="SP" type="ColorRect" parent="UI/HealthStats"]
 offset_left = 13.0
 offset_top = 39.0
 offset_right = 347.0
 offset_bottom = 48.0
 color = Color(0.478431, 0.423529, 0.45098, 1)
 
-[node name="ColorRect" type="ColorRect" parent="UI/stats/SP"]
-layout_mode = 0
+[node name="ColorRect" type="ColorRect" parent="UI/HealthStats/SP"]
 offset_left = -2.0
 offset_right = 305.0
 offset_bottom = 8.0

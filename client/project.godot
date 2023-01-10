@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 Wallet="*res://scripts/Wallet.cs"
 AuthClient="*res://scripts/AuthClient.cs"
 SceneManager="*res://scripts/SceneManager.cs"
+Stats="*res://scripts/Stats.cs"
 
 [dotnet]
 

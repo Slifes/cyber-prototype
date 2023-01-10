@@ -1,6 +1,6 @@
 using Godot;
 
-partial class Kirt : MobActor
+partial class Kirt : Mob
 {
 	AnimationPlayer anim;
 

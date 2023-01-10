@@ -9,7 +9,7 @@ enum MobState
     Attacking
 }
 
-partial class MobActor: Actor
+partial class Mob: Actor
 {
     [Export]
     float Speed = 1.0f;

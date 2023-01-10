@@ -28,6 +28,14 @@ partial class Actor: CharacterBody3D
 
     protected int maxSP;
 
+    public int CurrentHP { get { return currentHP; } }
+
+    public int CurrentSP { get { return currentSP; } }
+
+    public int MaxHP { get { return maxHP; } }
+
+    public int MaxSP { get { return maxSP; } }
+
     public override void _Ready()
     {
         _actorId = Int32.Parse(Name);
@@ -54,5 +62,15 @@ partial class Actor: CharacterBody3D
             maxHP,
             maxSP,
         };
+    }
+
+    public virtual void SetData(Variant data)
+    {
+        var arrayData = (Array<Variant>)data;
+
+        currentHP = (int)arrayData[1];
+        currentSP = (int)arrayData[2];
+        maxHP = (int)arrayData[3];
+        maxSP = (int)arrayData[4];
     }
 }

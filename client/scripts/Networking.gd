@@ -18,7 +18,7 @@ func start_network() -> void:
 	var multiplayer_api = MultiplayerAPI.create_default_interface()
 	
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client("44.211.197.19", 4242) #44.211.197.19
+	peer.create_client("localhost", 4242) #44.211.197.19
 	
 	multiplayer_api.connected_to_server.connect(_connected)
 	multiplayer_api.server_disconnected.connect(_disconnected)

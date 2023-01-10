@@ -53,7 +53,6 @@ partial class ServerBridge : Node3D
 	#endregion
 
 	#region skills
-
 	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void RequestSkill(Variant id)
 	{

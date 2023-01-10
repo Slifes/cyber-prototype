@@ -34,6 +34,9 @@ partial class Player : Actor
 
 	public float gravity = 9.9f;// ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
+	[Signal]
+	public delegate void HealthStatusChangedEventHandler(int currentHP, int currentSP, int maxHP, int maxSP);
+
 	public override void _Ready()
 	{
 		base._Ready();
@@ -55,9 +58,21 @@ partial class Player : Actor
 		}
 
 		GD.Print("New player: ", Name);
-		GD.Print("Authority: ", IsMultiplayerAuthority());
+
+		if (IsMultiplayerAuthority())
+		{
+			GD.Print("Authority: ", IsMultiplayerAuthority());
+			setPlayerToStats();
+		}
 
 		ResourceLoader.LoadThreadedRequest("res://skills/normal_attack.tscn");
+	}
+
+	void setPlayerToStats()
+	{
+		var stats = GetNode<Stats>("/root/Stats");
+
+		stats.setPlayer(this);
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -65,9 +80,20 @@ partial class Player : Actor
 		if (!IsMultiplayerAuthority())
 		{
 			_ServerUpdatePosition((float)delta);
-		} else {
+		}
+		else
+		{
 			_AuthorityController(delta);
 		}
+
+		applyDamage(1);
+	}
+
+	void applyDamage(int damage)
+	{
+		currentHP -= damage;
+
+		EmitSignal(nameof(HealthStatusChanged), currentHP, currentSP, maxHP, maxSP);
 	}
 
 	public Vector3 GetActorRotation()

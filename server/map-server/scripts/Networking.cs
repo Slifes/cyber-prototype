@@ -42,7 +42,14 @@ public partial class Networking : Node3D
 
 	void Spawn(int remoteId)
 	{
-		var actor = spawner.Spawn(remoteId);
+		var actor = spawner.Spawn(remoteId, Vector3.Up, new Godot.Collections.Array<Variant>()
+		{
+			0,
+			100,
+			100,
+			100,
+			100
+		});
 
 		serverBridge.SendPlayableActor(remoteId, actor);
 	}
@@ -96,7 +103,7 @@ public partial class Networking : Node3D
 			worldState.SendPlayableActor(remoteId, Variant.CreateFrom(remoteId));
 		}*/
 
-		CallDeferred("Spawn", remoteId);
+		Spawn(remoteId);
 
 		GD.Print(auth_token);
 	}

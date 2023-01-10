@@ -42,9 +42,4 @@ partial class Actor : CharacterBody3D
     {
         return Type == ActorType.Player;
     }
-
-    public virtual Variant GetData()
-    {
-        return new Variant();
-    }
 }
