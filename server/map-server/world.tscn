@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_u2oiu"]
 [ext_resource type="Script" path="res://scripts/spawner/CharacterSpawner.cs" id="3_mpu75"]
 [ext_resource type="PackedScene" uid="uid://bntpvyilsgp2x" path="res://utils/spawner.tscn" id="4_bmr6q"]
-[ext_resource type="PackedScene" path="res://map/main_server.tscn" id="4_ijwe5"]
+[ext_resource type="PackedScene" uid="uid://dk3q6rnpslrxc" path="res://map/main_server.tscn" id="4_ijwe5"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_et8se")
@@ -17,11 +17,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("3_mpu75")
 
 [node name="Mobs" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.63656, 0, 4.182)
-
-[node name="SpawnKirt" parent="Mobs" instance=ExtResource("4_bmr6q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 4)
 
 [node name="Map" parent="." instance=ExtResource("4_ijwe5")]
 
+[node name="SpawnKirt" parent="." instance=ExtResource("4_bmr6q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 4)
+targetSpawnPath = NodePath("../Mobs")
+
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.100674, 0.994919, 0, -0.994919, 0.100674, 0, 13.7539, 1.44235)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15, 0)

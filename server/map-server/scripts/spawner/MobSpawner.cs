@@ -3,6 +3,9 @@ using Godot;
 partial class MobSpawner : Node3D
 {
 	[Export]
+	NodePath targetSpawnPath;
+
+	[Export]
 	PackedScene MobScene;
 
 	[Export]
@@ -14,7 +17,16 @@ partial class MobSpawner : Node3D
 	[Export]
 	float Y;
 
+	Node3D targetSpawn;
+
 	double LastTimeChecked;
+
+	int currentCount = 0;
+
+	public override void _Ready()
+	{
+		targetSpawn = GetNode<Node3D>(targetSpawnPath);
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -31,9 +43,7 @@ partial class MobSpawner : Node3D
 
 	private void HandlerSpawn()
 	{
-		var count = GetChildCount();
-
-		if (count < MobCount)
+		if (currentCount < MobCount)
 		{
 			Spawn();
 		}
@@ -44,14 +54,17 @@ partial class MobSpawner : Node3D
 		var random = new RandomNumberGenerator();
 
 		var mobX = random.Randf() * X;
-		var mobY = random.Randf() * Y;
+		var mobZ = random.Randf() * Y;
 
 		var instance = MobScene.Instantiate<Node3D>();
 
 		instance.Name = Multiplayer.MultiplayerPeer.GenerateUniqueId().ToString();
 
-		AddChild(instance);
+        targetSpawn.AddChild(instance);
 
-		instance.GlobalPosition = new Vector3(mobX, 0, mobY);
-	}
+		instance.GlobalPosition = new Vector3(mobX, instance.GlobalPosition.y, mobZ);
+
+		currentCount++;
+
+    }
 }

@@ -70,7 +70,7 @@ partial class Player: Actor
 		var actor = (Actor)body;
 
 		GD.Print("Body: ", body.Name);
-		GD.Print("ACtorId: ", actor.ActorID);
+		GD.Print("ActorId: ", actor.ActorID);
 
 		if (body.Name != Name && !nearest.Contains(actor.ActorID))
 		{
@@ -156,24 +156,6 @@ partial class Player: Actor
 			Velocity = velocity;
 
 			MoveAndSlide();
-		} else
-		{
-			Velocity = Vector3.Zero;
 		}
-	}
-
-	public void ApplyDamage(int damage)
-	{
-		currentHP -= damage;
-
-		if (currentHP <= 0)
-		{
-			GD.Print("Died");
-		}
-	}
-
-	public void ConsomeSP(int sp)
-	{
-		currentSP -= sp;
 	}
 }

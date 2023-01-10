@@ -1,17 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://cblwqaghn65hf"]
+[gd_scene load_steps=4 format=3 uid="uid://cblwqaghn65hf"]
 
 [ext_resource type="Script" path="res://scripts/mobs/Kirt.cs" id="1_5eku5"]
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_1grmf"]
-data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a7hox"]
+radius = 0.1
+height = 0.22
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7ngkv"]
+size = Vector3(3.13453, 1, 2.88149)
 
 [node name="Kirt" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 9
 script = ExtResource("1_5eku5")
+Speed = 10.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
-shape = SubResource("ConcavePolygonShape3D_1grmf")
+shape = SubResource("CapsuleShape3D_a7hox")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+target_desired_distance = 0.5
+path_max_distance = 2.01
+radius = 2.0
+
+[node name="AABB" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AABB"]
+shape = SubResource("BoxShape3D_7ngkv")

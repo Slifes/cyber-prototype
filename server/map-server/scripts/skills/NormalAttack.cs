@@ -1,27 +1,27 @@
-﻿using Godot;
+using Godot;
 
 partial class NormalAttack: Node3D, ISkillScene
 {
-    AnimationPlayer animPlayer;
+	AnimationPlayer animPlayer;
 
-    Area3D areaCollision;
+	Area3D areaCollision;
 
-    public override void _Ready()
-    {
-        animPlayer = GetNode<AnimationPlayer>("animation");
+	public override void _Ready()
+	{
+		animPlayer = GetNode<AnimationPlayer>("animation");
 
-        areaCollision = GetNode<Area3D>("Pivot/Body/Area3D");
+		areaCollision = GetNode<Area3D>("Pivot/Body/Area3D");
 
-        areaCollision.BodyEntered += AreaCollision_BodyEntered;
-    }
+		areaCollision.BodyEntered += AreaCollision_BodyEntered;
+	}
 
-    private void AreaCollision_BodyEntered(Node3D body)
-    {
-        ((Player)body).ApplyDamage(10);
-    }
+	private void AreaCollision_BodyEntered(Node3D body)
+	{
+		//((Player)body).ApplyDamage(10);
+	}
 
-    public void RunSkillAnimation()
-    {
-        animPlayer.Play();
-    }
+	public void RunSkillAnimation()
+	{
+		animPlayer.Play();
+	}
 }

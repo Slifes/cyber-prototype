@@ -1,5 +1,6 @@
 ﻿using System;
 using Godot;
+using Godot.Collections;
 
 enum ActorType
 {
@@ -45,6 +46,13 @@ partial class Actor: CharacterBody3D
 
     public virtual Variant GetData()
     {
-        return new Variant();
+        return new Array<Variant>()
+        {
+            actorReference,
+            currentHP,
+            currentSP,
+            maxHP,
+            maxSP,
+        };
     }
 }

@@ -3,7 +3,7 @@ extends Control
 var _wallet
 
 @onready var step_manager = get_parent()
-@onready var auth = $"../../../AuthClient"
+@onready var auth = $"/root/AuthClient"
 @onready var scene_manager = $"../../../SceneManager"
 @onready var button = $AspectRatioContainer/Control/Button
 @onready var char_container = $AspectRatioContainer/Control/ScrollContainer/VBoxContainer

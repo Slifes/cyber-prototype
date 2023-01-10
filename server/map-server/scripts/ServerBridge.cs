@@ -33,7 +33,7 @@ partial class ServerBridge : Node3D
 
 	public void SendActorExitedZone(int remoteId, Actor actor)
 	{
-		RpcId(remoteId, "ActorExitedZone", actor.ActorID);
+		RpcId(remoteId, "ActorExitedZone", actor.ActorID, (Variant)(int)actor.Type);
 	}
 
 	public void SendPlayableActor(int remoteId, Actor actor)
@@ -45,7 +45,7 @@ partial class ServerBridge : Node3D
 	public void ActorEnteredZone(Variant id, Variant type, Variant position, Variant data) { }
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void ActorExitedZone(Variant id) { }
+	public void ActorExitedZone(Variant id, Variant type) { }
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void ActorPlayable(Variant id, Variant position, Variant data) { }

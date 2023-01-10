@@ -8,6 +8,7 @@
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_1af4m")
+metadata/_edit_vertical_guides_ = [12.0]
 
 [node name="Server" type="Node3D" parent="."]
 script = ExtResource("2_hlg1x")
@@ -28,11 +29,53 @@ offset_right = 1153.0
 offset_bottom = 651.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UI"]
-offset_left = 12.0
-offset_top = 11.0
-offset_right = 127.0
-offset_bottom = 51.0
+layout_mode = 0
+offset_left = 1018.0
+offset_top = 15.0
+offset_right = 1133.0
+offset_bottom = 55.0
 text = "Latencia: 20"
 scroll_active = false
 tab_size = 8
 deselect_on_focus_loss_enabled = false
+
+[node name="stats" type="Control" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HP" type="ColorRect" parent="UI/stats"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 20.0
+offset_right = 303.0
+offset_bottom = 29.0
+color = Color(0.678431, 0.678431, 0.678431, 1)
+
+[node name="Current" type="ColorRect" parent="UI/stats/HP"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.260274
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.584314, 1, 0.627451, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="SP" type="ColorRect" parent="UI/stats"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 39.0
+offset_right = 347.0
+offset_bottom = 48.0
+color = Color(0.478431, 0.423529, 0.45098, 1)
+
+[node name="ColorRect" type="ColorRect" parent="UI/stats/SP"]
+layout_mode = 0
+offset_left = -2.0
+offset_right = 305.0
+offset_bottom = 8.0
+color = Color(1, 1, 0.466667, 1)

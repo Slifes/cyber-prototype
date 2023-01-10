@@ -7,10 +7,10 @@ partial class Player
 	float MouseWheelVelocity = .5f;
 
 	[Export]
-	float MouseWheelUpLimit = 10;
+	float MouseWheelUpLimit = 1.0f;
 
 	[Export]
-	float MouseWheelDownLimit = 0.5f;
+	float MouseWheelDownLimit = 10.0f;
 
 	float time = 0.0f;
 		
@@ -26,17 +26,13 @@ partial class Player
 				if (emb.ButtonIndex == MouseButton.WheelUp && camera3d.Size > MouseWheelUpLimit)
 				{
 					camera3d.Size -= MouseWheelVelocity;
-				}
+                    GD.Print("Camera Size: ", camera3d.Size);
+                }
 				if (emb.ButtonIndex == MouseButton.WheelDown && camera3d.Size < MouseWheelDownLimit)
 				{
 					camera3d.Size += MouseWheelVelocity;
 				}
 			}
-		}
-
-		if (IsMultiplayerAuthority())
-		{
-			InputSkill();
 		}
 	}
 
@@ -135,5 +131,6 @@ partial class Player
 	{
 		_RotateCamera(delta);
 		_MoveCharacter(delta);
+		InputSkill();
 	}
 }

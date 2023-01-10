@@ -25,6 +25,7 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 
 [node name="AABB" type="Area3D" parent="."]
 collision_layer = 4
 collision_mask = 2
+monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AABB"]
 shape = SubResource("BoxShape3D_1t0ce")

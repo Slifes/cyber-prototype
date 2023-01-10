@@ -1,6 +1,6 @@
 extends Node
 
-@onready var wallet = $"../../Wallet"
+@onready var wallet = $"/root/Wallet"
 @onready var step_sequence = [
 	$STEP_QRCODE,
 	$STEP_SIGN,

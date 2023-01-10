@@ -62,7 +62,7 @@ public partial class AuthClient: Node2D
 		return _authenticated;
 	}
 
-	public async void GetCharacters(Node2D target)
+	public async void GetCharacters(Control target)
 	{
 		if (!IsAuthenticated)
 		{
@@ -86,7 +86,7 @@ public partial class AuthClient: Node2D
 		target.CallDeferred("emit_signal", "_receive_characters", characterArray);
 	}
 
-	public async void CreateSessionMap(int characterId, Node2D target)
+	public async void CreateSessionMap(int characterId, Control target)
 	{
 		if (!IsAuthenticated)
 		{

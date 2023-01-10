@@ -22,7 +22,7 @@ partial class Player
 
     public void InputSkill()
     {
-        if (Input.IsMouseButtonPressed(MouseButton.Left))
+        if (Input.IsActionJustPressed("attack"))
         {
             GD.Print("Inputskill");
             GetNode<ServerBridge>("../../Server").SendRequestSkill(0);
