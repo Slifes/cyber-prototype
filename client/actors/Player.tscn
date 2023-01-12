@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://ywvsq68hsga3"]
+[gd_scene load_steps=7 format=3 uid="uid://ywvsq68hsga3"]
 
 [ext_resource type="Script" path="res://scripts/Player/Player.cs" id="1_5o53v"]
+[ext_resource type="Script" path="res://scripts/Player/camera.gd" id="2_3jkpx"]
+[ext_resource type="FastNoiseLite" uid="uid://dncpjxo3226fi" path="res://noise/shake_camera.tres" id="3_4gsqw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0f2vn"]
 radius = 0.05
@@ -43,3 +45,5 @@ projection = 1
 fov = 80.0
 size = 2.5
 far = 40000.0
+script = ExtResource("2_3jkpx")
+noise = ExtResource("3_4gsqw")

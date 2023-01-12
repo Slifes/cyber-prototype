@@ -26,8 +26,8 @@ partial class Player
 				if (emb.ButtonIndex == MouseButton.WheelUp && camera3d.Size > MouseWheelUpLimit)
 				{
 					camera3d.Size -= MouseWheelVelocity;
-                    GD.Print("Camera Size: ", camera3d.Size);
-                }
+					GD.Print("Camera Size: ", camera3d.Size);
+				}
 				if (emb.ButtonIndex == MouseButton.WheelDown && camera3d.Size < MouseWheelDownLimit)
 				{
 					camera3d.Size += MouseWheelVelocity;

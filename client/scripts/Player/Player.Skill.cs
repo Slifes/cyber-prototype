@@ -16,6 +16,8 @@ partial class Player
         {
             skillNode.AddChild(node);
 
+            camera3d.Call("add_trauma", 0.15f);
+
             node.Call("play_animation");
         }
     }

@@ -3,56 +3,56 @@ using Godot;
 
 partial class CharacterSpawner: Node3D
 {
-	PackedScene playerScene;
+  PackedScene playerScene;
 
-	public override void _Ready()
+  public override void _Ready()
+  {
+	playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
+  }
+
+  public void SpawnPlayableActor(Variant name, Vector3 position, Variant data)
+  {
+	if (!HasNode(name.ToString()))
 	{
-		playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
-	}
+	  var player = playerScene.InstantiateOrNull<Player>();
 
-	public void SpawnPlayableActor(Variant name, Vector3 position, Variant data)
+	  if (player != null)
+	  {
+		player.Name = name.ToString();
+		player.InitialPosition = position;
+		player.SetMultiplayerAuthority(Int32.Parse(name.ToString()));
+
+		AddChild(player);
+	  } else
+	  {
+		GD.Print("Failed to instantiate a player!");
+	  }
+	}
+  }
+
+  public void Spawn(Variant name, Vector3 position, Variant data)
+  {
+	if (!HasNode(name.ToString()))
 	{
-		if (!HasNode(name.ToString()))
-		{
-			var player = playerScene.InstantiateOrNull<Player>();
+	  var player = playerScene.InstantiateOrNull<Player>();
 
-			if (player != null)
-			{
-				player.Name = name.ToString();
-				player.InitialPosition = position;
-				player.SetMultiplayerAuthority(Int32.Parse(name.ToString()));
+	  if (player != null)
+	  {
+		player.Name = name.ToString();
+		player.InitialPosition = position;
 
-				AddChild(player);
-			} else
-			{
-				GD.Print("Failed to instantiate a player!");
-			}
-		}
+		AddChild(player);
+	  }
+
+	  GD.Print("Instante");
 	}
+  }
 
-	public void Spawn(Variant name, Vector3 position, Variant data)
+  public void Unspawn(Variant name)
+  {
+	if (HasNode(name.ToString()))
 	{
-		if (!HasNode(name.ToString()))
-		{
-			var player = playerScene.InstantiateOrNull<Player>();
-
-			if (player != null)
-			{
-				player.Name = name.ToString();
-				player.InitialPosition = position;
-
-				AddChild(player);
-			}
-
-			GD.Print("Instante");
-		}
+	  RemoveChild(GetNode(name.ToString()));
 	}
-
-	public void Unspawn(Variant name)
-	{
-		if (HasNode(name.ToString()))
-		{
-			RemoveChild(GetNode(name.ToString()));
-		}
-	}
+  }
 }

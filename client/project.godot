@@ -22,6 +22,10 @@ AuthClient="*res://scripts/AuthClient.cs"
 SceneManager="*res://scripts/SceneManager.cs"
 Stats="*res://scripts/Stats.cs"
 
+[debug]
+
+settings/stdout/print_fps=true
+
 [dotnet]
 
 project/assembly_name="Teste"

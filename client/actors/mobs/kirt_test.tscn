@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://ckuj8l531urs0"]
+[gd_scene load_steps=9 format=3 uid="uid://cqi3e35t7ba04"]
 
-[ext_resource type="Script" path="res://scripts/Mob/Kirt.cs" id="1_sj2tc"]
+[ext_resource type="Script" path="res://scripts/Mob/Npc.cs" id="1_dgkj2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_iol84"]
 
@@ -90,16 +90,12 @@ _data = {
 }
 
 [node name="Kirt" type="CharacterBody3D" groups=["Mob"]]
-script = ExtResource("1_sj2tc")
+script = ExtResource("1_dgkj2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 3, 0)
 mesh = SubResource("BoxMesh_iol84")
 surface_material_override/0 = SubResource("StandardMaterial3D_8i0v2")
-
-[node name="RayCast3D" type="RayCast3D" parent="MeshInstance3D"]
-transform = Transform3D(-2.18557e-07, -5, 0, 5, -2.18557e-07, 0, 0, 0, 5, 0, 0, 0)
-target_position = Vector3(0, -3, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
@@ -110,3 +106,39 @@ autoplay = "Idle"
 libraries = {
 "": SubResource("AnimationLibrary_tbogy")
 }
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="Steering" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0485256, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="Steering"]
+target_position = Vector3(0, 0, 0.4)
+
+[node name="RayCast3D2" type="RayCast3D" parent="Steering"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, 0, 0.4)
+
+[node name="RayCast3D3" type="RayCast3D" parent="Steering"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+target_position = Vector3(0, 0, 0.4)
+
+[node name="RayCast3D4" type="RayCast3D" parent="Steering"]
+transform = Transform3D(1.19249e-08, 0, -1, 0, 1, 0, 1, 0, 1.19249e-08, 0, 0, 0)
+target_position = Vector3(0, 0, 0.4)
+
+[node name="RayCast3D5" type="RayCast3D" parent="Steering"]
+transform = Transform3D(0.707847, 0, 0.706366, 0, 1, 0, -0.706366, 0, 0.707847, 0, 0, 0)
+target_position = Vector3(0, 0, 0.4)
+
+[node name="RayCast3D6" type="RayCast3D" parent="Steering"]
+transform = Transform3D(-0.706366, 0, 0.707847, 0, 1, 0, -0.707847, 0, -0.706366, 0, 0, 0)
+target_position = Vector3(0, 0, 0.4)
+
+[node name="RayCast3D7" type="RayCast3D" parent="Steering"]
+transform = Transform3D(-0.707847, 0, -0.706366, 0, 1, 0, 0.706366, 0, -0.707847, 0, 0, 0)
+target_position = Vector3(0, 0, 0.4)
+
+[node name="RayCast3D8" type="RayCast3D" parent="Steering"]
+transform = Transform3D(0.706366, 0, -0.707847, 0, 1, 0, 0.707847, 0, 0.706366, 0, 0, 0)
+target_position = Vector3(0, 0, 0.4)

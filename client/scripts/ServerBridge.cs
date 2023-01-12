@@ -1,14 +1,12 @@
-using System;
 using System.Linq;
 using Godot;
-using Godot.Collections;
 
 struct Action
 {
-	public string ActorId;
-	public string Function;
-	public Variant[] Data;
-	public double Timestamp;
+  public string ActorId;
+  public string Function;
+  public Variant[] Data;
+  public double Timestamp;
 }
 
 partial class ServerBridge: Node3D
