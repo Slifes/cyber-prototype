@@ -3,56 +3,36 @@ using Godot;
 
 partial class CharacterSpawner: Node3D
 {
-  PackedScene playerScene;
+	PackedScene playerScene;
 
-  public override void _Ready()
-  {
-	playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
-  }
-
-  public void SpawnPlayableActor(Variant name, Vector3 position, Variant data)
-  {
-	if (!HasNode(name.ToString()))
+	public override void _Ready()
 	{
-	  var player = playerScene.InstantiateOrNull<Player>();
-
-	  if (player != null)
-	  {
-		player.Name = name.ToString();
-		player.InitialPosition = position;
-		player.SetMultiplayerAuthority(Int32.Parse(name.ToString()));
-
-		AddChild(player);
-	  } else
-	  {
-		GD.Print("Failed to instantiate a player!");
-	  }
+		playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
 	}
-  }
 
-  public void Spawn(Variant name, Vector3 position, Variant data)
-  {
-	if (!HasNode(name.ToString()))
+	public void Spawn(Variant name, Vector3 position, Variant data)
 	{
-	  var player = playerScene.InstantiateOrNull<Player>();
+		if (!HasNode(name.ToString()))
+		{
+			var player = playerScene.InstantiateOrNull<Player>();
 
-	  if (player != null)
-	  {
-		player.Name = name.ToString();
-		player.InitialPosition = position;
+			if (player != null)
+			{
+				player.Name = name.ToString();
+				player.InitialPosition = position;
+				player.SetMultiplayerAuthority(Int32.Parse(name.ToString()));
+				player.SetServerData(data);
 
-		AddChild(player);
-	  }
-
-	  GD.Print("Instante");
+				AddChild(player);
+			}
+		}
 	}
-  }
 
-  public void Unspawn(Variant name)
-  {
-	if (HasNode(name.ToString()))
+	public void Unspawn(Variant name)
 	{
-	  RemoveChild(GetNode(name.ToString()));
+		if (HasNode(name.ToString()))
+		{
+			RemoveChild(GetNode(name.ToString()));
+		}
 	}
-  }
 }

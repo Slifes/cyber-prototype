@@ -16,8 +16,6 @@ partial class Player
         {
             skillNode.AddChild(node);
 
-            camera3d.Call("add_trauma", 0.15f);
-
             node.Call("play_animation");
         }
     }
@@ -27,7 +25,7 @@ partial class Player
         if (Input.IsActionJustPressed("attack"))
         {
             GD.Print("Inputskill");
-            GetNode<ServerBridge>("../../Server").SendRequestSkill(0);
+            GetNode<ServerBridge>("/root/World/Server").SendRequestSkill(0);
         }
     }
 }

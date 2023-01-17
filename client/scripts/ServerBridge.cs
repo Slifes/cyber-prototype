@@ -11,9 +11,7 @@ struct Action
 
 partial class ServerBridge: Node3D
 {
-	CharacterSpawner characterSpawner;
-
-	MobSpawner npcSpawner;
+	Spawner spawner;
 
 	Node3D Network;
 
@@ -30,9 +28,7 @@ partial class ServerBridge: Node3D
 	{
 		Network = GetParent<Node3D>();
 
-		characterSpawner = GetNode<CharacterSpawner>("../Players");
-
-		npcSpawner = GetNode<MobSpawner>("../Mobs");
+		spawner = GetNode<Spawner>("../Spawner");
 
 		actions = new();
 	}
@@ -54,16 +50,13 @@ partial class ServerBridge: Node3D
 
 		foreach (var actor in acts)
 		{
-			if (characterSpawner.HasNode(actor.Key))
+			var player = spawner.GetPlayer(actor.Key.ToString());
+		
+			if (player != null)
 			{
-				var node = characterSpawner.GetNode(actor.Key);
-
 				foreach (var act in actor)
 				{
-					if (node != null)
-					{
-						node.Call(act.Function, act.Data);
-					}
+					player.Call(act.Function, act.Data);
 
 					actions.Remove(act);
 				}
@@ -83,13 +76,7 @@ partial class ServerBridge: Node3D
 	{
 		GD.Print("Actor entered zone", id);
 
-		if (((ActorType)(int)type) == ActorType.Player)
-		{
-			characterSpawner.Spawn(id, (Vector3)position, data);
-		} else
-		{
-			npcSpawner.Spawn(id, (Vector3)position, data);
-		}
+		spawner.Spawn(id, type, position, data);
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -99,21 +86,13 @@ partial class ServerBridge: Node3D
 
 		GD.Print("Actor exited zone: ", id);
 
-		if (actorType == ActorType.Player)
-		{
-			characterSpawner.Unspawn(id);
-		}
-
-		else if (actorType == ActorType.Npc)
-		{
-			npcSpawner.Unspawn(id);
-		}
+		spawner.Unspawn(id, type);
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void ActorPlayable(Variant id, Variant position, Variant data)
 	{
-		characterSpawner.SpawnPlayableActor(id, (Vector3)Position, data);
+		spawner.Spawn(id, (Variant)(int)ActorType.Player, position, data);
 	}
 	#endregion
 

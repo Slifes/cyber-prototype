@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7glvsx857rxa"]
+[gd_scene load_steps=9 format=3 uid="uid://dp63rp2mfbtpe"]
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_1af4m"]
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_hlg1x"]
-[ext_resource type="Script" path="res://scripts/Spawner/CharacterSpawner.cs" id="3_t4dub"]
+[ext_resource type="Script" path="res://scripts/Spawner/CharacterSpawner.cs" id="4_4b5v6"]
 [ext_resource type="PackedScene" uid="uid://c1diiei6qulof" path="res://maps/main.tscn" id="4_8g7r1"]
-[ext_resource type="Script" path="res://scripts/Spawner/MobSpawner.cs" id="5_33hkt"]
+[ext_resource type="Script" path="res://scripts/Spawner/Spawner.cs" id="5_33hkt"]
+[ext_resource type="Script" path="res://scripts/Spawner/NpcSpawner.cs" id="5_xepyk"]
 [ext_resource type="PackedScene" uid="uid://cqi3e35t7ba04" path="res://actors/mobs/kirt_test.tscn" id="6_a3mvf"]
 [ext_resource type="Script" path="res://scripts/UI/HealthStats.cs" id="6_dpuci"]
 
@@ -15,25 +16,27 @@ metadata/_edit_vertical_guides_ = [12.0]
 [node name="Server" type="Node3D" parent="."]
 script = ExtResource("2_hlg1x")
 
-[node name="Players" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-script = ExtResource("3_t4dub")
+[node name="Spawner" type="Node3D" parent="."]
+script = ExtResource("5_33hkt")
+
+[node name="players" type="Node3D" parent="Spawner"]
+script = ExtResource("4_4b5v6")
+
+[node name="npcs" type="Node3D" parent="Spawner"]
+script = ExtResource("5_xepyk")
 
 [node name="Map" parent="." instance=ExtResource("4_8g7r1")]
 
-[node name="Mobs" type="Node3D" parent="."]
-script = ExtResource("5_33hkt")
+[node name="Testing" type="Node3D" parent="."]
 
-[node name="AI" type="Node3D" parent="."]
+[node name="Kirt8" parent="Testing" instance=ExtResource("6_a3mvf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.36793, 0.154269, 2.51597)
 
-[node name="Kirt" parent="AI" instance=ExtResource("6_a3mvf")]
+[node name="Kirt" parent="Testing" instance=ExtResource("6_a3mvf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.47407, 0.0771344, 0.990764)
 
-[node name="Kirt2" parent="AI" instance=ExtResource("6_a3mvf")]
+[node name="Kirt2" parent="Testing" instance=ExtResource("6_a3mvf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.12748, 0.0771344, 0.537571)
-
-[node name="Kirt3" parent="AI" instance=ExtResource("6_a3mvf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.81958, 0.0771344, 1.39313)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -42,6 +45,7 @@ offset_right = 1153.0
 offset_bottom = 651.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UI"]
+layout_mode = 0
 offset_left = 1018.0
 offset_top = 15.0
 offset_right = 1133.0
@@ -52,7 +56,7 @@ tab_size = 8
 deselect_on_focus_loss_enabled = false
 
 [node name="HealthStats" type="Control" parent="UI"]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -61,6 +65,7 @@ grow_vertical = 2
 script = ExtResource("6_dpuci")
 
 [node name="HP" type="ColorRect" parent="UI/HealthStats"]
+layout_mode = 0
 offset_left = 11.0
 offset_top = 20.0
 offset_right = 303.0
@@ -68,7 +73,7 @@ offset_bottom = 29.0
 color = Color(0.678431, 0.678431, 0.678431, 1)
 
 [node name="Current" type="ColorRect" parent="UI/HealthStats/HP"]
-anchors_preset = -1
+layout_mode = 0
 anchor_right = 0.260274
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -77,6 +82,7 @@ color = Color(0.584314, 1, 0.627451, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="SP" type="ColorRect" parent="UI/HealthStats"]
+layout_mode = 0
 offset_left = 13.0
 offset_top = 39.0
 offset_right = 347.0
@@ -84,6 +90,7 @@ offset_bottom = 48.0
 color = Color(0.478431, 0.423529, 0.45098, 1)
 
 [node name="ColorRect" type="ColorRect" parent="UI/HealthStats/SP"]
+layout_mode = 0
 offset_left = -2.0
 offset_right = 305.0
 offset_bottom = 8.0

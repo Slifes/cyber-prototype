@@ -1,8 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://c1diiei6qulof"]
+[gd_scene load_steps=9 format=3 uid="uid://c1diiei6qulof"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_m7036"]
+sky_top_color = Color(0.321569, 0.380392, 0.462745, 1)
+
+[sub_resource type="Sky" id="Sky_38516"]
+sky_material = SubResource("ProceduralSkyMaterial_m7036")
+radiance_size = 2
 
 [sub_resource type="Environment" id="Environment_56xau"]
-ambient_light_source = 2
-ambient_light_color = Color(0.482353, 0.482353, 0.482353, 1)
+sky = SubResource("Sky_38516")
+sky_custom_fov = 18.0
+ambient_light_source = 3
+ambient_light_color = Color(0.0627451, 0.0509804, 0.0431373, 1)
+reflected_light_source = 1
+ssao_enabled = true
+sdfgi_enabled = true
+sdfgi_energy = 2.0
 fog_light_color = Color(0.247059, 0.607843, 0.556863, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_1kpws"]
@@ -15,7 +28,7 @@ data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_rsmj5"]
 data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_801fw"]
+[sub_resource type="NavigationMesh" id="NavigationMesh_8g6aj"]
 vertices = PackedVector3Array(-9.5, 0.45, -2, -6.75, 0.45, -2, -6.5, 0.45, -3.25, -1, 0.45, -6, 0.25, 0.45, -6.25, 0.25, 0.45, -9.5, -4.5, 0.45, -1.25, -5, 0.45, -1, -1, 0.45, 2, -0.75, 0.45, 1.5, -4.75, 0.45, -3.25, -1, 0.45, -4.25, -1, 0.45, -6, -6.5, 0.45, -3.25, -4.5, 0.45, -1.25, -0.75, 0.45, 1.5, 0.25, 0.45, 1.5, 0.25, 0.45, -4, -1, 0.45, -4.25, -4.75, 0.45, -3.25, -9.5, 0.45, -9.5, -9.5, 0.45, -2, -6.5, 0.45, -3.25, -1, 0.45, -6, 0.25, 0.45, -9.5, 0.25, 0.45, -9.5, 0.25, 0.45, -6.25, 1.25, 0.45, -6, 9.5, 0.45, -9.5, 0.25, 0.45, -4, 0.25, 0.45, 1.5, 0.75, 0.45, 1.5, 1.25, 0.45, -4.25, 1.25, 0.45, -4.25, 0.75, 0.45, 1.5, 9.5, 0.45, 1.25, 9.5, 0.45, -9.5, 9.5, 0.45, -9.5, 1.25, 0.45, -6, 1.25, 0.45, -4.25, -6.5, 0.45, -1, -6.75, 0.45, -2, -9.5, 0.45, -2, -1, 0.45, 3.5, -1, 0.45, 2, -5, 0.45, -1, -6.5, 0.45, -1, 0, 0.45, 9.5, 0, 0.45, 3.75, -1, 0.45, 3.5, -1, 0.45, 3.5, -6.5, 0.45, -1, -9.5, 0.45, -2, -9.5, 0.45, 9.5, 0, 0.45, 9.5, 1.25, 0.45, 3.5, 0, 0.45, 3.75, 0, 0.45, 9.5, 9.5, 0.45, 1.25, 0.75, 0.45, 1.5, 1.25, 0.45, 1.75, 9.5, 0.45, 1.25, 1.25, 0.45, 1.75, 1.25, 0.45, 3.5, 1.25, 0.45, 3.5, 0, 0.45, 9.5, 9.5, 0.45, 9.5, 9.5, 0.45, 1.25)
 polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(5, 4, 3), PackedInt32Array(9, 8, 6), PackedInt32Array(6, 8, 7), PackedInt32Array(11, 10, 12), PackedInt32Array(12, 10, 13), PackedInt32Array(18, 17, 19), PackedInt32Array(19, 17, 14), PackedInt32Array(14, 17, 15), PackedInt32Array(15, 17, 16), PackedInt32Array(21, 20, 22), PackedInt32Array(22, 20, 23), PackedInt32Array(23, 20, 24), PackedInt32Array(26, 25, 27), PackedInt32Array(27, 25, 28), PackedInt32Array(30, 29, 31), PackedInt32Array(31, 29, 32), PackedInt32Array(34, 33, 35), PackedInt32Array(35, 33, 36), PackedInt32Array(39, 38, 37), PackedInt32Array(42, 41, 40), PackedInt32Array(44, 43, 45), PackedInt32Array(45, 43, 46), PackedInt32Array(49, 48, 47), PackedInt32Array(51, 50, 52), PackedInt32Array(52, 50, 54), PackedInt32Array(52, 54, 53), PackedInt32Array(57, 56, 55), PackedInt32Array(60, 59, 58), PackedInt32Array(63, 62, 61), PackedInt32Array(65, 64, 66), PackedInt32Array(66, 64, 67)]
 
@@ -76,4 +89,4 @@ mesh = SubResource("BoxMesh_yt0hf")
 shape = SubResource("ConcavePolygonShape3D_rsmj5")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
-navigation_mesh = SubResource("NavigationMesh_801fw")
+navigation_mesh = SubResource("NavigationMesh_8g6aj")

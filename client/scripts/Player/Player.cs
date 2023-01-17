@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-partial class Player : Actor
+partial class Player : CharacterActor
 {
 	public const float Speed = 1.0f;
 	public const float JumpVelocity = 4.5f;
@@ -32,7 +32,9 @@ partial class Player : Actor
 
 	PlayerState state;
 
-	public float gravity = 9.9f;// ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+	PackedScene DamageText = ResourceLoader.Load<PackedScene>("res://effects/Damage.tscn");
+
+	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
 	[Signal]
 	public delegate void HealthStatusChangedEventHandler(int currentHP, int currentSP, int maxHP, int maxSP);
@@ -40,8 +42,6 @@ partial class Player : Actor
 	public override void _Ready()
 	{
 		base._Ready();
-
-		_type = ActorType.Player;
 
 		body = GetNode<Node3D>("Body");
 		camera = GetNode<Node3D>("Camera");
@@ -66,6 +66,8 @@ partial class Player : Actor
 		}
 
 		ResourceLoader.LoadThreadedRequest("res://skills/normal_attack.tscn");
+	
+		UpdateStats();
 	}
 
 	void setPlayerToStats()
@@ -85,14 +87,25 @@ partial class Player : Actor
 		{
 			_AuthorityController(delta);
 		}
-
-		applyDamage(1);
 	}
 
-	void applyDamage(int damage)
+	public override void TakeDamage(int damage)
 	{
-		currentHP -= damage;
+		base.TakeDamage(damage);
 
+		camera3d.Call("add_trauma", 0.15f);
+
+		UpdateStats();
+
+		var damageText = DamageText.Instantiate<Node3D>();
+
+		AddChild(damageText);
+
+		damageText.Call("run", damage);
+	}
+
+	protected void UpdateStats()
+	{
 		EmitSignal(nameof(HealthStatusChanged), currentHP, currentSP, maxHP, maxSP);
 	}
 

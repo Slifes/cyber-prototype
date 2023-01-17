@@ -1,0 +1,55 @@
+using Godot;
+
+partial class Spawner: Node
+{
+	CharacterSpawner playerSpawner;
+
+	NpcSpawner npcSpawner;
+
+	public override void _Ready()
+	{
+		playerSpawner = GetNode<CharacterSpawner>("players");
+		npcSpawner = GetNode<NpcSpawner>("npcs");
+	}
+
+	public Player GetPlayer(string id)
+	{
+		if (playerSpawner.HasNode(id))
+		{
+			return playerSpawner.GetNode<Player>(id);
+		}
+
+		return null;
+	}
+
+	public void Spawn(Variant id, Variant type, Variant position, Variant data)
+	{
+		ActorType _type = (ActorType)(int)type;
+
+		switch(_type)
+		{
+			case ActorType.Player:
+				playerSpawner.Spawn(id, (Vector3)position, data);
+				break;
+			case ActorType.Npc:
+				npcSpawner.Spawn(id, (Vector3)position, data);
+				break;
+		}
+	}
+
+	public void Unspawn(Variant id, Variant type)
+	{
+		ActorType _type = (ActorType)(int)type;
+
+		switch(_type)
+		{
+			case ActorType.Player:
+				playerSpawner.Unspawn(id);
+				break;
+			case ActorType.Npc:
+				npcSpawner.Unspawn(id);
+				break;
+
+		}
+	}
+}

@@ -1,6 +1,6 @@
 using Godot;
 
-partial class MobSpawner: Node3D
+partial class NpcSpawner: Node3D
 {
 	public void Spawn(Variant name, Vector3 position, Variant data)
 	{
@@ -17,14 +17,14 @@ partial class MobSpawner: Node3D
 			{
 				var p = ResourceLoader.Load<PackedScene>("res://actors/mobs/kirt.tscn");
 
-				var n = p.Instantiate<MobActor>();
+				var n = p.Instantiate<BodyActor>();
 
 				n.Name = name.ToString();
 
 				AddChild(n);
 
 				n.GlobalPosition = position;
-				n.SetData(data);
+				n.SetServerData(data);
 			}
 		}
 	}

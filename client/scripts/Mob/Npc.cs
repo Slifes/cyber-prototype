@@ -4,47 +4,72 @@ using System.Collections.Generic;
 
 enum NpcState
 {
-  Idle,
-  Walking,
-  Steering,
-  Attacking,
-  Died
+	Idle,
+	Walking,
+	Steering,
+	Attacking,
+	Died 
 }
 
-partial class Npc: Actor
+partial class Npc: BodyActor
 {
-  NpcState state = NpcState.Idle;
+	NpcState state = NpcState.Idle;
 
-  IBehavior behavior;
+	IBehavior behavior;
 
-  Dictionary<NpcState, IBehavior> behaviors;
+	Dictionary<NpcState, IBehavior> behaviors;
 
-  public override void _Ready()
-  {
-	behaviors = new()
+	public Area3D AgressiveArea { get; set; }
+
+	public Area3D AttackArea { get; set; }
+
+	public Node3D Target {get;set;}
+
+	public AnimationPlayer Animation {get;set;}
+
+	public override void _Ready()
 	{
-	  {NpcState.Walking, new BasedContextSteering()}
-	};
+		AgressiveArea = GetNode<Area3D>("AgressiveArea");
+		AttackArea = GetNode<Area3D>("AttackArea");
+		Animation = GetNode<AnimationPlayer>("AnimationPlayer");
 
-	ChangeState(NpcState.Walking);
-  }
+		behaviors = new()
+		{
+			{NpcState.Steering, new BasedContextSteering(this)},
+			{NpcState.Walking, new BaseMovement(this)},
+			{NpcState.Attacking, new BaseAttack(this)}
+		};
 
-  public override void _PhysicsProcess(double delta)
-  {
-	if (behavior != null)
+		ChangeState(NpcState.Walking);
+	}
+
+	public override void _PhysicsProcess(double delta)
 	{
-	  behavior.Handler(this, delta);
-	}
-  }
-
-  public void ChangeState(NpcState state)
-  {
-	if (behavior != null){
-	  behavior.Finish(this);
+		if (behavior != null)
+		{
+			behavior.Handler(delta);
+		}
 	}
 
-	behavior = behaviors[state];
+	public void ChangeState(NpcState state)
+	{
+		GD.Print("New state: ", state);
 
-	behavior.Start(this);
-  }
+		if (behavior != null)
+		{
+			behavior.Finish();
+		}
+
+		behavior = behaviors[state];
+
+		behavior.Start();
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void MoveToTarget(Vector3 position, Vector3 velocity)
+	{
+		this.LinearVelocity = velocity;
+		GlobalPosition = position;
+		//state = MobState.Walking;
+	}
 }

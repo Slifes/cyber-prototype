@@ -2,9 +2,9 @@ using Godot;
 
 interface IBehavior
 {
-  void Start(Npc actor);
+  void Start();
 
-  void Handler(Npc actor, double delta);
+  void Handler(double delta);
 
-  void Finish(Npc actor);
+  void Finish();
 }

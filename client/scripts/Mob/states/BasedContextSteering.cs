@@ -6,13 +6,26 @@ class BasedContextSteering: IBehavior
 {
   RayCast3D[] raycasts;
 
-  Actor target;
+  Vector3[] rayDirections;
 
-  public void Start(Npc actor)
+  public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+
+  Npc actor;
+
+  public BasedContextSteering(Npc actor)
   {
+    this.actor = actor;
+  }
+
+  public void Start()
+  {
+    actor.AttackArea.SetDeferred("set_monitoring", true);
+    actor.AttackArea.BodyEntered += AttackBodyEntered;
+
     var rays = actor.GetNode<Node3D>("Steering");
 
     raycasts = new RayCast3D[rays.GetChildCount()];
+    rayDirections = new Vector3[raycasts.Length];
 
     for(var i = 0; i < raycasts.Length; i++)
     {
@@ -21,11 +34,22 @@ class BasedContextSteering: IBehavior
     }
   }
 
-  private Vector3 GetDirection(Actor actor)
+  private void AttackBodyEntered(Node3D node)
   {
+    actor.AttackArea.BodyEntered -= AttackBodyEntered;
+
+    actor.ChangeState(NpcState.Attacking);
+  }
+
+  private Vector3 GetDirection()
+  {
+    for(var i = 0; i < raycasts.Length; i++)
+    {
+      rayDirections[i] = raycasts[i].TargetPosition.Rotated(Vector3.Up, actor.Rotation.y);
+    }
+
     var interestMap = new List<float>(new float[raycasts.Length]);
-    var rayDirections = new List<Vector3>(new Vector3[raycasts.Length]);
-    var player = (Node3D)actor.GetNode<Node3D>("/root/World/Players").GetChild(0);
+    var player = actor.Target;
 
     if (player == null){
       return Vector3.Zero;
@@ -36,7 +60,6 @@ class BasedContextSteering: IBehavior
     for (var i = 0; i < raycasts.Length; i++)
     {
       var ray = raycasts[i];
-      rayDirections[i] = ray.TargetPosition.Rotated(Vector3.Up, ray.Rotation.y);
 
       Vector3 toTarget = targetPos - actor.GlobalPosition;
 
@@ -54,7 +77,7 @@ class BasedContextSteering: IBehavior
 
     Vector3 dir = Vector3.Zero;
 
-    for (var i = 0; i < rayDirections.Count; i++)
+    for (var i = 0; i < rayDirections.Length; i++)
     {
       dir += rayDirections[i] * interestMap[i];
     }
@@ -62,19 +85,32 @@ class BasedContextSteering: IBehavior
     return dir.Normalized();// rayDirections[indexOfInterestBigger];
   }
 
-  public void Handler(Npc actor, double delta)
+  public void Handler(double delta)
   {
-    Vector3 dir = GetDirection(actor);
+    var t = Time.GetTicksUsec();
 
-    Vector3 desiredVelocity = dir * 20.0f * (float)delta;
+    Vector3 dir = GetDirection();
 
-    actor.Velocity = desiredVelocity;
+    // if (!actor.IsOnFloor())
+    // {
+    //   dir.y -= gravity * (float)delta;
+    // }
 
-    actor.MoveAndSlide();
+    Vector3 desiredVelocity = dir * 40.0f * (float)delta;
+
+    actor.LinearVelocity = desiredVelocity;
+
+    actor.LookAt(actor.Target.GlobalPosition);
+
+    // actor.MoveAndSlide();
+
+    // GD.Print("Time: ", Time.GetTicksUsec() - t);
   }
 
-  public void Finish(Npc actor)
+  public void Finish()
   {
+    actor.AgressiveArea.SetDeferred("set_monitoring", false);
+
     for(var i = 0; i < raycasts.Length; i++)
     {
       raycasts[i].Enabled = false;
