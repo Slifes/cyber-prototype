@@ -3,76 +3,76 @@ using Godot;
 
 partial class CharacterActor: CharacterBody3D, IActor
 {
-    protected int _actorId;
+  protected int _actorId;
 
-    protected ActorType _type;
+  protected ActorType _type;
 
-    protected int currentHP;
+  protected int currentHP;
 
-    protected int currentSP;
+  protected int currentSP;
 
-    protected int maxHP;
+  protected int maxHP;
 
-    protected int maxSP;
+  protected int maxSP;
 
-    public void onActorReady()
-    {
-        _actorId = Int32.Parse(Name);
+  public void onActorReady()
+  {
+    _actorId = Int32.Parse(Name);
 
-        maxHP = 100;
-        maxSP = 100;
+    maxHP = 100;
+    maxSP = 100;
 
-        currentHP = maxHP;
-        currentSP = maxSP;
-    }
+    currentHP = maxHP;
+    currentSP = maxSP;
+  }
 
-    public override void _Ready()
-    {
-        onActorReady();
-    }
+  public override void _Ready()
+  {
+    onActorReady();
+  }
 
-    public int GetActorId()
-    {
-        return _actorId;
-    }
+  public int GetActorId()
+  {
+    return _actorId;
+  }
 
-    public int GetCurrentHP()
-    {
-        return currentHP;
-    }
+  public int GetCurrentHP()
+  {
+    return currentHP;
+  }
 
-    public int GetCurrentSP()
-    {
-        return currentSP;
-    }
+  public int GetCurrentSP()
+  {
+    return currentSP;
+  }
 
-    public int GetMaxHP()
-    {
-        return maxHP;
-    }
+  public int GetMaxHP()
+  {
+    return maxHP;
+  }
 
-    public int GetMaxSP()
-    {
-        return maxSP;
-    }
+  public int GetMaxSP()
+  {
+    return maxSP;
+  }
 
-    public virtual void TakeDamage(int damage)
-    {
-        currentHP -= damage;
-    }
+  public virtual void TakeDamage(int damage)
+  {
+    currentHP -= damage;
+  }
 
-    public void SetServerData(Variant data)
-    {
-        var dataArray = data.AsGodotArray<Variant>();
+  public void SetServerData(Variant data)
+  {
+    var dataArray = data.AsGodotArray<Variant>();
 
-        currentHP = (int)dataArray[0];
-        currentSP = (int)dataArray[1];
-        maxHP = (int)dataArray[2];
-        maxSP = (int)dataArray[3];
-    }
+    currentHP = (int)dataArray[0];
+    currentSP = (int)dataArray[1];
+    maxHP = (int)dataArray[2];
+    maxSP = (int)dataArray[3];
+  }
 
-    public ActorType GetActorType()
-    {
-        return ActorType.Player;
-    }
+  public ActorType GetActorType()
+  {
+    return ActorType.Player;
+  }
 }
