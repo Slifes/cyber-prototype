@@ -83,6 +83,7 @@ public partial class Networking : Node3D
 
 		string token = auth_token.ToString();
 
+		
 		/*using var db = new ServerContext();
 		var sessions = db.Sessions.Where(x => x.AuthToken == token);
 
@@ -98,11 +99,8 @@ public partial class Networking : Node3D
 			GD.Print(session.AuthToken);
 			GD.Print(session.CharacterId);
 
-			spawner.Spawn(remoteId);
-
-			worldState.SendPlayableActor(remoteId, Variant.CreateFrom(remoteId));
+			Spawn(remoteId);
 		}*/
-
 		Spawn(remoteId);
 
 		GD.Print(auth_token);

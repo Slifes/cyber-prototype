@@ -26,19 +26,19 @@ partial class ServerBridge : Node3D
 	}
 
 	#region spawn
-	public void SendActorEnteredZone(int remoteId, Actor actor)
+	public void SendActorEnteredZone(int remoteId, IActor actor)
 	{
-		RpcId(remoteId, "ActorEnteredZone", actor.ActorID, (Variant)(int)actor.Type, actor.GlobalPosition, actor.GetData());
+		RpcId(remoteId, "ActorEnteredZone", actor.GetActorId(), (Variant)(int)actor.GetActorType(), ((Node3D)actor).GlobalPosition, actor.GetData());
 	}
 
-	public void SendActorExitedZone(int remoteId, Actor actor)
+	public void SendActorExitedZone(int remoteId, IActor actor)
 	{
-		RpcId(remoteId, "ActorExitedZone", actor.ActorID, (Variant)(int)actor.Type);
+		RpcId(remoteId, "ActorExitedZone", actor.GetActorId(), (Variant)(int)actor.GetActorType());
 	}
 
-	public void SendPlayableActor(int remoteId, Actor actor)
+	public void SendPlayableActor(int remoteId, IActor actor)
 	{
-		RpcId(remoteId, "ActorPlayable", actor.ActorID, actor.GlobalPosition, actor.GetData());
+		RpcId(remoteId, "ActorPlayable", actor.GetActorId(), ((Node3D)actor).GlobalPosition, actor.GetData());
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -56,21 +56,23 @@ partial class ServerBridge : Node3D
 	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void RequestSkill(Variant id)
 	{
-	GD.Print("Received Request skill: ", Multiplayer.GetRemoteSenderId());
-	var player = players.GetNode<Player>(Multiplayer.GetRemoteSenderId().ToString());
+		GD.Print("Received Request skill: ", Multiplayer.GetRemoteSenderId());
+		var player = players.GetNode<Player>(Multiplayer.GetRemoteSenderId().ToString());
 
-	var nearest = player.GetNearestPlayers();
+		var nearest = player.GetNearestPlayers();
 
-	var now = Variant.CreateFrom(Now());
+		var now = Variant.CreateFrom(Now());
 
-	RpcId(player.ActorID, "SkillApproved", player.ActorID, id, now);
+		int playerActorId = player.GetActorId();
 
-	foreach (var p in nearest)
-	{
-	  RpcId(p, "SkillApproved", player.ActorID, id, now);
-	}
+		RpcId(playerActorId, "SkillApproved", playerActorId, id, now);
 
-	player.RunSkill(id);
+		foreach (var p in nearest)
+		{
+			RpcId(p, "SkillApproved", playerActorId, id, now);
+		}
+
+		player.RunSkill(id);
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -81,11 +83,12 @@ partial class ServerBridge : Node3D
 	#region PlayerMovement
 	public void SendServerMovement(Player player, Vector3 position, float yaw)
 	{
-		SendPacketToPlayerNear(player, "ReceiveMovement", player.ActorID, position, yaw, Now());
+		SendPacketToPlayerNear(player, "ReceiveMovement", player.GetActorId(), position, yaw, Now());
 	}
+
 	public void SendServerMovementStopped(Player player, Vector3 position, float yaw)
 	{
-		SendPacketToPlayerNear(player, "ReceiveMovementStopped", player.ActorID, position, yaw, Now());
+		SendPacketToPlayerNear(player, "ReceiveMovementStopped", player.GetActorId(), position, yaw, Now());
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -94,5 +97,42 @@ partial class ServerBridge : Node3D
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void ReceiveMovementStopped(Variant actorId, Variant position, Variant yaw, Variant timestamp) { }
 
+	#endregion
+
+	#region npc
+	public void SendPacketTo(System.Collections.Generic.List<int> peers, string func, params Variant[] args)
+	{
+		foreach(var peerId in peers)
+		{
+			RpcId(peerId, func, args);
+		}
+	}
+
+	public void SendNpcChangeState(System.Collections.Generic.List<int> players, Variant id, Variant state, Variant position, Variant yaw, Variant data)
+	{
+		SendPacketTo(players, "NpcChangeState", id, state, position, yaw, data, Now());
+	}
+
+	public void SendNpcUpdateState(System.Collections.Generic.List<int> players, Variant id, Variant state, Variant position, Variant yaw, Variant data)
+	{
+		SendPacketTo(players, "NpcUpdateState", id, state, position, yaw, data, Now());
+	}
+
+	public void SendNpcAction(System.Collections.Generic.List<int> players, Variant id, Variant action, Variant position, Variant yaw, Variant data)
+	{
+		SendPacketTo(players, "NpcAction", id, action, position, yaw, data, Now());
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void NpcChangeState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void NpcUpdateState(Variant id, Variant state,Variant position, Variant yaw, Variant data, Variant timestamp) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void NpcAction(Variant id, Variant action, Variant position, Variant yaw, Variant data, Variant timestamp) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ActorReceivedDamage(Variant id, Variant damage, Variant type, Variant timestamp) { }
 	#endregion
 }

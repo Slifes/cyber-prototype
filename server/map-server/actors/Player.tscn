@@ -7,10 +7,10 @@ radius = 0.06
 height = 0.12
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1t0ce"]
-size = Vector3(3.13453, 1, 2.88149)
+size = Vector3(6, 1, 6)
 
 [node name="Player" type="CharacterBody3D"]
-collision_layer = 2
+collision_layer = 514
 collision_mask = 9
 script = ExtResource("1_dex2u")
 
@@ -23,7 +23,7 @@ shape = SubResource("CapsuleShape3D_ri0iu")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="AABB" type="Area3D" parent="."]
-collision_layer = 4
+collision_layer = 0
 collision_mask = 2
 monitorable = false
 

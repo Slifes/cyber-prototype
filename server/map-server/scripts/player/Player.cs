@@ -2,7 +2,7 @@ using System;
 using Godot;
 using Godot.Collections;
 
-partial class Player: Actor
+partial class Player: CharacterActor
 {
 	enum State
 	{
@@ -26,7 +26,7 @@ partial class Player: Actor
 
 	Array<int> nearest;
 
-	public float gravity = 9.9f;// ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+	public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
 	public Vector3 ActorRotation {
 		get {
@@ -67,21 +67,21 @@ partial class Player: Actor
 
 	private void OnBodyEntered(Node3D body)
 	{
-		var actor = (Actor)body;
+		var actor = (IActor)body;
 
 		GD.Print("Body: ", body.Name);
-		GD.Print("ActorId: ", actor.ActorID);
+		GD.Print("ActorId: ", actor.GetActorId());
 
-		if (body.Name != Name && !nearest.Contains(actor.ActorID))
+		if (body.Name != Name && !nearest.Contains(actor.GetActorId()))
 		{
-			nearest.Add(actor.ActorID);
+			nearest.Add(actor.GetActorId());
 
-			if (actor.IsPlayer())
+			if (actor.GetActorType() == ActorType.Player)
 			{
-				nearestPlayers.Add(actor.ActorID);
+				nearestPlayers.Add(actor.GetActorId());
 			}
 
-			serverBridge.SendActorEnteredZone(ActorID, actor);
+			serverBridge.SendActorEnteredZone(GetActorId(), actor);
 		}
 	}
 
@@ -92,18 +92,18 @@ partial class Player: Actor
 			return;
 		}
 
-		var actor = (Actor)body;
+		var actor = (IActor)body;
 		
-		if (body.Name != Name && nearest.Contains(actor.ActorID))
+		if (body.Name != Name && nearest.Contains(actor.GetActorId()))
 		{
-			nearest.Remove(actor.ActorID);
+			nearest.Remove(actor.GetActorId());
 
-			if (actor.IsPlayer())
+			if (actor.GetActorType() == ActorType.Player)
 			{
-				nearestPlayers.Remove(actor.ActorID);
+				nearestPlayers.Remove(actor.GetActorId());
 			}
 
-			serverBridge.SendActorExitedZone(ActorID, actor);
+			serverBridge.SendActorExitedZone(GetActorId(), actor);
 		}
 	}
 

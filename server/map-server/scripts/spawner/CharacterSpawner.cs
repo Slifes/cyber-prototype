@@ -9,7 +9,7 @@ partial class CharacterSpawner : Node3D
 		playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
 	}
 
-	public Actor Spawn(Variant name, Variant position, Variant data)
+	public IActor Spawn(Variant name, Variant position, Variant data)
 	{
 		if (!HasNode(name.ToString()))
 		{
@@ -23,7 +23,7 @@ partial class CharacterSpawner : Node3D
 
 			player.Name = name.ToString();
 
-			player.SetData(data);
+			player.SetServerData(data);
 
 			AddChild(player);
 
