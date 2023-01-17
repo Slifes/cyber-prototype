@@ -21,18 +21,7 @@ class BaseMovement: IBehavior
     this.actor = actor;
   }
 
-  public void Start()
-  {
-    actor.AgressiveArea.SetDeferred("set_monitoring", true);
-    actor.AgressiveArea.BodyEntered += TargetEntered;
-  }
-
-  private void TargetEntered(Node3D body)
-  {
-    actor.Target = body;
-
-    actor.ChangeState(NpcState.Steering);
-  }
+  public void Start() { }
 
   private Vector3 GetDirection(float time)
   {
@@ -55,7 +44,7 @@ class BaseMovement: IBehavior
 
   public void Handler(double delta)
   {
-    var d = GetFunctionX();
+    /*var d = GetFunctionX();
 
     var direction = GetDirection(d);
 
@@ -63,12 +52,13 @@ class BaseMovement: IBehavior
     GD.Print("Direction: ", direction);
     GD.Print("Velocity: ", direction * (float)delta);
 
-    actor.LinearVelocity = direction * (float)delta;
+    actor.LinearVelocity = direction * (float)delta;*/
   }
 
-  public void Finish()
+  public void Finish() { }
+
+  public void SetData(Variant data)
   {
-    actor.AgressiveArea.SetDeferred("set_monitoring", false);
-    actor.AgressiveArea.BodyEntered -= TargetEntered;
+    
   }
 }

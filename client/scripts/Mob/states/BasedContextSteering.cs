@@ -1,6 +1,5 @@
 using Godot;
 using System.Collections.Generic;
-using System.Linq;
 
 class BasedContextSteering: IBehavior
 {
@@ -8,9 +7,9 @@ class BasedContextSteering: IBehavior
 
   Vector3[] rayDirections;
 
-  public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
-
   Npc actor;
+
+  Vector3 TargetPosition;
 
   public BasedContextSteering(Npc actor)
   {
@@ -19,9 +18,6 @@ class BasedContextSteering: IBehavior
 
   public void Start()
   {
-    actor.AttackArea.SetDeferred("set_monitoring", true);
-    actor.AttackArea.BodyEntered += AttackBodyEntered;
-
     var rays = actor.GetNode<Node3D>("Steering");
 
     raycasts = new RayCast3D[rays.GetChildCount()];
@@ -36,8 +32,6 @@ class BasedContextSteering: IBehavior
 
   private void AttackBodyEntered(Node3D node)
   {
-    actor.AttackArea.BodyEntered -= AttackBodyEntered;
-
     actor.ChangeState(NpcState.Attacking);
   }
 
@@ -49,13 +43,8 @@ class BasedContextSteering: IBehavior
     }
 
     var interestMap = new List<float>(new float[raycasts.Length]);
-    var player = actor.Target;
-
-    if (player == null){
-      return Vector3.Zero;
-    }
     
-    var targetPos = player.GlobalPosition;
+    var targetPos = TargetPosition;
 
     for (var i = 0; i < raycasts.Length; i++)
     {
@@ -91,29 +80,25 @@ class BasedContextSteering: IBehavior
 
     Vector3 dir = GetDirection();
 
-    // if (!actor.IsOnFloor())
-    // {
-    //   dir.y -= gravity * (float)delta;
-    // }
-
     Vector3 desiredVelocity = dir * 40.0f * (float)delta;
 
     actor.LinearVelocity = desiredVelocity;
 
-    actor.LookAt(actor.Target.GlobalPosition);
-
-    // actor.MoveAndSlide();
-
-    // GD.Print("Time: ", Time.GetTicksUsec() - t);
+    actor.LookAt(TargetPosition);
   }
 
   public void Finish()
   {
-    actor.AgressiveArea.SetDeferred("set_monitoring", false);
-
     for(var i = 0; i < raycasts.Length; i++)
     {
       raycasts[i].Enabled = false;
     }
+  }
+
+  public void SetData(Variant data)
+  {
+    var dataArray = (Godot.Collections.Array<Variant>)data;
+
+    TargetPosition = (Vector3)dataArray[0];
   }
 }

@@ -12,13 +12,20 @@ partial class Spawner: Node
 		npcSpawner = GetNode<NpcSpawner>("npcs");
 	}
 
-	public Player GetPlayer(string id)
+	public IActor GetActor(string id, ActorType actorType)
 	{
-		if (playerSpawner.HasNode(id))
+		switch(actorType)
 		{
-			return playerSpawner.GetNode<Player>(id);
+			case ActorType.Player:
+				if (playerSpawner.HasNode(id))
+					return playerSpawner.GetNode<IActor>(id);
+				break;
+			case ActorType.Npc:
+				if (npcSpawner.HasNode(id))
+					return npcSpawner.GetNode<IActor>(id);
+				break;
 		}
-
+	
 		return null;
 	}
 

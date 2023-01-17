@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dp63rp2mfbtpe"]
+[gd_scene load_steps=8 format=3 uid="uid://dp63rp2mfbtpe"]
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_1af4m"]
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_hlg1x"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://c1diiei6qulof" path="res://maps/main.tscn" id="4_8g7r1"]
 [ext_resource type="Script" path="res://scripts/Spawner/Spawner.cs" id="5_33hkt"]
 [ext_resource type="Script" path="res://scripts/Spawner/NpcSpawner.cs" id="5_xepyk"]
-[ext_resource type="PackedScene" uid="uid://cqi3e35t7ba04" path="res://actors/mobs/kirt_test.tscn" id="6_a3mvf"]
 [ext_resource type="Script" path="res://scripts/UI/HealthStats.cs" id="6_dpuci"]
 
 [node name="World" type="Node3D"]
@@ -26,17 +25,6 @@ script = ExtResource("4_4b5v6")
 script = ExtResource("5_xepyk")
 
 [node name="Map" parent="." instance=ExtResource("4_8g7r1")]
-
-[node name="Testing" type="Node3D" parent="."]
-
-[node name="Kirt8" parent="Testing" instance=ExtResource("6_a3mvf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.36793, 0.154269, 2.51597)
-
-[node name="Kirt" parent="Testing" instance=ExtResource("6_a3mvf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.47407, 0.0771344, 0.990764)
-
-[node name="Kirt2" parent="Testing" instance=ExtResource("6_a3mvf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.12748, 0.0771344, 0.537571)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3

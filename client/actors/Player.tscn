@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ywvsq68hsga3"]
+[gd_scene load_steps=7 format=3 uid="uid://ywvsq68hsga3"]
 
 [ext_resource type="Script" path="res://scripts/Player/Player.cs" id="1_5o53v"]
 [ext_resource type="Script" path="res://scripts/Player/camera.gd" id="2_3jkpx"]
@@ -13,14 +13,7 @@ height = 0.12
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wahlt"]
 albedo_color = Color(1, 0.207843, 0.333333, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fyr66"]
-albedo_color = Color(1, 0.14902, 0.164706, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_0siyo"]
-material = SubResource("StandardMaterial3D_fyr66")
-size = Vector3(0.05, 0.05, 0.05)
-
-[node name="Player" type="CharacterBody3D" groups=["Player"]]
+[node name="Player" type="CharacterBody3D"]
 collision_layer = 514
 script = ExtResource("1_5o53v")
 
@@ -43,22 +36,6 @@ spot_angle = 26.2875
 
 [node name="Skill" type="Node3D" parent="Body"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="CPUParticles3D" type="CPUParticles3D" parent="Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0029242, -1.19209e-07, -0.00369596)
-emitting = false
-amount = 3
-lifetime = 0.02
-speed_scale = 0.05
-explosiveness = 0.7
-randomness = 0.12
-mesh = SubResource("BoxMesh_0siyo")
-emission_shape = 3
-emission_box_extents = Vector3(0.05, 0.05, 0.05)
-direction = Vector3(0, 0, 0.5)
-gravity = Vector3(0, 1, 0)
-initial_velocity_min = 20.0
-initial_velocity_max = 30.0
 
 [node name="Camera" type="Node3D" parent="."]
 

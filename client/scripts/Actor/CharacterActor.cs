@@ -26,6 +26,11 @@ partial class CharacterActor: CharacterBody3D, IActor
         currentSP = maxSP;
     }
 
+    public override void _Ready()
+    {
+        onActorReady();
+    }
+
     public int GetActorId()
     {
         return _actorId;
@@ -60,10 +65,10 @@ partial class CharacterActor: CharacterBody3D, IActor
     {
         var dataArray = data.AsGodotArray<Variant>();
 
-        currentHP = (int)dataArray[1];
-        currentSP = (int)dataArray[2];
-        maxHP = (int)dataArray[3];
-        maxSP = (int)dataArray[4];
+        currentHP = (int)dataArray[0];
+        currentSP = (int)dataArray[1];
+        maxHP = (int)dataArray[2];
+        maxSP = (int)dataArray[3];
     }
 
     public ActorType GetActorType()

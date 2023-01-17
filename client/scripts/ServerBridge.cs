@@ -4,6 +4,7 @@ using Godot;
 struct Action
 {
   public string ActorId;
+	public ActorType ActorType;
   public string Function;
   public Variant[] Data;
   public double Timestamp;
@@ -46,27 +47,36 @@ partial class ServerBridge: Node3D
 		var acts = actions
 			.FindAll(x => x.Timestamp < timestamp)
 			.OrderBy(x => x.Timestamp)
-			.GroupBy(x => x.ActorId);
+			.GroupBy(x => new {
+				x.ActorId,
+				x.ActorType
+			});
 
-		foreach (var actor in acts)
+		ulong start = 0;
+
+		foreach (var actorData in acts)
 		{
-			var player = spawner.GetPlayer(actor.Key.ToString());
+			start = Time.GetTicksUsec();
+
+			var actor = (Node3D)spawner.GetActor(actorData.Key.ActorId.ToString(), actorData.Key.ActorType);
 		
-			if (player != null)
+			if (actor != null)
 			{
-				foreach (var act in actor)
+				foreach (var act in actorData)
 				{
-					player.Call(act.Function, act.Data);
+					actor.Call(act.Function, act.Data);
 
 					actions.Remove(act);
 				}
 			} else
 			{
-				foreach (var act in actor)
+				foreach (var act in actorData)
 				{
 					actions.Remove(act);
 				}
 			}
+
+			GD.Print("Time action: ", Time.GetTicksUsec() - start);
 		}
 	}
 
@@ -116,6 +126,8 @@ partial class ServerBridge: Node3D
 
 			Function = "RunSkill",
 
+			ActorType = ActorType.Player,
+
 			Data = new Variant[1] { skillId },
 
 			Timestamp = (double)timestamp
@@ -131,6 +143,7 @@ partial class ServerBridge: Node3D
 		{
 			ActorId = actorId.ToString(),
 			Function = "ServerMovement",
+			ActorType = ActorType.Player,
 			Data = new Variant[2]
 			{
 				position,
@@ -146,6 +159,7 @@ partial class ServerBridge: Node3D
 		actions.Add(new Action
 		{
 			ActorId = actorId.ToString(),
+			ActorType = ActorType.Player,
 			Function = "ServerMovementStopped",
 			Data = new Variant[2]
 			{
@@ -155,5 +169,51 @@ partial class ServerBridge: Node3D
 			Timestamp = (double)timestamp
 		});
 	}
+	#endregion
+
+	#region npc
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void NpcChangeState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp)
+	{
+		actions.Add(new Action
+		{
+			ActorId = id.ToString(),
+			ActorType = ActorType.Npc,
+			Function = "ReceiveChangeState",
+			Data = new Variant[4]
+			{
+				state,
+				position,
+				yaw,
+				data
+			},
+			Timestamp = (double)timestamp
+		});
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void NpcUpdateState(Variant id, Variant state,Variant position, Variant yaw, Variant data, Variant timestamp)
+	{
+		actions.Add(new Action
+		{
+			ActorId = id.ToString(),
+			ActorType = ActorType.Npc,
+			Function = "ReceiveUpdateState",
+			Data = new Variant[4]
+			{
+				state,
+				position,
+				yaw,
+				data
+			},
+			Timestamp = (double)timestamp
+		});
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void NpcAction(Variant id, Variant action, Variant position, Variant yaw, Variant data, Variant timestamp) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ActorReceivedDamage(Variant id, Variant damage, Variant type, Variant timestamp) { }
 	#endregion
 }

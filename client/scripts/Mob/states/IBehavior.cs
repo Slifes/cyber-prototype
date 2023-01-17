@@ -7,4 +7,6 @@ interface IBehavior
   void Handler(double delta);
 
   void Finish();
+
+  void SetData(Variant data);
 }

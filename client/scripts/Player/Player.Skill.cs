@@ -2,13 +2,13 @@
 
 partial class Player
 {
+    PackedScene normalAttack = ResourceLoader.Load<PackedScene>("res://skills/normal_attack.tscn");
+
     public void RunSkill(Variant index)
     {
         int i = index.AsInt32();
 
-        var skill = (PackedScene)ResourceLoader.Load("res://skills/normal_attack.tscn");
-
-        var node  = skill.Instantiate();
+        var node  = normalAttack.Instantiate();
 
         GD.Print("Skill: ", node);
 

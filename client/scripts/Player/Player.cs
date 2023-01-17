@@ -4,6 +4,7 @@ using System.Collections.Generic;
 partial class Player : CharacterActor
 {
 	public const float Speed = 1.0f;
+
 	public const float JumpVelocity = 4.5f;
 
 	enum PlayerState

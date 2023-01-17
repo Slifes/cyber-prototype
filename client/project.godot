@@ -8,6 +8,34 @@
 
 config_version=5
 
+_global_script_classes=[{
+"base": "Node2D",
+"class": &"BaseDialogueTestScene",
+"language": &"GDScript",
+"path": "res://addons/dialogue_manager/test_scene.gd"
+}, {
+"base": "RefCounted",
+"class": &"DialogueLine",
+"language": &"GDScript",
+"path": "res://addons/dialogue_manager/dialogue_line.gd"
+}, {
+"base": "Resource",
+"class": &"DialogueResource",
+"language": &"GDScript",
+"path": "res://addons/dialogue_manager/dialogue_resource.gd"
+}, {
+"base": "RefCounted",
+"class": &"DialogueResponse",
+"language": &"GDScript",
+"path": "res://addons/dialogue_manager/dialogue_response.gd"
+}]
+_global_script_class_icons={
+"BaseDialogueTestScene": "",
+"DialogueLine": "",
+"DialogueResource": "res://addons/dialogue_manager/assets/icon.svg",
+"DialogueResponse": ""
+}
+
 [application]
 
 config/name="MMO"
@@ -21,6 +49,7 @@ Wallet="*res://scripts/Wallet.cs"
 AuthClient="*res://scripts/AuthClient.cs"
 SceneManager="*res://scripts/SceneManager.cs"
 Stats="*res://scripts/Stats.cs"
+DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 
 [debug]
 
@@ -33,6 +62,10 @@ project/assembly_name="Teste"
 [editor]
 
 export/convert_text_resources_to_binary=true
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg")
 
 [input]
 
@@ -65,3 +98,11 @@ attack={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"pressed":false,"double_click":false,"script":null)
 ]
 }
+
+[physics]
+
+3d/run_on_separate_thread=true
+
+[rendering]
+
+driver/threads/thread_model=2

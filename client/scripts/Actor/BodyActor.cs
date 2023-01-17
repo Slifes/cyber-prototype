@@ -56,7 +56,7 @@ partial class BodyActor : RigidBody3D, IActor
         currentHP -= damage;
     }
 
-    public void SetServerData(Variant data)
+    public virtual void SetServerData(Variant data)
     {
         GD.Print(data);
     }

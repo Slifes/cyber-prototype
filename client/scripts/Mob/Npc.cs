@@ -19,18 +19,12 @@ partial class Npc: BodyActor
 
 	Dictionary<NpcState, IBehavior> behaviors;
 
-	public Area3D AgressiveArea { get; set; }
-
-	public Area3D AttackArea { get; set; }
-
-	public Node3D Target {get;set;}
-
 	public AnimationPlayer Animation {get;set;}
 
 	public override void _Ready()
 	{
-		AgressiveArea = GetNode<Area3D>("AgressiveArea");
-		AttackArea = GetNode<Area3D>("AttackArea");
+		onActorReady();
+
 		Animation = GetNode<AnimationPlayer>("AnimationPlayer");
 
 		behaviors = new()
@@ -51,7 +45,7 @@ partial class Npc: BodyActor
 		}
 	}
 
-	public void ChangeState(NpcState state)
+	public void ChangeState(NpcState state, Variant data = new Variant())
 	{
 		GD.Print("New state: ", state);
 
@@ -61,8 +55,10 @@ partial class Npc: BodyActor
 		}
 
 		behavior = behaviors[state];
-
+		behavior.SetData(data);
 		behavior.Start();
+
+		this.state = state;
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -72,4 +68,40 @@ partial class Npc: BodyActor
 		GlobalPosition = position;
 		//state = MobState.Walking;
 	}
+
+	public void ReceiveChangeState(Variant state, Variant position, Variant yaw, Variant data)
+	{
+		NpcState _state = (NpcState)(int)state;
+
+		GlobalPosition = (Vector3)position;
+		RotationDegrees = new Vector3(0, (float)yaw, 0);
+
+		ChangeState(_state, data);
+	}
+
+	public void ReceiveUpdateState(Variant state, Variant position, Variant yaw, Variant data)
+	{
+		GlobalPosition = (Vector3)position;
+		RotationDegrees = new Vector3(0, (float)yaw, 0);
+
+		if(behavior != null)
+		{
+			behavior.SetData(data);
+		}
+	}
+
+  public override void SetServerData(Variant data)
+  {
+		var dataArray = data.AsGodotArray<Variant>();
+
+		var actorReference = (int)dataArray[0];
+		currentHP = (int)dataArray[1];
+		currentSP = (int)dataArray[2];
+		maxHP = (int)dataArray[3];
+		maxSP = (int)dataArray[4];
+
+		var state = (NpcState)(int)dataArray[5];
+
+		ChangeState(state, dataArray[6]);
+  }
 }
