@@ -60,11 +60,11 @@ partial class MobSpawner : Node3D
 
 		instance.Name = Multiplayer.MultiplayerPeer.GenerateUniqueId().ToString();
 
-        targetSpawn.AddChild(instance);
+		targetSpawn.AddChild(instance);
 
 		instance.GlobalPosition = new Vector3(mobX, instance.GlobalPosition.y, mobZ);
 
 		currentCount++;
 
-    }
+	}
 }

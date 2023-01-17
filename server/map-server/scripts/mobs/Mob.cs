@@ -14,6 +14,9 @@ partial class Mob: Actor
     [Export]
     float Speed = 1.0f;
 
+    [Export]
+    FastNoiseLite noise;
+
     NavigationAgent3D agent;
 
     Random random;

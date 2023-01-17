@@ -54,7 +54,7 @@ partial class Player: Actor
 		body = GetNode<Node3D>("Body");
 		skillNode = GetNode<Node3D>("Body/Skill");
 
-		serverBridge = GetNode<ServerBridge>("../../Server");
+		serverBridge = GetNode<ServerBridge>("/root/World/Server");
 
 		aabb = GetNode<Area3D>("AABB");
 		aabb.BodyEntered += OnBodyEntered;

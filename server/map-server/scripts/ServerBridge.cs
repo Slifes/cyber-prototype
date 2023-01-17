@@ -12,7 +12,7 @@ partial class ServerBridge : Node3D
 
 	public override void _Ready()
 	{
-		players = GetNode<CharacterSpawner>("../Players");
+		players = GetNode<CharacterSpawner>("/root/World/Spawner/players");
 	}
 
 	public void SendPacketToPlayerNear(Player player, string func, params Variant[] args)
@@ -56,21 +56,21 @@ partial class ServerBridge : Node3D
 	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void RequestSkill(Variant id)
 	{
-		GD.Print("Received Request skill: ", Multiplayer.GetRemoteSenderId());
-		var player = players.GetNode<Player>(Multiplayer.GetRemoteSenderId().ToString());
+	GD.Print("Received Request skill: ", Multiplayer.GetRemoteSenderId());
+	var player = players.GetNode<Player>(Multiplayer.GetRemoteSenderId().ToString());
 
-		var nearest = player.GetNearestPlayers();
+	var nearest = player.GetNearestPlayers();
 
-		var now = Variant.CreateFrom(Now());
+	var now = Variant.CreateFrom(Now());
 
-		RpcId(player.ActorID, "SkillApproved", player.ActorID, id, now);
+	RpcId(player.ActorID, "SkillApproved", player.ActorID, id, now);
 
-		foreach (var p in nearest)
-		{
-			RpcId(p, "SkillApproved", player.ActorID, id, now);
-		}
+	foreach (var p in nearest)
+	{
+	  RpcId(p, "SkillApproved", player.ActorID, id, now);
+	}
 
-		player.RunSkill(id);
+	player.RunSkill(id);
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]

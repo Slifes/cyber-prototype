@@ -24,7 +24,7 @@ public partial class Networking : Node3D
 
 	public override void _Ready()
 	{
-		spawner = GetNode<CharacterSpawner>("Players");
+		spawner = GetNode<CharacterSpawner>("Spawner/players");
 		serverBridge = GetNode<ServerBridge>("Server");
 	}
 
