@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://cqi3e35t7ba04"]
 
-[ext_resource type="Script" path="res://scripts/Mob/Npc.cs" id="1_dgkj2"]
+[ext_resource type="Script" path="res://scripts/mob/Npc.cs" id="1_3bcp4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3788e"]
 
@@ -145,7 +145,7 @@ size = Vector3(0.2, 0.2, 0.5)
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-script = ExtResource("1_dgkj2")
+script = ExtResource("1_3bcp4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)

@@ -109,6 +109,7 @@ class BasedContextSteering: IBehavior
   public void Finish()
   {
     actor.AgressiveArea.SetDeferred("set_monitoring", false);
+    actor.LinearVelocity = Vector3.Zero;
 
     for(var i = 0; i < raycasts.Length; i++)
     {

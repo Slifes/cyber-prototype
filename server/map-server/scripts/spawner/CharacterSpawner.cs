@@ -2,44 +2,44 @@ using Godot;
 
 partial class CharacterSpawner : Node3D
 {
-	PackedScene playerScene;
+  PackedScene playerScene;
 
-	public override void _Ready()
-	{
-		playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
-	}
+  public override void _Ready()
+  {
+    playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
+  }
 
-	public IActor Spawn(Variant name, Variant position, Variant data)
-	{
-		if (!HasNode(name.ToString()))
-		{
-			var player = playerScene.InstantiateOrNull<Player>();
+  public IActor Spawn(Variant name, Variant position, Variant data)
+  {
+    if (!HasNode(name.ToString()))
+    {
+      var player = playerScene.InstantiateOrNull<Player>();
 
-			if (player == null)
-			{
-				GD.Print("Failed to instantiate player");
-				return null;
-			}
+      if (player == null)
+      {
+        GD.Print("Failed to instantiate player");
+        return null;
+      }
 
-			player.Name = name.ToString();
+      player.Name = name.ToString();
 
-			player.SetServerData(data);
+      player.SetServerData(data);
 
-			AddChild(player);
+      AddChild(player);
 
-			player.GlobalPosition = (Vector3)position;
+      player.GlobalPosition = (Vector3)position;
 
-			return player;
-		}
+      return player;
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	public void Unspawn(Variant name)
-	{
-		if (HasNode(name.ToString()))
-		{
-			RemoveChild(GetNode(name.ToString()));
-		}
-	}
+  public void Unspawn(Variant name)
+  {
+    if (HasNode(name.ToString()))
+    {
+      RemoveChild(GetNode(name.ToString()));
+    }
+  }
 }

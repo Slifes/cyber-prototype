@@ -87,6 +87,6 @@ partial class CharacterActor: CharacterBody3D, IActor
 
   public ActorType GetActorType()
   {
-      return ActorType.Player;
+    return ActorType.Player;
   }
 }

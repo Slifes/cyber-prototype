@@ -2,29 +2,29 @@ using Godot;
 
 enum ActorType
 {
-    Player,
-    Npc
+  Player,
+  Npc
 }
 
 interface IActor
 {
-    ActorType GetActorType();
+  ActorType GetActorType();
 
-    int GetCurrentHP();
+  int GetCurrentHP();
 
-    int GetCurrentSP();
+  int GetCurrentSP();
 
-    int GetMaxHP();
+  int GetMaxHP();
 
-    int GetMaxSP();
-    
-    void TakeDamage(int damage);
+  int GetMaxSP();
+  
+  void TakeDamage(int damage);
 
-    void onActorReady();
+  void onActorReady();
 
-    int GetActorId();
+  int GetActorId();
 
-    void SetServerData(Variant data);
+  void SetServerData(Variant data);
 
-    Variant GetData();
+  Variant GetData();
 }

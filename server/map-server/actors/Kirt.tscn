@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://cblwqaghn65hf"]
 
-[ext_resource type="Script" path="res://scripts/mobs/Npc.cs" id="1_qftsm"]
+[ext_resource type="Script" path="res://scripts/mobs/Npc.cs" id="1_gssck"]
 [ext_resource type="Animation" uid="uid://bmtpopwifngmp" path="res://resources/skills/normal_attack.anim" id="2_0b8r0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3788e"]
@@ -33,11 +33,13 @@ size = Vector3(0.2, 0.1, 0.2)
 size = Vector3(6, 1, 6)
 
 [node name="Kirt" type="RigidBody3D"]
-collision_layer = 1027
+collision_layer = 2051
+input_ray_pickable = false
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-script = ExtResource("1_qftsm")
+freeze_mode = 1
+script = ExtResource("1_gssck")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
@@ -47,28 +49,36 @@ shape = SubResource("BoxShape3D_3788e")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0485256, 0)
 
 [node name="RayCast3D" type="RayCast3D" parent="Steering"]
+enabled = false
 target_position = Vector3(0, 0, 0.6)
 
 [node name="RayCast3D2" type="RayCast3D" parent="Steering"]
+enabled = false
 target_position = Vector3(0.6, 0, 0)
 
 [node name="RayCast3D3" type="RayCast3D" parent="Steering"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+enabled = false
 target_position = Vector3(0, 0, 0.6)
 
 [node name="RayCast3D4" type="RayCast3D" parent="Steering"]
+enabled = false
 target_position = Vector3(-0.6, 0, 0)
 
 [node name="RayCast3D5" type="RayCast3D" parent="Steering"]
+enabled = false
 target_position = Vector3(0.4, 0, 0.4)
 
 [node name="RayCast3D6" type="RayCast3D" parent="Steering"]
+enabled = false
 target_position = Vector3(0.4, 0, -0.4)
 
 [node name="RayCast3D7" type="RayCast3D" parent="Steering"]
+enabled = false
 target_position = Vector3(-0.4, 0, -0.4)
 
 [node name="RayCast3D8" type="RayCast3D" parent="Steering"]
+enabled = false
 target_position = Vector3(-0.4, 0, 0.4)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -81,6 +91,7 @@ libraries = {
 [node name="AgressiveArea" type="Area3D" parent="."]
 collision_layer = 0
 collision_mask = 512
+input_ray_pickable = false
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AgressiveArea"]
@@ -88,7 +99,8 @@ shape = SubResource("CylinderShape3D_2dtw7")
 
 [node name="AttackArea" type="Area3D" parent="."]
 collision_layer = 0
-collision_mask = 512
+collision_mask = 1024
+input_ray_pickable = false
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea"]
@@ -96,7 +108,8 @@ shape = SubResource("CylinderShape3D_0p85v")
 
 [node name="HitBox" type="Area3D" parent="."]
 collision_layer = 0
-collision_mask = 1024
+collision_mask = 2048
+input_ray_pickable = false
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
