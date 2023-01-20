@@ -1,5 +1,6 @@
 using Godot;
 
+using System;
 using System.Collections.Generic;
 
 enum NpcState
@@ -29,6 +30,10 @@ partial class Npc: BodyActor
 
 	private Area3D AABB;
 
+  private Area3D HitBox;
+
+  public Skill CurrentSkill;
+
 	ServerBridge serverBridge;
 
 	List<int> nearest;
@@ -40,6 +45,9 @@ partial class Npc: BodyActor
 		AABB = GetNode<Area3D>("AABB");
 		AABB.BodyEntered += Area_BodyEntered;
 		AABB.BodyExited += Area_BodyExited;
+
+	HitBox = GetNode<Area3D>("HitBox");
+	HitBox.BodyEntered += HitBodyEntered;
 	
 		serverBridge = GetNode<ServerBridge>("/root/World/Server");
 
@@ -58,6 +66,14 @@ partial class Npc: BodyActor
 
 		ChangeState(NpcState.Walking);
 	}
+
+  private void HitBodyEntered(Node3D body)
+  {
+	GD.Print("Hitted Player");
+	IActor actor = (IActor)body;
+
+	  actor.TakeDamage(5);
+  }
 
 	private void Area_BodyExited(Node3D body)
 	{
@@ -109,6 +125,13 @@ partial class Npc: BodyActor
 	{
 		serverBridge.SendNpcUpdateState(nearest, Name, (int)state, GlobalPosition, RotationDegrees.y, behavior.GetData());
 	}
+
+  public void ExecuteSkill(int skillId)
+  {
+	Animation.Play(String.Format("Skills/{0}", skillId));
+
+	serverBridge.SendSkillExecutedTo(nearest, this, skillId);
+  }
 
 	public override Variant GetData()
   {

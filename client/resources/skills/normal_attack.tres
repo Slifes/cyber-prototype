@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://dj4lssb5yigss"]
+
+[ext_resource type="Animation" uid="uid://bs7rlaw0vd8cl" path="res://resources/skills/normal_attack.res" id="1_6j7n7"]
+[ext_resource type="Script" path="res://scripts/Resources/Skill.cs" id="2_lnvc5"]
+
+[resource]
+script = ExtResource("2_lnvc5")
+ID = 0
+Damage = 8
+animation = ExtResource("1_6j7n7")

@@ -2,61 +2,61 @@ using Godot;
 
 partial class Spawner: Node
 {
-	CharacterSpawner playerSpawner;
+  CharacterSpawner playerSpawner;
 
-	NpcSpawner npcSpawner;
+  NpcSpawner npcSpawner;
 
-	public override void _Ready()
+  public override void _Ready()
+  {
+	playerSpawner = GetNode<CharacterSpawner>("players");
+	npcSpawner = GetNode<NpcSpawner>("npcs");
+  }
+
+  public IActor GetActor(string id, ActorType actorType)
+  {
+	switch(actorType)
 	{
-		playerSpawner = GetNode<CharacterSpawner>("players");
-		npcSpawner = GetNode<NpcSpawner>("npcs");
+	  case ActorType.Player:
+		if (playerSpawner.HasNode(id))
+		  return playerSpawner.GetNode<IActor>(id);
+		break;
+	  case ActorType.Npc:
+		if (npcSpawner.HasNode(id))
+		  return npcSpawner.GetNode<IActor>(id);
+		break;
 	}
+  
+	return null;
+  }
 
-	public IActor GetActor(string id, ActorType actorType)
+  public void Spawn(Variant id, Variant type, Variant position, Variant data)
+  {
+	ActorType _type = (ActorType)(int)type;
+
+	switch(_type)
 	{
-		switch(actorType)
-		{
-			case ActorType.Player:
-				if (playerSpawner.HasNode(id))
-					return playerSpawner.GetNode<IActor>(id);
-				break;
-			case ActorType.Npc:
-				if (npcSpawner.HasNode(id))
-					return npcSpawner.GetNode<IActor>(id);
-				break;
-		}
-	
-		return null;
+	  case ActorType.Player:
+		playerSpawner.Spawn(id, (Vector3)position, data);
+		break;
+	  case ActorType.Npc:
+		npcSpawner.Spawn(id, (Vector3)position, data);
+		break;
 	}
+  }
 
-	public void Spawn(Variant id, Variant type, Variant position, Variant data)
+  public void Unspawn(Variant id, Variant type)
+  {
+	ActorType _type = (ActorType)(int)type;
+
+	switch(_type)
 	{
-		ActorType _type = (ActorType)(int)type;
+	  case ActorType.Player:
+		playerSpawner.Unspawn(id);
+		break;
+	  case ActorType.Npc:
+		npcSpawner.Unspawn(id);
+		break;
 
-		switch(_type)
-		{
-			case ActorType.Player:
-				playerSpawner.Spawn(id, (Vector3)position, data);
-				break;
-			case ActorType.Npc:
-				npcSpawner.Spawn(id, (Vector3)position, data);
-				break;
-		}
 	}
-
-	public void Unspawn(Variant id, Variant type)
-	{
-		ActorType _type = (ActorType)(int)type;
-
-		switch(_type)
-		{
-			case ActorType.Player:
-				playerSpawner.Unspawn(id);
-				break;
-			case ActorType.Npc:
-				npcSpawner.Unspawn(id);
-				break;
-
-		}
-	}
+  }
 }

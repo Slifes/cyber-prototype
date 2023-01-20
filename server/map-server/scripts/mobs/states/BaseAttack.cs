@@ -4,8 +4,6 @@ class BaseAttack : IBehavior
 {
   Npc actor;
 
-  Area3D HurtBox;
-
   private float time;
 
   private float targetTime = 1;
@@ -25,7 +23,7 @@ class BaseAttack : IBehavior
   public void Handler(double delta)
   {
     if(time >= targetTime){
-      actor.Animation.Play("Attack");
+      actor.ExecuteSkill(0);
       time = 0;
     } else {
       time += (float)delta;
@@ -39,23 +37,11 @@ class BaseAttack : IBehavior
 
   public void Start()
   {
-    HurtBox = actor.GetNode<Area3D>("HurtBox");
-
-    HurtBox.BodyEntered += HitTarget; 
-
     actor.AttackArea.BodyExited += BodyExited;
 
     LastOrigin = actor.Target.GlobalPosition;
   }
 
-  private void HitTarget(Node3D target)
-  {
-    GD.Print("Damaged");
-  
-    IActor actor = (IActor)target;
-
-    actor.TakeDamage(5);
-  }
 
   private void BodyExited(Node3D body)
   {

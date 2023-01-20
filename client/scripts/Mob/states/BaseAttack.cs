@@ -9,22 +9,11 @@ class BaseAttack : IBehavior
     this.actor = actor;
   }
 
-  public void Finish()
-  {
-  }
+  public void Finish() { }
 
-  public void Handler(double delta)
-  {
-    // var offset = (actor.Target.GlobalPosition - LastOrigin) * 2f * (float)delta;
-    // LastOrigin = LastOrigin + offset;
+  public void Handler(double delta) { }
 
-    // actor.LookAt(LastOrigin, Vector3.Up);
-  }
-
-  public void SetData(Variant data)
-  {
-
-  }
+  public void SetData(Variant data) { }
 
   public void Start()
   {

@@ -2,38 +2,38 @@ using Godot;
 
 partial class NpcSpawner: Node3D
 {
-	public void Spawn(Variant name, Vector3 position, Variant data)
+  public void Spawn(Variant name, Vector3 position, Variant data)
+  {
+	var d = data.AsGodotArray();
+
+	GD.Print("Spawn: ", name);
+	GD.Print("Data: ", data);
+
+	if (d.Count > 0)
 	{
-		var d = data.AsGodotArray();
+	  var reference = (int)d[0];
 
-		GD.Print("Spawn: ", name);
-		GD.Print("Data: ", data);
+	  if (reference == 0)
+	  {
+		var p = ResourceLoader.Load<PackedScene>("res://actors/mobs/kirt.tscn");
 
-		if (d.Count > 0)
-		{
-			var reference = (int)d[0];
+		var n = p.Instantiate<BodyActor>();
 
-			if (reference == 0)
-			{
-				var p = ResourceLoader.Load<PackedScene>("res://actors/mobs/kirt.tscn");
+		n.Name = name.ToString();
 
-				var n = p.Instantiate<BodyActor>();
+		AddChild(n);
 
-				n.Name = name.ToString();
-
-				AddChild(n);
-
-				n.GlobalPosition = position;
-				n.SetServerData(data);
-			}
-		}
+		n.GlobalPosition = position;
+		n.SetServerData(data);
+	  }
 	}
+  }
 
-	public void Unspawn(Variant name)
+  public void Unspawn(Variant name)
+  {
+	if (HasNode(name.ToString()))
 	{
-		if (HasNode(name.ToString()))
-		{
-			RemoveChild(GetNode(name.ToString()));
-		}
+	  RemoveChild(GetNode(name.ToString()));
 	}
+  }
 }

@@ -149,8 +149,8 @@ public partial class Wallet : Node
 
       if (connected)
       {
-          GD.Print("Connected to auth server!");
-          target.CallDeferred("emit_signal", "_on_authenticated");
+        GD.Print("Connected to auth server!");
+        target.CallDeferred("emit_signal", "_on_authenticated");
       }
     }
     catch(Exception e)
@@ -164,8 +164,8 @@ public partial class Wallet : Node
     GD.Print("account: ", Account);
 
     var signature = await client.Request<PersonalSignRequest, string>(session.Topic, new PersonalSignRequest() {
-        HexStringUTF8ConvertorExtensions.ToHexUTF8("1"),
-        SelectedAccount
+      HexStringUTF8ConvertorExtensions.ToHexUTF8("1"),
+      SelectedAccount
     });
 
     GD.Print("signature: ", signature);

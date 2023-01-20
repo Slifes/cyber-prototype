@@ -55,6 +55,11 @@ DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 
 settings/stdout/print_fps=true
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [dotnet]
 
 project/assembly_name="Teste"
@@ -106,3 +111,4 @@ attack={
 [rendering]
 
 driver/threads/thread_model=2
+scaling_3d/mode=1

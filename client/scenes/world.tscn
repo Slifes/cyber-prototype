@@ -32,13 +32,24 @@ anchors_preset = 0
 offset_right = 1153.0
 offset_bottom = 651.0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UI"]
+[node name="Latency" type="RichTextLabel" parent="UI"]
 layout_mode = 0
 offset_left = 1018.0
 offset_top = 15.0
 offset_right = 1133.0
 offset_bottom = 55.0
 text = "Latencia: 20"
+scroll_active = false
+tab_size = 8
+deselect_on_focus_loss_enabled = false
+
+[node name="PacketLoss" type="RichTextLabel" parent="UI"]
+layout_mode = 0
+offset_left = 1019.0
+offset_top = 44.0
+offset_right = 1134.0
+offset_bottom = 84.0
+text = "Loss: 0"
 scroll_active = false
 tab_size = 8
 deselect_on_focus_loss_enabled = false

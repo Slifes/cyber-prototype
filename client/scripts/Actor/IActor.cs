@@ -25,4 +25,6 @@ interface IActor
   int GetActorId();
 
   void SetServerData(Variant data);
+
+  void ExecuteSkill(Variant skillId);
 }

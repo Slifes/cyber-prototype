@@ -17,48 +17,48 @@ partial class CharacterActor: CharacterBody3D, IActor
 
   public void onActorReady()
   {
-    _actorId = Int32.Parse(Name);
+	_actorId = Int32.Parse(Name);
 
-    maxHP = 100;
-    maxSP = 100;
+	maxHP = 100;
+	maxSP = 100;
 
-    currentHP = maxHP;
-    currentSP = maxSP;
+	currentHP = maxHP;
+	currentSP = maxSP;
   }
 
   public override void _Ready()
   {
-    onActorReady();
+	onActorReady();
   }
 
   public int GetActorId()
   {
-    return _actorId;
+	return _actorId;
   }
 
   public int GetCurrentHP()
   {
-    return currentHP;
+	return currentHP;
   }
 
   public int GetCurrentSP()
   {
-    return currentSP;
+	return currentSP;
   }
 
   public int GetMaxHP()
   {
-    return maxHP;
+	return maxHP;
   }
 
   public int GetMaxSP()
   {
-    return maxSP;
+	return maxSP;
   }
 
   public virtual void TakeDamage(int damage)
   {
-    currentHP -= damage;
+	currentHP -= damage;
   }
 
   public void SetServerData(Variant data)
@@ -73,6 +73,8 @@ partial class CharacterActor: CharacterBody3D, IActor
 
   public ActorType GetActorType()
   {
-    return ActorType.Player;
+	  return ActorType.Player;
   }
+
+  public virtual void ExecuteSkill(Variant skillId) { }
 }

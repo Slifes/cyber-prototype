@@ -3,217 +3,212 @@ using Godot;
 
 struct Action
 {
-  public string ActorId;
-  public ActorType ActorType;
-  public string Function;
-  public Variant[] Data;
-  public double Timestamp;
+	public string ActorId;
+	public ActorType ActorType;
+	public string Function;
+	public Variant[] Data;
+	public double Timestamp;
 }
 
 partial class ServerBridge: Node3D
 {
-  Spawner spawner;
+	Spawner spawner;
 
-  Node3D Network;
+	Node3D Network;
 
-  System.Collections.Generic.List<Action> actions;
+	System.Collections.Generic.List<Action> actions;
 
-  int InterpolationOffset = 100;
+	int InterpolationOffset = 100;
 
-  public static double Now()
-  {
-    return Time.GetUnixTimeFromSystem() * 1000.0;
-  }
+	public static double Now()
+	{
+		return Time.GetUnixTimeFromSystem() * 1000.0;
+	}
 
-  public override void _Ready()
-  {
-    Network = GetParent<Node3D>();
+	public override void _Ready()
+	{
+		Network = GetParent<Node3D>();
 
-    spawner = GetNode<Spawner>("../Spawner");
+		spawner = GetNode<Spawner>("../Spawner");
 
-    actions = new();
-  }
+		actions = new();
+	}
 
-  public override void _PhysicsProcess(double delta)
-  {
-    double clientClock = Network.Get("client_clock").AsDouble();
-    double renderTime = clientClock - InterpolationOffset;
+	public override void _PhysicsProcess(double delta)
+	{
+		double clientClock = Network.Get("client_clock").AsDouble();
+		double renderTime = clientClock - InterpolationOffset;
 
-    RunActions(renderTime);
-  }
+		RunActions(renderTime);
+	}
 
-  private void RunActions(double timestamp)
-  {
-    var acts = actions
-      .FindAll(x => x.Timestamp < timestamp)
-      .OrderBy(x => x.Timestamp)
-      .GroupBy(x => new {
-        x.ActorId,
-        x.ActorType
-      });
+	private void RunActions(double timestamp)
+	{
+		var acts = actions
+			.FindAll(x => x.Timestamp < timestamp)
+			.OrderBy(x => x.Timestamp)
+			.GroupBy(x => new { x.ActorId, x.ActorType });
 
-    ulong start = 0;
+		ulong start = 0;
 
-    foreach (var actorData in acts)
-    {
-      start = Time.GetTicksUsec();
+		foreach (var actorData in acts)
+		{
+			start = Time.GetTicksUsec();
 
-      var actor = (Node3D)spawner.GetActor(actorData.Key.ActorId.ToString(), actorData.Key.ActorType);
-    
-      if (actor != null)
-      {
+			var actor = (Node3D)spawner.GetActor(actorData.Key.ActorId.ToString(), actorData.Key.ActorType);
+		
+			if (actor != null)
+			{
         foreach (var act in actorData)
         {
           actor.Call(act.Function, act.Data);
-
-          actions.Remove(act);
         }
-      } else
-      {
-        foreach (var act in actorData)
-        {
-          actions.Remove(act);
-        }
-      }
+			}
 
-      GD.Print("Time action: ", Time.GetTicksUsec() - start);
-    }
-  }
+			GD.Print("Time action: ", Time.GetTicksUsec() - start);
+		}
 
-  #region spawn
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorEnteredZone(Variant id, Variant type, Variant position, Variant data)
+		actions.RemoveAll(x => x.Timestamp < timestamp);
+	}
+
+	#region spawn
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ActorEnteredZone(Variant id, Variant type, Variant position, Variant data)
+	{
+		GD.Print("Actor entered zone", id);
+
+		spawner.Spawn(id, type, position, data);
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ActorExitedZone(Variant id, Variant type)
+	{
+		ActorType actorType = (ActorType)(int)type;
+
+		GD.Print("Actor exited zone: ", id);
+
+		spawner.Unspawn(id, type);
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void ActorPlayable(Variant id, Variant position, Variant data)
+	{
+		spawner.Spawn(id, (Variant)(int)ActorType.Player, position, data);
+	}
+	#endregion
+
+	#region skill
+	public void SendRequestSkill(Variant id)
+	{
+		RpcId(1, "RequestSkill", id);
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void RequestSkill(Variant id) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void SkillExecuted(Variant actorId, Variant actorType, Variant skillId, Variant timestamp)
+	{
+		GD.Print("Received skill approved");
+
+		actions.Add(new Action
+		{
+			ActorId = actorId.ToString(),
+			ActorType = (ActorType)(int)actorType,
+			Function = "ExecuteSkill",
+			Data = new Variant[1] { skillId },
+			Timestamp = (double)timestamp
+		});
+	}
+	#endregion
+
+	#region movement
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void ReceiveMovement(Variant actorId, Variant position, Variant yaw, Variant timestamp)
+	{
+		actions.Add(new Action
+		{
+			ActorId = actorId.ToString(),
+			Function = "ServerMovement",
+			ActorType = ActorType.Player,
+			Data = new Variant[2]
+			{
+				position,
+				yaw
+			},
+			Timestamp = (double)timestamp
+		});
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+	public void ReceiveMovementStopped(Variant actorId, Variant position, Variant yaw, Variant timestamp)
+	{
+		actions.Add(new Action
+		{
+			ActorId = actorId.ToString(),
+			ActorType = ActorType.Player,
+			Function = "ServerMovementStopped",
+			Data = new Variant[2]
+			{
+				position,
+				yaw
+			},
+			Timestamp = (double)timestamp
+		});
+	}
+	#endregion
+
+	#region npc
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void NpcChangeState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp)
+	{
+		actions.Add(new Action
+		{
+			ActorId = id.ToString(),
+			ActorType = ActorType.Npc,
+			Function = "ReceiveChangeState",
+			Data = new Variant[4]
+			{
+				state,
+				position,
+				yaw,
+				data
+			},
+			Timestamp = (double)timestamp
+		});
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void NpcUpdateState(Variant id, Variant state,Variant position, Variant yaw, Variant data, Variant timestamp)
+	{
+		actions.Add(new Action
+		{
+			ActorId = id.ToString(),
+			ActorType = ActorType.Npc,
+			Function = "ReceiveUpdateState",
+			Data = new Variant[4]
+			{
+				state,
+				position,
+				yaw,
+				data
+			},
+			Timestamp = (double)timestamp
+		});
+	}
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	public void NpcAction(Variant id, Variant action, Variant position, Variant yaw, Variant data, Variant timestamp) { }
+
+	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void ActorTookDamage(Variant actorId, Variant damage, Variant hp, Variant maxHP)
   {
-    GD.Print("Actor entered zone", id);
+	IActor actor = spawner.GetActor(actorId.ToString(), ActorType.Player);
 
-    spawner.Spawn(id, type, position, data);
+	if(actor != null)
+	{
+	  actor.TakeDamage((int)damage);
+	}
   }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorExitedZone(Variant id, Variant type)
-  {
-    ActorType actorType = (ActorType)(int)type;
-
-    GD.Print("Actor exited zone: ", id);
-
-    spawner.Unspawn(id, type);
-  }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorPlayable(Variant id, Variant position, Variant data)
-  {
-    spawner.Spawn(id, (Variant)(int)ActorType.Player, position, data);
-  }
-  #endregion
-
-  #region skill
-  public void SendRequestSkill(Variant id)
-  {
-    RpcId(1, "RequestSkill", id);
-  }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-  public void RequestSkill(Variant id) { }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-  public void SkillApproved(Variant playerId, Variant skillId, Variant timestamp)
-  {
-    GD.Print("Received skill approved");
-
-    actions.Add(new Action
-    {
-      ActorId = playerId.ToString(),
-
-      Function = "RunSkill",
-
-      ActorType = ActorType.Player,
-
-      Data = new Variant[1] { skillId },
-
-      Timestamp = (double)timestamp
-    });
-  }
-  #endregion
-
-  #region movement
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-  public void ReceiveMovement(Variant actorId, Variant position, Variant yaw, Variant timestamp) {
-
-    actions.Add(new Action
-    {
-      ActorId = actorId.ToString(),
-      Function = "ServerMovement",
-      ActorType = ActorType.Player,
-      Data = new Variant[2]
-      {
-        position,
-        yaw
-      },
-      Timestamp = (double)timestamp
-    });
-  }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-  public void ReceiveMovementStopped(Variant actorId, Variant position, Variant yaw, Variant timestamp)
-  {
-    actions.Add(new Action
-    {
-      ActorId = actorId.ToString(),
-      ActorType = ActorType.Player,
-      Function = "ServerMovementStopped",
-      Data = new Variant[2]
-      {
-        position,
-        yaw
-      },
-      Timestamp = (double)timestamp
-    });
-  }
-  #endregion
-
-  #region npc
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void NpcChangeState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp)
-  {
-    actions.Add(new Action
-    {
-      ActorId = id.ToString(),
-      ActorType = ActorType.Npc,
-      Function = "ReceiveChangeState",
-      Data = new Variant[4]
-      {
-        state,
-        position,
-        yaw,
-        data
-      },
-      Timestamp = (double)timestamp
-    });
-  }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void NpcUpdateState(Variant id, Variant state,Variant position, Variant yaw, Variant data, Variant timestamp)
-  {
-    actions.Add(new Action
-    {
-      ActorId = id.ToString(),
-      ActorType = ActorType.Npc,
-      Function = "ReceiveUpdateState",
-      Data = new Variant[4]
-      {
-        state,
-        position,
-        yaw,
-        data
-      },
-      Timestamp = (double)timestamp
-    });
-  }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void NpcAction(Variant id, Variant action, Variant position, Variant yaw, Variant data, Variant timestamp) { }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorReceivedDamage(Variant id, Variant damage, Variant type, Variant timestamp) { }
-  #endregion
+	#endregion
 }

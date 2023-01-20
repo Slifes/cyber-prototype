@@ -31,6 +31,13 @@ attack={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="World"
+3d_physics/layer_2="Player"
+3d_physics/layer_10="AreaMob"
+
 [physics]
 
+3d/run_on_separate_thread=true
 common/physics_ticks_per_second=20

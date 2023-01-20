@@ -1,5 +1,5 @@
 using Godot;
-using Godot.Collections;
+using System.Collections.Generic;
 
 partial class ServerBridge : Node3D
 {
@@ -15,13 +15,11 @@ partial class ServerBridge : Node3D
 		players = GetNode<CharacterSpawner>("/root/World/Spawner/players");
 	}
 
-	public void SendPacketToPlayerNear(Player player, string func, params Variant[] args)
+  public void SendPacketTo(System.Collections.Generic.List<int> peers, string func, params Variant[] args)
 	{
-		var nearest = player.GetNearestPlayers();
-
-		foreach (var near in nearest)
+		foreach(var peerId in peers)
 		{
-			RpcId(near, func, args);
+			RpcId(peerId, func, args);
 		}
 	}
 
@@ -53,42 +51,42 @@ partial class ServerBridge : Node3D
 	#endregion
 
 	#region skills
+  public void SendSkillExecutedTo(List<int> peers, IActor actor, int skillId)
+  {
+	var now = Now();
+
+  if (actor.GetActorType() == ActorType.Player){
+	  RpcId(actor.GetActorId(), "SkillExecuted", actor.GetActorId(), (int)actor.GetActorType(), skillId, now);
+  }
+
+	SendPacketTo(peers, "SkillExecuted", actor.GetActorId(), (int)actor.GetActorType(), skillId, now);
+  }
+
 	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
 	public void RequestSkill(Variant id)
 	{
 		GD.Print("Received Request skill: ", Multiplayer.GetRemoteSenderId());
+  
 		var player = players.GetNode<Player>(Multiplayer.GetRemoteSenderId().ToString());
 
-		var nearest = player.GetNearestPlayers();
-
-		var now = Variant.CreateFrom(Now());
-
-		int playerActorId = player.GetActorId();
-
-		RpcId(playerActorId, "SkillApproved", playerActorId, id, now);
-
-		foreach (var p in nearest)
-		{
-			RpcId(p, "SkillApproved", playerActorId, id, now);
-		}
-
+		SendSkillExecutedTo(player.GetNearestPlayers(), player, (int)id);
+  
 		player.RunSkill(id);
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-	public void SkillApproved(Variant playerId, Variant skillId, Variant timestamp) { }
-
+	public void SkillExecuted(Variant actorId, Variant actorType, Variant skillId, Variant timestamp) { }
 	#endregion
 
 	#region PlayerMovement
 	public void SendServerMovement(Player player, Vector3 position, float yaw)
 	{
-		SendPacketToPlayerNear(player, "ReceiveMovement", player.GetActorId(), position, yaw, Now());
+		SendPacketTo(player.GetNearestPlayers(), "ReceiveMovement", player.GetActorId(), position, yaw, Now());
 	}
 
 	public void SendServerMovementStopped(Player player, Vector3 position, float yaw)
 	{
-		SendPacketToPlayerNear(player, "ReceiveMovementStopped", player.GetActorId(), position, yaw, Now());
+		SendPacketTo(player.GetNearestPlayers(), "ReceiveMovementStopped", player.GetActorId(), position, yaw, Now());
 	}
 
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -100,14 +98,6 @@ partial class ServerBridge : Node3D
 	#endregion
 
 	#region npc
-	public void SendPacketTo(System.Collections.Generic.List<int> peers, string func, params Variant[] args)
-	{
-		foreach(var peerId in peers)
-		{
-			RpcId(peerId, func, args);
-		}
-	}
-
 	public void SendNpcChangeState(System.Collections.Generic.List<int> players, Variant id, Variant state, Variant position, Variant yaw, Variant data)
 	{
 		SendPacketTo(players, "NpcChangeState", id, state, position, yaw, data, Now());
@@ -132,7 +122,12 @@ partial class ServerBridge : Node3D
 	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void NpcAction(Variant id, Variant action, Variant position, Variant yaw, Variant data, Variant timestamp) { }
 
-	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-	public void ActorReceivedDamage(Variant id, Variant damage, Variant type, Variant timestamp) { }
+  public void SendActorTookDamage(IActor actor, int damage)
+  {
+	  RpcId(actor.GetActorId(), "ActorTookDamage", actor.GetActorId(), damage, actor.GetCurrentHP(), actor.GetMaxHP());
+  }
+
+  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void ActorTookDamage(Variant actorId, Variant damage, Variant hp, Variant maxHP) { }
 	#endregion
 }
