@@ -6,8 +6,8 @@ partial class Player: CharacterActor
 {
   enum State
   {
-    Idle,
-    Walk
+	Idle,
+	Walk
   }
 
   Area3D aabb;
@@ -34,155 +34,155 @@ partial class Player: CharacterActor
 
   public List<int> GetNearestPlayers()
   {
-    return nearestPlayers;
+	return nearestPlayers;
   }
 
   public override void _Ready()
   {
-    base._Ready();
+	base._Ready();
 
-    SetMultiplayerAuthority(_actorId);
+	SetMultiplayerAuthority(_actorId);
 
-    animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-    serverBridge = GetNode<ServerBridge>("/root/World/Server");
-    hitBox = GetNode<Area3D>("HitBox");
-    aabb = GetNode<Area3D>("AABB");
+	animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+	serverBridge = GetNode<ServerBridge>("/root/World/Server");
+	hitBox = GetNode<Area3D>("HitBox");
+	aabb = GetNode<Area3D>("AABB");
 
-    aabb.BodyEntered += OnBodyEntered;
-    aabb.BodyExited += OnBodyExited;
-    hitBox.BodyEntered += OnHitBoxEntered;
-    animationPlayer.AnimationFinished += OnSkillAnimationFinished;
+	aabb.BodyEntered += OnBodyEntered;
+	aabb.BodyExited += OnBodyExited;
+	hitBox.BodyEntered += OnHitBoxEntered;
+	animationPlayer.AnimationFinished += OnSkillAnimationFinished;
 
-    nearest = new();
-    nearestPlayers = new();
-    skills = new();
+	nearest = new();
+	nearestPlayers = new();
+	skills = new();
 
-    LoadSkill();
+	LoadSkill();
   }
 
   private void OnSkillAnimationFinished(StringName name)
   {
-    currentSkill = null;
+	currentSkill = null;
   }
 
   private void OnHitBoxEntered(Node3D body)
   {
-    if (body.Name != Name){
-      GD.Print("Hitted NPC");
-      IActor actor = (IActor)body;
+	if (body.Name != Name){
+	  GD.Print("Hitted NPC");
+	  IActor actor = (IActor)body;
 
-      if (currentSkill != null){
-      actor.TakeDamage(currentSkill.Damage);
-      }
-    }
+	  if (currentSkill != null){
+	  actor.TakeDamage(currentSkill.Damage);
+	  }
+	}
   }
 
   private void OnBodyEntered(Node3D body)
   {
-    GD.Print(body);
+	GD.Print(body);
 
-    var actor = (IActor)body;
+	var actor = (IActor)body;
 
-    GD.Print("Body: ", body.Name);
-    GD.Print("ActorId: ", actor.GetActorId());
+	GD.Print("Body: ", body.Name);
+	GD.Print("ActorId: ", actor.GetActorId());
 
-    if (body.Name != Name && !nearest.Contains(actor.GetActorId()))
-    {
-      nearest.Add(actor.GetActorId());
+	if (body.Name != Name && !nearest.Contains(actor.GetActorId()))
+	{
+	  nearest.Add(actor.GetActorId());
 
-      if (actor.GetActorType() == ActorType.Player)
-      {
-        nearestPlayers.Add(actor.GetActorId());
-      }
+	  if (actor.GetActorType() == ActorType.Player)
+	  {
+		nearestPlayers.Add(actor.GetActorId());
+	  }
 
-      serverBridge.SendActorEnteredZone(GetActorId(), actor);
-    }
+	  serverBridge.SendActorEnteredZone(GetActorId(), actor);
+	}
   }
 
   private void OnBodyExited(Node3D body)
   {
-    if (body == null)
-    {
-      return;
-    }
+	if (body == null)
+	{
+	  return;
+	}
 
-    var actor = (IActor)body;
-    
-    if (body.Name != Name && nearest.Contains(actor.GetActorId()))
-    {
-      nearest.Remove(actor.GetActorId());
+	var actor = (IActor)body;
+	
+	if (body.Name != Name && nearest.Contains(actor.GetActorId()))
+	{
+	  nearest.Remove(actor.GetActorId());
 
-      if (actor.GetActorType() == ActorType.Player)
-      {
-        nearestPlayers.Remove(actor.GetActorId());
-      }
+	  if (actor.GetActorType() == ActorType.Player)
+	  {
+		nearestPlayers.Remove(actor.GetActorId());
+	  }
 
-      serverBridge.SendActorExitedZone(GetActorId(), actor);
-    }
+	  serverBridge.SendActorExitedZone(GetActorId(), actor);
+	}
   }
 
   private void Move(Vector2 position, float rotation, int nextState)
   {
-    GlobalPosition = new Vector3(position.x, GlobalPosition.y, position.y);
-    Rotation = new Vector3(0, rotation, 0);
-    state = (State)nextState;
+	GlobalPosition = new Vector3(position.x, GlobalPosition.y, position.y);
+	Rotation = new Vector3(0, rotation, 0);
+	state = (State)nextState;
   }
 
   private void LoadSkill()
   {
-    var skill = ResourceLoader.Load<Skill>("res://resources/skills/normal_attack.tres");
+	var skill = ResourceLoader.Load<Skill>("res://resources/skills/normal_attack.tres");
 
-    if (skill.isActive)
-    {
-      var animationLibrary = animationPlayer.GetAnimationLibrary("Skills");
+	if (skill.isActive)
+	{
+	  var animationLibrary = animationPlayer.GetAnimationLibrary("Skills");
 
-      animationLibrary.AddAnimation(skill.ID.ToString(), skill.animation);
-    }
+	  animationLibrary.AddAnimation(skill.ID.ToString(), skill.animation);
+	}
 
-    skills.Add(skill);
+	skills.Add(skill);
   }
 
   public void RunSkill(Variant id)
   {
-    currentSkill = skills[(int)id];
-    animationPlayer.Play(String.Format("Skills/{0}", id.ToString()));
+	currentSkill = skills[(int)id];
+	animationPlayer.Play(String.Format("Skills/{0}", id.ToString()));
   }
 
   public override void _PhysicsProcess(double delta)
   {
-    Vector3 velocity = Velocity;
+	Vector3 velocity = Velocity;
 
-    // Add the gravity.
-    if (!IsOnFloor())
-    {
-      velocity.y -= gravity * (float)delta;
+	// Add the gravity.
+	if (!IsOnFloor())
+	{
+	  velocity.y -= gravity * (float)delta;
 
-      Velocity = velocity;
+	  Velocity = velocity;
 
-      MoveAndSlide();
-    }
+	  MoveAndSlide();
+	}
   }
 
   public override void TakeDamage(int damage)
   {
-    base.TakeDamage(damage);
+	base.TakeDamage(damage);
 
-    serverBridge.SendActorTookDamage(this, damage);
+	serverBridge.SendActorTookDamage(this, damage);
   }
 
   [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
   public void SendMovement(Variant position, Variant yaw)
   {
-    Move((Vector2)position, (float)yaw, (int)State.Walk);
+	Move((Vector2)position, (float)yaw, (int)State.Walk);
 
-    serverBridge.SendServerMovement(this, GlobalPosition, (float)yaw);
+	serverBridge.SendServerMovement(this, GlobalPosition, (float)yaw);
   }
 
   [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
   public void SendMovementStopped(Variant position, Variant yaw)
   {
-    Move((Vector2)position, (float)yaw, (int)State.Idle);
+	Move((Vector2)position, (float)yaw, (int)State.Idle);
 
-    serverBridge.SendServerMovementStopped(this, GlobalPosition, (float)yaw);
+	serverBridge.SendServerMovementStopped(this, GlobalPosition, (float)yaw);
   }
 }

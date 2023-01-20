@@ -2,69 +2,69 @@ using Godot;
 
 partial class MobSpawner : Node3D
 {
-	[Export]
-	NodePath targetSpawnPath;
+  [Export]
+  NodePath targetSpawnPath;
 
-	[Export]
-	PackedScene MobScene;
+  [Export]
+  PackedScene MobScene;
 
-	[Export]
-	int MobCount;
+  [Export]
+  int MobCount;
 
-	[Export]
-	float X;
+  [Export]
+  float X;
 
-	[Export]
-	float Y;
+  [Export]
+  float Y;
 
-	Node3D targetSpawn;
+  Node3D targetSpawn;
 
-	double LastTimeChecked;
+  double LastTimeChecked;
 
-	int currentCount = 0;
+  int currentCount = 0;
 
-	public override void _Ready()
+  public override void _Ready()
+  {
+	targetSpawn = GetNode<Node3D>(targetSpawnPath);
+  }
+
+  public override void _PhysicsProcess(double delta)
+  {
+
+	var now = Time.GetUnixTimeFromSystem();
+
+	if ((now - LastTimeChecked) > 2)
 	{
-		targetSpawn = GetNode<Node3D>(targetSpawnPath);
-	}
+	  HandlerSpawn();
 
-	public override void _PhysicsProcess(double delta)
+	  LastTimeChecked = now;
+	}
+  }
+
+  private void HandlerSpawn()
+  {
+	if (currentCount < MobCount)
 	{
-
-		var now = Time.GetUnixTimeFromSystem();
-
-		if ((now - LastTimeChecked) > 2)
-		{
-			HandlerSpawn();
-
-			LastTimeChecked = now;
-		}
+	  Spawn();
 	}
+  }
 
-	private void HandlerSpawn()
-	{
-		if (currentCount < MobCount)
-		{
-			Spawn();
-		}
-	}
+  private void Spawn()
+  {
+	var random = new RandomNumberGenerator();
 
-	private void Spawn()
-	{
-		var random = new RandomNumberGenerator();
+	var mobX = random.Randf() * X;
+	var mobZ = random.Randf() * Y;
 
-		var mobX = random.Randf() * X;
-		var mobZ = random.Randf() * Y;
+	var instance = MobScene.Instantiate<Node3D>();
 
-		var instance = MobScene.Instantiate<Node3D>();
+	instance.Name = Multiplayer.MultiplayerPeer.GenerateUniqueId().ToString();
 
-		instance.Name = Multiplayer.MultiplayerPeer.GenerateUniqueId().ToString();
+	targetSpawn.AddChild(instance);
 
-		targetSpawn.AddChild(instance);
+	instance.GlobalPosition = new Vector3(mobX, instance.GlobalPosition.y, mobZ);
 
-		instance.GlobalPosition = new Vector3(mobX, instance.GlobalPosition.y, mobZ);
+	currentCount++;
 
-		currentCount++;
-
-	}
+  }
 }

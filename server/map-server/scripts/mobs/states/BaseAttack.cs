@@ -33,6 +33,11 @@ class BaseAttack : IBehavior
     LastOrigin = LastOrigin + offset;
 
     actor.LookAt(LastOrigin, Vector3.Up);
+
+
+    if (offset > Vector3.Zero){
+      actor.UpdateNPCState();
+    }
   }
 
   public void Start()

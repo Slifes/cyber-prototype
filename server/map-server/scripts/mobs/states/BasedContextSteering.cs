@@ -11,6 +11,8 @@ class BasedContextSteering: IBehavior
 
   Npc actor;
 
+  bool changeToAttackState = false;
+
   public BasedContextSteering(Npc actor)
   {
     this.actor = actor;
@@ -18,9 +20,9 @@ class BasedContextSteering: IBehavior
 
   public void Start()
   {
-    actor.AttackArea.SetDeferred("set_monitoring", true);
-    actor.AttackArea.BodyEntered += AttackBodyEntered;
+    changeToAttackState = false;
 
+    actor.AttackArea.BodyEntered += AttackBodyEntered;
     actor.AgressiveArea.BodyExited += TargetBodyExited;
 
     var rays = actor.GetNode<Node3D>("Steering");
@@ -44,7 +46,7 @@ class BasedContextSteering: IBehavior
   {
     actor.AttackArea.BodyEntered -= AttackBodyEntered;
 
-    actor.ChangeState(NpcState.Attacking);
+    changeToAttackState = true;
   }
 
   private Vector3 GetDirection()
@@ -93,13 +95,20 @@ class BasedContextSteering: IBehavior
 
   public void Handler(double delta)
   {
+    if (changeToAttackState){
+      actor.ChangeState(NpcState.Attacking);
+      return;
+    }
+
     var t = Time.GetTicksUsec();
 
     Vector3 dir = GetDirection();
 
-    Vector3 desiredVelocity = dir * 20.0f * (float)delta;
+    Vector3 desiredVelocity = dir * 10.0f * (float)delta;
 
-    actor.LinearVelocity = desiredVelocity;
+    actor.Velocity = desiredVelocity;
+
+    actor.MoveAndSlide();
 
     actor.LookAt(actor.Target.GlobalPosition);
 
@@ -108,8 +117,12 @@ class BasedContextSteering: IBehavior
 
   public void Finish()
   {
-    actor.AgressiveArea.SetDeferred("set_monitoring", false);
-    actor.LinearVelocity = Vector3.Zero;
+    actor.Velocity = Vector3.Zero;
+
+    actor.AttackArea.BodyEntered -= AttackBodyEntered;
+    actor.AgressiveArea.BodyExited -= TargetBodyExited;
+
+    // actor.LinearVelocity = Vector3.Zero;
 
     for(var i = 0; i < raycasts.Length; i++)
     {

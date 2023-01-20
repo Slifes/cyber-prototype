@@ -141,9 +141,8 @@ radius = 0.7
 [sub_resource type="BoxShape3D" id="BoxShape3D_7iao4"]
 size = Vector3(0.2, 0.2, 0.5)
 
-[node name="Kirt" type="RigidBody3D" groups=["Mob"]]
+[node name="Kirt" type="CharacterBody3D"]
 axis_lock_angular_x = true
-axis_lock_angular_y = true
 axis_lock_angular_z = true
 script = ExtResource("1_3bcp4")
 

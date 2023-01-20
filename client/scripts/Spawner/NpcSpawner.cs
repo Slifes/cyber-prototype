@@ -17,7 +17,7 @@ partial class NpcSpawner: Node3D
     {
       var p = ResourceLoader.Load<PackedScene>("res://actors/mobs/kirt.tscn");
 
-      var n = p.Instantiate<BodyActor>();
+      var n = p.Instantiate<CharacterActor>();
 
       n.Name = name.ToString();
 

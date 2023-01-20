@@ -82,9 +82,8 @@ _data = {
 "0": ExtResource("2_ekd23")
 }
 
-[node name="Kirt" type="RigidBody3D"]
+[node name="Kirt" type="CharacterBody3D"]
 axis_lock_angular_x = true
-axis_lock_angular_y = true
 axis_lock_angular_z = true
 script = ExtResource("1_620j6")
 

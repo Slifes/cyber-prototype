@@ -80,15 +80,19 @@ class BasedContextSteering: IBehavior
 
     Vector3 dir = GetDirection();
 
-    Vector3 desiredVelocity = dir * 40.0f * (float)delta;
+    Vector3 desiredVelocity = dir * 20.0f * (float)delta;
 
-    actor.LinearVelocity = desiredVelocity;
+    actor.Velocity = desiredVelocity;
+
+    actor.MoveAndSlide();
 
     actor.LookAt(TargetPosition);
   }
 
   public void Finish()
   {
+    actor.Velocity = Vector3.Zero;
+
     for(var i = 0; i < raycasts.Length; i++)
     {
       raycasts[i].Enabled = false;

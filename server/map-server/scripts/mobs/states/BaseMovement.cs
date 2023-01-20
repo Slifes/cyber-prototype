@@ -23,7 +23,6 @@ class BaseMovement: IBehavior
 
   public void Start()
   {
-    actor.AgressiveArea.SetDeferred("set_monitoring", true);
     actor.AgressiveArea.BodyEntered += TargetEntered;
   }
 
@@ -64,11 +63,17 @@ class BaseMovement: IBehavior
     GD.Print("Velocity: ", direction * (float)delta);
 
     actor.LinearVelocity = direction * (float)delta;*/
+
+    if (!actor.IsOnFloor())
+    {
+      actor.Velocity -= new Vector3(0, 9.8f * (float)delta, 0);
+    }
+
+    actor.MoveAndSlide();
   }
 
   public void Finish()
   {
-    actor.AgressiveArea.SetDeferred("set_monitoring", false);
     actor.AgressiveArea.BodyEntered -= TargetEntered;
   }
 

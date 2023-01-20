@@ -61,7 +61,7 @@ partial class CharacterActor: CharacterBody3D, IActor
     currentHP -= damage;
   }
 
-  public void SetServerData(Variant data)
+  public virtual void SetServerData(Variant data)
   {
     var dataArray = data.AsGodotArray<Variant>();
 

@@ -72,7 +72,7 @@ partial class CharacterActor: CharacterBody3D, IActor
     maxSP = (int)dataArray[4];
   }
 
-  public Variant GetData()
+  public virtual Variant GetData()
   {
     var data = new Array<Variant>()
     {
@@ -85,7 +85,7 @@ partial class CharacterActor: CharacterBody3D, IActor
     return data;
   }
 
-  public ActorType GetActorType()
+  public virtual ActorType GetActorType()
   {
     return ActorType.Player;
   }

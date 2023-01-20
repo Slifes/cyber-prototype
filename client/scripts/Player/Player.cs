@@ -42,86 +42,86 @@ partial class Player : CharacterActor
 
   public override void _Ready()
   {
-    base._Ready();
+	base._Ready();
 
-    animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+	animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
-    skills = LoadSkills();
+	skills = LoadSkills();
 
-    body = GetNode<Node3D>("Body");
-    camera = GetNode<Node3D>("Camera");
+	body = GetNode<Node3D>("Body");
+	camera = GetNode<Node3D>("Camera");
 
-    camera3d = camera.GetNode<Camera3D>("Camera3D");
-    camera3d.Current = IsMultiplayerAuthority();
+	camera3d = camera.GetNode<Camera3D>("Camera3D");
+	camera3d.Current = IsMultiplayerAuthority();
 
-    if (InitialPosition != Vector3.Zero)
-    {
-      LastUpdateTime = ServerBridge.Now();
-      UpdatePosition(InitialPosition);
-    }
+	if (InitialPosition != Vector3.Zero)
+	{
+	  LastUpdateTime = ServerBridge.Now();
+	  UpdatePosition(InitialPosition);
+	}
 
-    GD.Print("New player: ", Name);
+	GD.Print("New player: ", Name);
 
-    if (IsMultiplayerAuthority())
-    {
-      GD.Print("Authority: ", IsMultiplayerAuthority());
-      setPlayerToStats();
-    }
-    
-    UpdateStats();
+	if (IsMultiplayerAuthority())
+	{
+	  GD.Print("Authority: ", IsMultiplayerAuthority());
+	  setPlayerToStats();
+	}
+	
+	UpdateStats();
   }
 
   void setPlayerToStats()
   {
-    var stats = GetNode<Stats>("/root/Stats");
+	var stats = GetNode<Stats>("/root/Stats");
 
-    stats.setPlayer(this);
+	stats.setPlayer(this);
   }
 
   public override void _PhysicsProcess(double delta)
   {
-    if (!IsMultiplayerAuthority())
-    {
-      _ServerUpdatePosition((float)delta);
-    }
-    else
-    {
-      _AuthorityController(delta);
-    }
+	if (!IsMultiplayerAuthority())
+	{
+	  _ServerUpdatePosition((float)delta);
+	}
+	else
+	{
+	  _AuthorityController(delta);
+	}
   }
 
   public override void TakeDamage(int damage)
   {
-    base.TakeDamage(damage);
+	base.TakeDamage(damage);
 
-    camera3d.Call("add_trauma", 0.15f);
+	camera3d.Call("add_trauma", 0.15f);
 
-    UpdateStats();
-    SpawnDamageText(damage);
+	UpdateStats();
+	SpawnDamageText(damage);
   }
 
   protected void SpawnDamageText(int damage)
   {
-    var damageText = DamageText.Instantiate<Node3D>();
+	var damageText = DamageText.Instantiate<Node3D>();
 
-    AddChild(damageText);
+	AddChild(damageText);
 
-    damageText.Call("run", damage);
+	damageText.Call("run", damage);
   }
 
   protected void UpdateStats()
   {
-    EmitSignal(nameof(HealthStatusChanged), currentHP, currentSP, maxHP, maxSP);
+	EmitSignal(nameof(HealthStatusChanged), currentHP, currentSP, maxHP, maxSP);
   }
 
   public Vector3 GetActorRotation()
   {
-    return body.Rotation;
+	return body.Rotation;
   }
 
   public void SetActorRotation(Vector3 rotation)
   {
-    body.Rotation = rotation;
+	body.Rotation = rotation;
   }
 
   #region send_movement

@@ -32,13 +32,11 @@ size = Vector3(0.2, 0.1, 0.2)
 [sub_resource type="BoxShape3D" id="BoxShape3D_d80y2"]
 size = Vector3(6, 1, 6)
 
-[node name="Kirt" type="RigidBody3D"]
+[node name="Kirt" type="CharacterBody3D"]
 collision_layer = 2051
 input_ray_pickable = false
 axis_lock_angular_x = true
-axis_lock_angular_y = true
 axis_lock_angular_z = true
-freeze_mode = 1
 script = ExtResource("1_gssck")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -110,6 +108,7 @@ shape = SubResource("CylinderShape3D_0p85v")
 collision_layer = 0
 collision_mask = 2048
 input_ray_pickable = false
+monitoring = false
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]

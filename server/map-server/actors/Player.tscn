@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_dex2u"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ri0iu"]
-radius = 0.06
+radius = 0.05
 height = 0.12
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l06qg"]
@@ -67,7 +67,6 @@ script = ExtResource("1_dex2u")
 shape = SubResource("CapsuleShape3D_ri0iu")
 
 [node name="HitBox" type="Area3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 collision_layer = 0
 collision_mask = 2048
 input_ray_pickable = false
