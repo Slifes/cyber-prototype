@@ -122,12 +122,17 @@ partial class ServerBridge : Node3D
   [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void NpcAction(Variant id, Variant action, Variant position, Variant yaw, Variant data, Variant timestamp) { }
 
-  public void SendActorTookDamage(IActor actor, int damage)
+  public void SendActorTookDamage(List<int> peers, IActor actor, int damage)
   {
-    RpcId(actor.GetActorId(), "ActorTookDamage", actor.GetActorId(), damage, actor.GetCurrentHP(), actor.GetMaxHP());
+    if (actor.GetActorType() == ActorType.Player)
+    {
+      RpcId(actor.GetActorId(), "ActorTookDamage", actor.GetActorId(), (int)actor.GetActorType(), damage, actor.GetCurrentHP(), actor.GetMaxHP());
+    }
+
+    SendPacketTo(peers, "ActorTookDamage", actor.GetActorId(), (int)actor.GetActorType(), damage, actor.GetCurrentHP(), actor.GetMaxHP());
   }
 
   [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorTookDamage(Variant actorId, Variant damage, Variant hp, Variant maxHP) { }
+  public void ActorTookDamage(Variant actorId, Variant actorType, Variant damage, Variant hp, Variant maxHP) { }
   #endregion
 }

@@ -39,14 +39,20 @@ class BasedContextSteering: IBehavior
 
   private void TargetBodyExited(Node3D node)
   {
-    actor.ChangeState(NpcState.Walking);
+    if (actor.Target != null && node.Name == actor.Target.Name){
+      actor.ChangeState(NpcState.Walking);
+      actor.Target = null;
+    }
   }
 
   private void AttackBodyEntered(Node3D node)
   {
-    actor.AttackArea.BodyEntered -= AttackBodyEntered;
+    if (node.Name == actor.Target.Name)
+    {
+      actor.AttackArea.BodyEntered -= AttackBodyEntered;
 
-    changeToAttackState = true;
+      changeToAttackState = true;
+    }
   }
 
   private Vector3 GetDirection()

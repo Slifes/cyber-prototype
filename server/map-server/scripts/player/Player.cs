@@ -71,9 +71,7 @@ partial class Player: CharacterActor
 	  GD.Print("Hitted NPC");
 	  IActor actor = (IActor)body;
 
-	  if (currentSkill != null){
 	  actor.TakeDamage(currentSkill.Damage);
-	  }
 	}
   }
 
@@ -167,7 +165,7 @@ partial class Player: CharacterActor
   {
 	base.TakeDamage(damage);
 
-	serverBridge.SendActorTookDamage(this, damage);
+	serverBridge.SendActorTookDamage(this.nearestPlayers, this, damage);
   }
 
   [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]

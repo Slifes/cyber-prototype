@@ -92,3 +92,5 @@ libraries = {
 "": SubResource("AnimationLibrary_nek2o"),
 "Skills": SubResource("AnimationLibrary_xucwv")
 }
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]

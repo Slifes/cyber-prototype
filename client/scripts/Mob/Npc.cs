@@ -104,4 +104,11 @@ partial class Npc: CharacterActor
 	
 	Animation.Play(String.Format("Skills/{0}", i));
   }
+
+  public override void TakeDamage(int damage)
+  {
+	base.TakeDamage(damage);
+
+	GetNode<Damage>("/root/World/Damage").Spawn(this, damage);
+  }
 }

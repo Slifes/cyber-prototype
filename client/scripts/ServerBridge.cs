@@ -201,14 +201,15 @@ partial class ServerBridge: Node3D
   public void NpcAction(Variant id, Variant action, Variant position, Variant yaw, Variant data, Variant timestamp) { }
 
   [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorTookDamage(Variant actorId, Variant damage, Variant hp, Variant maxHP)
+  public void ActorTookDamage(Variant actorId, Variant actorType, Variant damage, Variant hp, Variant maxHP)
   {
-    IActor actor = spawner.GetActor(actorId.ToString(), ActorType.Player);
+    IActor actor = spawner.GetActor(actorId.ToString(), (ActorType)(int)actorType);
 
     if(actor != null)
     {
       actor.TakeDamage((int)damage);
     }
+    
   }
   #endregion
 }

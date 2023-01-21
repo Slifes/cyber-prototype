@@ -34,7 +34,6 @@ class BaseAttack : IBehavior
 
     actor.LookAt(LastOrigin, Vector3.Up);
 
-
     if (offset > Vector3.Zero){
       actor.UpdateNPCState();
     }
@@ -50,7 +49,16 @@ class BaseAttack : IBehavior
 
   private void BodyExited(Node3D body)
   {
-    actor.ChangeState(NpcState.Steering);
+    if (body.Name == actor.Target.Name){
+      if (body.IsInsideTree()){
+        actor.ChangeState(NpcState.Steering);
+      }
+      else
+      {
+        actor.Target = null;
+        actor.ChangeState(NpcState.Walking);
+      }
+    }
   }
 
   public Variant GetData()

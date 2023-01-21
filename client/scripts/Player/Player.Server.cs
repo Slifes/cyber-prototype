@@ -16,7 +16,12 @@ partial class Player
   {
     var now = ServerBridge.Now();
 
-    PredictedVelocity = (newPosition - GlobalPosition) / (float)(now - LastUpdateTime);
+    var velocity = (newPosition - GlobalPosition) / (float)(now - LastUpdateTime);
+
+    if (velocity.IsFinite())
+    {
+      PredictedVelocity = velocity;
+    }
 
     GD.Print("PredictedVelocity", PredictedVelocity);
 

@@ -42,6 +42,7 @@ partial class Npc: CharacterActor
   {
 	onActorReady();
 
+
 	AABB = GetNode<Area3D>("AABB");
 	AABB.BodyEntered += Area_BodyEntered;
 	AABB.BodyExited += Area_BodyExited;
@@ -149,6 +150,13 @@ partial class Npc: CharacterActor
 	};
 
 	return data;
+  }
+
+  public override void TakeDamage(int damage)
+  {
+    base.TakeDamage(damage);
+
+		serverBridge.SendActorTookDamage(this.nearest, this, damage);
   }
 
   public override ActorType GetActorType()

@@ -33,8 +33,6 @@ partial class Player : CharacterActor
 
   PlayerState state;
 
-  PackedScene DamageText = ResourceLoader.Load<PackedScene>("res://effects/Damage.tscn");
-
   public float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
 
   [Signal]
@@ -97,16 +95,8 @@ partial class Player : CharacterActor
 	camera3d.Call("add_trauma", 0.15f);
 
 	UpdateStats();
-	SpawnDamageText(damage);
-  }
 
-  protected void SpawnDamageText(int damage)
-  {
-	var damageText = DamageText.Instantiate<Node3D>();
-
-	AddChild(damageText);
-
-	damageText.Call("run", damage);
+  GetNode<Damage>("/root/World/Damage").Spawn(this, damage);
   }
 
   protected void UpdateStats()
