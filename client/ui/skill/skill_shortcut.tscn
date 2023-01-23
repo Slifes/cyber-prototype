@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpgq1n7xsrbgx"]
+
+[ext_resource type="PackedScene" uid="uid://ba6mh28om2ohu" path="res://ui/skill/skill_slot.tscn" id="1_gori0"]
+
+[node name="skill_shortcut" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 312.0
+offset_bottom = 52.0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 313.0
+offset_bottom = 51.0
+color = Color(0.368627, 0.372549, 0.368627, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Slot" parent="ColorRect/MarginContainer/HBoxContainer" instance=ExtResource("1_gori0")]
+layout_mode = 2
+
+[node name="Slot2" parent="ColorRect/MarginContainer/HBoxContainer" instance=ExtResource("1_gori0")]
+layout_mode = 2
+
+[node name="Slot3" parent="ColorRect/MarginContainer/HBoxContainer" instance=ExtResource("1_gori0")]
+layout_mode = 2
+
+[node name="Slot4" parent="ColorRect/MarginContainer/HBoxContainer" instance=ExtResource("1_gori0")]
+layout_mode = 2
+
+[node name="Slot5" parent="ColorRect/MarginContainer/HBoxContainer" instance=ExtResource("1_gori0")]
+layout_mode = 2
+
+[node name="Slot6" parent="ColorRect/MarginContainer/HBoxContainer" instance=ExtResource("1_gori0")]
+layout_mode = 2

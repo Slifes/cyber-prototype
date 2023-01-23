@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://cbk54r58pn721"]
+
+[ext_resource type="Animation" uid="uid://bs7rlaw0vd8cl" path="res://animations/skills/normal_attack.res" id="1_gd1x5"]
+[ext_resource type="Script" path="res://scripts/resources/Skill.cs" id="2_rqjna"]
+
+[resource]
+script = ExtResource("2_rqjna")
+ID = 1
+iconColor = Color(1, 0.980392, 0.156863, 1)
+Damage = 8
+Type = 0
+ActiveType = 1
+SP = 20
+Delay = 200.0
+animation = ExtResource("1_gd1x5")

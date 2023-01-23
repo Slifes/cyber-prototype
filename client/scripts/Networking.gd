@@ -1,8 +1,8 @@
 extends Node
 
 @onready var auth = $"../AuthClient"
-@onready var latency_text: RichTextLabel = $UI/Latency
-@onready var packet_loss_text: RichTextLabel = $UI/PacketLoss
+@onready var latency_text: Label = $UI/Network/Ping
+@onready var packet_loss_text: Label = $UI/Network/Loss
 
 var test_map: bool = true
 var client_clock: int = 0

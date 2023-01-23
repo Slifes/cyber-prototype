@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dp63rp2mfbtpe"]
+[gd_scene load_steps=8 format=3 uid="uid://dp63rp2mfbtpe"]
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_1af4m"]
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_hlg1x"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://scripts/spawner/CharacterSpawner.cs" id="4_7b6hw"]
 [ext_resource type="PackedScene" uid="uid://c1diiei6qulof" path="res://maps/main.tscn" id="4_8g7r1"]
 [ext_resource type="Script" path="res://scripts/spawner/NpcSpawner.cs" id="5_1pxo1"]
-[ext_resource type="Script" path="res://scripts/ui/HealthStats.cs" id="7_68gxe"]
 [ext_resource type="Script" path="res://scripts/ui/Damage.cs" id="7_e86s1"]
 
 [node name="World" type="Node3D"]
@@ -32,69 +31,40 @@ script = ExtResource("7_e86s1")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 1153.0
-offset_bottom = 651.0
-
-[node name="Latency" type="RichTextLabel" parent="UI"]
-layout_mode = 0
-offset_left = 1018.0
-offset_top = 15.0
-offset_right = 1133.0
-offset_bottom = 55.0
-text = "Latencia: 20"
-scroll_active = false
-tab_size = 8
-deselect_on_focus_loss_enabled = false
-
-[node name="PacketLoss" type="RichTextLabel" parent="UI"]
-layout_mode = 0
-offset_left = 1019.0
-offset_top = 44.0
-offset_right = 1134.0
-offset_bottom = 84.0
-text = "Loss: 0"
-scroll_active = false
-tab_size = 8
-deselect_on_focus_loss_enabled = false
-
-[node name="HealthStats" type="Control" parent="UI"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("7_68gxe")
 
-[node name="HP" type="ColorRect" parent="UI/HealthStats"]
-layout_mode = 0
-offset_left = 11.0
-offset_top = 20.0
-offset_right = 303.0
-offset_bottom = 29.0
-color = Color(0.678431, 0.678431, 0.678431, 1)
+[node name="Network" type="Control" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -109.0
+offset_bottom = 27.0
+grow_horizontal = 0
 
-[node name="Current" type="ColorRect" parent="UI/HealthStats/HP"]
+[node name="Ping" type="Label" parent="UI/Network"]
 layout_mode = 0
-anchor_right = 0.260274
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.584314, 1, 0.627451, 1)
-metadata/_edit_use_anchors_ = true
+offset_left = -37.0
+offset_top = 16.0
+offset_right = 109.0
+offset_bottom = 42.0
+text = "Ping: 0 ms"
+horizontal_alignment = 1
 
-[node name="SP" type="ColorRect" parent="UI/HealthStats"]
-layout_mode = 0
-offset_left = 13.0
-offset_top = 39.0
-offset_right = 347.0
-offset_bottom = 48.0
-color = Color(0.478431, 0.423529, 0.45098, 1)
-
-[node name="ColorRect" type="ColorRect" parent="UI/HealthStats/SP"]
-layout_mode = 0
-offset_left = -2.0
-offset_right = 305.0
-offset_bottom = 8.0
-color = Color(1, 1, 0.466667, 1)
+[node name="Loss" type="Label" parent="UI/Network"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.046
+anchor_top = 1.593
+anchor_right = -0.046
+anchor_bottom = 1.593
+offset_left = -35.986
+offset_top = 7.989
+offset_right = 115.014
+offset_bottom = 34.989
+text = "Loss 1000ms"
+horizontal_alignment = 1

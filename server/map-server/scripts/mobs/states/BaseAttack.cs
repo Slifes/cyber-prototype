@@ -46,10 +46,12 @@ class BaseAttack : IBehavior
     LastOrigin = actor.Target.GlobalPosition;
   }
 
-
   private void BodyExited(Node3D body)
   {
-    if (body.Name == actor.Target.Name){
+    GD.Print("Body Exited: ", body.Name);
+    GD.Print("Body Target: ", actor.Target.Name);
+    if (body.Name == actor.Target.Name)
+    {
       if (body.IsInsideTree()){
         actor.ChangeState(NpcState.Steering);
       }

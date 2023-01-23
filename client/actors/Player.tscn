@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://bks6faj2baime"]
+[gd_scene load_steps=12 format=3 uid="uid://bks6faj2baime"]
 
 [ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_nqh5b"]
 [ext_resource type="PackedScene" uid="uid://co1cx60fvis72" path="res://items/equips/normal_sword.tscn" id="2_tme2q"]
 [ext_resource type="FastNoiseLite" uid="uid://dncpjxo3226fi" path="res://noise/shake_camera.tres" id="3_4gsqw"]
 [ext_resource type="Script" path="res://scripts/player/camera.gd" id="3_qyc8c"]
+[ext_resource type="AudioStream" uid="uid://ca15vpmcjaoxp" path="res://audio/hit.ogg" id="6_to3y1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0f2vn"]
 radius = 0.05
@@ -39,6 +40,18 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Audio/Hit:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nek2o"]
@@ -93,4 +106,7 @@ libraries = {
 "Skills": SubResource("AnimationLibrary_xucwv")
 }
 
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
+[node name="Audio" type="Node" parent="."]
+
+[node name="Hit" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_to3y1")

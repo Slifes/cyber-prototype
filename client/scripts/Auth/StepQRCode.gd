@@ -2,7 +2,7 @@ extends Control
 
 var _wallet
 
-@onready var _qrcode = $Control/CenterContainer/QRCode
+@onready var _qrcode = $QRCode
 @onready var step_manager = get_parent()
 
 func active(wallet):

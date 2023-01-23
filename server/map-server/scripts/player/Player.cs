@@ -16,8 +16,6 @@ partial class Player: CharacterActor
 
   Area3D hitBox;
 
-  ServerBridge serverBridge;
-
   State state;
 
   float Speed = 20.0f;
@@ -44,7 +42,6 @@ partial class Player: CharacterActor
 	SetMultiplayerAuthority(_actorId);
 
 	animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-	serverBridge = GetNode<ServerBridge>("/root/World/Server");
 	hitBox = GetNode<Area3D>("HitBox");
 	aabb = GetNode<Area3D>("AABB");
 
@@ -56,8 +53,6 @@ partial class Player: CharacterActor
 	nearest = new();
 	nearestPlayers = new();
 	skills = new();
-
-	LoadSkill();
   }
 
   private void OnSkillAnimationFinished(StringName name)
@@ -93,7 +88,7 @@ partial class Player: CharacterActor
 		nearestPlayers.Add(actor.GetActorId());
 	  }
 
-	  serverBridge.SendActorEnteredZone(GetActorId(), actor);
+	  ServerBridge.Instance.SendActorEnteredZone(GetActorId(), actor);
 	}
   }
 
@@ -115,7 +110,7 @@ partial class Player: CharacterActor
 		nearestPlayers.Remove(actor.GetActorId());
 	  }
 
-	  serverBridge.SendActorExitedZone(GetActorId(), actor);
+	  ServerBridge.Instance.SendActorExitedZone(GetActorId(), actor);
 	}
   }
 
@@ -126,18 +121,24 @@ partial class Player: CharacterActor
 	state = (State)nextState;
   }
 
-  private void LoadSkill()
+  public void LoadSkill(List<int> dbSkills)
   {
-	var skill = ResourceLoader.Load<Skill>("res://resources/skills/normal_attack.tres");
-
-	if (skill.isActive)
-	{
 	  var animationLibrary = animationPlayer.GetAnimationLibrary("Skills");
+	
+		foreach(var id in dbSkills)
+		{
+			Skill skill = SkillManager.Instance.Get(id);
 
-	  animationLibrary.AddAnimation(skill.ID.ToString(), skill.animation);
-	}
+			if (skill != null)
+			{
+				skills.Add(skill);
 
-	skills.Add(skill);
+				if (skill.Type == SkillType.Active)
+				{
+					animationLibrary.AddAnimation(skill.ID.ToString(), skill.animation);
+				}
+			}
+		}
   }
 
   public void RunSkill(Variant id)
@@ -165,7 +166,7 @@ partial class Player: CharacterActor
   {
 	base.TakeDamage(damage);
 
-	serverBridge.SendActorTookDamage(this.nearestPlayers, this, damage);
+	ServerBridge.Instance.SendActorTookDamage(this.nearestPlayers, this, damage);
   }
 
   [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -173,7 +174,7 @@ partial class Player: CharacterActor
   {
 	Move((Vector2)position, (float)yaw, (int)State.Walk);
 
-	serverBridge.SendServerMovement(this, GlobalPosition, (float)yaw);
+	ServerBridge.Instance.SendServerMovement(this, GlobalPosition, (float)yaw);
   }
 
   [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
@@ -181,6 +182,18 @@ partial class Player: CharacterActor
   {
 	Move((Vector2)position, (float)yaw, (int)State.Idle);
 
-	serverBridge.SendServerMovementStopped(this, GlobalPosition, (float)yaw);
+	ServerBridge.Instance.SendServerMovementStopped(this, GlobalPosition, (float)yaw);
   }
+
+	
+  [RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void RequestSkill(Variant id)
+  {
+	GD.Print("Received Request skill: ", GetActorId());
+
+	ServerBridge.Instance.SendSkillExecutedTo(GetNearestPlayers(), this, (int)id);
+  
+	RunSkill(id);
+  }
+
 }

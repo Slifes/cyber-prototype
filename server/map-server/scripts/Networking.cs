@@ -6,8 +6,6 @@ public partial class Networking : Node3D
 
 	CharacterSpawner spawner;
 
-	ServerBridge serverBridge;
-
 	public override void _EnterTree()
 	{
 		GetTree().SetMultiplayer(new SceneMultiplayer());
@@ -25,7 +23,9 @@ public partial class Networking : Node3D
 	public override void _Ready()
 	{
 		spawner = GetNode<CharacterSpawner>("Spawner/players");
-		serverBridge = GetNode<ServerBridge>("Server");
+
+		SkillManager.CreateInstance();
+		SkillManager.Instance.Load();
 	}
 
 	void _PeerConnected(long id)
@@ -51,7 +51,7 @@ public partial class Networking : Node3D
 			100
 		});
 
-		serverBridge.SendPlayableActor(remoteId, actor);
+		ServerBridge.Instance.SendPlayableActor(remoteId, actor);
 	}
 
 	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

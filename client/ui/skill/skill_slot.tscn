@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://ba6mh28om2ohu"]
+
+[ext_resource type="Script" path="res://scripts/ui/skill/SkillSlot.cs" id="1_ctp88"]
+
+[node name="Slot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_ctp88")
+
+[node name="bkg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.509804, 0.509804, 0.509804, 1)

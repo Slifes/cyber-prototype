@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dja4hj0q7sb68"]
+
+[ext_resource type="Script" path="res://scripts/ui/skill/SkillItem.cs" id="1_rldru"]
+
+[node name="Item" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 3
+script = ExtResource("1_rldru")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 85.0
+offset_bottom = 85.0
+mouse_filter = 2

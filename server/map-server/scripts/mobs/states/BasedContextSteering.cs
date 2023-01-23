@@ -140,7 +140,7 @@ class BasedContextSteering: IBehavior
   {
     return new Godot.Collections.Array<Variant>()
     {
-      actor.Target.GlobalPosition
+      (actor.Target != null ? actor.Target.GlobalPosition:Vector3.Zero)
     };
   }
 }

@@ -15,25 +15,39 @@ partial class Player
   {
     if (Input.IsActionJustPressed("attack"))
     {
-      GetNode<ServerBridge>("/root/World/Server").SendRequestSkill(0);
+      SendRequestSkill(0);
     }
   }
 
-  private List<Skill> LoadSkills()
+  private List<Skill> LoadSkills(List<int> skillsToBeLoaded)
   {
-    var skill = ResourceLoader.Load<Skill>("res://resources/skills/normal_attack.tres");
-
     var animationLibrary = animationPlayer.GetAnimationLibrary("Skills");
-    
-    GD.Print("AnimationID: ", skill.ID);
-    GD.Print("Damage: ", skill.Damage);
 
-    if (!animationLibrary.HasAnimation(skill.ID.ToString()))
-      animationLibrary.AddAnimation(skill.ID.ToString(), skill.animation);
-    
-    return new()
+    var skills = new List<Skill>(new Skill[skillsToBeLoaded.Count]);
+
+    for (var i = 0; i < skillsToBeLoaded.Count; i++)
     {
-      skill,
-    };
+      var skill = SkillManager.Instance.Get(skillsToBeLoaded[i]);
+
+      if (skill != null)
+      {
+        if (skill.Type == SkillType.Active)
+        {
+          animationLibrary.AddAnimation(skill.ID.ToString(), skill.animation);
+        }
+      }
+
+      skills[i] = skill;
+    }
+
+    return skills;
   }
+
+  public void SendRequestSkill(Variant id)
+  {
+    RpcId(1, "RequestSkill", id);
+  }
+
+  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void RequestSkill(Variant id) { }
 }

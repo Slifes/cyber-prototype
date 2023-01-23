@@ -20,6 +20,13 @@ partial class ServerBridge: Node3D
 
   int InterpolationOffset = 100;
 
+  private static ServerBridge _instance;
+
+  public static ServerBridge Instance
+  {
+    get { return _instance; }
+  }
+
   public static double Now()
   {
     return Time.GetUnixTimeFromSystem() * 1000.0;
@@ -32,6 +39,11 @@ partial class ServerBridge: Node3D
     spawner = GetNode<Spawner>("../Spawner");
 
     actions = new();
+
+    _instance = this;
+
+    SkillManager.CreateInstance();
+    SkillManager.Instance.Load();
   }
 
   public override void _PhysicsProcess(double delta)
@@ -98,15 +110,7 @@ partial class ServerBridge: Node3D
   #endregion
 
   #region skill
-  public void SendRequestSkill(Variant id)
-  {
-    RpcId(1, "RequestSkill", id);
-  }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
-  public void RequestSkill(Variant id) { }
-
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void SkillExecuted(Variant actorId, Variant actorType, Variant skillId, Variant timestamp)
   {
     GD.Print("Received skill approved");

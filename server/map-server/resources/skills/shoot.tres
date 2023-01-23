@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://bustiw36y71tb"]
+
+[ext_resource type="Animation" uid="uid://bmtpopwifngmp" path="res://animation/skills/normal_attack.anim" id="1_ojhhl"]
+[ext_resource type="Script" path="res://scripts/resources/Skill.cs" id="2_4kgyu"]
+
+[resource]
+script = ExtResource("2_4kgyu")
+ID = 1
+Damage = 10
+Type = 0
+ActiveType = 1
+SP = 10
+Delay = 200.0
+animation = ExtResource("1_ojhhl")

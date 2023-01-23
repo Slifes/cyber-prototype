@@ -29,6 +29,8 @@ partial class Player : CharacterActor
 
   List<Skill> skills; 
 
+  public List<Skill> Skills { get { return skills; } }
+
   bool mouseCameraPressed = false;
 
   PlayerState state;
@@ -44,7 +46,7 @@ partial class Player : CharacterActor
 
 	animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
-	skills = LoadSkills();
+	skills = LoadSkills(new List<int>() { 0, 1 });
 
 	body = GetNode<Node3D>("Body");
 	camera = GetNode<Node3D>("Camera");
@@ -63,17 +65,12 @@ partial class Player : CharacterActor
 	if (IsMultiplayerAuthority())
 	{
 	  GD.Print("Authority: ", IsMultiplayerAuthority());
-	  setPlayerToStats();
+
+	UIControl.CreateInstance();
+	UIControl.Instance.LoadUI(this);
 	}
 	
 	UpdateStats();
-  }
-
-  void setPlayerToStats()
-  {
-	var stats = GetNode<Stats>("/root/Stats");
-
-	stats.setPlayer(this);
   }
 
   public override void _PhysicsProcess(double delta)

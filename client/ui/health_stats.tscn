@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=3 uid="uid://v465o4rvghi5"]
+
+[ext_resource type="Script" path="res://scripts/ui/HealthStats.cs" id="1_jpsr5"]
+
+[node name="HealthStats" type="MarginContainer"]
+anchors_preset = -1
+anchor_right = 0.378
+anchor_bottom = 0.164
+offset_right = 0.543976
+offset_bottom = -0.272003
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1_jpsr5")
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="HP" type="ColorRect" parent="Container"]
+clip_contents = true
+layout_direction = 2
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(0.678431, 0.678431, 0.678431, 1)
+
+[node name="Current" type="ColorRect" parent="Container/HP"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 326.0
+grow_vertical = 2
+color = Color(0.584314, 1, 0.627451, 1)
+
+[node name="SP" type="ColorRect" parent="Container"]
+clip_contents = true
+layout_direction = 2
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(0.478431, 0.423529, 0.45098, 1)
+
+[node name="ColorRect" type="ColorRect" parent="Container/SP"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 135.0
+grow_vertical = 2
+color = Color(1, 1, 0.466667, 1)

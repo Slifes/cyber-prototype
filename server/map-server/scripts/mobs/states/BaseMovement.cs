@@ -66,6 +66,7 @@ class BaseMovement: IBehavior
 
     if (!actor.IsOnFloor())
     {
+      GD.Print("Not floor");
       actor.Velocity -= new Vector3(0, 9.8f * (float)delta, 0);
     }
 
