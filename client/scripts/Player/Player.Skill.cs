@@ -2,13 +2,20 @@
 using System;
 using System.Collections.Generic;
 
+
 partial class Player
 {
-  public override void ExecuteSkill(Variant index)
+  List<Skill> skills; 
+
+  public List<Skill> Skills { get { return skills; } }
+
+  public override void ExecuteSkill(Variant skillId)
   {
-    int i = index.AsInt32();
+    int id = skillId.AsInt32();
   
-    animationPlayer.Play(String.Format("Skills/{0}", i));
+    animationPlayer.Play(String.Format("Skills/{0}", id));
+
+    SkillControl.Instance.UpdateSkillItems(id, 0);
   }
 
   private void InputSkill()
@@ -17,10 +24,10 @@ partial class Player
     {
       if (Input.IsActionJustPressed(String.Format("slot{0}", i)))
       {
-        var skill = UIControl.Instance.GetSkillSlot(i);
+        var skillItem = UIControl.Instance.GetSkillSlot(i);
 
-        if (skill != null) {
-          SendRequestSkill(skill.ID);
+        if (skillItem != null && skillItem.Available) {
+          SendRequestSkill(skillItem.skill.ID);
         }
       }
     }

@@ -3,10 +3,10 @@ using Godot;
 partial class SkillSlot: Control
 {
   [Export]
-  public Skill skill;
+  public SkillItem skill;
 
-	[Signal]
-	public delegate void SkillChangedEventHandler(Skill newSkill, int index);
+  [Signal]
+  public delegate void SkillChangedEventHandler(SkillItem newSkill, int index);
 
   public override Variant _GetDragData(Vector2 atPosition)
   {
@@ -15,44 +15,46 @@ partial class SkillSlot: Control
 	  return base._GetDragData(atPosition);
 	}
 
-	var self = (SkillSlot)Duplicate();
+	var node = (SkillItem)GetNode("Data");
 
-	self.GetNode<ColorRect>("bkg").Color = skill.iconColor;
-	self.GetNode<ColorRect>("bkg").Size = new Vector2(50, 50);
-	self.GetNode<ColorRect>("bkg").SetAnchorsPreset(LayoutPreset.TopLeft);
-  self.skill = (Skill)skill.Duplicate();
+	var self = (Control)node.GetNode("View").Duplicate();
+
+	self.Size = new Vector2(50, 50);
+	self.SetAnchorsPreset(LayoutPreset.TopLeft);
 
 	SetDragPreview(self);
 
-  // this.skill = null;
-  this.GetNode<ColorRect>("bkg").Color = new Color("#828282");
+	RemoveChild(GetNode("Data"));
 
 	UpdateDraggedSkill(null);
 
-	return this;
+	return node;
   }
 
   public override bool _CanDropData(Vector2 atPosition, Variant data)
   {
-	var control = (Control)data;
+	var control = (SkillItem)data;
 
-	return true;
+	return control.skill.Type == SkillType.Active;
   }
 
   public override void _DropData(Vector2 atPosition, Variant data)
   {
-	var skillItem = (Skill)((Control)data).Get("skill");
+	var node = (Control)data;
 
-	skill = skillItem;
+	var skillItem = (SkillItem)node.Duplicate();
 
-	GetNode<ColorRect>("bkg").Color = skill.iconColor;
+	skillItem.Name = "Data";
+
+	AddChild(skillItem);
 
 	UpdateDraggedSkill(skillItem);
-
   }
 
-	void UpdateDraggedSkill(Skill skill)
-	{
-		EmitSignal(nameof(SkillChanged), skill, GetIndex());
-	}
+  void UpdateDraggedSkill(SkillItem skillItem)
+  {
+	skill = skillItem;
+
+	EmitSignal(nameof(SkillChanged), skill, GetIndex());
+  }
 }

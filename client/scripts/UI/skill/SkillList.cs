@@ -12,6 +12,8 @@ partial class SkillList: Control
 
   public override void _Ready()
   {
+	SkillControl.CreateInstance();
+
 	Button btn = GetNode<Button>("Button");
 
 	panel = GetNode<Panel>("Panel");
@@ -61,7 +63,10 @@ partial class SkillList: Control
 
 	  foreach(var skill in c)
 	  {
-		hContainer.AddChild(skill); 
+		var dragHelper = new DragHelper();
+
+		dragHelper.AddData(skill);
+		hContainer.AddChild(dragHelper); 
 	  }
 	}
   }

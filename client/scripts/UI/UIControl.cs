@@ -21,7 +21,7 @@ class UIControl
     _instance = new UIControl();
   }
 
-  public Skill GetSkillSlot(int index)
+  public SkillItem GetSkillSlot(int index)
   {
     return skillShortcut.GetSkillBySlot(index);
   }

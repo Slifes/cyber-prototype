@@ -27,10 +27,6 @@ partial class Player : CharacterActor
 
   AnimationPlayer animationPlayer;
 
-  List<Skill> skills; 
-
-  public List<Skill> Skills { get { return skills; } }
-
   bool mouseCameraPressed = false;
 
   PlayerState state;
