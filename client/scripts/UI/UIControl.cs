@@ -7,6 +7,8 @@ class UIControl
 
   SkillList skillList;
 
+  SkillShortcut skillShortcut;
+
   private static UIControl _instance;
 
   public static UIControl Instance
@@ -19,6 +21,11 @@ class UIControl
     _instance = new UIControl();
   }
 
+  public Skill GetSkillSlot(int index)
+  {
+    return skillShortcut.GetSkillBySlot(index);
+  }
+
   public void LoadUI(Player target)
   {
     var uiScene = ResourceLoader.Load<PackedScene>("res://ui/master.tscn");
@@ -29,6 +36,7 @@ class UIControl
 
     healthStats = ui.GetNode<HealthStats>("HealthStats");
     skillList = ui.GetNode<SkillList>("MarginContainer/SkillList");
+    skillShortcut = ui.GetNode<SkillShortcut>("MarginContainer2/SkillShortcut");
 
     target.HealthStatusChanged += UpdateHealthStats;
 

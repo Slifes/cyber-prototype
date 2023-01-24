@@ -5,6 +5,9 @@ partial class SkillSlot: Control
   [Export]
   public Skill skill;
 
+	[Signal]
+	public delegate void SkillChangedEventHandler(Skill newSkill, int index);
+
   public override Variant _GetDragData(Vector2 atPosition)
   {
 	if (skill == null)
@@ -24,6 +27,8 @@ partial class SkillSlot: Control
   // this.skill = null;
   this.GetNode<ColorRect>("bkg").Color = new Color("#828282");
 
+	UpdateDraggedSkill(null);
+
 	return this;
   }
 
@@ -41,5 +46,13 @@ partial class SkillSlot: Control
 	skill = skillItem;
 
 	GetNode<ColorRect>("bkg").Color = skill.iconColor;
+
+	UpdateDraggedSkill(skillItem);
+
   }
+
+	void UpdateDraggedSkill(Skill skill)
+	{
+		EmitSignal(nameof(SkillChanged), skill, GetIndex());
+	}
 }

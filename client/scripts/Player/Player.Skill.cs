@@ -13,9 +13,16 @@ partial class Player
 
   private void InputSkill()
   {
-    if (Input.IsActionJustPressed("attack"))
+    for(var i = 0; i < 6; i++)
     {
-      SendRequestSkill(0);
+      if (Input.IsActionJustPressed(String.Format("slot{0}", i)))
+      {
+        var skill = UIControl.Instance.GetSkillSlot(i);
+
+        if (skill != null) {
+          SendRequestSkill(skill.ID);
+        }
+      }
     }
   }
 
