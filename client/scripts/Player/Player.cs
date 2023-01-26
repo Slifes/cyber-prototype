@@ -5,19 +5,15 @@ partial class Player : CharacterActor
 {
   public const float Speed = 1.0f;
 
-  public const float JumpVelocity = 4.5f;
-
   enum PlayerState
   {
-  Idle,
-  Walking
+    Idle,
+    Walking
   }
 
   Vector2 mouseMoveCameraInitial = Vector2.Zero;
 
   public Vector3 InitialPosition = Vector3.Zero;
-
-  MultiplayerSynchronizer synchronizer;
 
   Node3D camera;
 
@@ -38,73 +34,73 @@ partial class Player : CharacterActor
 
   public override void _Ready()
   {
-	base._Ready();
+    base._Ready();
 
-	animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+    animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
-	skills = LoadSkills(new List<int>() { 0, 1 });
+    skills = LoadSkills(new List<int>() { 0, 1 });
 
-	body = GetNode<Node3D>("Body");
-	camera = GetNode<Node3D>("Camera");
+    body = GetNode<Node3D>("Body");
+    camera = GetNode<Node3D>("Camera");
 
-	camera3d = camera.GetNode<Camera3D>("Camera3D");
-	camera3d.Current = IsMultiplayerAuthority();
+    camera3d = camera.GetNode<Camera3D>("Camera3D");
+    camera3d.Current = IsMultiplayerAuthority();
 
-	if (InitialPosition != Vector3.Zero)
-	{
-	  LastUpdateTime = ServerBridge.Now();
-	  UpdatePosition(InitialPosition);
-	}
+    if (InitialPosition != Vector3.Zero)
+    {
+      LastUpdateTime = ServerBridge.Now();
+      UpdatePosition(InitialPosition);
+    }
 
-	GD.Print("New player: ", Name);
+    GD.Print("New player: ", Name);
 
-	if (IsMultiplayerAuthority())
-	{
-	  GD.Print("Authority: ", IsMultiplayerAuthority());
+    if (IsMultiplayerAuthority())
+    {
+      GD.Print("Authority: ", IsMultiplayerAuthority());
 
-	UIControl.CreateInstance();
-	UIControl.Instance.LoadUI(this);
-	}
-	
-	UpdateStats();
+      UIControl.CreateInstance();
+      UIControl.Instance.LoadUI(this);
+    }
+    
+    UpdateStats();
   }
 
   public override void _PhysicsProcess(double delta)
   {
-	if (!IsMultiplayerAuthority())
-	{
-	  _ServerUpdatePosition((float)delta);
-	}
-	else
-	{
-	  _AuthorityController(delta);
-	}
+    if (!IsMultiplayerAuthority())
+    {
+      _ServerUpdatePosition((float)delta);
+    }
+    else
+    {
+      _AuthorityController(delta);
+    }
   }
 
   public override void TakeDamage(int damage)
   {
-	base.TakeDamage(damage);
+    base.TakeDamage(damage);
 
-	camera3d.Call("add_trauma", 0.15f);
+    camera3d.Call("add_trauma", 0.15f);
 
-	UpdateStats();
+    UpdateStats();
 
-  GetNode<Damage>("/root/World/Damage").Spawn(this, damage);
+    GetNode<Damage>("/root/World/Damage").Spawn(this, damage);
   }
 
   protected void UpdateStats()
   {
-	EmitSignal(nameof(HealthStatusChanged), currentHP, currentSP, maxHP, maxSP);
+    EmitSignal(nameof(HealthStatusChanged), currentHP, currentSP, maxHP, maxSP);
   }
 
   public Vector3 GetActorRotation()
   {
-	return body.Rotation;
+    return body.Rotation;
   }
 
   public void SetActorRotation(Vector3 rotation)
   {
-	body.Rotation = rotation;
+    body.Rotation = rotation;
   }
 
   #region send_movement

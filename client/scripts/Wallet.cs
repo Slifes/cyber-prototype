@@ -1,14 +1,16 @@
+
 using Godot;
-using Nethereum.Hex.HexConvertors.Extensions;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.IdentityModel.Tokens;
+
 using WalletConnectSharp.Sign;
 using WalletConnectSharp.Sign.Models;
 using WalletConnectSharp.Sign.Models.Engine;
 using WalletConnectSharp.Storage;
 using WalletConnectSharp.Network.Models;
-using System.Collections.Generic;
-using Microsoft.IdentityModel.Tokens;
+using Nethereum.Hex.HexConvertors.Extensions;
 
 public partial class Wallet : Node
 {

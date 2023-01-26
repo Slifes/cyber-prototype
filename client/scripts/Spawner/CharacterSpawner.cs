@@ -18,12 +18,12 @@ partial class CharacterSpawner: Node3D
 
       if (player != null)
       {
-      player.Name = name.ToString();
-      player.InitialPosition = position;
-      player.SetMultiplayerAuthority(Int32.Parse(name.ToString()));
-      player.SetServerData(data);
+        player.Name = name.ToString();
+        player.InitialPosition = position;
+        player.SetMultiplayerAuthority(Int32.Parse(name.ToString()));
+        player.SetServerData(data);
 
-      AddChild(player);
+        AddChild(player);
       }
     }
   }

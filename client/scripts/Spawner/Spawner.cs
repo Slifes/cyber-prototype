@@ -17,12 +17,12 @@ partial class Spawner: Node
     switch(actorType)
     {
       case ActorType.Player:
-      if (playerSpawner.HasNode(id))
-        return playerSpawner.GetNode<IActor>(id);
+        if (playerSpawner.HasNode(id))
+          return playerSpawner.GetNode<IActor>(id);
       break;
       case ActorType.Npc:
-      if (npcSpawner.HasNode(id))
-        return npcSpawner.GetNode<IActor>(id);
+        if (npcSpawner.HasNode(id))
+          return npcSpawner.GetNode<IActor>(id);
       break;
     }
     

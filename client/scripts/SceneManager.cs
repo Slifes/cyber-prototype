@@ -14,7 +14,7 @@ public partial class SceneManager : Node
 
   public Variant GetCurrentState()
   {
-  return currentState.ToString();
+    return currentState.ToString();
   }
 
   private static State GetStateByString(string state)
@@ -38,7 +38,8 @@ public partial class SceneManager : Node
     if (_state == State.Authenticate)
     {
       GetTree().ChangeSceneToFile("res://scenes/intro.tscn");
-    } else if (_state == State.World)
+    }
+    else if (_state == State.World)
     {
       GetTree().ChangeSceneToFile("res://scenes/world.tscn");
     }
