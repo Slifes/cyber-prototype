@@ -143,8 +143,8 @@ partial class Player: CharacterActor
 
   public void RunSkill(Variant id)
   {
-	currentSkill = skills[(int)id];
-	animationPlayer.Play(String.Format("Skills/{0}", id.ToString()));
+		currentSkill = SkillManager.Instance.Get(id.AsInt32());
+		animationPlayer.Play(String.Format("Skills/{0}", id.ToString()));
   }
 
   public override void _PhysicsProcess(double delta)

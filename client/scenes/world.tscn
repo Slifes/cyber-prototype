@@ -29,6 +29,8 @@ script = ExtResource("5_1pxo1")
 [node name="Damage" type="Node3D" parent="."]
 script = ExtResource("7_e86s1")
 
+[node name="Effects" type="Node3D" parent="."]
+
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15

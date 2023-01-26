@@ -79,6 +79,7 @@ _data = {
 }
 
 [node name="Kirt" type="CharacterBody3D"]
+collision_layer = 2049
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1_620j6")

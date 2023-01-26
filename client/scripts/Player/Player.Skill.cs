@@ -13,9 +13,25 @@ partial class Player
   {
     int id = skillId.AsInt32();
   
+    Skill skill = SkillManager.Instance.Get(id);
+
+    if(skill.Effect != null)
+    {
+      var instance = skill.Effect.Instantiate();
+      
+      ((ISkillEffect)instance).SetOwner(this);
+  
+      GetNode("/root/World/Effects").AddChild(instance);
+      
+      ((ISkillEffect)instance).SetEffectRotation(GetActorRotation());
+      ((ISkillEffect)instance).SetEffectPosition(GlobalPosition);
+    }
+    
     animationPlayer.Play(String.Format("Skills/{0}", id));
 
-    SkillControl.Instance.UpdateSkillItems(id, 0);
+    if (IsMultiplayerAuthority()){
+      SkillControl.Instance.UpdateSkillItems(id, 0);
+    }
   }
 
   private void InputSkill()

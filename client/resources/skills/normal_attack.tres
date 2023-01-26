@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_lnvc5")
 ID = 0
-iconColor = Color(0.6, 1, 0.505882, 1)
+iconColor = Color(1, 0.2, 0.266667, 1)
 Damage = 8
 Type = 0
 ActiveType = 0

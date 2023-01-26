@@ -116,9 +116,6 @@ partial class ServerBridge : Node3D
   [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void NpcUpdateState(Variant id, Variant state,Variant position, Variant yaw, Variant data, Variant timestamp) { }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void NpcAction(Variant id, Variant action, Variant position, Variant yaw, Variant data, Variant timestamp) { }
-
   public void SendActorTookDamage(List<int> peers, IActor actor, int damage)
   {
 	if (actor.GetActorType() == ActorType.Player)

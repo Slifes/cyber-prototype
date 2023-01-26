@@ -38,4 +38,7 @@ partial class Skill: Resource
 
   [Export]
   public Animation animation;
+
+  [Export]
+  public PackedScene Effect;
 }
