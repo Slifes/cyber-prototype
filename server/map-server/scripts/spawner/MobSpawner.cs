@@ -62,7 +62,7 @@ partial class MobSpawner : Node3D
 
 	targetSpawn.AddChild(instance);
 
-	instance.GlobalPosition = new Vector3(mobX, instance.GlobalPosition.y, mobZ);
+	instance.GlobalPosition = new Vector3(mobX, instance.GlobalPosition.Y, mobZ);
 
 	currentCount++;
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dp63rp2mfbtpe"]
+[gd_scene load_steps=9 format=3 uid="uid://cn75dye6tdcpk"]
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_1af4m"]
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_hlg1x"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c1diiei6qulof" path="res://maps/main.tscn" id="4_8g7r1"]
 [ext_resource type="Script" path="res://scripts/spawner/NpcSpawner.cs" id="5_1pxo1"]
 [ext_resource type="Script" path="res://scripts/ui/Damage.cs" id="7_e86s1"]
+[ext_resource type="PackedScene" uid="uid://dcg65gsvefl2n" path="res://actors/npcs/Alora.tscn" id="9_siike"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_1af4m")
@@ -38,6 +39,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Network" type="Control" parent="UI"]
 layout_mode = 1
@@ -47,6 +49,7 @@ anchor_right = 1.0
 offset_left = -109.0
 offset_bottom = 27.0
 grow_horizontal = 0
+mouse_filter = 2
 
 [node name="Ping" type="Label" parent="UI/Network"]
 layout_mode = 0
@@ -70,3 +73,6 @@ offset_right = 115.014
 offset_bottom = 34.989
 text = "Loss 1000ms"
 horizontal_alignment = 1
+
+[node name="Alora" parent="." instance=ExtResource("9_siike")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.81271, 0.532559, 1.06487)

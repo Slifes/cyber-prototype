@@ -18,7 +18,7 @@ func start_network() -> void:
 	var multiplayer_api = MultiplayerAPI.create_default_interface()
 	
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client("127.0.0.1", 4242) #44.211.197.19
+	peer.create_client("44.211.197.19", 4242) #44.211.197.19
 	
 	multiplayer_api.connected_to_server.connect(_connected)
 	multiplayer_api.server_disconnected.connect(_disconnected)
@@ -52,15 +52,15 @@ func sync_server_time():
 	
 	# add_child(timer)
 
-@rpc(any_peer)
+@rpc("any_peer")
 func onSessionMap(_auth_token: String):
 	print("auth_token: ", _auth_token)
 
-@rpc(any_peer, reliable)
+@rpc("any_peer", "reliable")
 func FetchServerTime(client_time):
 	pass
 
-@rpc(reliable)
+@rpc("reliable")
 func ReturnServerTime(server_time: float, client_time: float):
 	var now = Time.get_unix_time_from_system() * 1000.0
 	var latency = (now - client_time) / 2
@@ -74,11 +74,11 @@ func determine_latency():
 	# rpc_id(1, "CheckLatency", Time.get_unix_time_from_system() * 1000)
 	pass
 
-@rpc(any_peer, reliable)
+@rpc("any_peer", "reliable")
 func CheckLatency(client_time):
 	pass
 	
-@rpc(reliable)
+@rpc("reliable")
 func ReturnLatency(client_time: float):
 	# var now = Time.get_unix_time_from_system() * 1000
 	# latency_array.append((now - client_time) / 2)

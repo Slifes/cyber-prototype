@@ -1,0 +1,33 @@
+{
+	"disabled_build_options": {
+		"disable_2d_physics": true,
+		"openxr": false
+	},
+	"disabled_classes": [
+		"AudioListener3D",
+		"AudioStreamPlayer3D",
+		"BoneAttachment3D",
+		"CanvasItem",
+		"CanvasLayer",
+		"Control",
+		"GridMap",
+		"HTTPRequest",
+		"ImporterMeshInstance3D",
+		"Joint3D",
+		"LightmapProbe",
+		"Marker3D",
+		"MultiplayerSpawner",
+		"MultiplayerSynchronizer",
+		"Node2D",
+		"OccluderInstance3D",
+		"OpenXRHand",
+		"Skeleton3D",
+		"SkeletonIK3D",
+		"VehicleWheel3D",
+		"Viewport",
+		"VisualInstance3D",
+		"XRNode3D",
+		"XROrigin3D"
+	],
+	"type": "build_profile"
+}

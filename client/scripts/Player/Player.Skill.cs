@@ -27,7 +27,12 @@ partial class Player
       ((ISkillEffect)instance).SetEffectPosition(GlobalPosition);
     }
     
-    animationPlayer.Play(String.Format("Skills/{0}", id));
+    string animationName = String.Format("Skills/{0}", id);
+
+    if (animationPlayer.HasAnimation(animationName))
+    {
+      animationPlayer.Play(animationName);
+    }
 
     if (IsMultiplayerAuthority()){
       SkillControl.Instance.UpdateSkillItems(id, 0);
@@ -78,6 +83,6 @@ partial class Player
     RpcId(1, "RequestSkill", id);
   }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void RequestSkill(Variant id) { }
 }

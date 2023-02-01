@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://c4frf05kt4lu2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4mogg"]
+radius = 0.291296
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_56h05"]
+albedo_color = Color(1, 0.54902, 0.360784, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_72xn7"]
+material = SubResource("StandardMaterial3D_56h05")
+size = Vector3(0.5, 2, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sh6c7"]
+albedo_color = Color(0.207843, 0.352941, 0.109804, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xdhpd"]
+material = SubResource("StandardMaterial3D_sh6c7")
+size = Vector3(2, 0.5, 0.5)
+
+[node name="Tree" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_4mogg")
+disabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_72xn7")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18746, 0)
+mesh = SubResource("BoxMesh_xdhpd")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.0143811, 0, 0.999897, 0, 1, 0, -0.999897, 0, -0.0143811, 0, 1.18746, 0)
+mesh = SubResource("BoxMesh_xdhpd")

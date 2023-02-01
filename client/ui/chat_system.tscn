@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://dpgkysqlynqni"]
+
+[node name="chat_system" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.915
+offset_bottom = 0.0799561
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "asd saasd asd asd asd as"
+fit_content = true
+
+[node name="TextEdit" type="TextEdit" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.915
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.0799561
+grow_horizontal = 2
+grow_vertical = 0

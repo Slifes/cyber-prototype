@@ -35,8 +35,8 @@ partial class SkillItem: Control
 	Available = false;
 	TimeLapsed = 0;
 
-	Overlay.Position = new Vector2(Overlay.Position.x, 0);
-	Overlay.Size = new Vector2(Overlay.Size.x, this.Size.y);
+	Overlay.Position = new Vector2(Overlay.Position.X, 0);
+	Overlay.Size = new Vector2(Overlay.Size.X, this.Size.Y);
   }
 
   public override void _Process(double delta)
@@ -48,16 +48,16 @@ partial class SkillItem: Control
 	  if (TimeLapsed >= skill.Delay)
 	  {
 		Available = true;
-				Overlay.Position = new Vector2(Overlay.Position.x, this.Size.y);
-				Overlay.Size = new Vector2(Overlay.Size.x, 0);
+				Overlay.Position = new Vector2(Overlay.Position.X, this.Size.Y);
+				Overlay.Size = new Vector2(Overlay.Size.X, 0);
 	  }
 	  else
 	  {
 		var percentage = (float)TimeLapsed / skill.Delay;
-		var size = this.Size.y * percentage;
+		var size = this.Size.Y * percentage;
 
-		Overlay.Position = new Vector2(Overlay.Position.x, size);
-		Overlay.Size = new Vector2(Overlay.Size.x, this.Size.y - size);
+		Overlay.Position = new Vector2(Overlay.Position.X, size);
+		Overlay.Size = new Vector2(Overlay.Size.X, this.Size.Y - size);
 	  }
 	}
   }

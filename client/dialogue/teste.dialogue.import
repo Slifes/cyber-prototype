@@ -1,0 +1,14 @@
+[remap]
+
+importer="dialogue_manager_compiler_4"
+type="Resource"
+uid="uid://blu7ydixel7aw"
+path="res://.godot/imported/teste.dialogue-fd7b371330caed6a8c79f91c5ffb18a2.tres"
+
+[deps]
+
+source_file="res://dialogue/teste.dialogue"
+dest_files=["res://.godot/imported/teste.dialogue-fd7b371330caed6a8c79f91c5ffb18a2.tres"]
+
+[params]
+

@@ -116,7 +116,7 @@ partial class Player: CharacterActor
 
   private void Move(Vector2 position, float rotation, int nextState)
   {
-	GlobalPosition = new Vector3(position.x, GlobalPosition.y, position.y);
+	GlobalPosition = new Vector3(position.X, GlobalPosition.Y, position.Y);
 	Rotation = new Vector3(0, rotation, 0);
 	state = (State)nextState;
   }
@@ -133,7 +133,7 @@ partial class Player: CharacterActor
 			{
 				skills.Add(skill);
 
-				if (skill.Type == SkillType.Active)
+				if (skill.Type == SkillType.Active && skill.animation != null)
 				{
 					animationLibrary.AddAnimation(skill.ID.ToString(), skill.animation);
 				}
@@ -144,7 +144,25 @@ partial class Player: CharacterActor
   public void RunSkill(Variant id)
   {
 		currentSkill = SkillManager.Instance.Get(id.AsInt32());
-		animationPlayer.Play(String.Format("Skills/{0}", id.ToString()));
+
+		if (currentSkill.animation != null)
+		{
+			animationPlayer.Play(String.Format("Skills/{0}", id.ToString()));
+		}
+		
+		if (currentSkill.Effect != null)
+		{
+			Node skillEffect = currentSkill.Effect.Instantiate();
+			ISkillEffect effect = (ISkillEffect)skillEffect;
+
+			effect.SetOwner(this);
+
+			GetNode("/root/World/Effects").AddChild(skillEffect);
+
+			effect.SetEffectRotation(this.Rotation);
+			effect.SetEffectPosition(this.GlobalPosition);
+		}
+
   }
 
   public override void _PhysicsProcess(double delta)
@@ -154,7 +172,7 @@ partial class Player: CharacterActor
 	// Add the gravity.
 	if (!IsOnFloor())
 	{
-	  velocity.y -= gravity * (float)delta;
+	  velocity.Y -= gravity * (float)delta;
 
 	  Velocity = velocity;
 
@@ -169,7 +187,7 @@ partial class Player: CharacterActor
 	ServerBridge.Instance.SendActorTookDamage(this.nearestPlayers, this, damage);
   }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
   public void SendMovement(Variant position, Variant yaw)
   {
 	Move((Vector2)position, (float)yaw, (int)State.Walk);
@@ -177,7 +195,7 @@ partial class Player: CharacterActor
 	ServerBridge.Instance.SendServerMovement(this, GlobalPosition, (float)yaw);
   }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
   public void SendMovementStopped(Variant position, Variant yaw)
   {
 	Move((Vector2)position, (float)yaw, (int)State.Idle);
@@ -186,7 +204,7 @@ partial class Player: CharacterActor
   }
 
 	
-  [RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void RequestSkill(Variant id)
   {
 	GD.Print("Received Request skill: ", GetActorId());

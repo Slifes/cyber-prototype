@@ -1,0 +1,14 @@
+[remap]
+
+importer="dialogue_manager_compiler_4"
+type="Resource"
+uid="uid://kx84uo65clct"
+path="res://.godot/imported/person.dialogue-ecd989d44347e3be352fda8a7aaceca8.tres"
+
+[deps]
+
+source_file="res://dialogue/person.dialogue"
+dest_files=["res://.godot/imported/person.dialogue-ecd989d44347e3be352fda8a7aaceca8.tres"]
+
+[params]
+

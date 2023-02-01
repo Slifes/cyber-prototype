@@ -38,7 +38,7 @@ partial class Player : CharacterActor
 
 	animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
-	skills = LoadSkills(new List<int>() { 0, 1 });
+	skills = LoadSkills(new List<int>() { 0, 1, 2 });
 
 	body = GetNode<Node3D>("Body");
 	camera = GetNode<Node3D>("Camera");
@@ -64,9 +64,9 @@ partial class Player : CharacterActor
 	UpdateStats();
   }
 
-  public void LoadUI()
+  void LoadUI()
   {
-	UIControl.CreateInstance();
+	  UIControl.CreateInstance();
 	  UIControl.Instance.LoadUI(this);
   }
 
@@ -109,10 +109,10 @@ partial class Player : CharacterActor
   }
 
   #region send_movement
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
   public void SendMovement(Variant position, Variant yaw) { }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
   public void SendMovementStopped(Variant position, Variant yaw) { }
   #endregion
 }

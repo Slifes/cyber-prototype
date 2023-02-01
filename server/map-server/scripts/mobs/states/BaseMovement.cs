@@ -35,8 +35,8 @@ class BaseMovement: IBehavior
 
   private Vector3 GetDirection(float time)
   {
-    var offsetX = noise.GetNoise3d(time, 0, 0);
-    var offsetZ = noise.GetNoise3d(0,0,time);
+    var offsetX = noise.GetNoise3D(time, 0, 0);
+    var offsetZ = noise.GetNoise3D(0,0,time);
 
     Vector3 velocity = new Vector3(offsetX, 0, offsetZ);
 
@@ -68,9 +68,9 @@ class BaseMovement: IBehavior
     {
       GD.Print("Not floor");
       actor.Velocity -= new Vector3(0, 9.8f * (float)delta, 0);
-    }
 
-    actor.MoveAndSlide();
+      actor.MoveAndSlide();
+    }
   }
 
   public void Finish()

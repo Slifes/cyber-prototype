@@ -28,9 +28,9 @@ partial class SkillList: Control
 
   public void SetSkills(List<Skill> skills)
   {
-	playerSkills = skills;
+		playerSkills = skills;
 
-	CreateSkillList();
+		CreateSkillList();
   }
 
   List<SkillItem> CreateSkillItens()
@@ -54,20 +54,26 @@ partial class SkillList: Control
 
 	var chunckedData = ChunkList<SkillItem>(skillItens, 4);
 
+	var index = 0;
+
 	foreach(var c in chunckedData)
 	{
-	  var hContainer = new HBoxContainer();
-	  verticalBox.AddChild(hContainer);
-	  hContainer.SizeFlagsHorizontal = SizeFlags.Fill;
-	  hContainer.SizeFlagsVertical = SizeFlags.ExpandFill;
+	  var hContainer = (HBoxContainer)verticalBox.GetChild(index);
+		var skillIndex = 0;
 
 	  foreach(var skill in c)
 	  {
-		var dragHelper = new DragHelper();
+			var skillControl = (Control)hContainer.GetChild(skillIndex);
 
-		dragHelper.AddData(skill);
-		hContainer.AddChild(dragHelper); 
+			var dragHelper = new DragHelper();
+
+			dragHelper.AddData(skill);
+			skillControl.AddChild(dragHelper);
+
+			skillIndex++;
 	  }
+	
+		index++;
 	}
   }
 

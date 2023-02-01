@@ -54,7 +54,7 @@ public partial class Wallet : Node
   [Signal]
   public delegate void WalletConnectedEventHandler();
 
-  const string RPC_URI = "https://rpc-mumbai.maticvigil.com/";
+  const string Rpc_URI = "https://rpc-mumbai.maticvigil.com/";
 
   public override void _Ready()
   {

@@ -33,7 +33,7 @@ public partial class AuthClient: Node2D
   
   private string _authToken;
 
-  private readonly HttpClient client = new();
+  private readonly System.Net.Http.HttpClient client = new();
 
   private SessionMapData _session;
 

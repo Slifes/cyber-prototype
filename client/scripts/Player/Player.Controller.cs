@@ -25,12 +25,14 @@ partial class Player
       {
         if (emb.ButtonIndex == MouseButton.WheelUp && camera3d.Size > MouseWheelUpLimit)
         {
-          camera3d.Size -= MouseWheelVelocity;
+          //camera3d.Size -= MouseWheelVelocity;
+          camera3d.Position -= new Vector3(0, MouseWheelVelocity, 0.20f);
           GD.Print("Camera Size: ", camera3d.Size);
         }
         if (emb.ButtonIndex == MouseButton.WheelDown && camera3d.Size < MouseWheelDownLimit)
         {
-          camera3d.Size += MouseWheelVelocity;
+          camera3d.Position += new Vector3(0, MouseWheelVelocity, 0.20f);
+          //camera3d.Size += MouseWheelVelocity;
         }
       }
     }
@@ -46,7 +48,7 @@ partial class Player
       {
         Vector2 currentMousePosition = GetViewport().GetMousePosition();
 
-        float x = mouseMoveCameraInitial.x - currentMousePosition.x;
+        float x = mouseMoveCameraInitial.X - currentMousePosition.X;
 
         float velocity = 0.2f * x * (float)delta;
 
@@ -72,7 +74,7 @@ partial class Player
 
     // Add the gravity.
     if (!IsOnFloor())
-      velocity.y -= gravity * (float)delta;
+      velocity.Y -= gravity * (float)delta;
 
     // Get the input direction and handle the movement/deceleration.
     // As good practice, you should replace UI actions with custom gameplay actions.
@@ -82,17 +84,17 @@ partial class Player
     {
       body.Rotation = camera.Rotation;
 
-      Vector3 direction = (body.Transform.basis * new Vector3(inputDir.x, 0, inputDir.y)).Normalized();
+      Vector3 direction = (body.Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
 
-      velocity.x = direction.x * Speed;
-      velocity.z = direction.z * Speed;
+      velocity.X = direction.X * Speed;
+      velocity.Z = direction.Z * Speed;
 
       moveStoppedSended = false;
     }
     else
     {
-      velocity.x = Mathf.MoveToward(Velocity.x, 0, Speed);
-      velocity.z = Mathf.MoveToward(Velocity.z, 0, Speed);
+      velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+      velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
     }
 
     Velocity = velocity;
@@ -119,12 +121,12 @@ partial class Player
 
   void SendMoving()
   {
-    RpcId(1, "SendMovement", new Vector2(GlobalPosition.x, GlobalPosition.z), GetActorRotation().y);
+    RpcId(1, "SendMovement", new Vector2(GlobalPosition.X, GlobalPosition.Z), GetActorRotation().Y);
   }
 
   void SendMoveStopped()
   {
-    RpcId(1, "SendMovementStopped", new Vector2(GlobalPosition.x, GlobalPosition.z), GetActorRotation().y);
+    RpcId(1, "SendMovementStopped", new Vector2(GlobalPosition.X, GlobalPosition.Z), GetActorRotation().Y);
   }
 
   void _AuthorityController(double delta)

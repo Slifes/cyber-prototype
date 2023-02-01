@@ -37,4 +37,17 @@ partial class DragHelper: Control
 
 		return data;
 	}
+
+  public override void _Input(InputEvent @event)
+  {
+		if(@event is InputEventMouseButton)
+		{
+			var inputEvent = (InputEventMouseButton)@event;
+
+			if (inputEvent.DoubleClick)
+			{
+				GD.Print("Double click");
+			}
+		}
+  }
 }

@@ -84,7 +84,7 @@ partial class ServerBridge: Node3D
   }
 
   #region spawn
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ActorEnteredZone(Variant id, Variant type, Variant position, Variant data)
   {
     GD.Print("Actor entered zone", id);
@@ -92,7 +92,7 @@ partial class ServerBridge: Node3D
     spawner.Spawn(id, type, position, data);
   }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ActorExitedZone(Variant id, Variant type)
   {
     ActorType actorType = (ActorType)(int)type;
@@ -102,7 +102,7 @@ partial class ServerBridge: Node3D
     spawner.Unspawn(id, type);
   }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ActorPlayable(Variant id, Variant position, Variant data)
   {
     spawner.Spawn(id, (Variant)(int)ActorType.Player, position, data);
@@ -110,7 +110,7 @@ partial class ServerBridge: Node3D
   #endregion
 
   #region skill
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void SkillExecuted(Variant actorId, Variant actorType, Variant skillId, Variant timestamp)
   {
     GD.Print("Received skill approved");
@@ -127,7 +127,7 @@ partial class ServerBridge: Node3D
   #endregion
 
   #region movement
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
   public void ReceiveMovement(Variant actorId, Variant position, Variant yaw, Variant timestamp)
   {
     actions.Add(new Action
@@ -144,7 +144,7 @@ partial class ServerBridge: Node3D
     });
   }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
   public void ReceiveMovementStopped(Variant actorId, Variant position, Variant yaw, Variant timestamp)
   {
     actions.Add(new Action
@@ -163,7 +163,7 @@ partial class ServerBridge: Node3D
   #endregion
 
   #region npc
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void NpcChangeState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp)
   {
     actions.Add(new Action
@@ -182,7 +182,7 @@ partial class ServerBridge: Node3D
     });
   }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void NpcUpdateState(Variant id, Variant state,Variant position, Variant yaw, Variant data, Variant timestamp)
   {
     actions.Add(new Action
@@ -201,7 +201,7 @@ partial class ServerBridge: Node3D
     });
   }
 
-  [RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ActorTookDamage(Variant actorId, Variant actorType, Variant damage, Variant hp, Variant maxHP)
   {
     IActor actor = spawner.GetActor(actorId.ToString(), (ActorType)(int)actorType);
@@ -212,5 +212,8 @@ partial class ServerBridge: Node3D
     }
     
   }
+
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void UpdateCharacterStatus(Variant actorId, Variant actorType, Variant currentHP, Variant currentSP) { }
   #endregion
 }

@@ -20,6 +20,8 @@ interface IActor
   
   void TakeDamage(int damage);
 
+  //void ConsumeSP(int sp);
+
   void onActorReady();
 
   int GetActorId();

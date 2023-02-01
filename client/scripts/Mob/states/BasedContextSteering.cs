@@ -39,7 +39,7 @@ class BasedContextSteering: IBehavior
   {
     for(var i = 0; i < raycasts.Length; i++)
     {
-      rayDirections[i] = raycasts[i].TargetPosition.Rotated(Vector3.Up, actor.Rotation.y);
+      rayDirections[i] = raycasts[i].TargetPosition.Rotated(Vector3.Up, actor.Rotation.Y);
     }
 
     var interestMap = new List<float>(new float[raycasts.Length]);
@@ -103,6 +103,9 @@ class BasedContextSteering: IBehavior
   {
     var dataArray = (Godot.Collections.Array<Variant>)data;
 
-    TargetPosition = (Vector3)dataArray[0];
+    if (dataArray.Count > 0)
+    {
+      TargetPosition = (Vector3)dataArray[0];
+    }
   }
 }

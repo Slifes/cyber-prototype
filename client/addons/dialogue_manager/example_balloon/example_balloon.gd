@@ -1,13 +1,11 @@
 extends CanvasLayer
 
-
-@onready var balloon: ColorRect = $Balloon
-@onready var margin: MarginContainer = $Balloon/Margin
-@onready var character_label: RichTextLabel = $Balloon/Margin/VBox/CharacterLabel
-@onready var dialogue_label := $Balloon/Margin/VBox/DialogueLabel
-@onready var responses_menu: VBoxContainer = $Balloon/Margin/VBox/Responses
-@onready var response_template: RichTextLabel = %ResponseTemplate
-
+@onready var balloon: ColorRect = $VBoxContainer/Balloon
+@onready var margin: MarginContainer = $VBoxContainer/Balloon/Margin
+@onready var character_label: RichTextLabel = $VBoxContainer/Balloon/Margin/VBox/CharacterLabel
+@onready var dialogue_label := $VBoxContainer/Balloon/Margin/VBox/DialogueLabel
+@onready var responses_menu: VBoxContainer = $VBoxContainer/Responses/Responses
+@onready var response_template: RichTextLabel = $VBoxContainer/Responses/ResponseTemplate
 ## The dialogue resource
 var resource: DialogueResource
 
@@ -53,9 +51,6 @@ var dialogue_line: DialogueLine:
 				item.text = response.text
 				item.show()
 				responses_menu.add_child(item)
-
-		# Reset the margin size
-		margin.size = Vector2.ZERO
 		
 		# Show our balloon
 		balloon.visible = true
@@ -84,7 +79,7 @@ var dialogue_line: DialogueLine:
 func _ready() -> void:
 	response_template.hide()
 	balloon.hide()
-	balloon.custom_minimum_size.x = balloon.get_viewport_rect().size.x
+	# balloon.custom_minimum_size.x = balloon.get_viewport_rect().size.x
 	
 	DialogueManager.mutation.connect(_on_mutation)
 
@@ -148,6 +143,18 @@ func get_responses() -> Array:
 	return items
 
 
+func handle_resize() -> void:
+	if not is_instance_valid(margin):
+		call_deferred("handle_resize")
+		return
+		
+	# balloon.custom_minimum_size.y = margin.size.y
+	# Force a resize on only the height
+	#balloon.size.y = 0
+	#var viewport_size = balloon.get_viewport_rect().size
+	#balloon.global_position = Vector2((viewport_size.x - balloon.size.x) * 0.5, viewport_size.y - balloon.size.y)
+
+
 ### Signals
 
 
@@ -185,9 +192,4 @@ func _on_balloon_gui_input(event: InputEvent) -> void:
 
 
 func _on_margin_resized() -> void:
-	if is_instance_valid(margin):
-		balloon.custom_minimum_size.y = margin.size.y
-		# Force a resize on only the height
-		balloon.size.y = 0
-		var viewport_size = balloon.get_viewport_rect().size
-		balloon.global_position = Vector2((viewport_size.x - balloon.size.x) * 0.5, viewport_size.y - balloon.size.y)
+	handle_resize()

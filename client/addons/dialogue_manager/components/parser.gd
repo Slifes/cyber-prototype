@@ -36,7 +36,7 @@ var TOKEN_DEFINITIONS: Dictionary = {
 	DialogueConstants.TOKEN_NOT: RegEx.create_from_string("^(not( |$)|!)"),
 	DialogueConstants.TOKEN_AND_OR: RegEx.create_from_string("^(and|or)( |$)"),
 	DialogueConstants.TOKEN_STRING: RegEx.create_from_string("^(\".*?\"|\'.*?\')"),
-	DialogueConstants.TOKEN_VARIABLE: RegEx.create_from_string("^[a-zA-Z_][a-zA-Z_0-9]+"),
+	DialogueConstants.TOKEN_VARIABLE: RegEx.create_from_string("^[a-zA-Z_][a-zA-Z_0-9]*"),
 	DialogueConstants.TOKEN_COMMENT: RegEx.create_from_string("^#.*")
 }
 
@@ -1204,7 +1204,8 @@ func check_next_token(token: Dictionary, next_tokens: Array[Dictionary], line_ty
 		DialogueConstants.TOKEN_BRACE_OPEN:
 			expected_token_types = [
 				DialogueConstants.TOKEN_STRING,
-				DialogueConstants.TOKEN_NUMBER
+				DialogueConstants.TOKEN_NUMBER,
+				DialogueConstants.TOKEN_BRACE_CLOSE
 			]
 		
 		DialogueConstants.TOKEN_PARENS_CLOSE, \

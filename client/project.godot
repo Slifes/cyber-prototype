@@ -13,7 +13,10 @@ config_version=5
 config/name="MMO"
 run/main_scene="res://scenes/world.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
+boot_splash/bg_color=Color(0.0941176, 0.0941176, 0.0941176, 1)
+boot_splash/image="res://Slife-Studio-4k.png"
 config/icon="res://icon.svg"
+boot_splash/minimum_display_time=2000
 
 [autoload]
 

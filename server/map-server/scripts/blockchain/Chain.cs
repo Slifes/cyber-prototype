@@ -28,7 +28,7 @@ namespace GameServer.scripts.blockchain
 		SyncState syncState;
 
 		const string CONTRACT_ADDRESS = "0xEbe678C8389bC74Ed1A7BD91407A03E96BAAB1bD";
-		const string HTTP_PROVIDER = "https://rpc-mumbai.maticvigil.com/";
+		const string HTTP_PROVIDER = "https://Rpc-mumbai.maticvigil.com/";
 
 		public Chain()
 		{

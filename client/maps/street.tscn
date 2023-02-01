@@ -1,0 +1,70 @@
+[gd_scene load_steps=5 format=3 uid="uid://c526cj2dwfbya"]
+
+[ext_resource type="BoxMesh" uid="uid://dkr64uojeo0iw" path="res://maps/street.tres" id="1_g1yv0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rp536"]
+albedo_color = Color(0.27451, 0.27451, 0.27451, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_4u63v"]
+material = SubResource("StandardMaterial3D_rp536")
+size = Vector2(10, 1)
+
+[sub_resource type="MultiMesh" id="MultiMesh_x3r81"]
+transform_format = 1
+instance_count = 10
+visible_instance_count = 10
+mesh = ExtResource("1_g1yv0")
+buffer = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+[node name="Street" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_4u63v")
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
+multimesh = SubResource("MultiMesh_x3r81")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.51807, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.85541, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0515, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.20914, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.29718, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.563247, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.283245, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.22473, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.34315, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.32779, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="MultiMeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.35719, -0.0306947, 0)
+mesh = ExtResource("1_g1yv0")

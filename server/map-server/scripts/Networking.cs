@@ -54,16 +54,16 @@ public partial class Networking : Node3D
 		ServerBridge.Instance.SendPlayableActor(remoteId, actor);
 	}
 
-	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void CheckLatency(Variant clientTime)
 	{
 		RpcId(Multiplayer.GetRemoteSenderId(), "ReturnLatency", clientTime);
 	}
 
-	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void ReturnLatency(Variant serverTime, Variant clientTime) { }
 
-	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void FetchServerTime(Variant clientTime)
 	{
 		double now = Time.GetUnixTimeFromSystem() * 1000.0;
@@ -71,10 +71,10 @@ public partial class Networking : Node3D
 		RpcId(Multiplayer.GetRemoteSenderId(), "ReturnServerTime", now, clientTime);
 	}
 
-	[RPC(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	[Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void ReturnServerTime(Variant serverTime, Variant clientTime) { }
 
-	[RPC(MultiplayerAPI.RPCMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void onSessionMap(Variant auth_token)
 	{
 		GD.Print("Requesting: Entering map.");

@@ -10,7 +10,7 @@ height = 0.12
 size = Vector3(0.2, 0.1, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1t0ce"]
-size = Vector3(6, 1, 6)
+size = Vector3(6, 2, 6)
 
 [sub_resource type="Animation" id="Animation_w51qs"]
 length = 0.001

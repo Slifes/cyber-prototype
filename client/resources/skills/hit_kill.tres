@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dtuke3tnblhom"]
+
+[ext_resource type="Script" path="res://scripts/resources/Skill.cs" id="1_vyihk"]
+
+[resource]
+script = ExtResource("1_vyihk")
+ID = 2
+iconColor = Color(0.32549, 0.211765, 0.6, 1)
+Damage = 0
+Type = 0
+ActiveType = 0
+SP = 0
+Delay = 0.0
