@@ -1,10 +1,10 @@
-using Godot;
+﻿using Godot;
 
 class BaseAttack : IBehavior
 {
-  Npc actor;
-  
-  public BaseAttack(Npc actor)
+  BaseEnemyActor actor;
+
+  public BaseAttack(BaseEnemyActor actor)
   {
     this.actor = actor;
   }

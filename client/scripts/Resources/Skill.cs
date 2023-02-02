@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 
 enum SkillType
 {
@@ -13,7 +13,7 @@ enum SkillActiveType
   Projectile,
 }
 
-partial class Skill: Resource
+partial class Skill : Resource
 {
   [Export]
   public int ID;

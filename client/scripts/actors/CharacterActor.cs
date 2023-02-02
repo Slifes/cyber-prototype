@@ -1,7 +1,7 @@
+﻿using System;
 using Godot;
-using System;
 
-partial class BodyActor : RigidBody3D, IActor
+partial class CharacterActor : CharacterBody3D, IActor
 {
   protected int _actorId;
 
@@ -24,6 +24,11 @@ partial class BodyActor : RigidBody3D, IActor
 
     currentHP = maxHP;
     currentSP = maxSP;
+  }
+
+  public override void _Ready()
+  {
+    onActorReady();
   }
 
   public int GetActorId()
@@ -51,19 +56,29 @@ partial class BodyActor : RigidBody3D, IActor
     return maxSP;
   }
 
-  public void TakeDamage(int damage)
+  public virtual void TakeDamage(int damage)
   {
     currentHP -= damage;
   }
 
+  public virtual void ConsumeSP(int sp)
+  {
+    currentSP -= sp;
+  }
+
   public virtual void SetServerData(Variant data)
   {
-    GD.Print(data);
+    var dataArray = data.AsGodotArray<Variant>();
+
+    currentHP = (int)dataArray[0];
+    currentSP = (int)dataArray[1];
+    maxHP = (int)dataArray[2];
+    maxSP = (int)dataArray[3];
   }
 
   public ActorType GetActorType()
   {
-    return ActorType.Npc;
+    return ActorType.Player;
   }
 
   public virtual void ExecuteSkill(Variant skillId) { }

@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using Godot;
 
-partial class CharacterSpawner: Node3D
+partial class CharacterSpawner : Node3D
 {
   PackedScene playerScene;
 
@@ -19,11 +19,12 @@ partial class CharacterSpawner: Node3D
       if (player != null)
       {
         player.Name = name.ToString();
-        player.InitialPosition = position;
         player.SetMultiplayerAuthority(Int32.Parse(name.ToString()));
         player.SetServerData(data);
 
         AddChild(player);
+
+        player.GlobalPosition = position;
       }
     }
   }
@@ -32,7 +33,7 @@ partial class CharacterSpawner: Node3D
   {
     if (HasNode(name.ToString()))
     {
-      RemoveChild(GetNode(name.ToString()));
+      GetNode(name.ToString()).QueueFree();
     }
   }
 }

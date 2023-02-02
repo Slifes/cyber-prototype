@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Godot;
 
 struct Action
@@ -10,7 +10,7 @@ struct Action
   public double Timestamp;
 }
 
-partial class ServerBridge: Node3D
+partial class ServerBridge : Node3D
 {
   Spawner spawner;
 
@@ -68,7 +68,7 @@ partial class ServerBridge: Node3D
       start = Time.GetTicksUsec();
 
       var actor = (Node3D)spawner.GetActor(actorData.Key.ActorId.ToString(), actorData.Key.ActorType);
-    
+
       if (actor != null)
       {
         foreach (var act in actorData)
@@ -183,7 +183,7 @@ partial class ServerBridge: Node3D
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void NpcUpdateState(Variant id, Variant state,Variant position, Variant yaw, Variant data, Variant timestamp)
+  public void NpcUpdateState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp)
   {
     actions.Add(new Action
     {
@@ -206,11 +206,11 @@ partial class ServerBridge: Node3D
   {
     IActor actor = spawner.GetActor(actorId.ToString(), (ActorType)(int)actorType);
 
-    if(actor != null)
+    if (actor != null)
     {
       actor.TakeDamage((int)damage);
     }
-    
+
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

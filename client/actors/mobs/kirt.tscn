@@ -1,6 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://b20e286pq8w02"]
+[gd_scene load_steps=11 format=3 uid="uid://b20e286pq8w02"]
 
-[ext_resource type="Script" path="res://scripts/mob/Npc.cs" id="1_620j6"]
+[ext_resource type="Script" path="res://scripts/actors/enemies/BaseEnemyActor.cs" id="1_cnobq"]
 [ext_resource type="Animation" uid="uid://dwg6kw8k3axit" path="res://actors/mobs/attack.anim" id="2_ekd23"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3788e"]
@@ -9,6 +9,21 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8i0v2"]
 albedo_color = Color(1, 0.772549, 0.172549, 1)
+
+[sub_resource type="Animation" id="Animation_b1bxf"]
+resource_name = "Die"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:mesh:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_a24nq"]
 length = 0.001
@@ -35,6 +50,18 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D:mesh:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_nu175"]
@@ -66,9 +93,22 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 4.18879, 0), Vector3(0, 6.28319, 0), Vector3(0, 3.14159, 0), Vector3(0, 6.28319, 0)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D:mesh:size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tbogy"]
 _data = {
+"Die": SubResource("Animation_b1bxf"),
 "RESET": SubResource("Animation_a24nq"),
 "Walking": SubResource("Animation_nu175")
 }
@@ -82,7 +122,7 @@ _data = {
 collision_layer = 2049
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("1_620j6")
+script = ExtResource("1_cnobq")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)

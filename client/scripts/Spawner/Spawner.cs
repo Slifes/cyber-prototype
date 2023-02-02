@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class Spawner: Node
+partial class Spawner : Node
 {
   CharacterSpawner playerSpawner;
 
@@ -14,18 +14,18 @@ partial class Spawner: Node
 
   public IActor GetActor(string id, ActorType actorType)
   {
-    switch(actorType)
+    switch (actorType)
     {
       case ActorType.Player:
         if (playerSpawner.HasNode(id))
           return playerSpawner.GetNode<IActor>(id);
-      break;
+        break;
       case ActorType.Npc:
         if (npcSpawner.HasNode(id))
           return npcSpawner.GetNode<IActor>(id);
-      break;
+        break;
     }
-    
+
     return null;
   }
 
@@ -33,7 +33,7 @@ partial class Spawner: Node
   {
     ActorType _type = (ActorType)(int)type;
 
-    switch(_type)
+    switch (_type)
     {
       case ActorType.Player:
         playerSpawner.Spawn(id, (Vector3)position, data);
@@ -48,7 +48,7 @@ partial class Spawner: Node
   {
     ActorType _type = (ActorType)(int)type;
 
-    switch(_type)
+    switch (_type)
     {
       case ActorType.Player:
         playerSpawner.Unspawn(id);

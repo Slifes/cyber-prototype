@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 
 enum ActorType
 {
@@ -17,7 +17,7 @@ interface IActor
   int GetMaxHP();
 
   int GetMaxSP();
-  
+
   void TakeDamage(int damage);
 
   //void ConsumeSP(int sp);

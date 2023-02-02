@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class NpcSpawner: Node3D
+partial class NpcSpawner : Node3D
 {
   public void Spawn(Variant name, Vector3 position, Variant data)
   {
@@ -33,7 +33,7 @@ partial class NpcSpawner: Node3D
   {
     if (HasNode(name.ToString()))
     {
-      RemoveChild(GetNode(name.ToString()));
+      GetNode(name.ToString()).QueueFree();
     }
   }
 }

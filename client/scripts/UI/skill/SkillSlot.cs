@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class SkillSlot: Control
+partial class SkillSlot : Control
 {
   [Export]
   public SkillItem skill;
@@ -10,51 +10,51 @@ partial class SkillSlot: Control
 
   public override Variant _GetDragData(Vector2 atPosition)
   {
-	if (skill == null)
-	{
-	  return base._GetDragData(atPosition);
-	}
+    if (skill == null)
+    {
+      return base._GetDragData(atPosition);
+    }
 
-	var node = (SkillItem)GetNode("Data");
+    var node = (SkillItem)GetNode("Data");
 
-	var self = (Control)node.GetNode("View").Duplicate();
+    var self = (Control)node.GetNode("View").Duplicate();
 
-	self.Size = new Vector2(50, 50);
-	self.SetAnchorsPreset(LayoutPreset.TopLeft);
+    self.Size = new Vector2(50, 50);
+    self.SetAnchorsPreset(LayoutPreset.TopLeft);
 
-	SetDragPreview(self);
+    SetDragPreview(self);
 
-	RemoveChild(GetNode("Data"));
+    GetNode("Data").QueueFree();
 
-	UpdateDraggedSkill(null);
+    UpdateDraggedSkill(null);
 
-	return node;
+    return node;
   }
 
   public override bool _CanDropData(Vector2 atPosition, Variant data)
   {
-	var control = (SkillItem)data;
+    var control = (SkillItem)data;
 
-	return control.skill.Type == SkillType.Active;
+    return control.skill.Type == SkillType.Active;
   }
 
   public override void _DropData(Vector2 atPosition, Variant data)
   {
-	var node = (Control)data;
+    var node = (Control)data;
 
-	var skillItem = (SkillItem)node.Duplicate();
+    var skillItem = (SkillItem)node.Duplicate();
 
-	skillItem.Name = "Data";
+    skillItem.Name = "Data";
 
-	AddChild(skillItem);
+    AddChild(skillItem);
 
-	UpdateDraggedSkill(skillItem);
+    UpdateDraggedSkill(skillItem);
   }
 
   void UpdateDraggedSkill(SkillItem skillItem)
   {
-	skill = skillItem;
+    skill = skillItem;
 
-	EmitSignal(nameof(SkillChanged), skill, GetIndex());
+    EmitSignal(nameof(SkillChanged), skill, GetIndex());
   }
 }

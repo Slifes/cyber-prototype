@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using System;
 using System.Collections.Generic;
 
@@ -26,7 +26,7 @@ class SkillManager
 
     var resources = Godot.DirAccess.GetFilesAt("res://resources/skills");
 
-    foreach(var res in resources)
+    foreach (var res in resources)
     {
       var skill = ResourceLoader.Load<Skill>(String.Format("res://resources/skills/{0}", res.Replace(".remap", "")));
 

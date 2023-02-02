@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class SkillDetail: Control
+partial class SkillDetail : Control
 {
   [Export]
   Skill skill;

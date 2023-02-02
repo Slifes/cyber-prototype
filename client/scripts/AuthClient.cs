@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using System.Text;
 using System.Net.Http;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Godot.Collections;
 
-public partial class AuthClient: Node2D
+public partial class AuthClient : Node2D
 {
   public struct AuthenticatedData
   {
@@ -30,7 +30,7 @@ public partial class AuthClient: Node2D
   private string _address;
 
   private bool _authenticated;
-  
+
   private string _authToken;
 
   private readonly System.Net.Http.HttpClient client = new();
@@ -38,10 +38,10 @@ public partial class AuthClient: Node2D
   private SessionMapData _session;
 
   public bool IsAuthenticated { get { return _authenticated; } }
-  
+
   public string Account { get { return _address; } }
 
-  public SessionMapData Session { get { return _session;  } }
+  public SessionMapData Session { get { return _session; } }
 
   public string SessionToken()
   {
@@ -72,7 +72,7 @@ public partial class AuthClient: Node2D
     var characters = await getCharacters();
 
     var characterArray = new Array();
-    
+
     foreach (var character in characters)
     {
       Dictionary obj = new();

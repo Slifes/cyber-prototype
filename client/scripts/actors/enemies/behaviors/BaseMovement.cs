@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-class BaseMovement: IBehavior
+class BaseMovement : IBehavior
 {
   Vector3 targetPosition;
 
@@ -14,22 +14,22 @@ class BaseMovement: IBehavior
 
   float count = 0;
 
-  Npc actor;
+  BaseEnemyActor actor;
 
-  public BaseMovement(Npc actor)
+  public BaseMovement(BaseEnemyActor actor)
   {
-  this.actor = actor;
+    this.actor = actor;
   }
 
   public void Start()
-  { 
+  {
     actor.Animation.Play("Walking");
   }
 
   private Vector3 GetDirection(float time)
   {
     var offsetX = noise.GetNoise3D(time, 0, 0);
-    var offsetZ = noise.GetNoise3D(0,0,time);
+    var offsetZ = noise.GetNoise3D(0, 0, time);
 
     Vector3 velocity = new Vector3(offsetX, 0, offsetZ);
 
@@ -62,6 +62,6 @@ class BaseMovement: IBehavior
 
   public void SetData(Variant data)
   {
-  
+
   }
 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 class SkillControl
@@ -7,7 +7,7 @@ class SkillControl
 
   private static SkillControl _instance;
 
-  public static SkillControl Instance { get { return _instance; }}
+  public static SkillControl Instance { get { return _instance; } }
 
   public static void CreateInstance()
   {

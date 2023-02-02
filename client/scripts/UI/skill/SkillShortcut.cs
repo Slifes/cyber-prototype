@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class SkillShortcut: Control
+partial class SkillShortcut : Control
 {
   SkillSlot[] slots;
 
@@ -8,21 +8,21 @@ partial class SkillShortcut: Control
 
   public override void _Ready()
   {
-	var hBox = GetNode<Control>("ColorRect/MarginContainer/HBoxContainer");
+    var hBox = GetNode<Control>("ColorRect/MarginContainer/HBoxContainer");
 
-	slots = new SkillSlot[hBox.GetChildCount()];
+    slots = new SkillSlot[hBox.GetChildCount()];
 
-	skills = new SkillItem[hBox.GetChildCount()];
+    skills = new SkillItem[hBox.GetChildCount()];
 
-	for (var i = 0; i < slots.Length; i++)
-	{
-	  slots[i] = (SkillSlot)hBox.GetChild(i);
-	  slots[i].SkillChanged += (SkillItem skill, int index) => { skills[index] = skill; };
-	}
+    for (var i = 0; i < slots.Length; i++)
+    {
+      slots[i] = (SkillSlot)hBox.GetChild(i);
+      slots[i].SkillChanged += (SkillItem skill, int index) => { skills[index] = skill; };
+    }
   }
 
   public SkillItem GetSkillBySlot(int index)
   {
-	return skills[index];
+    return skills[index];
   }
 }

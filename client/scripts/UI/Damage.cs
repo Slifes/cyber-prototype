@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class Damage: Node3D
+partial class Damage : Node3D
 {
   PackedScene DamageScene = ResourceLoader.Load<PackedScene>("res://effects/Damage.tscn");
 
@@ -17,7 +17,7 @@ partial class Damage: Node3D
     AddChild(damageText);
 
     damageText.GlobalPosition = ((Node3D)actor).GlobalPosition;
-    
+
 
     damageText.Call("run", damage, color);
   }

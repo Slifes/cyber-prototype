@@ -5,58 +5,45 @@ using System.Collections.Generic;
 
 partial class Player
 {
-  List<Skill> skills; 
+  List<Skill> skills;
 
   public List<Skill> Skills { get { return skills; } }
 
   public override void ExecuteSkill(Variant skillId)
   {
     int id = skillId.AsInt32();
-  
+
     Skill skill = SkillManager.Instance.Get(id);
 
-    if(skill.Effect != null)
+    if (skill.Effect != null)
     {
       var instance = skill.Effect.Instantiate();
-      
+
       ((ISkillEffect)instance).SetOwner(this);
-  
+
       GetNode("/root/World/Effects").AddChild(instance);
-      
-      ((ISkillEffect)instance).SetEffectRotation(GetActorRotation());
+
+      ((ISkillEffect)instance).SetEffectRotation(GetBodyRotation());
       ((ISkillEffect)instance).SetEffectPosition(GlobalPosition);
     }
-    
+
     string animationName = String.Format("Skills/{0}", id);
 
-    if (animationPlayer.HasAnimation(animationName))
+    if (Animation.HasAnimation(animationName))
     {
-      animationPlayer.Play(animationName);
+      Animation.Stop(true);
+      Animation.Play(animationName);
     }
 
-    if (IsMultiplayerAuthority()){
+    if (IsMultiplayerAuthority())
+    {
       SkillControl.Instance.UpdateSkillItems(id, 0);
-    }
-  }
-
-  private void InputSkill()
-  {
-    for(var i = 0; i < 6; i++)
-    {
-      if (Input.IsActionJustPressed(String.Format("slot{0}", i)))
-      {
-        var skillItem = UIControl.Instance.GetSkillSlot(i);
-
-        if (skillItem != null && skillItem.Available) {
-          SendRequestSkill(skillItem.skill.ID);
-        }
-      }
     }
   }
 
   private List<Skill> LoadSkills(List<int> skillsToBeLoaded)
   {
-    var animationLibrary = animationPlayer.GetAnimationLibrary("Skills");
+    var animationLibrary = Animation.GetAnimationLibrary("Skills");
 
     var skills = new List<Skill>(new Skill[skillsToBeLoaded.Count]);
 
@@ -66,7 +53,7 @@ partial class Player
 
       if (skill != null)
       {
-        if (skill.Type == SkillType.Active)
+        if (skill.Type == SkillType.Active && skill.animation != null)
         {
           animationLibrary.AddAnimation(skill.ID.ToString(), skill.animation);
         }
@@ -78,11 +65,8 @@ partial class Player
     return skills;
   }
 
-  public void SendRequestSkill(Variant id)
+  public void SendRequestSkill(Variant id, Variant data)
   {
-    RpcId(1, "RequestSkill", id);
+    RpcId(1, "RequestSkill", id, data);
   }
-
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void RequestSkill(Variant id) { }
 }

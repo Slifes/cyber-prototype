@@ -1,9 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://bks6faj2baime"]
+[gd_scene load_steps=10 format=3 uid="uid://bks6faj2baime"]
 
-[ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_nqh5b"]
+[ext_resource type="Script" path="res://scripts/actors/player/Player.cs" id="1_w3kb5"]
 [ext_resource type="PackedScene" uid="uid://co1cx60fvis72" path="res://items/equips/normal_sword.tscn" id="2_tme2q"]
-[ext_resource type="FastNoiseLite" uid="uid://dncpjxo3226fi" path="res://noise/shake_camera.tres" id="3_4gsqw"]
-[ext_resource type="Script" path="res://scripts/player/camera.gd" id="3_qyc8c"]
 [ext_resource type="AudioStream" uid="uid://ca15vpmcjaoxp" path="res://audio/hit.ogg" id="6_to3y1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0f2vn"]
@@ -50,7 +48,7 @@ tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
+"update": 0,
 "values": [false]
 }
 tracks/3/type = "value"
@@ -75,7 +73,7 @@ _data = {
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
-script = ExtResource("1_nqh5b")
+script = ExtResource("1_w3kb5")
 
 [node name="CollisionShape" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_0f2vn")
@@ -94,17 +92,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_wahlt")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, 0)
 
 [node name="NormalSword" parent="Body/Arm/Hand" instance=ExtResource("2_tme2q")]
-
-[node name="Camera" type="Node3D" parent="."]
-
-[node name="Camera3D" type="Camera3D" parent="Camera"]
-transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 0, 4, 1.5)
-fov = 70.0
-size = 2.5
-near = 0.1
-far = 10000.0
-script = ExtResource("3_qyc8c")
-noise = ExtResource("3_4gsqw")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

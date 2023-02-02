@@ -1,4 +1,4 @@
-
+﻿
 using Godot;
 using System;
 using System.Threading.Tasks;
@@ -20,7 +20,8 @@ public partial class Wallet : Node
 
   SessionStruct session;
 
-  public string SelectedAccount { 
+  public string SelectedAccount
+  {
     get
     {
       if (session.Topic.IsNullOrEmpty())
@@ -155,7 +156,7 @@ public partial class Wallet : Node
         target.CallDeferred("emit_signal", "_on_authenticated");
       }
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       GD.Print("Failed to authenticate: ", e);
     }

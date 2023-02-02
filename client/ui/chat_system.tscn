@@ -25,11 +25,17 @@ offset_bottom = 0.0799561
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Panel/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel/ScrollContainer/VBoxContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/normal_font_size = 14
 text = "asd saasd asd asd asd as"
-fit_content = true
 
 [node name="TextEdit" type="TextEdit" parent="Panel"]
 layout_mode = 1
@@ -40,3 +46,6 @@ anchor_bottom = 1.0
 offset_top = 0.0799561
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_font_sizes/font_size = 14
+drag_and_drop_selection_enabled = false
+scroll_fit_content_height = true

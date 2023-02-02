@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class SkillItem: Control
+partial class SkillItem : Control
 {
   ColorRect Overlay;
 
@@ -15,50 +15,50 @@ partial class SkillItem: Control
 
   public override void _EnterTree()
   {
-	SkillControl.Instance.Add(this);
+    SkillControl.Instance.Add(this);
   }
 
   public override void _Ready()
   {
-	Overlay = GetNode<ColorRect>("View/overlay");
+    Overlay = GetNode<ColorRect>("View/overlay");
 
-	GetNode<ColorRect>("View/bkg").Color = skill.iconColor;
+    GetNode<ColorRect>("View/bkg").Color = skill.iconColor;
   }
 
   public override void _ExitTree()
   {
-	SkillControl.Instance.Remove(this);
+    SkillControl.Instance.Remove(this);
   }
 
   public void Used()
   {
-	Available = false;
-	TimeLapsed = 0;
+    Available = false;
+    TimeLapsed = 0;
 
-	Overlay.Position = new Vector2(Overlay.Position.X, 0);
-	Overlay.Size = new Vector2(Overlay.Size.X, this.Size.Y);
+    Overlay.Position = new Vector2(Overlay.Position.X, 0);
+    Overlay.Size = new Vector2(Overlay.Size.X, this.Size.Y);
   }
 
   public override void _Process(double delta)
   {
-	if (!Available)
-	{
-	  TimeLapsed += (float)delta;
+    if (!Available)
+    {
+      TimeLapsed += (float)delta;
 
-	  if (TimeLapsed >= skill.Delay)
-	  {
-		Available = true;
-				Overlay.Position = new Vector2(Overlay.Position.X, this.Size.Y);
-				Overlay.Size = new Vector2(Overlay.Size.X, 0);
-	  }
-	  else
-	  {
-		var percentage = (float)TimeLapsed / skill.Delay;
-		var size = this.Size.Y * percentage;
+      if (TimeLapsed >= skill.Delay)
+      {
+        Available = true;
+        Overlay.Position = new Vector2(Overlay.Position.X, this.Size.Y);
+        Overlay.Size = new Vector2(Overlay.Size.X, 0);
+      }
+      else
+      {
+        var percentage = (float)TimeLapsed / skill.Delay;
+        var size = this.Size.Y * percentage;
 
-		Overlay.Position = new Vector2(Overlay.Position.X, size);
-		Overlay.Size = new Vector2(Overlay.Size.X, this.Size.Y - size);
-	  }
-	}
+        Overlay.Position = new Vector2(Overlay.Position.X, size);
+        Overlay.Size = new Vector2(Overlay.Size.X, this.Size.Y - size);
+      }
+    }
   }
 }

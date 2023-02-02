@@ -1,17 +1,17 @@
-using Godot;
+﻿using Godot;
 using System.Collections.Generic;
 
-class BasedContextSteering: IBehavior
+class BasedContextSteering : IBehavior
 {
   RayCast3D[] raycasts;
 
   Vector3[] rayDirections;
 
-  Npc actor;
+  BaseEnemyActor actor;
 
   Vector3 TargetPosition;
 
-  public BasedContextSteering(Npc actor)
+  public BasedContextSteering(BaseEnemyActor actor)
   {
     this.actor = actor;
   }
@@ -23,7 +23,7 @@ class BasedContextSteering: IBehavior
     raycasts = new RayCast3D[rays.GetChildCount()];
     rayDirections = new Vector3[raycasts.Length];
 
-    for(var i = 0; i < raycasts.Length; i++)
+    for (var i = 0; i < raycasts.Length; i++)
     {
       raycasts[i] = (RayCast3D)rays.GetChild(i);
       raycasts[i].Enabled = true;
@@ -32,18 +32,18 @@ class BasedContextSteering: IBehavior
 
   private void AttackBodyEntered(Node3D node)
   {
-    actor.ChangeState(NpcState.Attacking);
+    actor.ChangeState(AIState.Attacking);
   }
 
   private Vector3 GetDirection()
   {
-    for(var i = 0; i < raycasts.Length; i++)
+    for (var i = 0; i < raycasts.Length; i++)
     {
       rayDirections[i] = raycasts[i].TargetPosition.Rotated(Vector3.Up, actor.Rotation.Y);
     }
 
     var interestMap = new List<float>(new float[raycasts.Length]);
-    
+
     var targetPos = TargetPosition;
 
     for (var i = 0; i < raycasts.Length; i++)
@@ -52,10 +52,11 @@ class BasedContextSteering: IBehavior
 
       Vector3 toTarget = targetPos - actor.GlobalPosition;
 
-      if(!ray.IsColliding())
+      if (!ray.IsColliding())
       {
         interestMap[i] = Mathf.Max(0, toTarget.Dot(rayDirections[i]));
-      } else 
+      }
+      else
       {
         interestMap[i] = 0.0f;
       }
@@ -93,7 +94,7 @@ class BasedContextSteering: IBehavior
   {
     actor.Velocity = Vector3.Zero;
 
-    for(var i = 0; i < raycasts.Length; i++)
+    for (var i = 0; i < raycasts.Length; i++)
     {
       raycasts[i].Enabled = false;
     }

@@ -1,8 +1,8 @@
-using Godot;
+﻿using Godot;
 using System.Collections.Generic;
 using System.Linq;
 
-partial class SkillList: Control
+partial class SkillList : Control
 {
   PackedScene skillItem = ResourceLoader.Load<PackedScene>("res://ui/skill/skill_item.tscn");
 
@@ -12,77 +12,77 @@ partial class SkillList: Control
 
   public override void _Ready()
   {
-	SkillControl.CreateInstance();
+    SkillControl.CreateInstance();
 
-	Button btn = GetNode<Button>("Button");
+    Button btn = GetNode<Button>("Button");
 
-	panel = GetNode<Panel>("Panel");
+    panel = GetNode<Panel>("Panel");
 
-	btn.Pressed += OnButtonPressed;
+    btn.Pressed += OnButtonPressed;
   }
 
   void OnButtonPressed()
   {
-	panel.Visible = !panel.Visible;
+    panel.Visible = !panel.Visible;
   }
 
   public void SetSkills(List<Skill> skills)
   {
-		playerSkills = skills;
+    playerSkills = skills;
 
-		CreateSkillList();
+    CreateSkillList();
   }
 
   List<SkillItem> CreateSkillItens()
   {
-	var skills = new List<SkillItem>(new SkillItem[playerSkills.Count]);
+    var skills = new List<SkillItem>(new SkillItem[playerSkills.Count]);
 
-	for (var i = 0; i < playerSkills.Count; i++)
-	{
-	  skills[i] = skillItem.Instantiate<SkillItem>();
-	  skills[i].skill = playerSkills[i];
-	}
+    for (var i = 0; i < playerSkills.Count; i++)
+    {
+      skills[i] = skillItem.Instantiate<SkillItem>();
+      skills[i].skill = playerSkills[i];
+    }
 
-	return skills;
+    return skills;
   }
 
   void CreateSkillList()
   {
-	var skillItens = CreateSkillItens();
+    var skillItens = CreateSkillItens();
 
-	var verticalBox = GetNode<VBoxContainer>("Panel/ScrollContainer/MarginContainer/VBoxContainer");
+    var verticalBox = GetNode<VBoxContainer>("Panel/ScrollContainer/MarginContainer/VBoxContainer");
 
-	var chunckedData = ChunkList<SkillItem>(skillItens, 4);
+    var chunckedData = ChunkList<SkillItem>(skillItens, 4);
 
-	var index = 0;
+    var index = 0;
 
-	foreach(var c in chunckedData)
-	{
-	  var hContainer = (HBoxContainer)verticalBox.GetChild(index);
-		var skillIndex = 0;
+    foreach (var c in chunckedData)
+    {
+      var hContainer = (HBoxContainer)verticalBox.GetChild(index);
+      var skillIndex = 0;
 
-	  foreach(var skill in c)
-	  {
-			var skillControl = (Control)hContainer.GetChild(skillIndex);
+      foreach (var skill in c)
+      {
+        var skillControl = (Control)hContainer.GetChild(skillIndex);
 
-			var dragHelper = new DragHelper();
+        var dragHelper = new DragHelper();
 
-			dragHelper.AddData(skill);
-			skillControl.AddChild(dragHelper);
+        dragHelper.AddData(skill);
+        skillControl.AddChild(dragHelper);
 
-			skillIndex++;
-	  }
-	
-		index++;
-	}
+        skillIndex++;
+      }
+
+      index++;
+    }
   }
 
   public static List<List<T>> ChunkList<T>(List<T> data, int size)
   {
-	return data
-	  .Select((x, i) => new { Index = i, Value = x })
-	  .GroupBy(x => x.Index / size)
-	  .Select(x => x.Select(v => v.Value).ToList())
-	  .ToList();
+    return data
+      .Select((x, i) => new { Index = i, Value = x })
+      .GroupBy(x => x.Index / size)
+      .Select(x => x.Select(v => v.Value).ToList())
+      .ToList();
   }
 }
