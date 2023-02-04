@@ -73,7 +73,7 @@ partial class ServerBridge : Node3D
       {
         foreach (var act in actorData)
         {
-          actor.Call(act.Function, act.Data);
+          actor.EmitSignal(act.Function, act.Data);
         }
       }
 
@@ -114,12 +114,13 @@ partial class ServerBridge : Node3D
   public void SkillExecuted(Variant actorId, Variant actorType, Variant skillId, Variant timestamp)
   {
     GD.Print("Received skill approved");
+    GD.Print("H: ", CharacterActor.SignalName.ExecuteSkill);
 
     actions.Add(new Action
     {
       ActorId = actorId.ToString(),
       ActorType = (ActorType)(int)actorType,
-      Function = "ExecuteSkill",
+      Function = CharacterActor.SignalName.ExecuteSkill,
       Data = new Variant[1] { skillId },
       Timestamp = (double)timestamp
     });
@@ -133,7 +134,7 @@ partial class ServerBridge : Node3D
     actions.Add(new Action
     {
       ActorId = actorId.ToString(),
-      Function = "ServerMovement",
+      Function = Player.SignalName.SvStartMovement,
       ActorType = ActorType.Player,
       Data = new Variant[2]
       {
@@ -151,7 +152,7 @@ partial class ServerBridge : Node3D
     {
       ActorId = actorId.ToString(),
       ActorType = ActorType.Player,
-      Function = "ServerMovementStopped",
+      Function = Player.SignalName.SvStopMovement,
       Data = new Variant[2]
       {
         position,
@@ -166,50 +167,58 @@ partial class ServerBridge : Node3D
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void NpcChangeState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp)
   {
-    actions.Add(new Action
-    {
-      ActorId = id.ToString(),
-      ActorType = ActorType.Npc,
-      Function = "ReceiveChangeState",
-      Data = new Variant[4]
-      {
-        state,
-        position,
-        yaw,
-        data
-      },
-      Timestamp = (double)timestamp
-    });
+    // actions.Add(new Action
+    // {
+    //   ActorId = id.ToString(),
+    //   ActorType = ActorType.Npc,
+    //   Function = "ReceiveChangeState",
+    //   Data = new Variant[4]
+    //   {
+    //     state,
+    //     position,
+    //     yaw,
+    //     data
+    //   },
+    //   Timestamp = (double)timestamp
+    // });
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void NpcUpdateState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp)
   {
-    actions.Add(new Action
-    {
-      ActorId = id.ToString(),
-      ActorType = ActorType.Npc,
-      Function = "ReceiveUpdateState",
-      Data = new Variant[4]
-      {
-        state,
-        position,
-        yaw,
-        data
-      },
-      Timestamp = (double)timestamp
-    });
+    // actions.Add(new Action
+    // {
+    //   ActorId = id.ToString(),
+    //   ActorType = ActorType.Npc,
+    //   Function = "ReceiveUpdateState",
+    //   Data = new Variant[4]
+    //   {
+    //     state,
+    //     position,
+    //     yaw,
+    //     data
+    //   },
+    //   Timestamp = (double)timestamp
+    // });
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ActorTookDamage(Variant actorId, Variant actorType, Variant damage, Variant hp, Variant maxHP)
   {
-    IActor actor = spawner.GetActor(actorId.ToString(), (ActorType)(int)actorType);
-
-    if (actor != null)
+    GD.Print("Damage");
+    actions.Add(new Action
     {
-      actor.TakeDamage((int)damage);
-    }
+      ActorId = actorId.ToString(),
+      ActorType = (ActorType)(int)actorType,
+      Function = CharacterActor.SignalName.TakeDamage,
+      Data = new Variant[3]
+      {
+        damage,
+        hp,
+        maxHP
+      },
+      Timestamp = (double)Now()
+    });
 
   }
 

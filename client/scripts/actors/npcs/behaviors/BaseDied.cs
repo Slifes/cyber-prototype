@@ -2,9 +2,9 @@
 
 class BaseDied : IBehavior
 {
-  BaseEnemyActor actor;
+  BaseNpcActor actor;
 
-  public BaseDied(BaseEnemyActor actor)
+  public BaseDied(BaseNpcActor actor)
   {
     this.actor = actor;
   }

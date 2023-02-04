@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://bf8si055sbjkh"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_swa5n"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ibxv"]
+bg_color = Color(0.380392, 0.333333, 0.470588, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qv3wk"]
+bg_color = Color(0.27451, 0.6, 0.227451, 1)
+
+[sub_resource type="Theme" id="Theme_kkjej"]
+ProgressBar/font_sizes/font_size = 8
+ProgressBar/styles/background = SubResource("StyleBoxFlat_6ibxv")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_qv3wk")
+
+[node name="Health" type="Node3D"]
+
+[node name="HP" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.329765, -0.0334591)
+visible = false
+billboard = 1
+double_sided = false
+texture = SubResource("ViewportTexture_swa5n")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(50, 5)
+
+[node name="ProgressBar" type="ProgressBar" parent="SubViewport"]
+custom_minimum_size = Vector2(50, 5)
+offset_right = 4.0
+offset_bottom = 27.0
+theme = SubResource("Theme_kkjej")
+theme_override_font_sizes/font_size = 6
+value = 100.0

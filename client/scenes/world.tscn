@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cn75dye6tdcpk"]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/Networking.gd" id="1_1af4m"]
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_hlg1x"]
@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c1diiei6qulof" path="res://maps/main.tscn" id="4_8g7r1"]
 [ext_resource type="Script" path="res://scripts/spawner/NpcSpawner.cs" id="5_1pxo1"]
 [ext_resource type="Script" path="res://scripts/ui/Damage.cs" id="7_e86s1"]
-[ext_resource type="PackedScene" uid="uid://dcg65gsvefl2n" path="res://actors/npcs/Alora.tscn" id="9_siike"]
+[ext_resource type="PackedScene" uid="uid://dcg65gsvefl2n" path="res://actors/npcs/BaseNPC.tscn" id="9_siike"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_1af4m")

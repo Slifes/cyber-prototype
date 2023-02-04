@@ -3,9 +3,20 @@ using Godot;
 
 partial class CharacterActor : CharacterBody3D, IActor
 {
+  [Signal]
+  public delegate void HealthStatusChangedEventHandler(int currentHP, int currentSP, int maxHP, int maxSP);
+
+  [Signal]
+  public delegate void TakeDamageEventHandler(int damage, int currentHP, int maxHP);
+
+  [Signal]
+  public delegate void ExecuteSkillEventHandler(Variant Id);
+
   protected int _actorId;
 
   protected ActorType _type;
+
+  protected IComponent[] components;
 
   protected int currentHP;
 
@@ -56,16 +67,6 @@ partial class CharacterActor : CharacterBody3D, IActor
     return maxSP;
   }
 
-  public virtual void TakeDamage(int damage)
-  {
-    currentHP -= damage;
-  }
-
-  public virtual void ConsumeSP(int sp)
-  {
-    currentSP -= sp;
-  }
-
   public virtual void SetServerData(Variant data)
   {
     var dataArray = data.AsGodotArray<Variant>();
@@ -81,5 +82,32 @@ partial class CharacterActor : CharacterBody3D, IActor
     return ActorType.Player;
   }
 
-  public virtual void ExecuteSkill(Variant skillId) { }
+  public override void _UnhandledInput(InputEvent @event)
+  {
+    foreach (var component in components)
+    {
+      component.InputHandler(@event);
+    }
+  }
+
+  public override void _PhysicsProcess(double delta)
+  {
+    foreach (var component in components)
+    {
+      component.Update((float)delta);
+    }
+  }
+
+  public IComponent GetComponent<T>()
+  {
+    foreach (var component in components)
+    {
+      if (component is T)
+      {
+        return component;
+      }
+    }
+
+    return null;
+  }
 }

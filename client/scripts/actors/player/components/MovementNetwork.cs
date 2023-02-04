@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-partial class MovementNetwork : IPlayerComponent
+partial class MovementNetwork : IComponent
 {
   bool moveStoppedSended;
 
@@ -35,6 +35,8 @@ partial class MovementNetwork : IPlayerComponent
       actor.SendMoving();
 
       updateNetworkTime = 0.0f;
+
+      moveStoppedSended = false;
     }
   }
 }

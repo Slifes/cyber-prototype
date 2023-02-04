@@ -1,16 +1,33 @@
 ﻿using Godot;
 
-class CameraController : IPlayerComponent
+struct ShakeCamera
 {
-  bool mouseCameraPressed;
+  public float MaxX = 5;
 
-  Vector2 mouseMoveCameraInitial = Vector2.Zero;
+  public float MaxY = 5;
+
+  public float MaxR = 25;
+
+  public float TimeScale = 150;
+
+  public float Trauma = 0.0f;
+
+  public float Time = 0.0f;
+
+  public ShakeCamera() { }
+}
+
+class CameraController : IComponent
+{
+  static FastNoiseLite noise = ResourceLoader.Load<FastNoiseLite>("res://noise/shake_camera.tres");
+
+  bool mouseCameraPressed;
 
   float MouseWheelVelocity = .5f;
 
-  float MouseWheelUpLimit = 1.0f;
+  ShakeCamera shake = new();
 
-  float MouseWheelDownLimit = 10.0f;
+  Vector2 mouseMoveCameraInitial = Vector2.Zero;
 
   Camera3D camera = new();
 
@@ -35,13 +52,16 @@ class CameraController : IPlayerComponent
     player.AddChild(pivot);
   }
 
+  public void ApplyTrauama(float value)
+  {
+    shake.Trauma = value;
+  }
+
   public virtual void InputHandler(InputEvent @event)
   {
     if (!(@event is InputEventMouseButton)) return;
 
     InputEventMouseButton emb = (InputEventMouseButton)@event;
-
-    GD.Print(emb.ButtonIndex);
 
     if (emb.ButtonIndex == MouseButton.WheelUp)
     {
@@ -55,6 +75,29 @@ class CameraController : IPlayerComponent
 
   public void Update(float delta)
   {
+    RotateCamera(delta);
+    Shake(delta);
+  }
+
+  void Shake(float delta)
+  {
+    shake.Time += delta;
+
+    var shakeTrauma = Mathf.Pow(shake.Trauma, 2);
+    var offsetX = noise.GetNoise3D(shake.Time * shake.TimeScale, 0, 0) * shake.MaxX * shakeTrauma;
+    var offsetY = noise.GetNoise3D(0, shake.Time * shake.TimeScale, 0) * shake.MaxY * shakeTrauma;
+
+    camera.HOffset = offsetX;
+    camera.VOffset = offsetY;
+
+    if (this.shake.Trauma > 0)
+    {
+      this.shake.Trauma = Mathf.Clamp(this.shake.Trauma - (delta * 0.6f), 0, 1);
+    }
+  }
+
+  void RotateCamera(float delta)
+  {
     bool isPressed = Input.IsMouseButtonPressed(MouseButton.Right);
 
     if (isPressed)
@@ -65,7 +108,7 @@ class CameraController : IPlayerComponent
 
         float x = mouseMoveCameraInitial.X - currentMousePosition.X;
 
-        float velocity = 0.2f * x * (float)delta;
+        float velocity = 0.2f * x * delta;
 
         pivot.RotateY(velocity);
 

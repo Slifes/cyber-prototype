@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://bop77vnjwxwft"]
+
+[ext_resource type="Script" path="res://scripts/actors/npcs/BaseNpcActor.cs" id="1_x2c8b"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3788e"]
+
+[sub_resource type="Animation" id="Animation_a24nq"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tbogy"]
+_data = {
+"RESET": SubResource("Animation_a24nq")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r14f8"]
+
+[node name="BaseEnemy" type="CharacterBody3D"]
+collision_layer = 2049
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("1_x2c8b")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("BoxShape3D_3788e")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Walking"
+libraries = {
+"": SubResource("AnimationLibrary_tbogy"),
+"Skills": SubResource("AnimationLibrary_r14f8")
+}

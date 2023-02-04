@@ -2,26 +2,16 @@
 
 public partial class HealthStats : Control
 {
-  ColorRect maxHPBar;
+  ProgressBar hpBar;
 
-  ColorRect currentHPBar;
-
-  int currentHP = 100;
-
-  int maxHP = 100;
-
-  // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
-    maxHPBar = GetNode<ColorRect>("Container/HP");
-    currentHPBar = maxHPBar.GetNode<ColorRect>("Current");
+    hpBar = GetNode<ProgressBar>("Container/HP");
   }
 
   public void SetCurrentHP(int currentHP, int maxHP)
   {
-    this.currentHP = currentHP;
-    this.maxHP = maxHP;
-
-    currentHPBar.Size = new Vector2(maxHPBar.Size.X * ((float)currentHP / (float)maxHP), currentHPBar.Size.Y);
+    hpBar.MaxValue = maxHP;
+    hpBar.Value = currentHP;
   }
 }

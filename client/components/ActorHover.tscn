@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhdv25ucsqx1x"]
+
+[ext_resource type="Texture2D" uid="uid://dwph52g3ni1jo" path="res://actors/npcs/select.png" id="1_pjwl6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4isxv"]
+size = Vector3(0.4, 1, 0.4)
+
+[node name="Hover" type="Node3D"]
+
+[node name="HoverDecal" type="Decal" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0940363, 0)
+visible = false
+layers = 32
+size = Vector3(1, 1, 1)
+texture_albedo = ExtResource("1_pjwl6")
+cull_mask = 32
+
+[node name="Area3D" type="Area3D" parent="."]
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_4isxv")

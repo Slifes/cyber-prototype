@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=8 format=3 uid="uid://cnmc6y28ystp5"]
+
+[ext_resource type="Animation" uid="uid://bgcfs2to1ay18" path="res://meshes/kirt/anims/Walking.res" id="1_n4cfx"]
+[ext_resource type="Script" path="res://scripts/resources/Npc.cs" id="1_tgjym"]
+[ext_resource type="Animation" uid="uid://dta6w6qgec4rn" path="res://meshes/kirt/anims/Die.res" id="2_5rgpp"]
+[ext_resource type="Animation" uid="uid://dwg6kw8k3axit" path="res://meshes/kirt/anims/Attack.anim" id="3_0tclb"]
+[ext_resource type="PackedScene" uid="uid://bop77vnjwxwft" path="res://actors/mobs/BaseEnemy.tscn" id="4_6nt6l"]
+[ext_resource type="PackedScene" uid="uid://crlc10pg7xm6k" path="res://meshes/kirt/kirt.tscn" id="5_ald70"]
+[ext_resource type="Script" path="res://scripts/actors/npcs/components/BehaviorComponent.cs" id="6_iy2tu"]
+
+[resource]
+script = ExtResource("1_tgjym")
+Name = "Kirt"
+BaseNode = ExtResource("4_6nt6l")
+Mesh = ExtResource("5_ald70")
+Animations = Array[Animation]([ExtResource("1_n4cfx"), ExtResource("2_5rgpp"), ExtResource("3_0tclb")])
+components = Array[Script]([ExtResource("6_iy2tu")])
+Type = 1

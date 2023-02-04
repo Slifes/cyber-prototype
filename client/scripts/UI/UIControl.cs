@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System.Collections.Generic;
 
 
 class UIControl
@@ -39,12 +40,15 @@ class UIControl
     skillShortcut = ui.GetNode<SkillShortcut>("MarginContainer2/SkillShortcut");
 
     target.HealthStatusChanged += UpdateHealthStats;
-
-    skillList.SetSkills(target.Skills);
   }
 
   void UpdateHealthStats(int currentHP, int currentSP, int maxHP, int maxSP)
   {
     healthStats.SetCurrentHP(currentHP, maxHP);
+  }
+
+  public static void SetSkills(List<Skill> skills)
+  {
+    _instance.skillList.SetSkills(skills);
   }
 }

@@ -2,9 +2,9 @@
 
 class BaseAttack : IBehavior
 {
-  BaseEnemyActor actor;
+  BaseNpcActor actor;
 
-  public BaseAttack(BaseEnemyActor actor)
+  public BaseAttack(BaseNpcActor actor)
   {
     this.actor = actor;
   }

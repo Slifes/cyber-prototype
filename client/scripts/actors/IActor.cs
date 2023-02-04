@@ -18,15 +18,9 @@ interface IActor
 
   int GetMaxSP();
 
-  void TakeDamage(int damage);
-
-  //void ConsumeSP(int sp);
-
   void onActorReady();
 
   int GetActorId();
 
   void SetServerData(Variant data);
-
-  void ExecuteSkill(Variant skillId);
 }

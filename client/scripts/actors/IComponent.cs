@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-interface IPlayerComponent
+interface IComponent
 {
   void InputHandler(InputEvent @event);
 

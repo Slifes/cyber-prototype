@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System;
 
-class UIComponent : IPlayerComponent
+class UIComponent : IComponent
 {
   Player actor;
 
@@ -9,8 +9,15 @@ class UIComponent : IPlayerComponent
   {
     this.actor = player;
 
+    this.actor.ExecuteSkill += ExecutedSkill;
+
     UIControl.CreateInstance();
     UIControl.Instance.LoadUI(player);
+  }
+
+  void ExecutedSkill(Variant id)
+  {
+    SkillControl.Instance.UpdateSkillItems((int)id, 0);
   }
 
   public void InputHandler(InputEvent @event)

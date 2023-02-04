@@ -7,11 +7,11 @@ class BasedContextSteering : IBehavior
 
   Vector3[] rayDirections;
 
-  BaseEnemyActor actor;
+  BaseNpcActor actor;
 
   Vector3 TargetPosition;
 
-  public BasedContextSteering(BaseEnemyActor actor)
+  public BasedContextSteering(BaseNpcActor actor)
   {
     this.actor = actor;
   }
@@ -32,7 +32,7 @@ class BasedContextSteering : IBehavior
 
   private void AttackBodyEntered(Node3D node)
   {
-    actor.ChangeState(AIState.Attacking);
+    // actor.ChangeState(AIState.Attacking);
   }
 
   private Vector3 GetDirection()

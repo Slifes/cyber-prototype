@@ -9,24 +9,18 @@ partial class NpcSpawner : Node3D
     GD.Print("Spawn: ", name);
     GD.Print("Data: ", data);
 
-    if (d.Count > 0)
-    {
-      var reference = (int)d[0];
+    if (d.Count == 0) return;
 
-      if (reference == 0)
-      {
-        var p = ResourceLoader.Load<PackedScene>("res://actors/mobs/kirt.tscn");
+    var npcId = (int)d[0];
 
-        var n = p.Instantiate<CharacterActor>();
+    // var actor = NPCManager.Instantiate(npcId);
 
-        n.Name = name.ToString();
+    // actor.Name = name.ToString();
 
-        AddChild(n);
+    // AddChild(actor);
 
-        n.GlobalPosition = position;
-        n.SetServerData(data);
-      }
-    }
+    // actor.GlobalPosition = position;
+    // actor.SetServerData(data);
   }
 
   public void Unspawn(Variant name)

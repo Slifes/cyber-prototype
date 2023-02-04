@@ -14,9 +14,9 @@ class BaseMovement : IBehavior
 
   float count = 0;
 
-  BaseEnemyActor actor;
+  BaseNpcActor actor;
 
-  public BaseMovement(BaseEnemyActor actor)
+  public BaseMovement(BaseNpcActor actor)
   {
     this.actor = actor;
   }

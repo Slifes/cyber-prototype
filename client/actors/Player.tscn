@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bks6faj2baime"]
+[gd_scene load_steps=9 format=3 uid="uid://bks6faj2baime"]
 
 [ext_resource type="Script" path="res://scripts/actors/player/Player.cs" id="1_w3kb5"]
 [ext_resource type="PackedScene" uid="uid://co1cx60fvis72" path="res://items/equips/normal_sword.tscn" id="2_tme2q"]
-[ext_resource type="AudioStream" uid="uid://ca15vpmcjaoxp" path="res://audio/hit.ogg" id="6_to3y1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0f2vn"]
 radius = 0.05
@@ -42,22 +41,10 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Audio/Hit:playing")
+tracks/2/path = NodePath("Body/MeshInstance3D:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [false]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Body/MeshInstance3D:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -98,8 +85,3 @@ libraries = {
 "": SubResource("AnimationLibrary_nek2o"),
 "Skills": SubResource("AnimationLibrary_xucwv")
 }
-
-[node name="Audio" type="Node" parent="."]
-
-[node name="Hit" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("6_to3y1")

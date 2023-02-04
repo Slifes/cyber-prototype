@@ -6,5 +6,11 @@ partial class Npc : Resource
   public string Name;
 
   [Export]
-  public PackedScene Scene;
+  public PackedScene Mesh;
+
+  [Export]
+  public Animation[] Animations;
+
+  [Export]
+  public Script[] Components;
 }

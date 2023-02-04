@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System;
 
-class MovementController : IPlayerComponent
+class MovementController : IComponent
 {
   Player actor;
 
@@ -18,12 +18,9 @@ class MovementController : IPlayerComponent
   {
     Vector3 velocity = actor.Velocity;
 
-    // Add the gravity.
     if (!actor.IsOnFloor())
       velocity.Y -= gravity * (float)delta;
 
-    // Get the input direction and handle the movement/deceleration.
-    // As good practice, you should replace UI actions with custom gameplay actions.
     Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
 
     if (inputDir != Vector2.Zero)
@@ -32,8 +29,6 @@ class MovementController : IPlayerComponent
 
       velocity.X = direction.X * Player.Speed;
       velocity.Z = direction.Z * Player.Speed;
-
-      moveStoppedSended = false;
     }
     else
     {
