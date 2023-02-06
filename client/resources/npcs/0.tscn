@@ -1,0 +1,38 @@
+[gd_scene load_steps=9 format=3 uid="uid://rn3qdpj7h4pf"]
+
+[ext_resource type="Script" path="res://scripts/actors/npcs/BaseNpcActor.cs" id="1_vrmn2"]
+[ext_resource type="PackedScene" uid="uid://crlc10pg7xm6k" path="res://meshes/kirt/kirt.tscn" id="2_lw2jo"]
+[ext_resource type="Animation" uid="uid://bgcfs2to1ay18" path="res://meshes/kirt/anims/Walking.res" id="3_1mcw7"]
+[ext_resource type="Animation" uid="uid://dta6w6qgec4rn" path="res://meshes/kirt/anims/Die.res" id="4_7y4bx"]
+[ext_resource type="Animation" uid="uid://dwg6kw8k3axit" path="res://meshes/kirt/anims/Attack.anim" id="5_5bxa4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4isxv"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a7hj3"]
+_data = {
+"Die": ExtResource("4_7y4bx"),
+"Walking": ExtResource("3_1mcw7")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a877w"]
+_data = {
+"0": ExtResource("5_5bxa4")
+}
+
+[node name="ID" type="CharacterBody3D"]
+script = ExtResource("1_vrmn2")
+ActorName = "Kirt"
+
+[node name="MeshInstance3D" parent="." instance=ExtResource("2_lw2jo")]
+transform = Transform3D(0.183079, 0, -0.0805106, 0, 0.2, 0, 0.0805106, 0, 0.183079, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_4isxv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Walking"
+libraries = {
+"": SubResource("AnimationLibrary_a7hj3"),
+"Skills": SubResource("AnimationLibrary_a877w")
+}

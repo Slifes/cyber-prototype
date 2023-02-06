@@ -4,7 +4,9 @@ class ActorHover : IComponent
 {
   static PackedScene HoverScene = ResourceLoader.Load<PackedScene>("res://components/ActorHover.tscn");
 
-  Decal hoverDecal;
+  Label3D Name;
+
+  Node3D Components;
 
   public ActorHover(CharacterActor actor)
   {
@@ -12,22 +14,26 @@ class ActorHover : IComponent
 
     actor.AddChild(node);
 
-    hoverDecal = node.GetNode<Decal>("HoverDecal");
+    Components = node.GetNode<Node3D>("Components");
+
+    Name = Components.GetNode<Label3D>("Name");
 
     var area = node.GetNode<Area3D>("Area3D");
 
     area.MouseEntered += MouseEntered;
     area.MouseExited += MouseExited;
+
+    Name.Text = actor.Name;
   }
 
   void MouseEntered()
   {
-    hoverDecal.Visible = true;
+    Components.Visible = true;
   }
 
   void MouseExited()
   {
-    hoverDecal.Visible = false;
+    Components.Visible = false;
   }
 
   public void InputHandler(InputEvent @event) { }

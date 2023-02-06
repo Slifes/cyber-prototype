@@ -1,9 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://nvgd5a512ksx"]
-
-[ext_resource type="Script" path="res://scripts/resources/Npc.cs" id="1_tgjym"]
-
-[resource]
-script = ExtResource("1_tgjym")
-Name = "Jovenildo"
-Animations = null
-Component = 1

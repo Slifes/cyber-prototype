@@ -7,16 +7,27 @@ size = Vector3(0.4, 1, 0.4)
 
 [node name="Hover" type="Node3D"]
 
-[node name="HoverDecal" type="Decal" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0940363, 0)
-visible = false
-layers = 32
-size = Vector3(1, 1, 1)
-texture_albedo = ExtResource("1_pjwl6")
-cull_mask = 32
-
 [node name="Area3D" type="Area3D" parent="."]
 monitoring = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_4isxv")
+
+[node name="Components" type="Node3D" parent="."]
+visible = false
+
+[node name="Name" type="Label3D" parent="Components"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.276734, 0)
+billboard = 1
+text = "Aron
+"
+font_size = 18
+outline_size = 8
+line_spacing = 1.0
+
+[node name="HoverDecal" type="Decal" parent="Components"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0940363, 0)
+layers = 32
+size = Vector3(0.7, 1, 0.7)
+texture_albedo = ExtResource("1_pjwl6")
+cull_mask = 32

@@ -1,12 +1,25 @@
-﻿using Godot;
+using Godot;
 using System.Collections.Generic;
+
+enum ComponentType
+{
+  Agressive,
+  Dialogue
+}
 
 partial class BaseNpcActor : CharacterActor
 {
-  [Signal]
-  public delegate void SvChangeStateEventHandler(Variant state, Variant position, Variant yaw, Variant data);
-
+  [Export]
   public int ID;
+
+  [Export]
+  public string ActorName;
+
+  [Export]
+  public ComponentType Type;
+
+  [Export]
+  public Resource Dialogue;
 
   public AnimationPlayer Animation { get; set; }
 
@@ -14,23 +27,28 @@ partial class BaseNpcActor : CharacterActor
 
   public override void _Ready()
   {
-    SetProcessUnhandledInput(false);
-    SetProcessInput(false);
-    SetProcessShortcutInput(false);
+	SetProcessUnhandledInput(false);
+	SetProcessInput(false);
+	SetProcessShortcutInput(false);
 
-    Animation = GetNode<AnimationPlayer>("AnimationPlayer");
+	Animation = GetNode<AnimationPlayer>("AnimationPlayer");
 
-    components = CreateComponents();
+  StartComponents(Type);
+
   }
 
-  IComponent[] CreateComponents()
+  protected virtual IComponent[] CreateComponents(ComponentType component)
   {
-    return new IComponent[3]
-    {
-      new MiniHPBar(this),
-      new ActorHover(this),
-      GetComponent(ComponentType.Dialogue)
-    };
+	return new IComponent[2]
+	{
+	  new ActorHover(this),
+	  GetComponent(component)
+	};
+  }
+
+  public void StartComponents(ComponentType component)
+  {
+	components = CreateComponents(component);
   }
 
   // public void ReceiveChangeState(Variant state, Variant position, Variant yaw, Variant data)
@@ -56,16 +74,16 @@ partial class BaseNpcActor : CharacterActor
 
   public IComponent GetComponent(ComponentType comp)
   {
-    switch (comp)
-    {
-      case ComponentType.Agressive:
-        return new AgressiveBehavior(this);
+	switch (comp)
+	{
+	  case ComponentType.Agressive:
+		return new AgressiveBehavior(this);
 
-      case ComponentType.Dialogue:
-        return new Dialogue(this);
+	  case ComponentType.Dialogue:
+		return new Dialogue(this);
 
-      default:
-        return null;
-    }
+	  default:
+		return null;
+	}
   }
 }

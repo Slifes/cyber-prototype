@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System;
 
 partial class NpcSpawner : Node3D
 {
@@ -13,14 +14,18 @@ partial class NpcSpawner : Node3D
 
     var npcId = (int)d[0];
 
-    // var actor = NPCManager.Instantiate(npcId);
+    GD.Print("NpcId: ", npcId);
 
-    // actor.Name = name.ToString();
+    var scene = ResourceLoader.Load<PackedScene>(String.Format("res://resources/npcs/{0}.tscn", npcId));
 
-    // AddChild(actor);
+    var actor = scene.Instantiate<BaseNpcActor>();
 
-    // actor.GlobalPosition = position;
-    // actor.SetServerData(data);
+    actor.Name = name.ToString();
+
+    AddChild(actor);
+
+    actor.GlobalPosition = position;
+    actor.SetServerData(data);
   }
 
   public void Unspawn(Variant name)
