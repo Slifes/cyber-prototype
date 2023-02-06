@@ -3,23 +3,29 @@ using System.Collections.Generic;
 
 class BasedContextSteering : IBehavior
 {
+  static PackedScene steering = ResourceLoader.Load<PackedScene>("res://components/SteeringRayCast.tscn");
+
   RayCast3D[] raycasts;
 
   Vector3[] rayDirections;
 
-  BaseNpcActor actor;
+  Behavior actor;
+
+  Node rays;
 
   Vector3 TargetPosition;
 
-  public BasedContextSteering(BaseNpcActor actor)
+  public BasedContextSteering(Behavior actor)
   {
     this.actor = actor;
+
+    rays = steering.Instantiate();
+
+    actor.Actor.AddChild(steering.Instantiate());
   }
 
   public void Start()
   {
-    var rays = actor.GetNode<Node3D>("Steering");
-
     raycasts = new RayCast3D[rays.GetChildCount()];
     rayDirections = new Vector3[raycasts.Length];
 
@@ -30,16 +36,11 @@ class BasedContextSteering : IBehavior
     }
   }
 
-  private void AttackBodyEntered(Node3D node)
-  {
-    // actor.ChangeState(AIState.Attacking);
-  }
-
   private Vector3 GetDirection()
   {
     for (var i = 0; i < raycasts.Length; i++)
     {
-      rayDirections[i] = raycasts[i].TargetPosition.Rotated(Vector3.Up, actor.Rotation.Y);
+      rayDirections[i] = raycasts[i].TargetPosition.Rotated(Vector3.Up, actor.Actor.Rotation.Y);
     }
 
     var interestMap = new List<float>(new float[raycasts.Length]);
@@ -50,7 +51,7 @@ class BasedContextSteering : IBehavior
     {
       var ray = raycasts[i];
 
-      Vector3 toTarget = targetPos - actor.GlobalPosition;
+      Vector3 toTarget = targetPos - actor.Actor.GlobalPosition;
 
       if (!ray.IsColliding())
       {
@@ -83,16 +84,16 @@ class BasedContextSteering : IBehavior
 
     Vector3 desiredVelocity = dir * 20.0f * (float)delta;
 
-    actor.Velocity = desiredVelocity;
+    actor.Actor.Velocity = desiredVelocity;
 
-    actor.MoveAndSlide();
+    actor.Actor.MoveAndSlide();
 
-    actor.LookAt(TargetPosition);
+    actor.Actor.LookAt(TargetPosition);
   }
 
   public void Finish()
   {
-    actor.Velocity = Vector3.Zero;
+    actor.Actor.Velocity = Vector3.Zero;
 
     for (var i = 0; i < raycasts.Length; i++)
     {

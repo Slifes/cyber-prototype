@@ -15,11 +15,17 @@ size = Vector3(0.3, 1, 0.3)
 [sub_resource type="BoxShape3D" id="BoxShape3D_4isxv"]
 size = Vector3(0.4, 1, 0.4)
 
-[node name="Alora" type="CharacterBody3D"]
+[node name="ID" type="CharacterBody3D"]
 script = ExtResource("1_lv6wa")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_dwy3e")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_4isxv")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.670617, 0)
+billboard = 1
+text = "Aron
+"

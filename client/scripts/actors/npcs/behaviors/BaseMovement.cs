@@ -4,7 +4,7 @@ class BaseMovement : IBehavior
 {
   Vector3 targetPosition;
 
-  FastNoiseLite noise = ResourceLoader.Load<FastNoiseLite>("res://noise/movement.tres");
+  static FastNoiseLite noise = ResourceLoader.Load<FastNoiseLite>("res://noise/movement.tres");
 
   float time = 0.0f;
 
@@ -14,16 +14,16 @@ class BaseMovement : IBehavior
 
   float count = 0;
 
-  BaseNpcActor actor;
+  Behavior actor;
 
-  public BaseMovement(BaseNpcActor actor)
+  public BaseMovement(Behavior actor)
   {
     this.actor = actor;
   }
 
   public void Start()
   {
-    actor.Animation.Play("Walking");
+    actor.Actor.Animation.Play("Walking");
   }
 
   private Vector3 GetDirection(float time)

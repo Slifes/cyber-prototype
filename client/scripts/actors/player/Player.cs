@@ -16,6 +16,9 @@ partial class Player : CharacterActor
   [Signal]
   public delegate void SvStopMovementEventHandler(Variant position, Variant yaw);
 
+  [Signal]
+  public delegate void SvLoadSkillsEventHandler(Variant skillIds);
+
   public const float Speed = 1.0f;
 
   PlayerState _state = PlayerState.Idle;
@@ -48,22 +51,24 @@ partial class Player : CharacterActor
     if (!IsMultiplayerAuthority())
     {
       SetProcessUnhandledInput(false);
-      return new IComponent[4]
+      return new IComponent[5]
       {
       new SkillController(this, new List<int>() { 0, 1, 2 }),
       new PredictMovement(this),
-      new MiniHealth(this),
+      new MiniHPBar(this),
         new ActorHover(this),
+    new DamageLabel(this)
       };
     }
     else
     {
-      return new IComponent[5]
+      return new IComponent[6]
       {
       new SkillController(this, new List<int>() { 0, 1, 2 }),
       new CameraController(this),
       new MovementController(this),
       new MovementNetwork(this),
+    new DamageLabel(this),
       new UIComponent(this)
       };
     }

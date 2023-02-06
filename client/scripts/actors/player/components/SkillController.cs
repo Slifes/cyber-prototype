@@ -15,12 +15,13 @@ class SkillController : IComponent
     this.actor = actor;
 
     this.actor.ExecuteSkill += ExecuteSkill;
+
+    // this.actor.SvLoadSkills += (data) => LoadSkills(data.AsGodotArray<int>());
   }
 
   public SkillController(Player actor, List<int> skills)
   {
     this.actor = actor;
-
     this.actor.ExecuteSkill += ExecuteSkill;
 
     this.skills = this.LoadSkills(skills);

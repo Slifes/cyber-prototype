@@ -1,14 +1,16 @@
 ﻿using Godot;
 
-partial class MiniHealth : IComponent
+class MiniHPBar : IComponent
 {
   static PackedScene healthScene = ResourceLoader.Load<PackedScene>("res://components/Health.tscn");
 
   ProgressBar hpBar;
 
+  Viewport view;
+
   Sprite3D HP;
 
-  public MiniHealth(CharacterActor actor)
+  public MiniHPBar(CharacterActor actor)
   {
     var node = healthScene.Instantiate();
 
@@ -16,10 +18,17 @@ partial class MiniHealth : IComponent
 
     HP = node.GetNode<Sprite3D>("HP");
 
+    // view = node.GetNode<Viewport>("SubViewport");
+
     hpBar = node.GetNode<ProgressBar>("SubViewport/ProgressBar");
 
     actor.HealthStatusChanged += HealthChanged;
     actor.TakeDamage += TakeDamage;
+
+    // var texture = new ViewportTexture();
+    // texture.ViewportPath = "../SubViewport";
+
+    // HP.Texture = texture;
   }
 
   void HealthChanged(int currentHP, int maxHP, int currentSP, int maxSP)

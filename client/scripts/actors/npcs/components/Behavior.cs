@@ -7,32 +7,23 @@ public enum AIState
   Walking,
   Steering,
   Attacking,
-  Died
 }
 
-class BehaviorComponent : IComponent
+abstract class Behavior : IComponent
 {
-  AIState state = AIState.Idle;
+  protected AIState state = AIState.Idle;
 
-  IBehavior behavior;
+  protected IBehavior behavior;
 
-  Dictionary<AIState, IBehavior> behaviors;
+  protected Dictionary<AIState, IBehavior> behaviors;
 
-  BaseNpcActor actor;
+  private BaseNpcActor _actor;
 
-  public BehaviorComponent(BaseNpcActor actor)
+  public BaseNpcActor Actor { get { return _actor; } }
+
+  public Behavior(BaseNpcActor actor)
   {
-    this.actor = actor;
-
-    behaviors = new()
-    {
-      // {AIState.Steering, new BasedContextSteering(this)},
-      // {AIState.Walking, new BaseMovement(this)},
-      // {AIState.Attacking, new BaseAttack(this)},
-      // {AIState.Died, new BaseDied(this)}
-    };
-
-    ChangeState(AIState.Walking);
+    _actor = actor;
   }
 
   public void InputHandler(InputEvent @event) { }

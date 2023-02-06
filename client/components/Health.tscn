@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bf8si055sbjkh"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_swa5n"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_38jr5"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ibxv"]
@@ -19,9 +19,11 @@ ProgressBar/styles/fill = SubResource("StyleBoxFlat_qv3wk")
 [node name="HP" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.329765, -0.0334591)
 visible = false
+gi_mode = 0
 billboard = 1
 double_sided = false
-texture = SubResource("ViewportTexture_swa5n")
+no_depth_test = true
+texture = SubResource("ViewportTexture_38jr5")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 handle_input_locally = false

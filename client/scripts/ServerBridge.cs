@@ -128,7 +128,7 @@ partial class ServerBridge : Node3D
   #endregion
 
   #region movement
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ReceiveMovement(Variant actorId, Variant position, Variant yaw, Variant timestamp)
   {
     actions.Add(new Action
@@ -145,7 +145,7 @@ partial class ServerBridge : Node3D
     });
   }
 
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ReceiveMovementStopped(Variant actorId, Variant position, Variant yaw, Variant timestamp)
   {
     actions.Add(new Action

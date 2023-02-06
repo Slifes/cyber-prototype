@@ -1,19 +1,15 @@
 ﻿using Godot;
 using DialogueManagerRuntime;
 
-public class Dialog : IComponent
+class Dialogue : IComponent
 {
   Resource dialog;
 
-  public void InputHandler(InputEvent @event)
-  {
-    throw new System.NotImplementedException();
-  }
+  public Dialogue(BaseNpcActor actor) { }
 
-  public void Update(float delta)
-  {
-    throw new System.NotImplementedException();
-  }
+  public void InputHandler(InputEvent @event) { }
+
+  public void Update(float delta) { }
 
   // public void _InputEvent(Camera3D camera, InputEvent @event, Vector3 position, Vector3 normal, int shapeIdx)
   // {

@@ -18,7 +18,7 @@ partial class Player
   }
 
   #region rpc
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void SendMovement(Variant position, Variant yaw) { }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Unreliable)]

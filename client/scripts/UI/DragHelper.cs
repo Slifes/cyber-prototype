@@ -7,8 +7,15 @@ partial class DragHelper : Control
     this.SetAnchorsPreset(LayoutPreset.FullRect);
     this.SizeFlagsHorizontal = SizeFlags.ExpandFill;
     this.SizeFlagsVertical = SizeFlags.ExpandFill;
+    this.CallDeferred("Set");
+
+  }
+
+  void Set()
+  {
     this.Size = new Vector2(85, 85);
   }
+
 
   public void AddData(Control data)
   {

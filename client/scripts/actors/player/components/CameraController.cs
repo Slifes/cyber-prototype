@@ -50,9 +50,16 @@ class CameraController : IComponent
     camera.Current = true;
 
     player.AddChild(pivot);
+
+    player.TakeDamage += TakeDamage;
   }
 
-  public void ApplyTrauama(float value)
+  void TakeDamage(int damage, int currentHP, int maxHP)
+  {
+    ApplyTrauma(0.2f);
+  }
+
+  public void ApplyTrauma(float value)
   {
     shake.Trauma = value;
   }

@@ -7,12 +7,13 @@ class UIComponent : IComponent
 
   public UIComponent(Player player)
   {
+    UIControl.CreateInstance();
+    UIControl.Instance.LoadUI(player);
+
     this.actor = player;
 
     this.actor.ExecuteSkill += ExecutedSkill;
-
-    UIControl.CreateInstance();
-    UIControl.Instance.LoadUI(player);
+    this.actor.HealthStatusChanged += UpdateHealth;
   }
 
   void ExecutedSkill(Variant id)
@@ -20,10 +21,12 @@ class UIComponent : IComponent
     SkillControl.Instance.UpdateSkillItems((int)id, 0);
   }
 
-  public void InputHandler(InputEvent @event)
+  void UpdateHealth(int currentHP, int maxHP, int currentSP, int maxSP)
   {
 
   }
+
+  public void InputHandler(InputEvent @event) { }
 
   public void Update(float delta)
   {

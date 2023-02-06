@@ -1,5 +1,12 @@
 ﻿using Godot;
 
+
+enum ComponentType
+{
+  Agressive,
+  Dialogue
+}
+
 partial class Npc : Resource
 {
   [Export]
@@ -12,5 +19,5 @@ partial class Npc : Resource
   public Animation[] Animations;
 
   [Export]
-  public Script[] Components;
+  public ComponentType Component;
 }
