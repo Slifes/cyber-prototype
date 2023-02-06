@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://b42w2rdd5cjb1"]
+
+[ext_resource type="Script" path="res://scripts/actors/BaseNPCActor.cs" id="1_8f38h"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7qqud"]
+size = Vector3(0.5, 1, 0.5)
+
+[node name="BaseNPC" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_8f38h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_7qqud")

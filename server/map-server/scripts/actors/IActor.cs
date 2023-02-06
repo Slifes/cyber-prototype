@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 
 enum ActorType
 {
@@ -8,6 +8,10 @@ enum ActorType
 
 interface IActor
 {
+  void onActorReady();
+
+  int GetActorId();
+
   ActorType GetActorType();
 
   int GetCurrentHP();
@@ -17,12 +21,8 @@ interface IActor
   int GetMaxHP();
 
   int GetMaxSP();
-  
+
   void TakeDamage(int damage);
-
-  void onActorReady();
-
-  int GetActorId();
 
   void SetServerData(Variant data);
 

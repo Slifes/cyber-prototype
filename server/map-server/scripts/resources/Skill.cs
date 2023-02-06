@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 
 enum SkillType
 {
@@ -13,10 +13,16 @@ enum SkillActiveType
   Projectile,
 }
 
-partial class Skill: Resource
+partial class Skill : Resource
 {
   [Export]
   public int ID;
+
+  [Export]
+  public string Name;
+
+  [Export]
+  public int Level;
 
   [Export]
   public int Damage;
@@ -34,8 +40,5 @@ partial class Skill: Resource
   public float Delay;
 
   [Export]
-  public Animation animation;
-
-  [Export]
-  public PackedScene Effect;
+  public PackedScene scene;
 }

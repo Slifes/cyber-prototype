@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameServer.scripts
 {
-  public class ServerContext: DbContext
+  public class ServerContext : DbContext
   {
     public DbSet<Character> Characters { get; set; }
 

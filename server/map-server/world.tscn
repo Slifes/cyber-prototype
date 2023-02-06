@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_u2oiu"]
 [ext_resource type="Script" path="res://scripts/spawner/CharacterSpawner.cs" id="3_mpu75"]
 [ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/main_server.tscn" id="4_ijwe5"]
-[ext_resource type="PackedScene" uid="uid://bntpvyilsgp2x" path="res://utils/spawner.tscn" id="5_p3asp"]
+[ext_resource type="PackedScene" path="res://utils/spawner.tscn" id="5_p3asp"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_et8se")

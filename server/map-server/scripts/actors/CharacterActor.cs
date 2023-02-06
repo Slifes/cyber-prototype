@@ -1,12 +1,23 @@
-using System;
+﻿using System;
 using Godot;
 using Godot.Collections;
 
-partial class CharacterActor: CharacterBody3D, IActor
+enum ActorState
+{
+  Idle,
+  Walking,
+  Talking,
+  Battle,
+  Died,
+}
+
+partial class CharacterActor : CharacterBody3D, IActor
 {
   protected int _actorId;
 
   protected ActorType _type;
+
+  protected ActorState state;
 
   protected int currentHP;
 

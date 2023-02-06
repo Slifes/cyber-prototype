@@ -1,6 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://clrmtuwtd7p75"]
 
-[ext_resource type="Script" path="res://scripts/player/Player.cs" id="1_dex2u"]
+[ext_resource type="Script" path="res://scripts/actors/player/Player.cs" id="1_n3oi6"]
+[ext_resource type="PackedScene" uid="uid://bn342ngnf8b6n" path="res://components/ghosting.tscn" id="2_5vniu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ri0iu"]
 radius = 0.05
@@ -8,9 +9,6 @@ height = 0.12
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l06qg"]
 size = Vector3(0.2, 0.1, 0.2)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_1t0ce"]
-size = Vector3(6, 2, 6)
 
 [sub_resource type="Animation" id="Animation_w51qs"]
 length = 0.001
@@ -61,7 +59,7 @@ _data = {
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 3586
 collision_mask = 9
-script = ExtResource("1_dex2u")
+script = ExtResource("1_n3oi6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_ri0iu")
@@ -77,16 +75,10 @@ monitorable = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.619724, 0, 0)
 shape = SubResource("BoxShape3D_l06qg")
 
-[node name="AABB" type="Area3D" parent="."]
-collision_layer = 0
-collision_mask = 2
-input_ray_pickable = false
-monitorable = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="AABB"]
-shape = SubResource("BoxShape3D_1t0ce")
+[node name="AABB" parent="." instance=ExtResource("2_5vniu")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+method_call_mode = 1
 libraries = {
 "": SubResource("AnimationLibrary_fx53p"),
 "Skills": SubResource("AnimationLibrary_2t0tv")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bn342ngnf8b6n"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_xl46x"]
+height = 1.0
+radius = 4.0
+
+[node name="AABB" type="Area3D"]
+collision_layer = 0
+collision_mask = 2
+input_ray_pickable = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_xl46x")

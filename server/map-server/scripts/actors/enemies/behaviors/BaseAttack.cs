@@ -1,8 +1,8 @@
-using Godot;
+﻿using Godot;
 
 class BaseAttack : IBehavior
 {
-  Npc actor;
+  BaseEnemyActor actor;
 
   private float time;
 
@@ -10,7 +10,7 @@ class BaseAttack : IBehavior
 
   private Vector3 LastOrigin;
 
-  public BaseAttack(Npc actor)
+  public BaseAttack(BaseEnemyActor actor)
   {
     this.actor = actor;
   }
@@ -22,10 +22,13 @@ class BaseAttack : IBehavior
 
   public void Handler(double delta)
   {
-    if(time >= targetTime){
+    if (time >= targetTime)
+    {
       actor.ExecuteSkill(0);
       time = 0;
-    } else {
+    }
+    else
+    {
       time += (float)delta;
     }
 
@@ -34,8 +37,9 @@ class BaseAttack : IBehavior
 
     actor.LookAt(LastOrigin, Vector3.Up);
 
-    if (offset > Vector3.Zero){
-      actor.UpdateNPCState();
+    if (offset > Vector3.Zero)
+    {
+      actor.UpdateState();
     }
   }
 
@@ -52,13 +56,14 @@ class BaseAttack : IBehavior
     GD.Print("Body Target: ", actor.Target.Name);
     if (body.Name == actor.Target.Name)
     {
-      if (body.IsInsideTree()){
-        actor.ChangeState(NpcState.Steering);
+      if (body.IsInsideTree())
+      {
+        actor.ChangeState(AIState.Steering);
       }
       else
       {
         actor.Target = null;
-        actor.ChangeState(NpcState.Walking);
+        actor.ChangeState(AIState.Walking);
       }
     }
   }
