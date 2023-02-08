@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 
 partial class Damage : Node3D
 {
@@ -6,19 +6,19 @@ partial class Damage : Node3D
 
   public void Spawn(IActor actor, int damage)
   {
-	var damageText = DamageScene.Instantiate<Node3D>();
-	var color = "#ff0002";
+    var damageText = DamageScene.Instantiate<Node3D>();
+    var color = "#ff0002";
 
-	if (!((Node)actor).IsMultiplayerAuthority())
-	{
-	  color = "#ffffff";
-	}
+    if (!((Node)actor).IsMultiplayerAuthority())
+    {
+      color = "#ffffff";
+    }
 
-	AddChild(damageText);
+    AddChild(damageText);
 
-	damageText.GlobalPosition = ((Node3D)actor).GlobalPosition;
+    damageText.GlobalPosition = ((Node3D)actor).GlobalPosition;
 
 
-	damageText.Call("run", damage, color);
+    damageText.Call("run", damage, color);
   }
 }

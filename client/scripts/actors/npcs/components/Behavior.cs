@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 public enum AIState
 {
-  Idle,
   Walking,
   Steering,
   Attacking,
@@ -11,22 +10,22 @@ public enum AIState
 
 abstract class Behavior : IComponent
 {
-  protected AIState state = AIState.Idle;
+  protected AIState state = AIState.Walking;
 
   protected IBehavior behavior;
 
   protected Dictionary<AIState, IBehavior> behaviors;
 
-  private BaseNpcActor _actor;
+  private BaseEnemy _actor;
 
-  public BaseNpcActor Actor { get { return _actor; } }
+  public BaseEnemy Actor { get { return _actor; } }
 
-  public Behavior(BaseNpcActor actor)
+  public Behavior(BaseEnemy actor)
   {
-	_actor = actor;
+    _actor = actor;
 
-  _actor.SvBehaviorSetState += BehaviorSetState;
-  _actor.SvBehaviorUpdateState += BehaviorUpdateState;
+    _actor.SvBehaviorSetState += BehaviorSetState;
+    _actor.SvBehaviorUpdateState += BehaviorUpdateState;
   }
 
   void BehaviorSetState(Variant state, Variant position, Variant yaw, Variant data)
@@ -52,25 +51,25 @@ abstract class Behavior : IComponent
 
   public void Update(float delta)
   {
-	if (behavior != null)
-	{
-	  behavior.Handler(delta);
-	}
+    if (behavior != null)
+    {
+      behavior.Handler(delta);
+    }
   }
 
   public void ChangeState(AIState state, Variant data = new Variant())
   {
-	GD.Print("New state: ", state);
+    GD.Print("New state: ", state);
 
-	if (behavior != null)
-	{
-	  behavior.Finish();
-	}
+    if (behavior != null)
+    {
+      behavior.Finish();
+    }
 
-	behavior = behaviors[state];
-	behavior.SetData(data);
-	behavior.Start();
+    behavior = behaviors[state];
+    behavior.SetData(data);
+    behavior.Start();
 
-	this.state = state;
+    this.state = state;
   }
 }

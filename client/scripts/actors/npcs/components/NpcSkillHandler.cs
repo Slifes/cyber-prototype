@@ -1,11 +1,11 @@
-using Godot;
+﻿using Godot;
 using System;
 
 class NpcSkillHandler : IComponent
 {
-  BaseNpcActor actor;
+  BaseNPC actor;
 
-  public NpcSkillHandler(BaseNpcActor actor)
+  public NpcSkillHandler(BaseNPC actor)
   {
     this.actor = actor;
 

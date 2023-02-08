@@ -10,7 +10,7 @@ partial class CharacterSpawner : Node3D
     playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
   }
 
-  public void Spawn(Variant name, Vector3 position, Variant data)
+  public void Spawn(Variant name, Vector3 position, float yaw, Variant data)
   {
     if (!HasNode(name.ToString()))
     {
@@ -25,6 +25,7 @@ partial class CharacterSpawner : Node3D
         AddChild(player);
 
         player.GlobalPosition = position;
+        player.Rotation = new Vector3(0, yaw, 0);
       }
     }
   }

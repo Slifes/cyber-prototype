@@ -2,14 +2,32 @@
 
 [ext_resource type="Script" path="res://scripts/actors/npcs/BaseNpcActor.cs" id="1_lv6wa"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5hfvn"]
-grow_amount = 1.0
+[sub_resource type="Shader" id="Shader_kxsue"]
+code = "shader_type spatial;
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2ynvr"]
-next_pass = SubResource("StandardMaterial3D_5hfvn")
+uniform float outline_width : hint_range(0, 10);
+uniform vec4 outline_color : source_color;
+
+void vertex() {
+	NORMAL = vec3(0.0, 0.0, 0.0);
+	float distance = abs(dot(VERTEX, vec3(0.0, 0.0, 1.0))) * outline_width;
+	VERTEX.xyz += distance * NORMAL;
+}
+
+void fragment() {
+	vec4 color = vec4(255,255,255, 255);
+	color.rgb = outline_color.rgb;
+	color.a = max(max(color.r, color.g), color.b);
+	
+	COLOR.rgb = color.rgb;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g6afe"]
+render_priority = 0
+shader = SubResource("Shader_kxsue")
 
 [sub_resource type="BoxMesh" id="BoxMesh_dwy3e"]
-material = SubResource("StandardMaterial3D_2ynvr")
+material = SubResource("ShaderMaterial_g6afe")
 size = Vector3(0.3, 1, 0.3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4isxv"]
@@ -17,6 +35,9 @@ size = Vector3(0.4, 1, 0.4)
 
 [node name="ID" type="CharacterBody3D"]
 script = ExtResource("1_lv6wa")
+ID = null
+ActorName = null
+Type = null
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_dwy3e")

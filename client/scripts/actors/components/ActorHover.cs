@@ -15,7 +15,6 @@ class ActorHover : IComponent
     actor.AddChild(node);
 
     Components = node.GetNode<Node3D>("Components");
-
     Name = Components.GetNode<Label3D>("Name");
 
     var area = node.GetNode<Area3D>("Area3D");

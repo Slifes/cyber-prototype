@@ -5,7 +5,7 @@ class Dialogue : IComponent
 {
   Resource dialog;
 
-  public Dialogue(BaseNpcActor actor) { }
+  public Dialogue(BaseNPC actor) { }
 
   public void InputHandler(InputEvent @event) { }
 

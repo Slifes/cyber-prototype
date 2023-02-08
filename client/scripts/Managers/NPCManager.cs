@@ -1,24 +1,24 @@
-using Godot;
+﻿using Godot;
 using System;
 
 class NPCManager
 {
-  public static BaseNpcActor Create(int ID)
+  public static BaseNPC Create(int ID)
   {
-	//var resource = ResourceLoader.Load<Npc>(String.Format("res://resources/npcs/{0}.tscn", ID));
-	var node = ResourceLoader.Load<PackedScene>("res://npcs/BaseNPC.tscn");
+    //var resource = ResourceLoader.Load<Npc>(String.Format("res://resources/npcs/{0}.tscn", ID));
+    var node = ResourceLoader.Load<PackedScene>("res://npcs/BaseNPC.tscn");
 
-	var npc = (BaseNpcActor)node.Instantiate();
+    var npc = (BaseNPC)node.Instantiate();
 
-	//npc.StartComponents(resource.Component);
+    //npc.StartComponents(resource.Component);
 
-	// AnimationLibrary library = npc.Animation.GetAnimationLibrary("");
+    // AnimationLibrary library = npc.Animation.GetAnimationLibrary("");
 
-	// foreach (var animation in resource.Animations)
-	// {
-	//   library.AddAnimation(animation.ResourceName, animation);
-	// }
+    // foreach (var animation in resource.Animations)
+    // {
+    //   library.AddAnimation(animation.ResourceName, animation);
+    // }
 
-	return npc;
+    return npc;
   }
 }

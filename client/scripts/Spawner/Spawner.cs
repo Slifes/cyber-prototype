@@ -29,17 +29,17 @@ partial class Spawner : Node
     return null;
   }
 
-  public void Spawn(Variant id, Variant type, Variant position, Variant data)
+  public void Spawn(Variant id, Variant type, Variant position, Variant yaw, Variant data)
   {
     ActorType _type = (ActorType)(int)type;
 
     switch (_type)
     {
       case ActorType.Player:
-        playerSpawner.Spawn(id, (Vector3)position, data);
+        playerSpawner.Spawn(id, (Vector3)position, (float)yaw, data);
         break;
       case ActorType.Npc:
-        npcSpawner.Spawn(id, (Vector3)position, data);
+        npcSpawner.Spawn(id, (Vector3)position, (float)yaw, data);
         break;
     }
   }

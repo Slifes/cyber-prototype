@@ -3,7 +3,7 @@ using System;
 
 partial class NpcSpawner : Node3D
 {
-  public void Spawn(Variant name, Vector3 position, Variant data)
+  public void Spawn(Variant name, Vector3 position, float yaw, Variant data)
   {
     var d = data.AsGodotArray();
 
@@ -18,13 +18,14 @@ partial class NpcSpawner : Node3D
 
     var scene = ResourceLoader.Load<PackedScene>(String.Format("res://resources/npcs/{0}.tscn", npcId));
 
-    var actor = scene.Instantiate<BaseNpcActor>();
+    var actor = scene.Instantiate<BaseNPC>();
 
     actor.Name = name.ToString();
 
     AddChild(actor);
 
     actor.GlobalPosition = position;
+    actor.Rotation = new Vector3(0, yaw, 0);
     actor.SetServerData(data);
   }
 
