@@ -5,7 +5,9 @@ partial class Player
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void SendMovement(Variant position, Variant yaw)
   {
-    Move((Vector2)position, (float)yaw, (int)ActorState.Walking);
+    Move((Vector2)position, (float)yaw);
+
+    this.state = ActorState.Walking;
 
     ServerBridge.Instance.SendServerMovement(this, GlobalPosition, (float)yaw);
   }
@@ -13,7 +15,9 @@ partial class Player
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void SendMovementStopped(Variant position, Variant yaw)
   {
-    Move((Vector2)position, (float)yaw, (int)ActorState.Walking);
+    Move((Vector2)position, (float)yaw);
+
+    this.state = ActorState.Idle;
 
     ServerBridge.Instance.SendServerMovementStopped(this, GlobalPosition, (float)yaw);
   }
@@ -26,6 +30,6 @@ partial class Player
 
     ServerBridge.Instance.SendSkillExecutedTo(GetNearestPlayers(), this, (int)id);
 
-    GetComponent<SkillHandler>().ExecuteSkill(id);
+    skillHandler.ExecuteSkill(id);
   }
 }

@@ -35,7 +35,7 @@ partial class ServerBridge : Node3D
   #region spawn
   public void SendActorEnteredZone(int remoteId, IActor actor)
   {
-    RpcId(remoteId, "ActorEnteredZone", actor.GetActorId(), (Variant)(int)actor.GetActorType(), ((Node3D)actor).GlobalPosition, actor.GetData());
+    RpcId(remoteId, "ActorEnteredZone", actor.GetActorId(), (Variant)(int)actor.GetActorType(), ((Node3D)actor).GlobalPosition, ((Node3D)actor).Rotation.Y, actor.GetData());
   }
 
   public void SendActorExitedZone(int remoteId, IActor actor)
@@ -45,17 +45,17 @@ partial class ServerBridge : Node3D
 
   public void SendPlayableActor(int remoteId, IActor actor)
   {
-    RpcId(remoteId, "ActorPlayable", actor.GetActorId(), ((Node3D)actor).GlobalPosition, actor.GetData());
+    RpcId(remoteId, "ActorPlayable", actor.GetActorId(), ((Node3D)actor).GlobalPosition, ((Node3D)actor).Rotation.Y, actor.GetData());
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorEnteredZone(Variant id, Variant type, Variant position, Variant data) { }
+  public void ActorEnteredZone(Variant id, Variant type, Variant position, Variant yaw, Variant data) { }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ActorExitedZone(Variant id, Variant type) { }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorPlayable(Variant id, Variant position, Variant data) { }
+  public void ActorPlayable(Variant id, Variant position, Variant yaw, Variant data) { }
 
   #endregion
 

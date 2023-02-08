@@ -1,19 +1,5 @@
 ﻿using Godot;
 
-enum ItemType
-{
-  Active,
-  Modify,
-  Equipment,
-  Useless
-}
-
-enum ClassType
-{
-  Swordsman,
-
-}
-
 partial class Item : Resource
 {
   [Export]

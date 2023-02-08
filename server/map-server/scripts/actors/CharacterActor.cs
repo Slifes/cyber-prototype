@@ -13,6 +13,8 @@ enum ActorState
 
 partial class CharacterActor : CharacterBody3D, IActor
 {
+  public static string ActorGroup = "Actor";
+
   protected int _actorId;
 
   protected ActorType _type;
@@ -36,6 +38,8 @@ partial class CharacterActor : CharacterBody3D, IActor
 
     currentHP = maxHP;
     currentSP = maxSP;
+
+    AddToGroup("Actor");
   }
 
   public override void _Ready()

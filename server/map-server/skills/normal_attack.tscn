@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2iq1p0lsfaxw"]
+
+[ext_resource type="Script" path="res://scripts/skills/NormalAttack.cs" id="1_k6faq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l06qg"]
+size = Vector3(0.434897, 0.1, 0.2)
+
+[node name="HitBox" type="Area3D"]
+collision_layer = 0
+collision_mask = 2048
+input_ray_pickable = false
+monitorable = false
+script = ExtResource("1_k6faq")
+MinDamage = 2
+MaxDamage = 12
+LifeTime = 0.1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.480941, 0, 0)
+shape = SubResource("BoxShape3D_l06qg")

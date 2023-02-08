@@ -10,7 +10,7 @@ partial class Player : CharacterActor
   public delegate void PickUpItemEventHandler(Variant itemId);
 
   [Signal]
-  public delegate void MoneyValueChanged(Variant value);
+  public delegate void MoneyValueChangedEventHandler(Variant value);
 
   [Signal]
   public delegate void MovementStartEventHandler(Variant position, Variant yaw);
@@ -46,8 +46,6 @@ partial class Player : CharacterActor
 
     SetMultiplayerAuthority(_actorId);
 
-    animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-
     ghosting = new Ghosting(this);
     skillHandler = new SkillHandler(this);
     money = new Money(this);
@@ -82,10 +80,9 @@ partial class Player : CharacterActor
     return ghosting.NearestPlayers;
   }
 
-  private void Move(Vector2 position, float rotation, ActorState nextState)
+  private void Move(Vector2 position, float rotation)
   {
     GlobalPosition = new Vector3(position.X, GlobalPosition.Y, position.Y);
     Rotation = new Vector3(0, rotation, 0);
-    // state = nextState;
   }
 }

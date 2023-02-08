@@ -27,8 +27,6 @@ partial class CharacterSpawner : Node3D
 
       AddChild(player);
 
-      player.LoadSkill(new System.Collections.Generic.List<int>() { 0, 1 });
-
       player.GlobalPosition = (Vector3)position;
 
       return player;

@@ -2,80 +2,45 @@
 
 class BaseMovement : IBehavior
 {
-  Vector3 targetPosition;
+  Behavior behavior;
 
-  FastNoiseLite noise = ResourceLoader.Load<FastNoiseLite>("res://noise/movement.tres");
+  Area3D AgressiveArea;
 
-  float time = 0.0f;
-
-  float MaxDistance = 20f;
-
-  int nsignal = 1;
-
-  float count = 0;
-
-  BaseEnemyActor actor;
-
-  public BaseMovement(BaseEnemyActor actor)
+  public BaseMovement(Behavior actor)
   {
-    this.actor = actor;
+    behavior = actor;
+
+    AgressiveArea = actor.Actor.GetNode<Area3D>("AgressiveArea");
   }
 
   public void Start()
   {
-    actor.AgressiveArea.BodyEntered += TargetEntered;
+    AgressiveArea.BodyEntered += TargetEntered;
   }
 
   private void TargetEntered(Node3D body)
   {
-    actor.Target = body;
-
-    actor.ChangeState(AIState.Steering);
-  }
-
-  private Vector3 GetDirection(float time)
-  {
-    var offsetX = noise.GetNoise3D(time, 0, 0);
-    var offsetZ = noise.GetNoise3D(0, 0, time);
-
-    Vector3 velocity = new Vector3(offsetX, 0, offsetZ);
-
-    return velocity.Normalized() * MaxDistance;
-  }
-
-  private float GetFunctionX()
-  {
-    var time = Time.GetUnixTimeFromSystem();
-
-    var t = time - (float)((int)(time / 10.0f)) * 10;
-
-    return Mathf.Abs(((int)t / 10.0f));
+    if (body.IsInGroup(CharacterActor.ActorGroup))
+    {
+      behavior.Target = (CharacterActor)body;
+      behavior.ChangeState(AIState.Steering);
+    }
   }
 
   public void Handler(double delta)
   {
-    /*var d = GetFunctionX();
-
-    var direction = GetDirection(d);
-
-    GD.Print("d: ", d);
-    GD.Print("Direction: ", direction);
-    GD.Print("Velocity: ", direction * (float)delta);
-
-    actor.LinearVelocity = direction * (float)delta;*/
-
-    if (!actor.IsOnFloor())
+    if (!behavior.Actor.IsOnFloor())
     {
       GD.Print("Not floor");
-      actor.Velocity -= new Vector3(0, 9.8f * (float)delta, 0);
+      behavior.Actor.Velocity -= new Vector3(0, 9.8f * (float)delta, 0);
 
-      actor.MoveAndSlide();
+      behavior.Actor.MoveAndSlide();
     }
   }
 
   public void Finish()
   {
-    actor.AgressiveArea.BodyEntered -= TargetEntered;
+    AgressiveArea.BodyEntered -= TargetEntered;
   }
 
   public Variant GetData()

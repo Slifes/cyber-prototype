@@ -36,11 +36,14 @@ class Ghosting : IComponent
   {
     IActor actorTarget = (IActor)body;
 
-    if (!nearestAnyActor.Contains(actorTarget.GetActorId()))
+    if (!nearestAnyActor.Contains(actorTarget.GetActorId()) && actorTarget != actor)
     {
       nearestAnyActor.Add(actorTarget.GetActorId());
 
-      ServerBridge.Instance.SendActorEnteredZone(actor.GetActorId(), actorTarget);
+      if (actor.GetActorType() == ActorType.Player)
+      {
+        ServerBridge.Instance.SendActorEnteredZone(actor.GetActorId(), actorTarget);
+      }
 
       if (actorTarget.GetActorType() == ActorType.Player)
       {
@@ -53,11 +56,14 @@ class Ghosting : IComponent
   {
     IActor actorTarget = (IActor)body;
 
-    if (nearestAnyActor.Contains(actorTarget.GetActorId()))
+    if (nearestAnyActor.Contains(actorTarget.GetActorId()) && actorTarget != actor)
     {
       nearestAnyActor.Remove(actorTarget.GetActorId());
 
-      ServerBridge.Instance.SendActorExitedZone(actor.GetActorId(), actorTarget);
+      if (actor.GetActorType() == ActorType.Player)
+      {
+        ServerBridge.Instance.SendActorExitedZone(actor.GetActorId(), actorTarget);
+      }
 
       if (actorTarget.GetActorType() == ActorType.Player)
       {

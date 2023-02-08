@@ -1,60 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://clrmtuwtd7p75"]
+[gd_scene load_steps=3 format=3 uid="uid://clrmtuwtd7p75"]
 
 [ext_resource type="Script" path="res://scripts/actors/player/Player.cs" id="1_n3oi6"]
-[ext_resource type="PackedScene" uid="uid://bn342ngnf8b6n" path="res://components/ghosting.tscn" id="2_5vniu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ri0iu"]
 radius = 0.05
 height = 0.12
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_l06qg"]
-size = Vector3(0.2, 0.1, 0.2)
-
-[sub_resource type="Animation" id="Animation_w51qs"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("HitBox/CollisionShape3D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-0.619724, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("HitBox:monitoring")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("HitBox/CollisionShape3D:shape:size")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.2, 0.1, 0.2)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_fx53p"]
-_data = {
-"RESET": SubResource("Animation_w51qs")
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_2t0tv"]
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 3586
@@ -63,23 +13,3 @@ script = ExtResource("1_n3oi6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_ri0iu")
-
-[node name="HitBox" type="Area3D" parent="."]
-collision_layer = 0
-collision_mask = 2048
-input_ray_pickable = false
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.619724, 0, 0)
-shape = SubResource("BoxShape3D_l06qg")
-
-[node name="AABB" parent="." instance=ExtResource("2_5vniu")]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-method_call_mode = 1
-libraries = {
-"": SubResource("AnimationLibrary_fx53p"),
-"Skills": SubResource("AnimationLibrary_2t0tv")
-}

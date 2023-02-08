@@ -2,7 +2,7 @@
 
 class BaseAttack : IBehavior
 {
-  BaseEnemyActor actor;
+  Behavior behavior;
 
   private float time;
 
@@ -10,21 +10,25 @@ class BaseAttack : IBehavior
 
   private Vector3 LastOrigin;
 
-  public BaseAttack(BaseEnemyActor actor)
+  private Area3D AttackArea;
+
+  public BaseAttack(Behavior actor)
   {
-    this.actor = actor;
+    this.behavior = actor;
+
+    AttackArea = actor.Actor.GetNode<Area3D>("AttackArea");
   }
 
   public void Finish()
   {
-    actor.AttackArea.BodyExited -= BodyExited;
+    AttackArea.BodyExited -= BodyExited;
   }
 
   public void Handler(double delta)
   {
     if (time >= targetTime)
     {
-      actor.ExecuteSkill(0);
+      // behavior.Actor.ExecuteSkill(0);
       time = 0;
     }
     else
@@ -32,38 +36,38 @@ class BaseAttack : IBehavior
       time += (float)delta;
     }
 
-    var offset = (actor.Target.GlobalPosition - LastOrigin) * 2f * (float)delta;
+    var offset = (behavior.Target.GlobalPosition - LastOrigin) * 2f * (float)delta;
     LastOrigin = LastOrigin + offset;
 
-    actor.LookAt(LastOrigin, Vector3.Up);
+    behavior.Actor.LookAt(LastOrigin, Vector3.Up);
 
     if (offset > Vector3.Zero)
     {
-      actor.UpdateState();
+      // actor.UpdateState();
     }
   }
 
   public void Start()
   {
-    actor.AttackArea.BodyExited += BodyExited;
+    AttackArea.BodyExited += BodyExited;
 
-    LastOrigin = actor.Target.GlobalPosition;
+    LastOrigin = behavior.Target.GlobalPosition;
   }
 
   private void BodyExited(Node3D body)
   {
     GD.Print("Body Exited: ", body.Name);
-    GD.Print("Body Target: ", actor.Target.Name);
-    if (body.Name == actor.Target.Name)
+    GD.Print("Body Target: ", behavior.Target.Name);
+    if (body.Name == behavior.Target.Name)
     {
       if (body.IsInsideTree())
       {
-        actor.ChangeState(AIState.Steering);
+        behavior.ChangeState(AIState.Steering);
       }
       else
       {
-        actor.Target = null;
-        actor.ChangeState(AIState.Walking);
+        behavior.Target = null;
+        behavior.ChangeState(AIState.Walking);
       }
     }
   }

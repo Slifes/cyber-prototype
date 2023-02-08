@@ -1,54 +1,28 @@
 ﻿using Godot;
 
-using System;
 using System.Collections.Generic;
-
-enum EnemyState
-{
-  Living,
-  Battle,
-  Died
-}
 
 partial class BaseEnemy : BaseNPC
 {
-  [Signal]
-  public delegate void BehaviorChangeStateEventHandler();
+  [Export]
+  public Godot.Collections.Array<Skill> skills;
 
-  [Signal]
-  public delegate void BehaviorUpdateStateEventHandler();
-
-  private Area3D HitBox;
+  private Ghosting ghosting;
 
   private Behavior behavior;
-
-  public Skill CurrentSkill;
-
-  public AnimationPlayer Animation { get; set; }
-
-  List<int> nearest;
 
   public override void _Ready()
   {
     onActorReady();
 
-    HitBox = GetNode<Area3D>("HitBox");
-    HitBox.BodyEntered += HitBodyEntered;
+    ghosting = new Ghosting(this);
 
-    nearest = new();
-
-    Animation = GetNode<AnimationPlayer>("AnimationPlayer");
+    behavior = new AgressiveBehavior(this);
   }
 
-  private void HitBodyEntered(Node3D body)
+  public List<int> GetPlayersId()
   {
-    if (body.Name != Name)
-    {
-      GD.Print("Hitted Player");
-      IActor actor = (IActor)body;
-
-      actor.TakeDamage(5);
-    }
+    return ghosting.NearestPlayers;
   }
 
   public override void _PhysicsProcess(double delta)
@@ -58,23 +32,21 @@ partial class BaseEnemy : BaseNPC
 
   public void ExecuteSkill(int skillId)
   {
-    Animation.Play(String.Format("Skills/{0}", skillId));
-
-    ServerBridge.Instance.SendSkillExecutedTo(nearest, this, skillId);
+    //ServerBridge.Instance.SendSkillExecutedTo(, this, skillId);
   }
 
   public override Variant GetData()
   {
     var data = new Godot.Collections.Array<Variant>()
-        {
-            ID,
-            currentHP,
-            currentSP,
-            maxHP,
-            maxSP,
-            (int)state,
-            behavior.GetData(),
-        };
+    {
+      ID,
+      currentHP,
+      currentSP,
+      maxHP,
+      maxSP,
+      (int)state,
+      behavior.GetData(),
+    };
 
     return data;
   }
@@ -85,9 +57,9 @@ partial class BaseEnemy : BaseNPC
 
     if (currentHP <= 0)
     {
-      this.ChangeState(AIState.Died);
+      // this.ChangeState(AIState.Died);
     }
 
-    ServerBridge.Instance.SendActorTookDamage(this.nearest, this, damage);
+    ServerBridge.Instance.SendActorTookDamage(ghosting.NearestPlayers, this, damage);
   }
 }

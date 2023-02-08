@@ -7,23 +7,32 @@ class BasedContextSteering : IBehavior
 
   Vector3[] rayDirections;
 
-  BaseEnemyActor actor;
+  Behavior behavior;
 
   bool changeToAttackState = false;
 
-  public BasedContextSteering(BaseEnemyActor actor)
+  Area3D AttackArea;
+
+  Area3D AgressiveArea;
+
+  Vector3 LastTargetPosition = Vector3.Zero;
+
+  public BasedContextSteering(Behavior behavior)
   {
-    this.actor = actor;
+    this.behavior = behavior;
+
+    AttackArea = behavior.Actor.GetNode<Area3D>("AttackArea");
+    AgressiveArea = behavior.Actor.GetNode<Area3D>("AgressiveArea");
   }
 
   public void Start()
   {
     changeToAttackState = false;
 
-    actor.AttackArea.BodyEntered += AttackBodyEntered;
-    actor.AgressiveArea.BodyExited += TargetBodyExited;
+    AttackArea.BodyEntered += AttackBodyEntered;
+    AgressiveArea.BodyExited += TargetBodyExited;
 
-    var rays = actor.GetNode<Node3D>("Steering");
+    var rays = behavior.Actor.GetNode<Node3D>("Steering");
 
     raycasts = new RayCast3D[rays.GetChildCount()];
     rayDirections = new Vector3[raycasts.Length];
@@ -37,18 +46,18 @@ class BasedContextSteering : IBehavior
 
   private void TargetBodyExited(Node3D node)
   {
-    if (actor.Target != null && node.Name == actor.Target.Name)
+    if (behavior.Target != null && node.Name == behavior.Target.Name)
     {
-      actor.ChangeState(AIState.Walking);
-      actor.Target = null;
+      behavior.ChangeState(AIState.Walking);
+      behavior.Target = null;
     }
   }
 
   private void AttackBodyEntered(Node3D node)
   {
-    if (node.Name == actor.Target.Name)
+    if (node.Name == behavior.Target.Name)
     {
-      actor.AttackArea.BodyEntered -= AttackBodyEntered;
+      AttackArea.BodyEntered -= AttackBodyEntered;
 
       changeToAttackState = true;
     }
@@ -58,11 +67,11 @@ class BasedContextSteering : IBehavior
   {
     for (var i = 0; i < raycasts.Length; i++)
     {
-      rayDirections[i] = raycasts[i].TargetPosition.Rotated(Vector3.Up, actor.Rotation.Y);
+      rayDirections[i] = raycasts[i].TargetPosition.Rotated(Vector3.Up, behavior.Actor.Rotation.Y);
     }
 
     var interestMap = new List<float>(new float[raycasts.Length]);
-    var player = actor.Target;
+    var player = behavior.Target;
 
     if (player == null)
     {
@@ -75,7 +84,7 @@ class BasedContextSteering : IBehavior
     {
       var ray = raycasts[i];
 
-      Vector3 toTarget = targetPos - actor.GlobalPosition;
+      Vector3 toTarget = targetPos - behavior.Actor.GlobalPosition;
 
       if (!ray.IsColliding())
       {
@@ -104,7 +113,7 @@ class BasedContextSteering : IBehavior
   {
     if (changeToAttackState)
     {
-      actor.ChangeState(AIState.Attacking);
+      behavior.ChangeState(AIState.Attacking);
       return;
     }
 
@@ -114,23 +123,25 @@ class BasedContextSteering : IBehavior
 
     Vector3 desiredVelocity = dir * 10.0f * (float)delta;
 
-    actor.Velocity = desiredVelocity;
+    behavior.Actor.Velocity = desiredVelocity;
 
-    actor.MoveAndSlide();
+    behavior.Actor.MoveAndSlide();
 
-    actor.LookAt(actor.Target.GlobalPosition);
+    behavior.Actor.LookAt(behavior.Target.GlobalPosition);
 
-    actor.UpdateState();
+    if (LastTargetPosition != behavior.Target.GlobalPosition)
+    {
+      LastTargetPosition = behavior.Target.GlobalPosition;
+      behavior.UpdateState();
+    }
   }
 
   public void Finish()
   {
-    actor.Velocity = Vector3.Zero;
+    behavior.Actor.Velocity = Vector3.Zero;
 
-    actor.AttackArea.BodyEntered -= AttackBodyEntered;
-    actor.AgressiveArea.BodyExited -= TargetBodyExited;
-
-    // actor.LinearVelocity = Vector3.Zero;
+    AttackArea.BodyEntered -= AttackBodyEntered;
+    AgressiveArea.BodyExited -= TargetBodyExited;
 
     for (var i = 0; i < raycasts.Length; i++)
     {
@@ -142,7 +153,7 @@ class BasedContextSteering : IBehavior
   {
     return new Godot.Collections.Array<Variant>()
     {
-      (actor.Target != null ? actor.Target.GlobalPosition:Vector3.Zero)
+      LastTargetPosition
     };
   }
 }

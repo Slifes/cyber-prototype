@@ -5,42 +5,24 @@ using System.Collections.Generic;
 
 enum AIState
 {
-  Idle,
   Walking,
   Steering,
-  Attacking,
-  Died
+  Attacking
 }
 
-class Behavior
+abstract class Behavior
 {
-  AIState state = AIState.Idle;
+  AIState state = AIState.Walking;
 
   IBehavior behavior;
 
-  Dictionary<AIState, IBehavior> behaviors;
+  protected Dictionary<AIState, IBehavior> behaviors;
 
-  public Area3D AgressiveArea { get; set; }
+  protected BaseEnemy actor;
 
-  public Area3D AttackArea { get; set; }
+  public BaseEnemy Actor { get { return actor; } }
 
-  public Node3D Target { get; set; }
-
-  public Behavior(BaseNPC actor)
-  {
-    AgressiveArea = GetNode<Area3D>("AgressiveArea");
-    AttackArea = GetNode<Area3D>("AttackArea");
-
-    behaviors = new()
-    {
-      {AIState.Walking, new BaseMovement(this)},
-      {AIState.Steering, new BasedContextSteering(this)},
-      {AIState.Attacking, new BaseAttack(this)},
-    };
-
-    ChangeState(AIState.Walking);
-  }
-
+  public CharacterActor Target { get; set; }
 
   public void Update(double delta)
   {
@@ -48,6 +30,11 @@ class Behavior
     {
       behavior.Handler(delta);
     }
+  }
+
+  public void UpdateState()
+  {
+    ServerBridge.Instance.SendNpcUpdateState(actor.GetPlayersId(), actor.GetActorId(), (int)state, actor.GlobalPosition, actor.Rotation.Y, GetData());
   }
 
   public void ChangeState(AIState state)
@@ -64,5 +51,17 @@ class Behavior
     this.state = state;
 
     behavior.Start();
+
+    ServerBridge.Instance.SendNpcChangeState(actor.GetPlayersId(), actor.GetActorId(), (int)state, actor.GlobalPosition, actor.Rotation.Y, GetData());
+  }
+
+  public Variant GetData()
+  {
+    if (behavior == null)
+    {
+      return new Variant();
+    }
+
+    return behavior.GetData();
   }
 }

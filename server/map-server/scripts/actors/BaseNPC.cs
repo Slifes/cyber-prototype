@@ -13,13 +13,13 @@ partial class BaseNPC : CharacterActor
   public override Variant GetData()
   {
     var data = new Godot.Collections.Array<Variant>()
-        {
-            ID,
-            currentHP,
-            currentSP,
-            maxHP,
-            maxSP,
-        };
+    {
+        ID,
+        currentHP,
+        currentSP,
+        maxHP,
+        maxSP,
+    };
 
     return data;
   }

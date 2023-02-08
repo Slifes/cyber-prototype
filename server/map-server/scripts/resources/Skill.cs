@@ -1,18 +1,5 @@
 ﻿using Godot;
 
-enum SkillType
-{
-  Active,
-  Passive,
-  Buff
-}
-
-enum SkillActiveType
-{
-  Hand,
-  Projectile,
-}
-
 partial class Skill : Resource
 {
   [Export]
@@ -25,13 +12,13 @@ partial class Skill : Resource
   public int Level;
 
   [Export]
-  public int Damage;
+  public int MinDamage;
+
+  [Export]
+  public int MaxDamage;
 
   [Export]
   public SkillType Type;
-
-  [Export]
-  public SkillActiveType ActiveType;
 
   [Export]
   public int SP;
@@ -40,5 +27,5 @@ partial class Skill : Resource
   public float Delay;
 
   [Export]
-  public PackedScene scene;
+  public PackedScene Scene;
 }
