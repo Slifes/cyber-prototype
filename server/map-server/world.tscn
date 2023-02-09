@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cyykbb8cqfg41"]
+[gd_scene load_steps=7 format=3 uid="uid://cyykbb8cqfg41"]
 
 [ext_resource type="Script" path="res://scripts/Networking.cs" id="1_et8se"]
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_u2oiu"]
 [ext_resource type="Script" path="res://scripts/spawner/CharacterSpawner.cs" id="3_mpu75"]
 [ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/BaseEnemy.tscn" id="4_2nlen"]
 [ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/main_server.tscn" id="4_ijwe5"]
+[ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_2o1yn"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_et8se")
@@ -32,7 +33,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.54169, -0.949999, -2.95842)
 
 [node name="Map" parent="." instance=ExtResource("4_ijwe5")]
 
-[node name="Effects" type="Node3D" parent="."]
+[node name="Skills" type="Node3D" parent="."]
+script = ExtResource("6_2o1yn")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15, 0)

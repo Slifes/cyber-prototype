@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 class SkillHandler : IComponent
 {
-  Node actor;
+  CharacterActor actor;
 
   List<Skill> skills;
 
-  public SkillHandler(Node actor)
+  public SkillHandler(CharacterActor actor)
   {
     skills = new();
 
@@ -34,8 +34,14 @@ class SkillHandler : IComponent
   {
     var skill = SkillManager.Instance.Get(id.AsInt32());
 
-    var instance = skill.Scene.Instantiate();
+    if (skill.Type == SkillType.Active) {
+      var instance = skill.Scene.Instantiate<Node3D>();
 
-    actor.CallDeferred("add_child", instance);
+      instance.Rotation = actor.Rotation;
+
+      SkillNode.Spawn((AreaSkillBase)instance);
+
+      instance.CallDeferred("set_global_position", actor.GlobalPosition);
+    }
   }
 }

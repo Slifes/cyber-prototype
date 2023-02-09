@@ -7,7 +7,16 @@ partial class AreaSkillBase : Area3D
   [Export]
   public float LifeTime;
 
+  protected Vector3 Direction = Vector3.Forward;
+
   private float CurrentTime = 0.0f;
+
+  public override void _Ready()
+  {
+    base._Ready();
+    
+    Direction = Vector3.Forward.Rotated(Vector3.Up, Rotation.Y);
+  }
 
   protected void MaybeRemoveByLifetime(double delta)
   {

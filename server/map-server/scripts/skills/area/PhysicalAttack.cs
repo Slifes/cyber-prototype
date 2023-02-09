@@ -10,6 +10,8 @@ partial class PhysicalAttack : AreaSkillBase
 
   public override void _Ready()
   {
+    base._Ready();
+
     BodyEntered += Collided;
   }
 
