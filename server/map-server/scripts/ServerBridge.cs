@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System.Collections.Generic;
 
-partial class ServerBridge : Node3D
+partial class ServerBridge : Node
 {
   CharacterSpawner players;
 
@@ -19,7 +19,7 @@ partial class ServerBridge : Node3D
 
   public override void _Ready()
   {
-    players = GetNode<CharacterSpawner>("/root/World/Spawner/players");
+    //players = GetNode<CharacterSpawner>("/root/World/Spawner/players");
 
     _instance = this;
   }

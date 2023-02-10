@@ -1,1 +1,1 @@
-"..\..\..\godot\bin\godot.windows.editor.x86_64.mono.console.exe" --path .\ --headless
+"..\..\..\godot\bin\godot.windows.editor.x86_64.mono.console.exe" --path .\ --headless main_server

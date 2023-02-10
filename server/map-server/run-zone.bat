@@ -1,0 +1,1 @@
+"..\..\..\godot\bin\godot.windows.editor.x86_64.mono.console.exe" --path .\ --headless shard zone_01

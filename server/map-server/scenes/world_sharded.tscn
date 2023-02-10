@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://btc5f0sseqk1x"]
+
+[ext_resource type="Script" path="res://scripts/Networking.cs" id="1_r5x5j"]
+[ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_uop1d"]
+[ext_resource type="PackedScene" uid="uid://btjdrxmb8ovkk" path="res://zones/zone_01.tscn" id="3_5g7nc"]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_r5x5j")
+
+[node name="ServerBridge" type="Node" parent="."]
+script = ExtResource("2_uop1d")
+
+[node name="zone_01" type="Node" parent="."]
+
+[node name="zone_01" parent="zone_01" instance=ExtResource("3_5g7nc")]
+IsServer = false

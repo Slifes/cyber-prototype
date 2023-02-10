@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://btjdrxmb8ovkk"]
+
+[ext_resource type="Script" path="res://scripts/shards/zone/ZoneShard.cs" id="1_bkhae"]
+[ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_plbjr"]
+
+[node name="zone_01" type="Node3D"]
+script = ExtResource("1_plbjr")
+IsServer = true
+Port = 3000
+
+[node name="zone_01" type="Node3D" parent="."]
+script = ExtResource("1_bkhae")
+
+[node name="actors" type="Node3D" parent="zone_01"]

@@ -34,7 +34,7 @@ abstract class Behavior
 
   public void UpdateState()
   {
-    ServerBridge.Instance.SendNpcUpdateState(actor.GetPlayersId(), actor.GetActorId(), (int)state, actor.GlobalPosition, actor.Rotation.Y, GetData());
+    // ServerBridge.Instance.SendNpcUpdateState(actor.GetPlayersId(), actor.GetActorId(), (int)state, actor.GlobalPosition, actor.Rotation.Y, GetData());
   }
 
   public void ChangeState(AIState state)

@@ -8,7 +8,11 @@ public partial class Networking : Node3D
 
   public override void _EnterTree()
   {
-    GetTree().SetMultiplayer(new SceneMultiplayer());
+    var sceneMultiplayer = new SceneMultiplayer();
+
+    sceneMultiplayer.ServerRelay = false;
+
+    GetTree().SetMultiplayer(sceneMultiplayer);
 
     multiplayerPeer = new ENetMultiplayerPeer();
 
