@@ -2,11 +2,17 @@
 
 partial class CharacterSpawner : Node3D
 {
+  static CharacterSpawner instance;
+
+  public static CharacterSpawner Instance { get { return instance; } }
+
   PackedScene playerScene;
 
   public override void _Ready()
   {
     playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
+
+    instance = this;
   }
 
   public IActor Spawn(Variant name, Variant position, Variant data)

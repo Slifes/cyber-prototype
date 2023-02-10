@@ -1,10 +1,7 @@
 ﻿using Godot;
 
-partial class Skill : Resource
+partial class Skill : Base
 {
-  [Export]
-  public int ID;
-
   [Export]
   public string Name;
 

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cufs3lyd3rjyh"]
+
+[ext_resource type="Script" path="res://scripts/resources/Skill.cs" id="1_b71ba"]
+
+[resource]
+script = ExtResource("1_b71ba")
+Name = "Heal"
+Level = 1
+MinDamage = 0
+MaxDamage = 0
+Type = 0
+SP = 10
+Delay = 20.0
+ID = 2

@@ -34,7 +34,8 @@ class SkillHandler : IComponent
   {
     var skill = SkillManager.Instance.Get(id.AsInt32());
 
-    if (skill.Type == SkillType.Active) {
+    if (skill.Type == SkillType.Active)
+    {
       var instance = skill.Scene.Instantiate<Node3D>();
 
       instance.Rotation = actor.Rotation;

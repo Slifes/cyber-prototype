@@ -14,7 +14,7 @@ partial class AreaSkillBase : Area3D
   public override void _Ready()
   {
     base._Ready();
-    
+
     Direction = Vector3.Forward.Rotated(Vector3.Up, Rotation.Y);
   }
 

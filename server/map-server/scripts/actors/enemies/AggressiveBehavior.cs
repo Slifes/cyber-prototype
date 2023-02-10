@@ -1,9 +1,9 @@
 ﻿
 class AgressiveBehavior : Behavior
 {
-  public AgressiveBehavior(BaseNPC actor)
+  public AgressiveBehavior(BaseEnemy actor)
   {
-    this.actor = (BaseEnemy)actor;
+    this.actor = actor;
 
     behaviors = new()
     {

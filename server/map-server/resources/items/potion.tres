@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://hx8gamfj04dm"]
+
+[ext_resource type="Script" path="res://scripts/resources/Item.cs" id="1_15gtx"]
+
+[resource]
+script = ExtResource("1_15gtx")
+Name = "Heal"
+Type = 0
+EquipSlot = 0
+SkillId = 2
+ID = 0

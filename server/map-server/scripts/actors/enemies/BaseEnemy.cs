@@ -11,6 +11,8 @@ partial class BaseEnemy : BaseNPC
 
   private Behavior behavior;
 
+  public EnemyRandomSkill skillHandler;
+
   public override void _Ready()
   {
     onActorReady();
@@ -18,6 +20,8 @@ partial class BaseEnemy : BaseNPC
     ghosting = new Ghosting(this);
 
     behavior = new AgressiveBehavior(this);
+
+    skillHandler = new EnemyRandomSkill(this);
   }
 
   public List<int> GetPlayersId()
@@ -28,11 +32,6 @@ partial class BaseEnemy : BaseNPC
   public override void _PhysicsProcess(double delta)
   {
     behavior.Update(delta);
-  }
-
-  public void ExecuteSkill(int skillId)
-  {
-    //ServerBridge.Instance.SendSkillExecutedTo(, this, skillId);
   }
 
   public override Variant GetData()

@@ -37,4 +37,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.62777, 0.611163, -2.10989)
 shape = SubResource("ConcavePolygonShape3D_rsmj5")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+visible = false
 navigation_mesh = SubResource("NavigationMesh_8g6aj")

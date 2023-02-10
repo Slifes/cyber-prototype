@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class SkillNode: Node3D
+partial class SkillNode : Node3D
 {
   private static SkillNode instance;
 

@@ -72,7 +72,7 @@ partial class Player : CharacterActor
   {
     base.TakeDamage(damage);
 
-    ServerBridge.Instance.SendActorTookDamage(ghosting.Nearest, this, damage);
+    ServerBridge.Instance.SendActorTookDamage(ghosting.NearestPlayers, this, damage);
   }
 
   public List<int> GetNearestPlayers()

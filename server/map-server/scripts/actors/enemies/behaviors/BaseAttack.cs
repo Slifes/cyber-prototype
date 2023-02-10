@@ -28,7 +28,7 @@ class BaseAttack : IBehavior
   {
     if (time >= targetTime)
     {
-      // behavior.Actor.ExecuteSkill(0);
+      behavior.Actor.skillHandler.Execute();
       time = 0;
     }
     else

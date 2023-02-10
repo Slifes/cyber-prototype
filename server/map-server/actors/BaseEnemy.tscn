@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://wg0i8s2cmvy"]
+[gd_scene load_steps=11 format=3 uid="uid://wg0i8s2cmvy"]
 
 [ext_resource type="Script" path="res://scripts/actors/enemies/BaseEnemy.cs" id="1_eg6ml"]
+[ext_resource type="Resource" uid="uid://cnigfbnwlkp0n" path="res://resources/skills/normal_attack.tres" id="2_74ylq"]
 [ext_resource type="Animation" uid="uid://bmtpopwifngmp" path="res://animation/skills/normal_attack.anim" id="2_wi3qc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3788e"]
@@ -59,6 +60,7 @@ input_ray_pickable = false
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1_eg6ml")
+skills = Array[Resource]([ExtResource("2_74ylq")])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
