@@ -36,13 +36,20 @@ class UIControl
     target.GetNode("/root/World/UI").AddChild(ui);
 
     healthStats = ui.GetNode<HealthStats>("HealthStats");
-    skillList = ui.GetNode<SkillList>("MarginContainer/SkillList");
+    skillList = ui.GetNode<SkillList>("SkillList");
     skillShortcut = ui.GetNode<SkillShortcut>("MarginContainer2/SkillShortcut");
 
     target.HealthStatusChanged += UpdateHealthStats;
+
+    UpdateHP(target.GetCurrentHP(), target.GetMaxHP());
   }
 
   void UpdateHealthStats(int currentHP, int currentSP, int maxHP, int maxSP)
+  {
+    healthStats.SetCurrentHP(currentHP, maxHP);
+  }
+
+  public void UpdateHP(int currentHP, int maxHP)
   {
     healthStats.SetCurrentHP(currentHP, maxHP);
   }

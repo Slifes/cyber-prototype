@@ -2,7 +2,7 @@
 
 class MiniHPBar : IComponent
 {
-  static PackedScene healthScene = ResourceLoader.Load<PackedScene>("res://components/Health.tscn");
+  static PackedScene healthScene = ResourceLoader.Load<PackedScene>("res://components/health.tscn");
 
   ProgressBar hpBar;
 

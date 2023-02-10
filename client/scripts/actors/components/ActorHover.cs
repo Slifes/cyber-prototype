@@ -2,7 +2,7 @@
 
 class ActorHover : IComponent
 {
-  static PackedScene HoverScene = ResourceLoader.Load<PackedScene>("res://components/ActorHover.tscn");
+  static PackedScene HoverScene = ResourceLoader.Load<PackedScene>("res://components/actor_hover.tscn");
 
   Label3D Name;
 

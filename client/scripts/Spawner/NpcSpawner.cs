@@ -22,8 +22,12 @@ partial class NpcSpawner : Node3D
 
     actor.Name = name.ToString();
 
-    AddChild(actor);
+    CallDeferred("add_child", actor);
+    CallDeferred("UpdateActor", actor, (Vector3)position, (float)yaw, data);
+  }
 
+  void UpdateActor(CharacterActor actor, Vector3 position, float yaw, Variant data)
+  {
     actor.GlobalPosition = position;
     actor.Rotation = new Vector3(0, yaw, 0);
     actor.SetServerData(data);

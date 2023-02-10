@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 class BasedContextSteering : IBehavior
 {
-  static PackedScene steering = ResourceLoader.Load<PackedScene>("res://components/SteeringRayCast.tscn");
+  static PackedScene steering = ResourceLoader.Load<PackedScene>("res://components/based_context_steering.tscn");
 
   RayCast3D[] raycasts;
 

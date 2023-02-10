@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://ccbj42cwijerk"]
+[gd_scene load_steps=7 format=3 uid="uid://c0r4e783jfwyy"]
 
-[ext_resource type="Script" path="res://scripts/actors/npcs/Talk.cs" id="1_0cpv8"]
+[ext_resource type="Script" path="res://scripts/actors/npcs/Talk.cs" id="1_u6n3n"]
+[ext_resource type="Resource" uid="uid://kx84uo65clct" path="res://dialogue/person.dialogue" id="2_jfb6n"]
 
 [sub_resource type="Shader" id="Shader_kxsue"]
 code = "shader_type spatial;
@@ -34,7 +35,10 @@ size = Vector3(0.3, 1, 0.3)
 size = Vector3(0.4, 1, 0.4)
 
 [node name="ID" type="CharacterBody3D"]
-script = ExtResource("1_0cpv8")
+script = ExtResource("1_u6n3n")
+Dialogue = ExtResource("2_jfb6n")
+ID = 1
+ActorName = "Aron"
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_dwy3e")

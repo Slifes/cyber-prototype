@@ -5,7 +5,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_03ako"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ole1f"]
-bg_color = Color(0.254902, 0.6, 0.247059, 1)
+bg_color = Color(0.360784, 0.847059, 0.34902, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bpbh5"]
 
@@ -34,10 +34,12 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/background = SubResource("StyleBoxFlat_03ako")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ole1f")
-value = 20.0
+value = 100.0
+show_percentage = false
 
 [node name="SP" type="ProgressBar" parent="Container"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/background = SubResource("StyleBoxFlat_bpbh5")
 theme_override_styles/fill = SubResource("StyleBoxFlat_2v3o3")
+show_percentage = false

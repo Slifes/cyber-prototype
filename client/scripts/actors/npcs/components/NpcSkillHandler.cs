@@ -3,9 +3,9 @@ using System;
 
 class NpcSkillHandler : IComponent
 {
-  BaseNPC actor;
+  BaseEnemy actor;
 
-  public NpcSkillHandler(BaseNPC actor)
+  public NpcSkillHandler(BaseEnemy actor)
   {
     this.actor = actor;
 

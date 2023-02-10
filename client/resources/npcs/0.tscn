@@ -25,7 +25,6 @@ script = ExtResource("1_3nq8s")
 ActorName = "Kirt"
 
 [node name="MeshInstance3D" parent="." instance=ExtResource("2_lw2jo")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_4isxv")

@@ -4,6 +4,9 @@ using Godot;
 partial class CharacterActor : CharacterBody3D, IActor
 {
   [Signal]
+  public delegate void ActorClickedEventHandler();
+
+  [Signal]
   public delegate void HealthStatusChangedEventHandler(int currentHP, int currentSP, int maxHP, int maxSP);
 
   [Signal]
@@ -77,7 +80,7 @@ partial class CharacterActor : CharacterBody3D, IActor
     maxSP = (int)dataArray[3];
   }
 
-  public ActorType GetActorType()
+  public virtual ActorType GetActorType()
   {
     return ActorType.Player;
   }

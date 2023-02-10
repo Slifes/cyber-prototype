@@ -1,4 +1,4 @@
-﻿using Godot;
+using Godot;
 using System.Collections.Generic;
 
 partial class BaseEnemy : BaseNPC
@@ -15,27 +15,27 @@ partial class BaseEnemy : BaseNPC
 
   public override void _Ready()
   {
-    onActorReady();
+	onActorReady();
 
-    SetProcessUnhandledInput(false);
-    SetProcessInput(false);
-    SetProcessShortcutInput(false);
+	SetProcessUnhandledInput(false);
+	SetProcessInput(false);
+	SetProcessShortcutInput(false);
 
-    Animation = GetNode<AnimationPlayer>("AnimationPlayer");
+	Animation = GetNode<AnimationPlayer>("AnimationPlayer");
 
-    components = CreateComponents();
+	components = CreateComponents();
 
   }
 
   protected override IComponent[] CreateComponents()
   {
-    return new IComponent[5]
-    {
-      new ActorHover(this),
-    new MiniHPBar(this),
-    new DamageLabel(this),
-    new AgressiveBehavior(this),
-    new NpcSkillHandler(this)
-    };
+	return new IComponent[5]
+	{
+	  new ActorHover(this),
+	new MiniHPBar(this),
+	new DamageLabel(this),
+	new AgressiveBehavior(this),
+	new NpcSkillHandler(this)
+	};
   }
 }

@@ -1,4 +1,4 @@
-﻿using Godot;
+using Godot;
 using System.Collections.Generic;
 
 partial class BaseNPC : CharacterActor
@@ -9,32 +9,27 @@ partial class BaseNPC : CharacterActor
   [Export]
   public string ActorName;
 
-  [Export]
-  public Resource Dialogue;
-
   public AnimationPlayer Animation { get; set; }
-
-  public List<int> skills;
 
   public override void _Ready()
   {
-    onActorReady();
+	onActorReady();
 
-    SetProcessUnhandledInput(false);
-    SetProcessInput(false);
-    SetProcessShortcutInput(false);
+	Animation = GetNode<AnimationPlayer>("AnimationPlayer");
 
-    Animation = GetNode<AnimationPlayer>("AnimationPlayer");
-
-    components = CreateComponents();
+	components = CreateComponents();
   }
 
   protected virtual IComponent[] CreateComponents()
   {
-    return new IComponent[2]
-    {
-      new ActorHover(this),
-    new Dialogue(this)
-    };
+	return new IComponent[1]
+	{
+	  new ActorHover(this),
+	};
+  }
+
+  public override ActorType GetActorType()
+  {
+	return ActorType.Npc;
   }
 }
