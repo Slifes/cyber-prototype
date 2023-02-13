@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/spawner/MobSpawner.cs" id="1_1plgo"]
-[ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/BaseEnemy.tscn" id="2_3t60m"]
+[ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/base_enemy.tscn" id="2_3t60m"]
 
 [node name="Node" type="Node3D"]
 script = ExtResource("1_1plgo")

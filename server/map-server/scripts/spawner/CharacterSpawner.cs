@@ -10,7 +10,7 @@ partial class CharacterSpawner : Node3D
 
   public override void _Ready()
   {
-    playerScene = ResourceLoader.Load<PackedScene>("res://actors/Player.tscn");
+    playerScene = ResourceLoader.Load<PackedScene>("res://actors/player.tscn");
 
     instance = this;
   }

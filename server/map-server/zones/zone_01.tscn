@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://btjdrxmb8ovkk"]
+[gd_scene load_steps=4 format=3 uid="uid://dfk1nxvyv37dx"]
 
-[ext_resource type="Script" path="res://scripts/shards/zone/ZoneShard.cs" id="1_bkhae"]
+[ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="1_bkhae"]
 [ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_plbjr"]
+[ext_resource type="Script" path="res://scripts/shards/ShardSpawner.cs" id="3_t3pxj"]
 
 [node name="zone_01" type="Node3D"]
 script = ExtResource("1_plbjr")
@@ -11,4 +12,5 @@ Port = 3000
 [node name="zone_01" type="Node3D" parent="."]
 script = ExtResource("1_bkhae")
 
-[node name="actors" type="Node3D" parent="zone_01"]
+[node name="spawner" type="Node3D" parent="zone_01"]
+script = ExtResource("3_t3pxj")

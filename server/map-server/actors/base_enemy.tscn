@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://wg0i8s2cmvy"]
+
+[ext_resource type="Script" path="res://scripts/actors/enemies/BaseEnemy.cs" id="1_eg6ml"]
+[ext_resource type="Resource" uid="uid://cnigfbnwlkp0n" path="res://resources/skills/normal_attack.tres" id="2_74ylq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3788e"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2dtw7"]
+height = 0.5
+radius = 1.5
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0p85v"]
+height = 0.5
+radius = 0.7
+
+[node name="BaseEnemy" type="CharacterBody3D"]
+collision_layer = 2051
+input_ray_pickable = false
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+script = ExtResource("1_eg6ml")
+skills = Array[Resource]([ExtResource("2_74ylq")])
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("BoxShape3D_3788e")
+
+[node name="BasedContextSteering" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+enabled = false
+target_position = Vector3(0, 0, 0.6)
+
+[node name="AgressiveArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 512
+input_ray_pickable = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AgressiveArea"]
+shape = SubResource("CylinderShape3D_2dtw7")
+
+[node name="AttackArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 1024
+input_ray_pickable = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea"]
+shape = SubResource("CylinderShape3D_0p85v")

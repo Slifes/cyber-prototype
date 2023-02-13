@@ -11,10 +11,8 @@ enum ActorState
   Died,
 }
 
-partial class CharacterActor : CharacterBody3D, IActor
+partial class SessionActor : Node, IActor
 {
-  public static string ActorGroup = "Actor";
-
   protected int _actorId;
 
   protected ActorType _type;
@@ -29,6 +27,10 @@ partial class CharacterActor : CharacterBody3D, IActor
 
   protected int maxSP;
 
+  public Vector3 Position;
+
+  public float Yaw;
+
   public void onActorReady()
   {
     _actorId = Int32.Parse(Name);
@@ -38,8 +40,6 @@ partial class CharacterActor : CharacterBody3D, IActor
 
     currentHP = maxHP;
     currentSP = maxSP;
-
-    AddToGroup("Actor");
   }
 
   public override void _Ready()

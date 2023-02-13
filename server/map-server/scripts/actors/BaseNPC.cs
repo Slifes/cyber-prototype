@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-partial class BaseNPC : CharacterActor
+partial class BaseNPC : ZoneActor
 {
   [Export]
   public int ID;
@@ -14,11 +14,11 @@ partial class BaseNPC : CharacterActor
   {
     var data = new Godot.Collections.Array<Variant>()
     {
-        ID,
-        currentHP,
-        currentSP,
-        maxHP,
-        maxSP,
+      ID,
+      currentHP,
+      currentSP,
+      maxHP,
+      maxSP,
     };
 
     return data;

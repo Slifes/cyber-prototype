@@ -1,64 +1,57 @@
 ﻿using Godot;
-
-using System.Collections.Generic;
+using Godot.Collections;
 
 partial class BaseEnemy : BaseNPC
 {
   [Export]
-  public Godot.Collections.Array<Skill> skills;
+  public Array<Skill> skills;
 
   private Ghosting ghosting;
 
   private Behavior behavior;
 
-  public EnemyRandomSkill skillHandler;
-
   public override void _Ready()
   {
-    onActorReady();
+	onActorReady();
 
-    ghosting = new Ghosting(this);
-
-    behavior = new AgressiveBehavior(this);
-
-    skillHandler = new EnemyRandomSkill(this);
+	behavior = new AgressiveBehavior(this);
   }
 
   public List<int> GetPlayersId()
   {
-    return ghosting.NearestPlayers;
+	return ghosting.NearestPlayers;
   }
 
   public override void _PhysicsProcess(double delta)
   {
-    behavior.Update(delta);
+	behavior.Update(delta);
   }
 
   public override Variant GetData()
   {
-    var data = new Godot.Collections.Array<Variant>()
-    {
-      ID,
-      currentHP,
-      currentSP,
-      maxHP,
-      maxSP,
-      (int)state,
-      behavior.GetData(),
-    };
+	var data = new Godot.Collections.Array<Variant>()
+	{
+	  ID,
+	  currentHP,
+	  currentSP,
+	  maxHP,
+	  maxSP,
+	  (int)state,
+	  behavior.GetData(),
+	};
 
-    return data;
+	return data;
   }
 
   public override void TakeDamage(int damage)
   {
-    base.TakeDamage(damage);
+	base.TakeDamage(damage);
 
-    if (currentHP <= 0)
-    {
-      // this.ChangeState(AIState.Died);
-    }
+	if (currentHP <= 0)
+	{
+	  // this.ChangeState(AIState.Died);
+	}
 
-    ServerBridge.Instance.SendActorTookDamage(ghosting.NearestPlayers, this, damage);
+	//ServerBridge.Instance.SendActorTookDamage(ghosting.NearestPlayers, this, damage);
   }
 }

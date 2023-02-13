@@ -1,10 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://cyykbb8cqfg41"]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/Networking.cs" id="1_5n2vf"]
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_77lko"]
 [ext_resource type="Script" path="res://scripts/spawner/CharacterSpawner.cs" id="3_ug5i0"]
-[ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/BaseEnemy.tscn" id="4_okye0"]
-[ext_resource type="PackedScene" uid="uid://b42w2rdd5cjb1" path="res://actors/BaseNPC.tscn" id="5_wiewd"]
+[ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/base_enemy.tscn" id="4_okye0"]
+[ext_resource type="PackedScene" uid="uid://b42w2rdd5cjb1" path="res://actors/base_npc.tscn" id="5_wiewd"]
 [ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/main_server.tscn" id="6_3fm2p"]
 [ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="7_a7sof"]
 

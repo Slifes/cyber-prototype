@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System.Collections.Generic;
 
-class Inventory : IComponent
+class Inventory
 {
   List<Item> items;
 

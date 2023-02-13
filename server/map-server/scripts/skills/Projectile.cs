@@ -1,4 +1,4 @@
-﻿using Godot;
+using Godot;
 
 partial class Projectile : PhysicalAttack
 {
@@ -7,8 +7,8 @@ partial class Projectile : PhysicalAttack
 
   public override void _Process(double delta)
   {
-    base._Process(delta);
+	base._Process(delta);
 
-    Position += Direction * (float)delta * Speed;
+	Position += Direction * (float)delta * Speed;
   }
 }

@@ -1,23 +1,27 @@
 ﻿using Godot;
-using System;
-using System.Collections.Generic;
+using Godot.Collections;
 
-class SkillHandler : IComponent
+class SkillHandler
 {
-  CharacterActor actor;
+  ZoneActor actor;
 
-  List<Skill> skills;
+  Array<Skill> skills;
 
-  public SkillHandler(CharacterActor actor)
+  public SkillHandler(ZoneActor actor)
   {
     skills = new();
 
     this.actor = actor;
 
-    LoadSkill(new List<int>() { 0, 1 });
+    actor.SkillList += LoadSkillList;
   }
 
-  public void LoadSkill(List<int> dbSkills)
+  void LoadSkillList(Array<int> skillsId)
+  {
+    LoadSkill(skillsId);
+  }
+
+  public void LoadSkill(Array<int> dbSkills)
   {
     foreach (var id in dbSkills)
     {

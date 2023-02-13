@@ -1,4 +1,4 @@
-﻿class Money : IComponent
+﻿class Money
 {
   int value;
 

@@ -1,39 +1,33 @@
 ﻿using Godot;
-using System.Collections.Generic;
 
 partial class BaseShard : Node
 {
-  protected Dictionary<int, MiniActor> actors;
-
-  protected Node3D spawns;
+  protected ShardSpawner spawner;
 
   public override void _Ready()
   {
-    spawns = GetNode<Node3D>("actors");
+    spawner = GetNode<ShardSpawner>("spawner");
+  }
+
+  public void SendActorConnected(SessionActor actor)
+  {
+    Rpc("ActorConnected", actor.GetActorId(), (int)actor.GetActorType(), actor.Position, actor.Yaw);
+  }
+
+  public void SendActorDisconnected(SessionActor actor)
+  {
+    Rpc("ActorDisconnected", actor.GetActorId());
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   void ActorConnected(int actorId, int actorType, Vector3 position, float yaw)
   {
-    var instance = new MiniActor();
-
-    instance.Name = actorId.ToString();
-
-    spawns.AddChild(instance);
-
-    instance.Position = position;
-    instance.Rotation = new Vector3(0, yaw, 0);
-
-    actors.Add(actorId, instance);
+    spawner.Spawn(actorId, position, yaw);
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   void ActorDisconnected(int actorId)
   {
-    MiniActor actor = actors[actorId];
-
-    actors.Remove(actorId);
-
-    actor.QueueFree();
+    spawner.Despawn(actorId);
   }
 }

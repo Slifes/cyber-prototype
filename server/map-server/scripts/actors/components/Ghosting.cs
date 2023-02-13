@@ -2,23 +2,15 @@
 using System.Linq;
 using System.Collections.Generic;
 
-class Ghosting : IComponent
+class Ghosting
 {
   static PackedScene Scene = ResourceLoader.Load<PackedScene>("res://components/ghosting.tscn");
 
-  IActor actor;
+  Node3D actor;
 
-  List<int> nearestAnyActor;
-
-  List<int> nearestPlayer;
-
-  public List<int> Nearest { get { return nearestAnyActor; } }
-
-  public List<int> NearestPlayers { get { return nearestPlayer; } }
-
-  public Ghosting(Node actor)
+  public Ghosting(Node3D actor)
   {
-    this.actor = (IActor)actor;
+    this.actor = actor;
 
     var area = Scene.Instantiate<Area3D>();
 
@@ -26,10 +18,6 @@ class Ghosting : IComponent
     area.BodyExited += BodyExited;
 
     actor.AddChild(area);
-
-    nearestAnyActor = new();
-    nearestPlayer = new();
-
   }
 
   void BodyEntered(Node3D body)
@@ -39,11 +27,6 @@ class Ghosting : IComponent
     if (!nearestAnyActor.Contains(actorTarget.GetActorId()) && actorTarget != actor)
     {
       nearestAnyActor.Add(actorTarget.GetActorId());
-
-      if (actor.GetActorType() == ActorType.Player)
-      {
-        ServerBridge.Instance.SendActorEnteredZone(actor.GetActorId(), actorTarget);
-      }
 
       if (actorTarget.GetActorType() == ActorType.Player)
       {
@@ -59,16 +42,6 @@ class Ghosting : IComponent
     if (nearestAnyActor.Contains(actorTarget.GetActorId()) && actorTarget != actor)
     {
       nearestAnyActor.Remove(actorTarget.GetActorId());
-
-      if (actor.GetActorType() == ActorType.Player)
-      {
-        ServerBridge.Instance.SendActorExitedZone(actor.GetActorId(), actorTarget);
-      }
-
-      if (actorTarget.GetActorType() == ActorType.Player)
-      {
-        nearestPlayer.Remove(actorTarget.GetActorId());
-      }
     }
   }
 }

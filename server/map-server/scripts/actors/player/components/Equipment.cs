@@ -8,7 +8,7 @@ enum EquipmentSlot
   LeftHand,
 }
 
-class Equipment : IComponent
+class Equipment
 {
   Player actor;
 
