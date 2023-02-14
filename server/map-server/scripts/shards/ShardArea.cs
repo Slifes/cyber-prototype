@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class ShardArea: Area3D
+partial class ShardArea : Area3D
 {
   [Export]
   ShardConnect shard;

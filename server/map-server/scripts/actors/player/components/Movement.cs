@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 
 class Movement
 {
@@ -9,5 +9,5 @@ class Movement
     this.actor = actor;
   }
 
-  
+
 }

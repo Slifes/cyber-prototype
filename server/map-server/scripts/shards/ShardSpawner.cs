@@ -1,7 +1,7 @@
-using Godot;
+﻿using Godot;
 using System.Collections.Generic;
 
-partial class ShardSpawner: Node
+partial class ShardSpawner : Node
 {
   [Export]
   PackedScene actorScene;
@@ -16,7 +16,7 @@ partial class ShardSpawner: Node
   public void Spawn(int actorId, Vector3 position, float yaw)
   {
     var instance = actorScene.Instantiate<Node3D>();
-  
+
     instance.Name = actorId.ToString();
 
     AddChild(instance);
@@ -42,7 +42,7 @@ partial class ShardSpawner: Node
     {
       return null;
     }
-  
+
     return actors[actorId];
   }
 }

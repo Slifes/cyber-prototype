@@ -1,7 +1,7 @@
-using Godot;
+﻿using Godot;
 using Godot.Collections;
 
-partial class ZoneActor: CharacterBody3D, IActorZone
+partial class ZoneActor : CharacterBody3D, IActorZone
 {
   [Signal]
   public delegate void SkillListEventHandler(Array<int> skillsId);
@@ -21,28 +21,28 @@ partial class ZoneActor: CharacterBody3D, IActorZone
 
   public override void _Ready()
   {
-	ghosting = new Ghosting(this);
+    ghosting = new Ghosting(this);
 
-	skillHandler = new SkillHandler(this);
+    skillHandler = new SkillHandler(this);
   }
 
   public int GetActorID()
   {
-	  return System.Int32.Parse(Name);
+    return System.Int32.Parse(Name);
   }
 
   public ActorType GetActorType()
   {
-	  return ActorType.Player;
+    return ActorType.Player;
   }
 
   public Vector3 GetActorPosition()
   {
-	throw new System.NotImplementedException();
+    throw new System.NotImplementedException();
   }
 
   public Variant GetData()
   {
-	throw new System.NotImplementedException();
+    throw new System.NotImplementedException();
   }
 }

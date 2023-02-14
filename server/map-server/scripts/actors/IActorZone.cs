@@ -1,4 +1,4 @@
-interface IActorZone
+﻿interface IActorZone
 {
   int GetActorID();
 

@@ -10,41 +10,41 @@ partial class BaseEnemy : BaseNPC
 
   public override void _Ready()
   {
-	onActorReady();
+    onActorReady();
 
-	behavior = new AgressiveBehavior(this);
+    behavior = new AgressiveBehavior(this);
   }
 
   public override void _PhysicsProcess(double delta)
   {
-	behavior.Update(delta);
+    behavior.Update(delta);
   }
 
   public override Variant GetData()
   {
-	var data = new Godot.Collections.Array<Variant>()
-	{
-	  ID,
+    var data = new Godot.Collections.Array<Variant>()
+    {
+      ID,
 	  // currentHP,
 	  // currentSP,
 	  // maxHP,
 	  // maxSP,
 	  // (int)state,
 	  behavior.GetData(),
-	};
+    };
 
-	return data;
+    return data;
   }
 
   // public override void TakeDamage(int damage)
   // {
-	// base.TakeDamage(damage);
+  // base.TakeDamage(damage);
 
-	// if (currentHP <= 0)
-	// {
-	//   // this.ChangeState(AIState.Died);
-	// }
+  // if (currentHP <= 0)
+  // {
+  //   // this.ChangeState(AIState.Died);
+  // }
 
-	// //ServerBridge.Instance.SendActorTookDamage(ghosting.NearestPlayers, this, damage);
+  // //ServerBridge.Instance.SendActorTookDamage(ghosting.NearestPlayers, this, damage);
   // }
 }

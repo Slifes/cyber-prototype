@@ -93,7 +93,7 @@ class BasedContextSteering : IBehavior
     {
       interestMap[rayCastTargetIndex] = 0.0f;
     }
-  
+
     Vector3 dir = Vector3.Zero;
 
     for (var i = 0; i < rayDirections.Length; i++)
@@ -109,7 +109,8 @@ class BasedContextSteering : IBehavior
     if (rayCastTargetIndex < 7)
     {
       rayCastTargetIndex++;
-    } else 
+    }
+    else
     {
       rayCastTargetIndex = 0;
     }

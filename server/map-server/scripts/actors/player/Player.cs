@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using System.Collections.Generic;
 
 partial class Player : SessionActor
@@ -28,35 +28,35 @@ partial class Player : SessionActor
 
   public override void _Ready()
   {
-	base._Ready();
+    base._Ready();
 
-	SetMultiplayerAuthority(GetActorId());
+    SetMultiplayerAuthority(GetActorId());
 
-	money = new Money(this);
-	inventory = new Inventory(this);
-	equipment = new Equipment(this);
+    money = new Money(this);
+    inventory = new Inventory(this);
+    equipment = new Equipment(this);
 
-	zones = new();
+    zones = new();
   }
 
   public void SendPacketToZone(string name, params Variant[] args)
   {
-	foreach(var zone in zones)
-	{
-	  zone.Rpc(name, args);
-	}
+    foreach (var zone in zones)
+    {
+      zone.Rpc(name, args);
+    }
   }
 
   public void AddZone(BaseShard zone)
   {
-	if (!zones.Contains(zone))
-	{
-	  zones.Add(zone);
-	}
+    if (!zones.Contains(zone))
+    {
+      zones.Add(zone);
+    }
   }
 
   public void RemoveZone(BaseShard zone)
   {
-	zones.Remove(zone);
+    zones.Remove(zone);
   }
 }

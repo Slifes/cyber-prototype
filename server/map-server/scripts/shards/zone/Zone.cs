@@ -1,7 +1,7 @@
-using Godot;
+﻿using Godot;
 using System.Collections.Generic;
 
-partial class Zone: BaseShard
+partial class Zone : BaseShard
 {
   static PackedScene packedScene = ResourceLoader.Load<PackedScene>("res://actors/player_zone.tscn");
 
@@ -9,30 +9,30 @@ partial class Zone: BaseShard
 
   private static Zone _instance;
 
-  public static Zone Instance { get { return _instance; }}
+  public static Zone Instance { get { return _instance; } }
 
   public override void _Ready()
   {
-	base._Ready();
+    base._Ready();
 
-	  neraests = new();
+    neraests = new();
 
-	if (Multiplayer.IsServer())
-	{
-	  _instance = this;
+    if (Multiplayer.IsServer())
+    {
+      _instance = this;
 
-	  SkillManager.CreateInstance("skills");
-	  SkillManager.Instance.Load();
-	}
+      SkillManager.CreateInstance("skills");
+      SkillManager.Instance.Load();
+    }
   }
 
   public List<int> GetPlayerNearest(int actorId)
   {
-	if (neraests.ContainsKey(actorId))
-	{
-	  return neraests[actorId];
-	}
+    if (neraests.ContainsKey(actorId))
+    {
+      return neraests[actorId];
+    }
 
-	return new List<int>();
+    return new List<int>();
   }
 }

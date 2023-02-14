@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using System.Collections.Generic;
 
 partial class Zone
@@ -6,27 +6,27 @@ partial class Zone
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ActorEnteredZone(int actorId, int id, int type)
   {
-	if (!neraests.ContainsKey(actorId))
-	{ 
-	  neraests.Add(actorId, new List<int>() { id });
-	}
-	else 
-	{
-	  neraests[actorId].Add(id);
-	}
+    if (!neraests.ContainsKey(actorId))
+    {
+      neraests.Add(actorId, new List<int>() { id });
+    }
+    else
+    {
+      neraests[actorId].Add(id);
+    }
 
-  //ServerBridge.Instance.SendActorEnteredZone(actorId, )
+    //ServerBridge.Instance.SendActorEnteredZone(actorId, )
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void ActorExitedZone(int actorId, int id, int type)
   {
-	if (neraests.ContainsKey(actorId))
-	{
-	  neraests[actorId].Remove(id);
-	}
+    if (neraests.ContainsKey(actorId))
+    {
+      neraests[actorId].Remove(id);
+    }
 
-  // ServerBridge.Instance.SendActorExitedZone((int)actorId);
+    // ServerBridge.Instance.SendActorExitedZone((int)actorId);
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -46,7 +46,7 @@ partial class Zone
   public void ActorMoving(int actorId, Vector2 position, Variant yaw)
   {
     Node3D actor = CharacterSpawner.Instance.GetNode<Node3D>(actorId.ToString());
-  
+
     actor.Position = new Vector3(position.X, actor.Position.Y, position.Y);
     actor.Rotation = new Vector3(0, (float)yaw, 0);
   }

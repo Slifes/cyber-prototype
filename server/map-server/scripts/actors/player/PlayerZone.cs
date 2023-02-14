@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class PlayerZone: ZoneActor
+partial class PlayerZone : ZoneActor
 {
-  
+
 }
