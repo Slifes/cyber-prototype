@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dfk1nxvyv37dx"]
+[gd_scene load_steps=7 format=3 uid="uid://dfk1nxvyv37dx"]
 
 [ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="1_bkhae"]
 [ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_plbjr"]
 [ext_resource type="Script" path="res://scripts/shards/ShardSpawner.cs" id="3_t3pxj"]
 [ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/main_server.tscn" id="4_1328x"]
 [ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_f7ti5"]
+[ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_gp58d"]
 
 [node name="zone_01" type="Node3D"]
 script = ExtResource("1_plbjr")
@@ -21,6 +22,9 @@ actorScene = ExtResource("4_f7ti5")
 [node name="map" parent="zone" instance=ExtResource("4_1328x")]
 
 [node name="mobs" type="Node3D" parent="zone"]
+
+[node name="skills" type="Node3D" parent="zone"]
+script = ExtResource("6_gp58d")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15, 0)

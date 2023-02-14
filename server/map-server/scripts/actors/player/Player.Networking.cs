@@ -22,10 +22,8 @@ partial class Player
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void RequestSkill(Variant id, Variant data)
   {
-    // GD.Print("Received Request skill: ", GetActorId());
+    GD.Print("Received Request skill: ", GetActorId());
 
-    // ServerBridge.Instance.SendSkillExecutedTo(GetNearestPlayers(), this, (int)id);
-
-    // skillHandler.ExecuteSkill(id);
+    SendPacketToZone("RequestSkill", GetActorId(), id, data);
   }
 }

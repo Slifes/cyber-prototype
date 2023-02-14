@@ -33,14 +33,14 @@ partial class ServerBridge : Node
   }
 
   #region spawn
-  public void SendActorEnteredZone(int remoteId, IActor actor)
+  public void SendActorEnteredZone(int remoteId, int actorId, int type, Vector3 position, float yaw, Variant data)
   {
-    RpcId(remoteId, "ActorEnteredZone", actor.GetActorId(), (Variant)(int)actor.GetActorType(), ((Node3D)actor).GlobalPosition, ((Node3D)actor).Rotation.Y, actor.GetData());
+    RpcId(remoteId, "ActorEnteredZone", actorId, type, position, yaw, data);
   }
 
-  public void SendActorExitedZone(int remoteId, IActor actor)
+  public void SendActorExitedZone(int remoteId, int actorId, int type)
   {
-    RpcId(remoteId, "ActorExitedZone", actor.GetActorId(), (Variant)(int)actor.GetActorType());
+    RpcId(remoteId, "ActorExitedZone", actorId, type);
   }
 
   public void SendPlayableActor(int remoteId, IActor actor)
@@ -85,14 +85,14 @@ partial class ServerBridge : Node
   #endregion
 
   #region PlayerMovement
-  public void SendServerMovement(SessionActor actor, Vector3 position, float yaw)
+  public void SendServerMovement(List<int> peers, SessionActor actor, Vector3 position, float yaw)
   {
-    SendPacketTo(actor.GetNearestPlayers(), "ReceiveMovement", actor.GetActorId(), position, yaw, Now());
+    SendPacketTo(peers, "ReceiveMovement", actor.GetActorId(), position, yaw, Now());
   }
 
-  public void SendServerMovementStopped(SessionActor actor, Vector3 position, float yaw)
+  public void SendServerMovementStopped(List<int> peers, SessionActor actor, Vector3 position, float yaw)
   {
-    SendPacketTo(actor.GetNearestPlayers(), "ReceiveMovementStopped", actor.GetActorId(), position, yaw, Now());
+    SendPacketTo(peers, "ReceiveMovementStopped", actor.GetActorId(), position, yaw, Now());
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

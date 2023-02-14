@@ -4,7 +4,7 @@ using System.Collections.Generic;
 partial class Zone
 {
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorEnteredZone(int actorId, int id, int type)
+  public void ActorEnteredZone(int actorId, int id, int type, Vector3 position, float yaw, Variant data)
   {
     if (!neraests.ContainsKey(actorId))
     {
@@ -15,7 +15,7 @@ partial class Zone
       neraests[actorId].Add(id);
     }
 
-    //ServerBridge.Instance.SendActorEnteredZone(actorId, )
+    ServerBridge.Instance.SendActorEnteredZone(actorId, id, type, position, yaw, data);
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -26,7 +26,7 @@ partial class Zone
       neraests[actorId].Remove(id);
     }
 
-    // ServerBridge.Instance.SendActorExitedZone((int)actorId);
+    ServerBridge.Instance.SendActorExitedZone(actorId, id, type);
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -43,12 +43,17 @@ partial class Zone
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorMoving(int actorId, Vector2 position, Variant yaw)
+  public void ActorMoving(int actorId, Vector2 position, float yaw)
   {
-    Node3D actor = CharacterSpawner.Instance.GetNode<Node3D>(actorId.ToString());
+    SessionActor actor = (SessionActor)CharacterSpawner.Instance.GetNode<Node3D>(actorId.ToString());
 
     actor.Position = new Vector3(position.X, actor.Position.Y, position.Y);
-    actor.Rotation = new Vector3(0, (float)yaw, 0);
+    actor.Rotation = new Vector3(0, yaw, 0);
+
+    if (neraests.ContainsKey(actorId))
+    {
+      ServerBridge.Instance.SendServerMovement(neraests[actorId], actor, actor.Position, yaw);
+    }
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -67,7 +72,7 @@ partial class Zone
 
     if (actor != null)
     {
-      actor.EmitSignal("ExecuteSkill", skillId, data);
+      actor.EmitSignal(ZoneActor.SignalName.ExecuteSkill, skillId, data);
     }
   }
 }

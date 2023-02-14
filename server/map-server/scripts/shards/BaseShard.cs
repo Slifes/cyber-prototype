@@ -18,7 +18,7 @@ partial class BaseShard : Node
 
   public void SendActorDisconnected(SessionActor actor)
   {
-    // actor.RemoveZone(this);
+    ((Player)actor).RemoveZone(this);
 
     Rpc("ActorDisconnected", actor.GetActorId());
   }

@@ -6,7 +6,8 @@ partial class SkillNode : Node3D
 
   public override void _Ready()
   {
-    instance = this;
+    if (Multiplayer.IsServer())
+      instance = this;
   }
 
   public static void Spawn(AreaSkillBase areaSkill)

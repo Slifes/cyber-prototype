@@ -43,6 +43,12 @@ partial class ZoneActor : CharacterBody3D, IActorZone
 
   public Variant GetData()
   {
-    throw new System.NotImplementedException();
+    return new Array<Variant>()
+    {
+      100,
+      100,
+      100,
+      100
+    };
   }
 }

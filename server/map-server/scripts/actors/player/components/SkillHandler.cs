@@ -14,6 +14,9 @@ class SkillHandler
     this.actor = actor;
 
     actor.SkillList += LoadSkillList;
+    actor.ExecuteSkill += ExecuteSkill;
+
+    LoadSkill(new Array<int>() { 0, 1 });
   }
 
   void LoadSkillList(Array<int> skillsId)
@@ -34,9 +37,9 @@ class SkillHandler
     }
   }
 
-  public void ExecuteSkill(Variant id)
+  public void ExecuteSkill(int id, Variant data)
   {
-    var skill = SkillManager.Instance.Get(id.AsInt32());
+    var skill = SkillManager.Instance.Get(id);
 
     if (skill.Type == SkillType.Active)
     {
