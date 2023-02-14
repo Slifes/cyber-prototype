@@ -4,33 +4,50 @@ using System.Collections.Generic;
 partial class Zone
 {
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorEnteredZone(Variant actorId, Variant id, Variant type)
+  public void ActorEnteredZone(int actorId, int id, int type)
   {
-	if (!neraests.ContainsKey((int)id))
+	if (!neraests.ContainsKey(actorId))
 	{ 
-	  neraests.Add((int)actorId, new List<int>() { (int)id });
+	  neraests.Add(actorId, new List<int>() { id });
 	}
 	else 
 	{
-	  neraests[(int)actorId].Add((int)id);
+	  neraests[actorId].Add(id);
 	}
+
+  //ServerBridge.Instance.SendActorEnteredZone(actorId, )
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorExitedZone(Variant actorId, Variant id, Variant type)
+  public void ActorExitedZone(int actorId, int id, int type)
   {
-	if (neraests.ContainsKey((int)actorId))
+	if (neraests.ContainsKey(actorId))
 	{
-	  neraests[(int)actorId].Remove((int)id);
+	  neraests[actorId].Remove(id);
 	}
+
+  // ServerBridge.Instance.SendActorExitedZone((int)actorId);
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorMoved(Variant actorId, Variant position, Variant yaw)
+  public void ActorMoved(int actorId, Vector2 position, float yaw)
   {
     Node3D actor = spawner.Get((int)actorId);
-    
-    actor.GlobalPosition = (Vector3)position;
+
+    if (actor == null) { return; }
+
+    actor.Position = new Vector3(position.X, actor.Position.Y, position.Y);
+    actor.Rotation = new Vector3(0, yaw, 0);
+
+    Rpc("ActorMoving", actorId, position, yaw);
+  }
+
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void ActorMoving(int actorId, Vector2 position, Variant yaw)
+  {
+    Node3D actor = CharacterSpawner.Instance.GetNode<Node3D>(actorId.ToString());
+  
+    actor.Position = new Vector3(position.X, actor.Position.Y, position.Y);
     actor.Rotation = new Vector3(0, (float)yaw, 0);
   }
 

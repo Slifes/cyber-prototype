@@ -28,7 +28,7 @@ class BaseAttack : IBehavior
   {
     if (time >= targetTime)
     {
-      behavior.Actor.skillHandler.Execute();
+      // behavior.Actor.EmitSignal(ZoneActor.SignalName.ExecuteSkill, )
       time = 0;
     }
     else
@@ -56,8 +56,6 @@ class BaseAttack : IBehavior
 
   private void BodyExited(Node3D body)
   {
-    GD.Print("Body Exited: ", body.Name);
-    GD.Print("Body Target: ", behavior.Target.Name);
     if (body.Name == behavior.Target.Name)
     {
       if (body.IsInsideTree())

@@ -24,11 +24,11 @@ partial class PhysicalAttack : AreaSkillBase
 
   void Collided(Node body)
   {
-    if (body.IsInGroup(CharacterActor.ActorGroup))
+    if (body.IsInGroup("Actor"))
     {
-      CharacterActor actor = (CharacterActor)body;
+      ZoneActor actor = (ZoneActor)body;
 
-      actor.TakeDamage(CalculateDamage());
+      // actor.TakeDamage(CalculateDamage());
     }
   }
 }

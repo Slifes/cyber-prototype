@@ -1,0 +1,1 @@
+"..\..\..\godot\bin\godot.windows.editor.x86_64.mono.console.exe" --debug-collisions --path .\ shard zone_02

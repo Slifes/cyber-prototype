@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://i4uawdfs53rb"]
 
 [ext_resource type="Script" path="res://scripts/Networking.cs" id="1_5n2vf"]
 [ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_77lko"]

@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System.Collections.Generic;
 
 partial class CharacterSpawner : Node3D
 {
@@ -8,44 +9,42 @@ partial class CharacterSpawner : Node3D
 
   PackedScene playerScene;
 
+  Dictionary<int, Player> players;
+
   public override void _Ready()
   {
-    playerScene = ResourceLoader.Load<PackedScene>("res://actors/player.tscn");
+	playerScene = ResourceLoader.Load<PackedScene>("res://actors/player_session.tscn");
 
-    instance = this;
+	instance = this;
   }
 
   public IActor Spawn(Variant name, Variant position, Variant data)
   {
-    if (!HasNode(name.ToString()))
-    {
-      var player = playerScene.InstantiateOrNull<Player>();
+	if (!HasNode(name.ToString()))
+	{
+	  var player = playerScene.Instantiate<Player>();
 
-      if (player == null)
-      {
-        GD.Print("Failed to instantiate player");
-        return null;
-      }
+	  player.Name = name.ToString();
 
-      player.Name = name.ToString();
+	  player.SetServerData(data);
 
-      player.SetServerData(data);
+	  AddChild(player);
 
-      AddChild(player);
+	  player.GlobalPosition = (Vector3)position;
 
-      player.GlobalPosition = (Vector3)position;
+    //players.Add(player.GetActorId(), player);
 
-      return player;
-    }
+	  return player;
+	}
 
-    return null;
+	return null;
   }
 
   public void Unspawn(Variant name)
   {
-    if (HasNode(name.ToString()))
-    {
-      GetNode(name.ToString()).QueueFree();
-    }
+	if (HasNode(name.ToString()))
+	{
+	  GetNode(name.ToString()).QueueFree();
+	}
   }
 }

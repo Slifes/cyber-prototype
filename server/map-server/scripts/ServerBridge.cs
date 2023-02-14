@@ -45,6 +45,8 @@ partial class ServerBridge : Node
 
   public void SendPlayableActor(int remoteId, IActor actor)
   {
+
+	GD.Print("Send Player Actor");
 	RpcId(remoteId, "ActorPlayable", actor.GetActorId(), ((Node3D)actor).GlobalPosition, ((Node3D)actor).Rotation.Y, actor.GetData());
   }
 
@@ -83,14 +85,14 @@ partial class ServerBridge : Node
   #endregion
 
   #region PlayerMovement
-  public void SendServerMovement(Player player, Vector3 position, float yaw)
+  public void SendServerMovement(SessionActor actor, Vector3 position, float yaw)
   {
-	SendPacketTo(player.GetNearestPlayers(), "ReceiveMovement", player.GetActorId(), position, yaw, Now());
+	SendPacketTo(actor.GetNearestPlayers(), "ReceiveMovement", actor.GetActorId(), position, yaw, Now());
   }
 
-  public void SendServerMovementStopped(Player player, Vector3 position, float yaw)
+  public void SendServerMovementStopped(SessionActor actor, Vector3 position, float yaw)
   {
-	SendPacketTo(player.GetNearestPlayers(), "ReceiveMovementStopped", player.GetActorId(), position, yaw, Now());
+	SendPacketTo(actor.GetNearestPlayers(), "ReceiveMovementStopped", actor.GetActorId(), position, yaw, Now());
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

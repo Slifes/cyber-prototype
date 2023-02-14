@@ -11,7 +11,7 @@ enum ActorState
   Died,
 }
 
-partial class SessionActor : Node, IActor
+partial class SessionActor : Node3D, IActor
 {
   protected int _actorId;
 
@@ -27,81 +27,84 @@ partial class SessionActor : Node, IActor
 
   protected int maxSP;
 
-  public Vector3 Position;
-
   public float Yaw;
 
   public void onActorReady()
   {
-    _actorId = Int32.Parse(Name);
+	_actorId = Int32.Parse(Name);
 
-    maxHP = 100;
-    maxSP = 100;
+	maxHP = 100;
+	maxSP = 100;
 
-    currentHP = maxHP;
-    currentSP = maxSP;
+	currentHP = maxHP;
+	currentSP = maxSP;
   }
 
   public override void _Ready()
   {
-    onActorReady();
+	onActorReady();
   }
 
   public int GetActorId()
   {
-    return _actorId;
+	return _actorId;
   }
 
   public int GetCurrentHP()
   {
-    return currentHP;
+	return currentHP;
   }
 
   public int GetCurrentSP()
   {
-    return currentSP;
+	return currentSP;
   }
 
   public int GetMaxHP()
   {
-    return maxHP;
+	return maxHP;
   }
 
   public int GetMaxSP()
   {
-    return maxSP;
+	return maxSP;
   }
 
   public virtual void TakeDamage(int damage)
   {
-    currentHP -= damage;
+	currentHP -= damage;
   }
 
   public void SetServerData(Variant data)
   {
-    var dataArray = data.AsGodotArray<Variant>();
+	var dataArray = data.AsGodotArray<Variant>();
 
-    currentHP = (int)dataArray[1];
-    currentSP = (int)dataArray[2];
-    maxHP = (int)dataArray[3];
-    maxSP = (int)dataArray[4];
+	currentHP = (int)dataArray[1];
+	currentSP = (int)dataArray[2];
+	maxHP = (int)dataArray[3];
+	maxSP = (int)dataArray[4];
   }
 
   public virtual Variant GetData()
   {
-    var data = new Array<Variant>()
-    {
-      currentHP,
-      currentSP,
-      maxHP,
-      maxSP
-    };
+	var data = new Array<Variant>()
+	{
+	  currentHP,
+	  currentSP,
+	  maxHP,
+	  maxSP
+	};
 
-    return data;
+	return data;
   }
 
   public virtual ActorType GetActorType()
   {
-    return ActorType.Player;
+	return ActorType.Player;
+  }
+
+  public System.Collections.Generic.List<int> GetNearestPlayers()
+  {
+	return null;
   }
 }

@@ -22,7 +22,7 @@ abstract class Behavior
 
   public BaseEnemy Actor { get { return actor; } }
 
-  public CharacterActor Target { get; set; }
+  public ZoneActor Target { get; set; }
 
   public void Update(double delta)
   {
@@ -52,7 +52,7 @@ abstract class Behavior
 
     behavior.Start();
 
-    ServerBridge.Instance.SendNpcChangeState(actor.GetPlayersId(), actor.GetActorId(), (int)state, actor.GlobalPosition, actor.Rotation.Y, GetData());
+    // ServerBridge.Instance.SendNpcChangeState(actor.GetPlayersId(), actor.GetActorId(), (int)state, actor.GlobalPosition, actor.Rotation.Y, GetData());
   }
 
   public Variant GetData()

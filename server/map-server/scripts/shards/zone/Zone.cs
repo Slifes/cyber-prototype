@@ -7,40 +7,32 @@ partial class Zone: BaseShard
 
   public Dictionary<int, List<int>> neraests;
 
+  private static Zone _instance;
+
+  public static Zone Instance { get { return _instance; }}
+
   public override void _Ready()
   {
-	neraests = new();
-  }
+	base._Ready();
 
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorEnteredZone(Variant actorId, Variant id, Variant type, Variant position, Variant yaw)
-  {
-	GD.Print("HUeEUHEU");
-	if (!neraests.ContainsKey((int)id))
-	{ 
-	  neraests.Add((int)actorId, new List<int>() { (int)id });
-	}
-	else 
+	  neraests = new();
+
+	if (Multiplayer.IsServer())
 	{
-	  neraests[(int)actorId].Add((int)id);
+	  _instance = this;
+
+	  SkillManager.CreateInstance("skills");
+	  SkillManager.Instance.Load();
 	}
   }
 
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorExitedZone(Variant actorId, Variant id, Variant type)
+  public List<int> GetPlayerNearest(int actorId)
   {
-	if (neraests.ContainsKey((int)actorId))
+	if (neraests.ContainsKey(actorId))
 	{
-	  neraests[(int)actorId].Remove((int)id);
+	  return neraests[actorId];
 	}
-  }
 
-  [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorMoved(Variant actorId, Variant position, Variant yaw)
-  {
-	Node3D actor = spawner.Get((int)actorId);
-	
-	actor.GlobalPosition = (Vector3)position;
-	actor.Rotation = new Vector3(0, (float)yaw, 0);
+	return new List<int>();
   }
 }

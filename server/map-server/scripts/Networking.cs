@@ -26,7 +26,7 @@ public partial class Networking : Node3D
 
   public override void _Ready()
   {
-
+		spawner = GetNode<CharacterSpawner>("Spawner/players");
   }
 
   void _PeerConnected(long id)

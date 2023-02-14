@@ -1,15 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://clrmtuwtd7p75"]
 
-[ext_resource type="Script" path="res://scripts/actors/player/Player.cs" id="1_n3oi6"]
+[ext_resource type="Script" path="res://scripts/actors/player/Player.cs" id="1_k7pb3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ri0iu"]
 radius = 0.05
 height = 0.12
 
-[node name="Player" type="CharacterBody3D"]
-collision_layer = 3586
-collision_mask = 9
-script = ExtResource("1_n3oi6")
+[node name="player" type="CharacterBody3D"]
+collision_mask = 0
+script = ExtResource("1_k7pb3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_ri0iu")

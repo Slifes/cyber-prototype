@@ -106,7 +106,15 @@ class BasedContextSteering : IBehavior
 
   void NextRayCastTargetPosition()
   {
-    rayCast.TargetPosition = rayCastTargetPosition[++rayCastTargetIndex];
+    if (rayCastTargetIndex < 7)
+    {
+      rayCastTargetIndex++;
+    } else 
+    {
+      rayCastTargetIndex = 0;
+    }
+
+    rayCast.TargetPosition = rayCastTargetPosition[rayCastTargetIndex];
   }
 
   public void Handler(double delta)

@@ -7,7 +7,7 @@ partial class Player
   {
     this.state = ActorState.Walking;
 
-    //zone.SendMovementStarted(this, position, yaw);
+    SendPacketToZone("ActorMoved", GetActorId(), position, yaw);
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -15,7 +15,7 @@ partial class Player
   {
     this.state = ActorState.Idle;
 
-    //zone.SendMovementStopped(this, position, yaw);
+    SendPacketToZone("ActorMoved", GetActorId(), position, yaw);
   }
 
 

@@ -20,9 +20,9 @@ class BaseMovement : IBehavior
 
   private void TargetEntered(Node3D body)
   {
-    if (body.IsInGroup(CharacterActor.ActorGroup))
+    if (body.IsInGroup("Actor"))
     {
-      behavior.Target = (CharacterActor)body;
+      behavior.Target = (ZoneActor)body;
       behavior.ChangeState(AIState.Steering);
     }
   }

@@ -38,6 +38,11 @@ partial class ShardSpawner: Node
 
   public Node3D Get(int actorId)
   {
+    if (!actors.ContainsKey(actorId))
+    {
+      return null;
+    }
+  
     return actors[actorId];
   }
 }

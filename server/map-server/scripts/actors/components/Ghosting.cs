@@ -6,9 +6,9 @@ class Ghosting
 {
   static PackedScene Scene = ResourceLoader.Load<PackedScene>("res://components/ghosting.tscn");
 
-  Node3D actor;
+  ZoneActor actor;
 
-  public Ghosting(Node3D actor)
+  public Ghosting(ZoneActor actor)
   {
     this.actor = actor;
 
@@ -22,26 +22,15 @@ class Ghosting
 
   void BodyEntered(Node3D body)
   {
-    IActor actorTarget = (IActor)body;
+    ZoneActor actorTarget = (ZoneActor)body;
 
-    if (!nearestAnyActor.Contains(actorTarget.GetActorId()) && actorTarget != actor)
-    {
-      nearestAnyActor.Add(actorTarget.GetActorId());
-
-      if (actorTarget.GetActorType() == ActorType.Player)
-      {
-        nearestPlayer.Add(actorTarget.GetActorId());
-      }
-    }
+    Zone.SendActorEnteredZone(actor, actorTarget);
   }
 
   void BodyExited(Node3D body)
   {
-    IActor actorTarget = (IActor)body;
+    ZoneActor actorTarget = (ZoneActor)body;
 
-    if (nearestAnyActor.Contains(actorTarget.GetActorId()) && actorTarget != actor)
-    {
-      nearestAnyActor.Remove(actorTarget.GetActorId());
-    }
+    Zone.SendActorExitedZone(actor, actorTarget);
   }
 }
