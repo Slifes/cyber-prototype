@@ -1,61 +1,37 @@
 ﻿using Godot;
+using System.Collections.Generic;
 
 partial class Spawner : Node
 {
-  CharacterSpawner playerSpawner;
+  static Spawner _instance;
 
-  NpcSpawner npcSpawner;
+  public static Spawner Instance { get {return _instance; }}
+
+  Dictionary<ActorType, IActorSpawner> spawners;
 
   public override void _Ready()
   {
-    playerSpawner = GetNode<CharacterSpawner>("players");
-    npcSpawner = GetNode<NpcSpawner>("npcs");
+    _instance = this;
+
+    spawners = new()
+    {
+      {ActorType.Player, GetNode<PlayerSpawner>("players")},
+      {ActorType.Npc, GetNode<NpcSpawner>("npcs")}
+    };
   }
 
   public IActor GetActor(string id, ActorType actorType)
   {
-    switch (actorType)
-    {
-      case ActorType.Player:
-        if (playerSpawner.HasNode(id))
-          return playerSpawner.GetNode<IActor>(id);
-        break;
-      case ActorType.Npc:
-        if (npcSpawner.HasNode(id))
-          return npcSpawner.GetNode<IActor>(id);
-        break;
-    }
-
-    return null;
+    return ((Node)spawners[actorType]).GetNode<IActor>(id);
   }
 
-  public void Spawn(Variant id, Variant type, Variant position, Variant yaw, Variant data)
+  public void Spawn(Packets.Server.SMActorEnteredZone command)
   {
-    ActorType _type = (ActorType)(int)type;
-
-    switch (_type)
-    {
-      case ActorType.Player:
-        playerSpawner.Spawn(id, (Vector3)position, (float)yaw, data);
-        break;
-      case ActorType.Npc:
-        npcSpawner.Spawn(id, (Vector3)position, (float)yaw, data);
-        break;
-    }
+    spawners[(ActorType)command.ActorType].Spawn(command);
   }
 
-  public void Unspawn(Variant id, Variant type)
+  public void Unspawn(Packets.Server.SMActorExitedZone command)
   {
-    ActorType _type = (ActorType)(int)type;
-
-    switch (_type)
-    {
-      case ActorType.Player:
-        playerSpawner.Unspawn(id);
-        break;
-      case ActorType.Npc:
-        npcSpawner.Unspawn(id);
-        break;
-    }
+    spawners[(ActorType)command.ActorType].Despawn(command);
   }
 }

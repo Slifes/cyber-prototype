@@ -67,7 +67,7 @@ public partial class Wallet : Node
     var options = new SignClientOptions()
     {
       ProjectId = "31055fdb9030439bf05e43df2957c0bb",
-      Metadata = new Metadata()
+      Metadata = new WalletConnectSharp.Core.Models.Pairing.Metadata()
       {
         Description = "game description",
         Icons = new[] { "https://walletconnect.com/meta/favicon.ico" },
@@ -86,7 +86,7 @@ public partial class Wallet : Node
       session.Topic = null;
     });
 
-    return await client.Connect(new ConnectParams()
+    return await client.Connect(new ConnectOptions()
     {
       RequiredNamespaces = new RequiredNamespaces()
       {

@@ -4,7 +4,7 @@ class PredictMovement : IComponent
 {
   float PredictionDecayFactor = 0.9f;
 
-  double LastUpdateTime = ServerBridge.Now();
+  double LastUpdateTime = 0;//Time.GetTicksMsec();
 
   Vector3 PredictedVelocity = Vector3.Zero;
 
@@ -31,6 +31,8 @@ class PredictMovement : IComponent
 
     actor.SetBodyRotation(new Vector3(0, (float)yaw, 0));
     actor.ChangeState(PlayerState.Idle);
+
+    LastUpdateTime = 0;
   }
 
   public void StartMovement(Variant position, Variant yaw)
@@ -43,18 +45,24 @@ class PredictMovement : IComponent
 
   public void UpdatePosition(Vector3 newPosition)
   {
-    var now = ServerBridge.Now();
+    var now = Time.GetTicksMsec();
 
-    // if (LastUpdateTime == 0)
-    // {
-    //   now = 1;
-    // }
+    if (LastUpdateTime == 0)
+    {
+      LastUpdateTime = now - 16;
+    }
 
     var velocity = (newPosition - actor.GlobalPosition) / (float)(now - LastUpdateTime);
 
     if (velocity.IsFinite())
     {
       PredictedVelocity = velocity;
+    } else 
+    {
+      GD.Print("NEwPosition: ", newPosition);
+      GD.Print("Current Position: ", actor.GlobalPosition);
+      GD.Print("Now: ", now);
+      GD.Print("LastTime: ", LastUpdateTime);
     }
 
     GD.Print("PredictedVelocity", PredictedVelocity);
@@ -68,7 +76,7 @@ class PredictMovement : IComponent
 
   void InterpolatePosition()
   {
-    var elapsedTime = (float)(ServerBridge.Now() - LastUpdateTime);
+    var elapsedTime = (float)(Time.GetTicksMsec() - LastUpdateTime);
 
     actor.GlobalPosition = ((LastPositionUpdated + (PredictedVelocity * elapsedTime)) * PredictionDecayFactor) + (LastPositionUpdated * (1 - PredictionDecayFactor));
   }

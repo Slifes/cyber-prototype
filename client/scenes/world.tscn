@@ -1,25 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://cysslhllm7yil"]
+[gd_scene load_steps=7 format=3 uid="uid://cysslhllm7yil"]
 
-[ext_resource type="Script" path="res://scripts/Networking.gd" id="1_1af4m"]
-[ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_hlg1x"]
+[ext_resource type="Script" path="res://scripts/NetworkManager.cs" id="1_3xphb"]
+[ext_resource type="Script" path="res://scripts/spawner/PlayerSpawner.cs" id="3_mu8xm"]
 [ext_resource type="Script" path="res://scripts/spawner/Spawner.cs" id="3_rfrc8"]
-[ext_resource type="Script" path="res://scripts/spawner/CharacterSpawner.cs" id="4_7b6hw"]
 [ext_resource type="PackedScene" uid="uid://c1diiei6qulof" path="res://maps/main.tscn" id="4_8g7r1"]
 [ext_resource type="Script" path="res://scripts/spawner/NpcSpawner.cs" id="5_1pxo1"]
 [ext_resource type="Script" path="res://scripts/ui/Damage.cs" id="7_e86s1"]
 
 [node name="World" type="Node3D"]
-script = ExtResource("1_1af4m")
+script = ExtResource("1_3xphb")
 metadata/_edit_vertical_guides_ = [12.0]
-
-[node name="Server" type="Node3D" parent="."]
-script = ExtResource("2_hlg1x")
 
 [node name="Spawner" type="Node3D" parent="."]
 script = ExtResource("3_rfrc8")
 
 [node name="players" type="Node3D" parent="Spawner"]
-script = ExtResource("4_7b6hw")
+script = ExtResource("3_mu8xm")
 
 [node name="npcs" type="Node3D" parent="Spawner"]
 script = ExtResource("5_1pxo1")
