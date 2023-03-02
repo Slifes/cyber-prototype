@@ -8,13 +8,20 @@ partial class ShardConnect : Node
   [Export]
   public int Port;
 
+  [Export]
   public int PID;
+
+  [Export]
+  public bool Debug;
+
+  [Export]
+  public bool AutoLoad = true;
 
   protected ENetMultiplayerPeer multiplayerPeer;
 
   SceneMultiplayer MultiplayerCustom;
 
-  public override void _Ready()
+  public override void _EnterTree()
   {
     if (IsServer)
     {
@@ -49,6 +56,11 @@ partial class ShardConnect : Node
 
   public void Connect(int port)
   {
+    if (AutoLoad)
+    {
+      PID = OS.CreateProcess(OS.GetExecutablePath(), new string[] { (Debug ? "" : "--headless"), "--debug-collisions", "shard", GetParent().Name }, false);
+    }
+
     GD.Print("Connect to shard: ", port);
     MultiplayerCustom = new SceneMultiplayer();
 
@@ -68,12 +80,11 @@ partial class ShardConnect : Node
 
   void _PeerConnected(long id)
   {
-    GD.Print("MainServer Connected");
-
+    GD.Print("Server: ", Name);
   }
 
   void _PeerDisconnected(long id)
   {
-
+    GetTree().Quit();
   }
 }

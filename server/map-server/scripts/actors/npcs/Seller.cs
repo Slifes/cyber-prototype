@@ -19,7 +19,7 @@ partial class Seller : BaseNPC
 
     var peerId = Multiplayer.GetRemoteSenderId();
 
-    var player = CharacterSpawner.Instance.GetNode<Player>(peerId.ToString());
+    var player = PlayerSpawner.Instance.GetNode<Player>(peerId.ToString());
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

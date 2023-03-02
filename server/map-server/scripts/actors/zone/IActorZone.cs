@@ -6,5 +6,7 @@
 
   Godot.Vector3 GetActorPosition();
 
+  // float GetActorYaw();
+
   Godot.Variant GetData();
 }

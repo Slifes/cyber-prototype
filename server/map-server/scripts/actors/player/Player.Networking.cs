@@ -1,29 +1,30 @@
 ﻿using Godot;
+using Packets.Client;
 
 partial class Player
 {
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void SendMovement(Variant position, Variant yaw)
+  public void StartMovement(PlayerStartMovement command)
   {
     this.state = ActorState.Walking;
 
-    SendPacketToZone("ActorMoved", GetActorId(), position, yaw);
+    var position = new Vector3(command.Position[0], command.Position[1], command.Position[2]);
+
+    SendPacketToZone("ActorStartMove", GetActorId(), position, command.Yaw);
   }
 
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void SendMovementStopped(Variant position, Variant yaw)
+  public void StopMovement(PlayerStopMovement command)
   {
     this.state = ActorState.Idle;
 
-    SendPacketToZone("ActorMoved", GetActorId(), position, yaw);
+    var position = new Vector3(command.Position[0], command.Position[1], command.Position[2]);
+
+    SendPacketToZone("ActorStopMove", GetActorId(), position, command.Yaw);
   }
 
-
-  [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void RequestSkill(Variant id, Variant data)
+  public void RequestSkill(PlayerRequestSkill command)
   {
     GD.Print("Received Request skill: ", GetActorId());
 
-    SendPacketToZone("RequestSkill", GetActorId(), id, data);
+    SendPacketToZone("RequestSkill", GetActorId(), command.skillId, new Variant());
   }
 }

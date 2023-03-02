@@ -2,15 +2,6 @@
 using Godot;
 using Godot.Collections;
 
-enum ActorState
-{
-  Idle,
-  Walking,
-  Talking,
-  Battle,
-  Died,
-}
-
 partial class SessionActor : Node3D, IActor
 {
   protected int _actorId;
@@ -101,10 +92,5 @@ partial class SessionActor : Node3D, IActor
   public virtual ActorType GetActorType()
   {
     return ActorType.Player;
-  }
-
-  public System.Collections.Generic.List<int> GetNearestPlayers()
-  {
-    return null;
   }
 }

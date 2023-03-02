@@ -1,15 +1,12 @@
 ﻿using Godot;
-using System.Collections.Generic;
 
-partial class CharacterSpawner : Node3D
+partial class PlayerSpawner : Node3D
 {
-  static CharacterSpawner instance;
+  static PlayerSpawner instance;
 
-  public static CharacterSpawner Instance { get { return instance; } }
+  public static PlayerSpawner Instance { get { return instance; } }
 
   PackedScene playerScene;
-
-  Dictionary<int, Player> players;
 
   public override void _Ready()
   {
@@ -27,12 +24,11 @@ partial class CharacterSpawner : Node3D
       player.Name = name.ToString();
 
       player.SetServerData(data);
+      player.Position = (Vector3)position;
 
       AddChild(player);
 
-      player.GlobalPosition = (Vector3)position;
-
-      //players.Add(player.GetActorId(), player);
+      SessionManager.Instance.AddActor(int.Parse(player.Name), player);
 
       return player;
     }
@@ -45,6 +41,8 @@ partial class CharacterSpawner : Node3D
     if (HasNode(name.ToString()))
     {
       GetNode(name.ToString()).QueueFree();
+
+      SessionManager.Instance.RemoveActor(name.AsInt32());
     }
   }
 }

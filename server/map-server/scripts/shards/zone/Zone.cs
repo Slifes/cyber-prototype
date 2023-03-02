@@ -11,6 +11,8 @@ partial class Zone : BaseShard
 
   public static Zone Instance { get { return _instance; } }
 
+  public static List<int> EMPTY_LIST = new List<int>();
+
   public override void _Ready()
   {
     base._Ready();
@@ -33,6 +35,6 @@ partial class Zone : BaseShard
       return neraests[actorId];
     }
 
-    return new List<int>();
+    return EMPTY_LIST;
   }
 }

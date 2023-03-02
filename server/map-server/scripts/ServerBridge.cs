@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 partial class ServerBridge : Node
 {
-  CharacterSpawner players;
+  PlayerSpawner players;
 
   private static ServerBridge _instance;
 
@@ -12,9 +12,9 @@ partial class ServerBridge : Node
     get { return _instance; }
   }
 
-  public static double Now()
+  public static ulong Now()
   {
-    return Time.GetUnixTimeFromSystem() * 1000.0;
+    return Time.GetTicksMsec();
   }
 
   public override void _Ready()
@@ -31,52 +31,6 @@ partial class ServerBridge : Node
       RpcId(peerId, func, args);
     }
   }
-
-  #region spawn
-  public void SendActorEnteredZone(int remoteId, int actorId, int type, Vector3 position, float yaw, Variant data)
-  {
-    RpcId(remoteId, "ActorEnteredZone", actorId, type, position, yaw, data);
-  }
-
-  public void SendActorExitedZone(int remoteId, int actorId, int type)
-  {
-    RpcId(remoteId, "ActorExitedZone", actorId, type);
-  }
-
-  public void SendPlayableActor(int remoteId, IActor actor)
-  {
-
-    GD.Print("Send Player Actor");
-    RpcId(remoteId, "ActorPlayable", actor.GetActorId(), ((Node3D)actor).GlobalPosition, ((Node3D)actor).Rotation.Y, actor.GetData());
-  }
-
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorEnteredZone(Variant id, Variant type, Variant position, Variant yaw, Variant data) { }
-
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorExitedZone(Variant id, Variant type) { }
-
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorPlayable(Variant id, Variant position, Variant yaw, Variant data) { }
-
-  #endregion
-
-  #region skills
-  public void SendSkillExecutedTo(List<int> peers, IActor actor, int skillId)
-  {
-    var now = Now();
-
-    if (actor.GetActorType() == ActorType.Player)
-    {
-      RpcId(actor.GetActorId(), "SkillExecuted", actor.GetActorId(), (int)actor.GetActorType(), skillId, now);
-    }
-
-    SendPacketTo(peers, "SkillExecuted", actor.GetActorId(), (int)actor.GetActorType(), skillId, now);
-  }
-
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void SkillExecuted(Variant actorId, Variant actorType, Variant skillId, Variant timestamp) { }
-  #endregion
 
   #region PlayerDetails
 

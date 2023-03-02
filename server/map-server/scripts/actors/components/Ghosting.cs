@@ -1,6 +1,4 @@
 ﻿using Godot;
-using System.Linq;
-using System.Collections.Generic;
 
 class Ghosting
 {
@@ -22,6 +20,8 @@ class Ghosting
 
   void BodyEntered(Node3D body)
   {
+    if (body == actor) { return; }
+
     ZoneActor actorTarget = (ZoneActor)body;
 
     Zone.SendActorEnteredZone(actor, actorTarget);
@@ -29,6 +29,8 @@ class Ghosting
 
   void BodyExited(Node3D body)
   {
+    if (body == actor) { return; }
+
     ZoneActor actorTarget = (ZoneActor)body;
 
     Zone.SendActorExitedZone(actor, actorTarget);

@@ -1,16 +1,35 @@
 ﻿using Godot;
+using System.Collections.Generic;
+using MessagePack;
 
 public partial class Networking : Node3D
 {
+  static Networking _instance;
+
+  public static Networking Instance { get { return _instance; } }
+
+  SceneMultiplayer sceneMultiplayer;
+
   ENetMultiplayerPeer multiplayerPeer;
 
-  CharacterSpawner spawner;
+  PacketManager packetManager;
+
+  public override void _Ready()
+  {
+    packetManager = new PacketManager();
+
+    SkillManager.CreateInstance("skills");
+    SkillManager.Instance.Load();
+  }
 
   public override void _EnterTree()
   {
-    var sceneMultiplayer = new SceneMultiplayer();
+    _instance = this;
+
+    sceneMultiplayer = new SceneMultiplayer();
 
     sceneMultiplayer.ServerRelay = false;
+    sceneMultiplayer.PeerPacket += OnPacketReceived;
 
     GetTree().SetMultiplayer(sceneMultiplayer);
 
@@ -24,11 +43,6 @@ public partial class Networking : Node3D
     Multiplayer.MultiplayerPeer = multiplayerPeer;
   }
 
-  public override void _Ready()
-  {
-    spawner = GetNode<CharacterSpawner>("Spawner/players");
-  }
-
   void _PeerConnected(long id)
   {
     GD.Print("Connected: ", id);
@@ -37,63 +51,32 @@ public partial class Networking : Node3D
   void _PeerDisconnected(long id)
   {
     GD.Print("Disconnected: ", id);
-
-    spawner.CallDeferred("Unspawn", id);
   }
 
-  void Spawn(int remoteId)
+  void OnPacketReceived(long id, byte[] data)
   {
-    var actor = spawner.Spawn(remoteId, Vector3.Up, new Godot.Collections.Array<Variant>()
+    packetManager.OnPacketHandler(id, data);
+  }
+
+  public void SendPacket(long id, Packets.Server.IServerCommand cmd)
+  {
+    var pck = MessagePackSerializer.Serialize<Packets.Server.IServerCommand>(cmd);
+
+    sceneMultiplayer.SendBytes(pck, (int)id);
+  }
+
+  public void SendPacketToMany(List<int> peers, Packets.Server.IServerCommand cmd)
+  {
+    var pck = MessagePackSerializer.Serialize<Packets.Server.IServerCommand>(cmd);
+
+    foreach (int peerId in peers)
     {
-      0,
-      100,
-      100,
-      100,
-      100
-    });
-
-    ServerBridge.Instance.SendPlayableActor(remoteId, actor);
+      sceneMultiplayer.SendBytes(pck, peerId);
+    }
   }
 
-  [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void FetchServerTime(Variant clientTime)
+  public void Disconnect(int peerId)
   {
-    double now = Time.GetUnixTimeFromSystem() * 1000.0;
-
-    RpcId(Multiplayer.GetRemoteSenderId(), "ReturnServerTime", now, clientTime);
-  }
-
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ReturnServerTime(Variant serverTime, Variant clientTime) { }
-
-  [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void onSessionMap(Variant auth_token)
-  {
-    GD.Print("Requesting: Entering map.");
-
-    int remoteId = Multiplayer.GetRemoteSenderId();
-
-    string token = auth_token.ToString();
-
-    /*using var db = new ServerContext();
-	var sessions = db.Sessions.Where(x => x.AuthToken == token);
-
-	if (!sessions.Any())
-	{
-		Multiplayer.MultiplayerPeer.DisconnectPeer(remoteId);
-	}
-
-	foreach (var session in sessions)
-	{
-		GD.Print("session map found");
-		GD.Print(session.Id);
-		GD.Print(session.AuthToken);
-		GD.Print(session.CharacterId);
-
-		Spawn(remoteId);
-	}*/
-    Spawn(remoteId);
-
-    GD.Print(auth_token);
+    sceneMultiplayer.DisconnectPeer(peerId);
   }
 }

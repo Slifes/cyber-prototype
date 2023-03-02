@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://xhsexve6n8g6"]
+[gd_scene load_steps=8 format=3 uid="uid://xhsexve6n8g6"]
 
 [ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_3i3in"]
 [ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="2_papxf"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_8e5xc"]
 [ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/main_server.tscn" id="5_iorl7"]
 [ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_1tomd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ylmw0"]
+size = Vector3(4, 0.2, 20)
 
 [node name="zone_02" type="Node3D"]
 script = ExtResource("1_3i3in")
@@ -30,3 +33,9 @@ current = true
 
 [node name="skills" type="Node3D" parent="zone"]
 script = ExtResource("6_1tomd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.99531, 0, 0)
+shape = SubResource("BoxShape3D_ylmw0")

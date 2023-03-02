@@ -5,9 +5,13 @@ partial class BaseNPC : CharacterBody3D, IActorZone
   [Export]
   public int ID;
 
+  int _actorId;
+
+  int currentHP = 100;
+
   public int GetActorID()
   {
-    throw new System.NotImplementedException();
+    return _actorId;
   }
 
   public ActorType GetActorType()
@@ -19,12 +23,12 @@ partial class BaseNPC : CharacterBody3D, IActorZone
 
   public int GetCurrentHP()
   {
-    throw new System.NotImplementedException();
+    return 100;
   }
 
   public int GetCurrentSP()
   {
-    throw new System.NotImplementedException();
+    return 100;
   }
 
   public virtual Variant GetData()
@@ -32,10 +36,10 @@ partial class BaseNPC : CharacterBody3D, IActorZone
     var data = new Godot.Collections.Array<Variant>()
     {
       ID,
-      // currentHP,
-      // currentSP,
-      // maxHP,
-      // maxSP,
+      currentHP,
+      100,
+      100,
+      100
     };
 
     return data;
@@ -43,26 +47,26 @@ partial class BaseNPC : CharacterBody3D, IActorZone
 
   public int GetMaxHP()
   {
-    throw new System.NotImplementedException();
+    return 100;
   }
 
   public int GetMaxSP()
   {
-    throw new System.NotImplementedException();
+    return 100;
   }
 
   public void onActorReady()
   {
-    throw new System.NotImplementedException();
+    _actorId = int.Parse(Name);
   }
 
   public void SetServerData(Variant data)
   {
-    throw new System.NotImplementedException();
+
   }
 
   public void TakeDamage(int damage)
   {
-    throw new System.NotImplementedException();
+    currentHP -= damage;
   }
 }

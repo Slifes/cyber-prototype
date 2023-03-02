@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://btc5f0sseqk1x"]
+[gd_scene load_steps=7 format=3 uid="uid://wfh0ioevi7rq"]
 
 [ext_resource type="Script" path="res://scripts/Networking.cs" id="1_r5x5j"]
-[ext_resource type="Script" path="res://scripts/ServerBridge.cs" id="2_uop1d"]
 [ext_resource type="PackedScene" uid="uid://dfk1nxvyv37dx" path="res://zones/zone_01.tscn" id="3_5g7nc"]
-[ext_resource type="Script" path="res://scripts/spawner/CharacterSpawner.cs" id="3_a3rwj"]
+[ext_resource type="Script" path="res://scripts/spawner/PlayerSpawner.cs" id="3_a3rwj"]
 [ext_resource type="Script" path="res://scripts/shards/ShardArea.cs" id="4_tv7lc"]
 [ext_resource type="PackedScene" uid="uid://xhsexve6n8g6" path="res://zones/zone_02.tscn" id="5_ajxll"]
 
@@ -12,9 +11,6 @@ size = Vector3(22.6581, 4.33858, 23.9013)
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_r5x5j")
-
-[node name="Server" type="Node" parent="."]
-script = ExtResource("2_uop1d")
 
 [node name="Spawner" type="Node" parent="."]
 

@@ -1,4 +1,12 @@
-﻿enum SkillType
+﻿enum ActorState
+{
+  Idle,
+  Walking,
+  Talking,
+  Died,
+}
+
+enum SkillType
 {
   Active,
   Passive,

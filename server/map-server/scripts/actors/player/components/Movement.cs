@@ -9,5 +9,8 @@ class Movement
     this.actor = actor;
   }
 
+  void Update(double delta)
+  {
 
+  }
 }

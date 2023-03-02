@@ -1,6 +1,7 @@
 ﻿using Godot;
 using System.Collections.Generic;
 
+
 partial class Player : SessionActor
 {
   [Signal]
@@ -58,5 +59,16 @@ partial class Player : SessionActor
   public void RemoveZone(BaseShard zone)
   {
     zones.Remove(zone);
+  }
+
+  public Packets.Server.SMActorEnteredZone GetActorPacket()
+  {
+    return new Packets.Server.SMActorEnteredZone
+    {
+      ActorId = GetActorId(),
+      ActorType = (int)ActorType.Player,
+      Position = new float[3] { Position.X, Position.Y, Position.Z },
+      Yaw = Rotation.Y
+    };
   }
 }
