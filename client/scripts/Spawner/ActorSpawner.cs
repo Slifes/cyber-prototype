@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using Packets.Server;
 
 partial class ActorSpawner : Node3D, IActorSpawner

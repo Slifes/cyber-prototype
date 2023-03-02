@@ -35,65 +35,65 @@ partial class Player : CharacterActor
 
   public override void _Ready()
   {
-	base._Ready();
+    base._Ready();
 
-	_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+    _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
-	_body = GetNode<Node3D>("Body");
+    _body = GetNode<Node3D>("Body");
 
-	components = CreateComponents();
+    components = CreateComponents();
 
-	LoadSkills();
+    LoadSkills();
   }
 
   IComponent[] CreateComponents()
   {
-	if (!IsMultiplayerAuthority())
-	{
-	  SetProcessUnhandledInput(false);
-	  return new IComponent[5]
-	  {
-		new SkillController(this, new List<int>() { 0, 1, 2 }),
-		new PredictMovement(this),
-		new MiniHPBar(this),
-		new ActorHover(this),
-		new DamageLabel(this)
-	  };
-	}
-	else
-	{
-	  return new IComponent[6]
-	  {
-		new SkillController(this, new List<int>() { 0, 1, 2 }),
-		new CameraController(this),
-		new MovementController(this),
-		new MovementNetwork(this),
-		new DamageLabel(this),
-		new UIComponent(this)
-	  };
-	}
+    if (!IsMultiplayerAuthority())
+    {
+      SetProcessUnhandledInput(false);
+      return new IComponent[5]
+      {
+        new SkillController(this, new List<int>() { 0, 1, 2 }),
+        new PredictMovement(this),
+        new MiniHPBar(this),
+        new ActorHover(this),
+        new DamageLabel(this)
+      };
+    }
+    else
+    {
+      return new IComponent[6]
+      {
+        new SkillController(this, new List<int>() { 0, 1, 2 }),
+        new CameraController(this),
+        new MovementController(this),
+        new MovementNetwork(this),
+        new DamageLabel(this),
+        new UIComponent(this)
+      };
+    }
   }
 
   public Vector3 GetBodyRotation()
   {
-	return Body.Rotation;
+    return Body.Rotation;
   }
 
   public void SetBodyRotation(Vector3 rotation)
   {
-	Body.Rotation = rotation;
+    Body.Rotation = rotation;
   }
 
   public void ChangeState(PlayerState state)
   {
-	this._state = state;
+    this._state = state;
   }
 
   void LoadSkills()
   {
-	SkillController controller = (SkillController)GetComponent<SkillController>();
+    SkillController controller = (SkillController)GetComponent<SkillController>();
 
-	UIControl.SetSkills(controller.Skills);
+    UIControl.SetSkills(controller.Skills);
   }
 
 }

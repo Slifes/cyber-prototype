@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 
 public partial class HealthStats : Control
 {
@@ -6,12 +6,12 @@ public partial class HealthStats : Control
 
   public override void _Ready()
   {
-	hpBar = GetNode<ProgressBar>("Container/HP");
+    hpBar = GetNode<ProgressBar>("Container/HP");
   }
 
   public void SetCurrentHP(int currentHP, int maxHP)
   {
-	hpBar.MaxValue = maxHP;
-	hpBar.Value = currentHP;
+    hpBar.MaxValue = maxHP;
+    hpBar.Value = currentHP;
   }
 }

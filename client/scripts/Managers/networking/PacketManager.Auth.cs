@@ -1,4 +1,4 @@
-using Packets.Server;
+﻿using Packets.Server;
 
 partial class PacketManager
 {

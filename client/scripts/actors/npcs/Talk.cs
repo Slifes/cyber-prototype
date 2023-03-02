@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 
 partial class Talk : BaseNPC
 {
@@ -7,12 +7,12 @@ partial class Talk : BaseNPC
 
   protected override IComponent[] CreateComponents()
   {
-	return new IComponent[3]
-	{
-	  new ActorHover(this),
-	  new Dialogue(this),
-	  new Clickable(this)
-	};
+    return new IComponent[3]
+    {
+      new ActorHover(this),
+      new Dialogue(this),
+      new Clickable(this)
+    };
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

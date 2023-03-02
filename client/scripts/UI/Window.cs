@@ -1,9 +1,9 @@
-using Godot;
+﻿using Godot;
 
-partial class Window: Control
+partial class Window : Control
 {
   Vector2 dragPosition;
-  
+
   public override void _GuiInput(InputEvent @event)
   {
     if (@event is InputEventMouseButton)

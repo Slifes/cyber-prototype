@@ -7,7 +7,7 @@ partial class Player
   {
     NetworkManager.Instance.SendPacket(new PlayerStartMovement
     {
-      Position = new float[3] {Position.X, Position.Y, Position.Z},
+      Position = new float[3] { Position.X, Position.Y, Position.Z },
       Yaw = GetBodyRotation().Y
     });
   }
@@ -16,7 +16,7 @@ partial class Player
   {
     NetworkManager.Instance.SendPacket(new PlayerStopMovement
     {
-      Position = new float[3] {Position.X, Position.Y, Position.Z},
+      Position = new float[3] { Position.X, Position.Y, Position.Z },
       Yaw = GetBodyRotation().Y
     });
   }

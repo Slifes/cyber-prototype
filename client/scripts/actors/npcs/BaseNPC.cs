@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using System.Collections.Generic;
 
 partial class BaseNPC : CharacterActor
@@ -13,23 +13,23 @@ partial class BaseNPC : CharacterActor
 
   public override void _Ready()
   {
-	onActorReady();
+    onActorReady();
 
-	Animation = GetNode<AnimationPlayer>("AnimationPlayer");
+    Animation = GetNode<AnimationPlayer>("AnimationPlayer");
 
-	components = CreateComponents();
+    components = CreateComponents();
   }
 
   protected virtual IComponent[] CreateComponents()
   {
-	return new IComponent[1]
-	{
-	  new ActorHover(this),
-	};
+    return new IComponent[1]
+    {
+      new ActorHover(this),
+    };
   }
 
   public override ActorType GetActorType()
   {
-	return ActorType.Npc;
+    return ActorType.Npc;
   }
 }

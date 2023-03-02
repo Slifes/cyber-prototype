@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using DialogueManagerRuntime;
 
 class Dialogue : IComponent
@@ -7,13 +7,13 @@ class Dialogue : IComponent
 
   public Dialogue(Talk actor)
   {
-	this.actor = actor;
-	actor.ActorClicked += Clicked;
+    this.actor = actor;
+    actor.ActorClicked += Clicked;
   }
 
   public void Clicked()
   {
-	DialogueManager.ShowExampleDialogueBalloon(actor.Dialogue);
+    DialogueManager.ShowExampleDialogueBalloon(actor.Dialogue);
   }
 
   public void InputHandler(InputEvent @event) { }

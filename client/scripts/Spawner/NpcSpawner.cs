@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System;
 
-partial class NpcSpawner: ActorSpawner
+partial class NpcSpawner : ActorSpawner
 {
   public override void Spawn(Packets.Server.SMActorEnteredZone command)
   {

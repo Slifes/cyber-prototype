@@ -5,7 +5,7 @@ partial class Spawner : Node
 {
   static Spawner _instance;
 
-  public static Spawner Instance { get {return _instance; }}
+  public static Spawner Instance { get { return _instance; } }
 
   Dictionary<ActorType, IActorSpawner> spawners;
 

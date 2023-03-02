@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class Item: Resource
+partial class Item : Resource
 {
   [Export]
   public int ID;

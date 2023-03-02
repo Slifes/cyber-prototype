@@ -57,7 +57,8 @@ class PredictMovement : IComponent
     if (velocity.IsFinite())
     {
       PredictedVelocity = velocity;
-    } else 
+    }
+    else
     {
       GD.Print("NEwPosition: ", newPosition);
       GD.Print("Current Position: ", actor.GlobalPosition);

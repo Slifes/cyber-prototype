@@ -1,6 +1,6 @@
-using Godot;
+﻿using Godot;
 
-partial class ToggleButton: Button
+partial class ToggleButton : Button
 {
   [Export]
   Control target;
