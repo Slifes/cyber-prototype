@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c4frf05kt4lu2"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4mogg"]
-radius = 0.291296
+[sub_resource type="BoxShape3D" id="BoxShape3D_omh1c"]
+size = Vector3(0.513836, 2.00383, 0.445443)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_56h05"]
 albedo_color = Color(1, 0.54902, 0.360784, 1)
@@ -22,7 +22,7 @@ collision_layer = 3
 collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_4mogg")
+shape = SubResource("BoxShape3D_omh1c")
 disabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

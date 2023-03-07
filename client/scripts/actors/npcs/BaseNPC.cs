@@ -1,5 +1,4 @@
 ﻿using Godot;
-using System.Collections.Generic;
 
 partial class BaseNPC : CharacterActor
 {
@@ -13,7 +12,7 @@ partial class BaseNPC : CharacterActor
 
   public override void _Ready()
   {
-    onActorReady();
+    base._Ready();
 
     Animation = GetNode<AnimationPlayer>("AnimationPlayer");
 

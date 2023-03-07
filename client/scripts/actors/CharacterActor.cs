@@ -44,11 +44,6 @@ partial class CharacterActor : CharacterBody3D, IActor
   public override void _Ready()
   {
     onActorReady();
-
-    if (!IsMultiplayerAuthority())
-    {
-      interpolate = new();
-    }
   }
 
   public int GetActorId()
@@ -130,10 +125,9 @@ partial class CharacterActor : CharacterBody3D, IActor
     public Vector3 Position;
     public float Yaw;
     public ulong Tick;
-    public bool Stop;
   }
 
-  List<InterpolateMovement> interpolate;
+  List<InterpolateMovement> interpolate = new();
 
   void InterpolateMove(float delta)
   {
@@ -163,8 +157,7 @@ partial class CharacterActor : CharacterBody3D, IActor
         {
           Position = new Vector3(pck.Position[0], pck.Position[1], pck.Position[2]),
           Yaw = pck.Yaw,
-          Tick = pck.Tick,
-          Stop = false
+          Tick = pck.Tick
         });
         break;
       case Packets.Server.SMActorStopMove pck:
@@ -172,8 +165,7 @@ partial class CharacterActor : CharacterBody3D, IActor
         {
           Position = new Vector3(pck.Position[0], pck.Position[1], pck.Position[2]),
           Yaw = pck.Yaw,
-          Tick = pck.Tick,
-          Stop = true
+          Tick = pck.Tick
         });
         break;
     }

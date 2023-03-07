@@ -25,6 +25,6 @@ partial class NpcSpawner : ActorSpawner
 
     CallDeferred("add_child", actor);
 
-    return null;
+    return actor;
   }
 }
