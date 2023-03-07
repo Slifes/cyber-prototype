@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ck2gole3pvtbc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_omh1c"]
+size = Vector3(0.513836, 2.00383, 0.445443)
+
+[node name="Tree" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_omh1c")

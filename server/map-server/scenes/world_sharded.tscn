@@ -33,7 +33,6 @@ shape = SubResource("BoxShape3D_gd514")
 
 [node name="zone_02" parent="zone_02" instance=ExtResource("3_e882b")]
 Port = 3002
-Debug = true
 
 [node name="area_02" type="Area3D" parent="zone_02" node_paths=PackedStringArray("shard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.2691, 0.0441532, -0.123739)

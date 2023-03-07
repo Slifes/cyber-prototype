@@ -4,6 +4,7 @@
 [ext_resource type="Resource" uid="uid://cnigfbnwlkp0n" path="res://resources/skills/normal_attack.tres" id="2_74ylq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3788e"]
+size = Vector3(0.2, 0.2, 0.2)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_2dtw7"]
 height = 0.5
@@ -13,7 +14,7 @@ radius = 1.5
 height = 0.5
 radius = 0.7
 
-[node name="BaseEnemy" type="CharacterBody3D"]
+[node name="BaseEnemy" type="CharacterBody3D" groups=["Actor"]]
 collision_layer = 2051
 input_ray_pickable = false
 axis_lock_angular_x = true
@@ -22,11 +23,11 @@ script = ExtResource("1_eg6ml")
 skills = Array[Resource]([ExtResource("2_74ylq")])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 shape = SubResource("BoxShape3D_3788e")
 
 [node name="BasedContextSteering" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+visible = false
 enabled = false
 target_position = Vector3(0, 0, 0.6)
 
@@ -47,3 +48,10 @@ monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackArea"]
 shape = SubResource("CylinderShape3D_0p85v")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
+radius = 0.2
+neighbor_distance = 2.0
+max_neighbors = 20
+debug_enabled = true

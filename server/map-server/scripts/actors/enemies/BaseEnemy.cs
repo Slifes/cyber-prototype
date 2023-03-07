@@ -10,11 +10,15 @@ partial class BaseEnemy : BaseNPC
 
   private ActorState state;
 
+  Ghosting ghosting;
+
   public override void _Ready()
   {
     behavior = new AgressiveBehavior(this);
 
     state = ActorState.Idle;
+
+    ghosting = new Ghosting(this);
   }
 
   public override void _PhysicsProcess(double delta)

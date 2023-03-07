@@ -8,7 +8,7 @@ class AgressiveBehavior : Behavior
     behaviors = new()
     {
       {AIState.Walking, new BaseMovement(this)},
-      {AIState.Steering, new BasedContextSteering(this)},
+      {AIState.Steering, new BasedPathFinding(this)},
       {AIState.Attacking, new BaseAttack(this)},
     };
 

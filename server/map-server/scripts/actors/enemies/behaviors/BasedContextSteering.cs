@@ -130,11 +130,11 @@ class BasedContextSteering : IBehavior
 
     behavior.Actor.MoveAndSlide();
 
-    behavior.Actor.LookAt(behavior.Target.GlobalPosition);
+    behavior.Actor.LookAt(behavior.Target.Position);
 
-    if (LastTargetPosition != behavior.Target.GlobalPosition)
+    if (LastTargetPosition != behavior.Target.Position)
     {
-      LastTargetPosition = behavior.Target.GlobalPosition;
+      LastTargetPosition = behavior.Target.Position;
       behavior.UpdateState();
     }
 

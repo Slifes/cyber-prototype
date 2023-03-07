@@ -95,10 +95,16 @@ partial class Zone
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void NpcChangeState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp) { }
-
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void NpcUpdateState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp) { }
+  public void NpcMoving(int actorId, Vector3 position, float yaw)
+  {
+    Networking.Instance.SendPacketToMany(GetPlayerNearest(actorId), new SMActorStartMove
+    {
+      ActorId = actorId,
+      Position = new float[3] { position.X, position.Y, position.Z },
+      Yaw = yaw,
+      Tick = Time.GetTicksMsec()
+    });
+  }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void RequestSkill(Variant actorId, Variant skillId, Variant data)
