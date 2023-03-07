@@ -103,6 +103,10 @@ slot5={
 ]
 }
 
+[internationalization]
+
+locale/translations_pot_files=PackedStringArray("res://dialogue/aron.dialogue")
+
 [physics]
 
 3d/run_on_separate_thread=true

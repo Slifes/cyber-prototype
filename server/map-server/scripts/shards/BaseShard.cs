@@ -6,7 +6,10 @@ partial class BaseShard : Node
 
   public override void _Ready()
   {
-    spawner = GetNode<ShardSpawner>("spawner");
+    if (GetParent<ShardConnect>().IsServer)
+    {
+      spawner = GetNode<ShardSpawner>("spawner");
+    }
   }
 
   public void SendActorConnected(SessionActor actor)

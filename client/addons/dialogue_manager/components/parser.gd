@@ -11,7 +11,7 @@ var VALID_TITLE_REGEX: RegEx = RegEx.create_from_string("^[^\\!\\@\\#\\$\\%\\^\\
 var BEGINS_WITH_NUMBER_REGEX: RegEx = RegEx.create_from_string("^\\d")
 var TRANSLATION_REGEX: RegEx = RegEx.create_from_string("\\[ID:(?<tr>.*?)\\]")
 var MUTATION_REGEX: RegEx = RegEx.create_from_string("(do|set) (?<mutation>.*)")
-var CONDITION_REGEX: RegEx = RegEx.create_from_string("(if|elif) (?<condition>.*)")
+var CONDITION_REGEX: RegEx = RegEx.create_from_string("(if|elif|while) (?<condition>.*)")
 var WRAPPED_CONDITION_REGEX: RegEx = RegEx.create_from_string("\\[if (?<condition>.*)\\]")
 var REPLACEMENTS_REGEX: RegEx = RegEx.create_from_string("{{(.*?)}}")
 var GOTO_REGEX: RegEx = RegEx.create_from_string("=><? (?<jump_to_title>.*)")
@@ -54,6 +54,7 @@ var errors: Array[Dictionary] = []
 var _imported_line_map: Array[Dictionary] = []
 var _imported_line_count: int = 0
 
+var while_loopbacks: Array[String] = []
 
 ## Parse some raw dialogue text. Returns a dictionary containing parse results
 func parse(text: String) -> int:
@@ -206,6 +207,13 @@ func parse(text: String) -> int:
 			line["type"] = DialogueConstants.TYPE_CONDITION
 			line["next_id_after"] = find_next_line_after_conditions(id)
 			line["next_conditional_id"] = line["next_id_after"]
+		elif is_while_condition_line(raw_line):
+			parent_stack.append(str(id))
+			line["type"] = DialogueConstants.TYPE_CONDITION
+			line["condition"] = extract_condition(raw_line)
+			line["next_id_after"] = find_next_line_after_conditions(id)
+			while_loopbacks.append(find_last_line_within_conditions(id))
+			line["next_conditional_id"] = line["next_id_after"]
 		
 		# Mutation
 		elif is_mutation_line(raw_line):
@@ -241,7 +249,7 @@ func parse(text: String) -> int:
 				line["text"] = ": ".join(bits).replace("!ESCAPED_COLON!", ":")
 			else:
 				line["character"] = ""
-				line["character_replacements"] = []
+				line["character_replacements"] = [] as Array[Dictionary]
 				line["text"] = l.replace("!ESCAPED_COLON!", ":")
 			
 			line["text_replacements"] = extract_dialogue_replacements(line.text)
@@ -310,6 +318,19 @@ func parse(text: String) -> int:
 		# If there are no titles then use the first actual line
 		if first_title == "" and  not is_import_line(raw_line):
 			first_title = str(id)
+			
+		# If this line is the last line of a while loop, edit the id of its next line
+		if str(id) in while_loopbacks:
+			if is_goto_snippet_line(raw_line):
+				line["next_id_after"] = line["parent_id"]
+			elif is_condition_line(raw_line, true) or is_while_condition_line(raw_line):
+				line["next_conditional_id"] = line["parent_id"]
+				line["next_id_after"] = line["parent_id"]
+			elif is_goto_line(raw_line) or is_title_line(raw_line):
+				pass
+			else:
+				line["next_id"] = line["parent_id"]
+				
 		
 		# Done!
 		parsed_lines[str(id)] = line
@@ -339,6 +360,7 @@ func prepare(text: String, include_imported_titles_hashes: bool = true) -> void:
 	errors = []
 	imported_paths = []
 	_imported_line_map = []
+	while_loopbacks = []
 	titles = {}
 	first_title = ""
 	raw_lines = text.split("\n")
@@ -368,7 +390,7 @@ func prepare(text: String, include_imported_titles_hashes: bool = true) -> void:
 				
 				# Import the file content
 				if not import_data.path.hash() in known_imports:
-					var error = import_content(import_data.path, import_data.prefix, known_imports)
+					var error: Error = import_content(import_data.path, import_data.prefix, known_imports)
 					if error != OK:
 						errors.append({ line_number = id, error = error })
 	
@@ -433,6 +455,11 @@ func is_condition_line(line: String, include_else: bool = true) -> bool:
 	line = line.strip_edges(true, false)
 	if line.begins_with("if ") or line.begins_with("elif "): return true
 	if include_else and line.begins_with("else"): return true
+	return false
+	
+func is_while_condition_line(line: String) -> bool:
+	line = line.strip_edges(true, false)
+	if line.begins_with("while "): return true
 	return false
 
 
@@ -513,18 +540,19 @@ func find_previous_response_id(line_number: int) -> String:
 	
 	# Look back up the list to find the previous response
 	var last_found_response_id: String = str(line_number)
+	
 	for i in range(line_number - 1, -1, -1):
 		line = raw_lines[i]
 		
 		if is_line_empty(line): continue
 		
 		# If its a response at the same indent level then its a match
-		if get_indent(line) == indent_size:
+		elif get_indent(line) == indent_size:
 			if line.strip_edges().begins_with("- "):
 				last_found_response_id = str(i)
 			else:
 				return last_found_response_id
-				
+		
 	# Return itself if nothing was found
 	return last_found_response_id
 
@@ -539,7 +567,7 @@ func apply_weighted_random(id: int, raw_line: String, indent_size: int, line: Di
 	var original_random_line: Dictionary = {}
 	for i in range(id, 0, -1):
 		if not raw_lines[i].strip_edges().begins_with("%") or get_indent(raw_lines[i]) != indent_size:
-			break
+			continue
 		elif parsed_lines.has(str(i)) and parsed_lines[str(i)].has("siblings"):
 			original_random_line = parsed_lines[str(i)]
 	
@@ -623,13 +651,39 @@ func find_next_line_after_conditions(line_number: int) -> String:
 			# We have to check the parent of this block
 			for p in range(line_number - 1, -1, -1):
 				line = raw_lines[p]
+				
 				if is_line_empty(line): continue
+				
 				line_indent = get_indent(line)
 				if line_indent < expected_indent:
 					return parsed_lines[str(p)].next_id_after
 	
 	return DialogueConstants.ID_END_CONVERSATION
 
+func find_last_line_within_conditions(line_number: int) -> String:
+	var line = raw_lines[line_number]
+	var expected_indent = get_indent(line)
+	
+	var candidate = DialogueConstants.ID_NULL
+	
+	# Look down the list for the last line that has an indent level 1 more than this line
+	# Ending the search when you find a line the same or less indent level
+	for i in range(line_number + 1, raw_lines.size()):
+		line = raw_lines[i]
+		
+		if is_line_empty(line): continue
+		
+		var line_indent = get_indent(line)
+		line = line.strip_edges()
+		
+		if line_indent > expected_indent + 1:
+			continue
+		elif line_indent == (expected_indent + 1):
+			candidate = i
+		else:
+			break
+			
+	return str(candidate)
 
 func find_next_line_after_responses(line_number: int) -> String:
 	var line = raw_lines[line_number]
@@ -664,7 +718,9 @@ func find_next_line_after_responses(line_number: int) -> String:
 		elif line.begins_with("elif ") or line.begins_with("else"):
 			for p in range(line_number - 1, -1, -1):
 				line = raw_lines[p]
+				
 				if is_line_empty(line): continue
+				
 				var line_indent = get_indent(line)
 				if line_indent < expected_indent:
 					return parsed_lines[str(p)].next_id_after
@@ -681,7 +737,7 @@ func find_next_line_after_responses(line_number: int) -> String:
 
 
 ## Import content from another dialogue file or return an ERR
-func import_content(path: String, prefix: String, known_imports: Dictionary) -> int:
+func import_content(path: String, prefix: String, known_imports: Dictionary) -> Error:
 	if FileAccess.file_exists(path):
 		var file = FileAccess.open(path, FileAccess.READ)
 		var content: PackedStringArray = file.get_as_text().split("\n")
@@ -770,7 +826,7 @@ func extract_response_prompt(line: String) -> String:
 	if translation_key:
 		line = line.replace("[ID:%s]" % translation_key, "")
 	
-	return line.strip_edges()
+	return line.replace("\\n", "\n").strip_edges()
 
 
 func extract_mutation(line: String) -> Dictionary:
@@ -862,12 +918,11 @@ func extract_goto(line: String) -> String:
 
 
 func extract_markers(line: String) -> Dictionary:
-	var text = line
-	var pauses = {}
-	var speeds = {}
-	var mutations = []
-	var bbcodes = []
-	var index_map = {}
+	var text: String = line
+	var pauses: Dictionary = {}
+	var speeds: Dictionary = {}
+	var mutations: Array[Array] = []
+	var bbcodes: Array = []
 	var time = null
 	
 	# Extract all of the BB codes so that we know the actual text (we could do this easier with
@@ -996,7 +1051,7 @@ func find_bbcode_positions_in_string(string: String, find_all: bool = true) -> A
 	return positions
 
 
-func tokenise(text: String, line_type: String) -> Array[Dictionary]:
+func tokenise(text: String, line_type: String) -> Array:
 	var tokens: Array[Dictionary] = []
 	var limit: int = 0
 	while text.strip_edges() != "" and limit < 1000:

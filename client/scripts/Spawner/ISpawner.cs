@@ -1,5 +1,5 @@
-﻿public interface IActorSpawner
+﻿interface IActorSpawner
 {
-  public void Spawn(Packets.Server.SMActorEnteredZone command);
-  public void Despawn(Packets.Server.SMActorExitedZone command);
+  IActor Spawn(Packets.Server.SMActorEnteredZone command);
+  void Despawn(Packets.Server.SMActorExitedZone command);
 }

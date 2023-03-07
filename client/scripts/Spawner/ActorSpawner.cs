@@ -13,5 +13,5 @@ partial class ActorSpawner : Node3D, IActorSpawner
     }
   }
 
-  public virtual void Spawn(SMActorEnteredZone command) { }
+  public virtual IActor Spawn(SMActorEnteredZone command) { return null; }
 }

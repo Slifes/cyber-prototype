@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqmd0a4qbloiq"]
+
+[ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_q2kvi"]
+[ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="2_rn2gt"]
+
+[node name="zone_client" type="Node"]
+script = ExtResource("1_q2kvi")
+
+[node name="zone" type="Node" parent="."]
+script = ExtResource("2_rn2gt")

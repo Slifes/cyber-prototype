@@ -9,4 +9,6 @@
   // float GetActorYaw();
 
   Godot.Variant GetData();
+
+  void TakeDamage(int value);
 }

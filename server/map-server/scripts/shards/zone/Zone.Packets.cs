@@ -1,41 +1,35 @@
 ﻿using Godot;
-using System.Collections.Generic;
 using Packets.Server;
 
 partial class Zone
 {
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorEnteredZone(int actorId, int id, int type, Vector3 position, float yaw, Variant data)
+  public void ActorEnteredZone(int peerId, int actorId, int type, Vector3 position, float yaw, Variant data, bool broadcast)
   {
-    if (!neraests.ContainsKey(actorId))
-    {
-      neraests.Add(actorId, new List<int>() { id });
-    }
-    else
-    {
-      neraests[actorId].Add(id);
-    }
+    AddActorToNearest(peerId, actorId, (ActorType)type);
 
-    Networking.Instance.SendPacket(actorId, new SMActorEnteredZone
+    if (!broadcast) return;
+
+    Networking.Instance.SendPacket(peerId, new SMActorEnteredZone
     {
-      ActorId = id,
+      ActorId = actorId,
       ActorType = type,
       Position = new float[3] { position.X, position.Y, position.Z },
-      Yaw = yaw
+      Yaw = yaw,
+      Data = data.AsByteArray()
     });
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorExitedZone(int actorId, int id, int type)
+  public void ActorExitedZone(int peerId, int actorId, int type, bool broadcast)
   {
-    if (neraests.ContainsKey(actorId))
-    {
-      neraests[actorId].Remove(id);
-    }
+    RemoveActorFromNearests(peerId, actorId, (ActorType)type);
 
-    Networking.Instance.SendPacket(actorId, new SMActorExitedZone
+    if (!broadcast) return;
+
+    Networking.Instance.SendPacket(peerId, new SMActorExitedZone
     {
-      ActorId = id,
+      ActorId = actorId,
       ActorType = type
     });
   }
@@ -74,7 +68,13 @@ partial class Zone
     actor.Position = new Vector3(position.X, position.Y, position.Z);
     actor.Rotation = new Vector3(0, yaw, 0);
 
-    // ServerBridge.Instance.SendServerMovement(GetPlayerNearest(actorId), actor, actor.Position, yaw);
+    Networking.Instance.SendPacketToMany(GetPlayerNearest(actorId), new SMActorStartMove
+    {
+      ActorId = actorId,
+      Position = new float[3] { position.X, position.Y, position.Z },
+      Yaw = yaw,
+      Tick = Time.GetTicksMsec()
+    });
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -85,7 +85,13 @@ partial class Zone
     actor.Position = new Vector3(position.X, position.Y, position.Z);
     actor.Rotation = new Vector3(0, yaw, 0);
 
-    // ServerBridge.Instance.SendServerMovementStopped(GetPlayerNearest(actorId), actor, actor.Position, yaw);
+    Networking.Instance.SendPacketToMany(GetPlayerNearest(actorId), new SMActorStartMove
+    {
+      ActorId = actorId,
+      Position = new float[3] { position.X, position.Y, position.Z },
+      Yaw = yaw,
+      Tick = Time.GetTicksMsec()
+    });
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -93,9 +99,6 @@ partial class Zone
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void NpcUpdateState(Variant id, Variant state, Variant position, Variant yaw, Variant data, Variant timestamp) { }
-
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorTookDamage(Variant actorId, Variant actorType, Variant damage, Variant hp, Variant maxHP) { }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void RequestSkill(Variant actorId, Variant skillId, Variant data)
@@ -115,13 +118,22 @@ partial class Zone
   {
     var peers = GetPlayerNearest(actorId);
 
-    //ServerBridge.Instance.SendSkillExecutedTo(peers, actor, skillId);
-
-    Networking.Instance.SendPacketToMany(peers, new Packets.Server.SMExecuteSkill
+    Networking.Instance.SendPacketToMany(actorId, peers, new Packets.Server.SMExecuteSkill
     {
       SkillId = skillId,
       ActorId = actorId,
       ActorType = (int)ActorType.Player
+    });
+  }
+
+  [Rpc(MultiplayerApi.RpcMode.Authority, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void ActorTakeDamage(int actorId, int actorType, int damage)
+  {
+    Networking.Instance.SendPacketToMany(actorId, GetPlayerNearest(actorId), new SMActorDamage
+    {
+      ActorId = actorId,
+      ActorType = actorType,
+      Damage = damage
     });
   }
 }

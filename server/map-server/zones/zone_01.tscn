@@ -1,11 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://dfk1nxvyv37dx"]
+[gd_scene load_steps=10 format=3 uid="uid://dfk1nxvyv37dx"]
 
 [ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="1_bkhae"]
 [ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_plbjr"]
 [ext_resource type="Script" path="res://scripts/shards/ShardSpawner.cs" id="3_t3pxj"]
 [ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/main_server.tscn" id="4_1328x"]
 [ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_f7ti5"]
+[ext_resource type="Script" path="res://scripts/spawner/EnemySpawner.cs" id="6_a2xos"]
 [ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_gp58d"]
+[ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/base_enemy.tscn" id="7_21f8w"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ecuvq"]
 size = Vector3(4, 0.2, 20)
@@ -14,6 +16,7 @@ size = Vector3(4, 0.2, 20)
 script = ExtResource("1_plbjr")
 IsServer = true
 Port = 3000
+AutoLoad = false
 
 [node name="zone" type="Node3D" parent="."]
 script = ExtResource("1_bkhae")
@@ -25,6 +28,9 @@ actorScene = ExtResource("4_f7ti5")
 [node name="map" parent="zone" instance=ExtResource("4_1328x")]
 
 [node name="mobs" type="Node3D" parent="zone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("6_a2xos")
+Mob = ExtResource("7_21f8w")
 
 [node name="skills" type="Node3D" parent="zone"]
 script = ExtResource("6_gp58d")

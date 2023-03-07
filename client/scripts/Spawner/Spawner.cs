@@ -9,9 +9,13 @@ partial class Spawner : Node
 
   Dictionary<ActorType, IActorSpawner> spawners;
 
+  Dictionary<int, IActor> actors;
+
   public override void _Ready()
   {
     _instance = this;
+
+    actors = new();
 
     spawners = new()
     {
@@ -20,18 +24,29 @@ partial class Spawner : Node
     };
   }
 
-  public IActor GetActor(string id, ActorType actorType)
+  public T GetActor<T>(int id)
   {
-    return ((Node)spawners[actorType]).GetNode<IActor>(id);
+    IActor actor;
+
+    actors.TryGetValue(id, out actor);
+
+    return (T)actor;
   }
 
   public void Spawn(Packets.Server.SMActorEnteredZone command)
   {
-    spawners[(ActorType)command.ActorType].Spawn(command);
+    var actor = spawners[(ActorType)command.ActorType].Spawn(command);
+
+    if (actor != null)
+    {
+      actors.Add(command.ActorId, actor);
+    }
   }
 
   public void Unspawn(Packets.Server.SMActorExitedZone command)
   {
     spawners[(ActorType)command.ActorType].Despawn(command);
+
+    actors.Remove(command.ActorId);
   }
 }

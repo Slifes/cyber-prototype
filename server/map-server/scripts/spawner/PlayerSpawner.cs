@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-partial class PlayerSpawner : Node3D
+partial class PlayerSpawner : Node
 {
   static PlayerSpawner instance;
 
@@ -36,13 +36,13 @@ partial class PlayerSpawner : Node3D
     return null;
   }
 
-  public void Unspawn(Variant name)
+  public void Despawn(long id)
   {
-    if (HasNode(name.ToString()))
+    if (HasNode(id.ToString()))
     {
-      GetNode(name.ToString()).QueueFree();
+      GetNode(id.ToString()).QueueFree();
 
-      SessionManager.Instance.RemoveActor(name.AsInt32());
+      SessionManager.Instance.RemoveActor((int)id);
     }
   }
 }

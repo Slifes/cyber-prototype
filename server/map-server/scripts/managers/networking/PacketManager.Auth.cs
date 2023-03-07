@@ -25,7 +25,8 @@ partial class PacketManager
 
     Networking.Instance.SendPacket(peerId, new Packets.Server.ServerTime
     {
-      Time = (long)Time.GetTicksMsec(),
+      Time = Time.GetTicksMsec(),
+      ClientTime = pck.ClientTime
     });
   }
 }

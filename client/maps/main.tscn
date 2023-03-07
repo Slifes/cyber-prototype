@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c1diiei6qulof"]
+[gd_scene load_steps=16 format=3 uid="uid://c1diiei6qulof"]
 
 [ext_resource type="PackedScene" uid="uid://bj8ruaoigjn37" path="res://maps/bridge.tscn" id="1_3v6sk"]
 [ext_resource type="PackedScene" uid="uid://c4frf05kt4lu2" path="res://maps/tree.tscn" id="2_cbrn0"]
@@ -52,9 +52,6 @@ data = PackedVector3Array(-5, 0.5, 10, 5, 0.5, 10, -5, -0.5, 10, 5, 0.5, 10, 5, 
 data = PackedVector3Array(-1, 0.1, 0.5, 1, 0.1, 0.5, -1, -0.1, 0.5, 1, 0.1, 0.5, 1, -0.1, 0.5, -1, -0.1, 0.5, 1, 0.1, -0.5, -1, 0.1, -0.5, 1, -0.1, -0.5, -1, 0.1, -0.5, -1, -0.1, -0.5, 1, -0.1, -0.5, 1, 0.1, 0.5, 1, 0.1, -0.5, 1, -0.1, 0.5, 1, 0.1, -0.5, 1, -0.1, -0.5, 1, -0.1, 0.5, -1, 0.1, -0.5, -1, 0.1, 0.5, -1, -0.1, -0.5, -1, 0.1, 0.5, -1, -0.1, 0.5, -1, -0.1, -0.5, 1, 0.1, 0.5, -1, 0.1, 0.5, 1, 0.1, -0.5, -1, 0.1, 0.5, -1, 0.1, -0.5, 1, 0.1, -0.5, -1, -0.1, 0.5, 1, -0.1, 0.5, -1, -0.1, -0.5, 1, -0.1, 0.5, 1, -0.1, -0.5, -1, -0.1, -0.5)
 
 [sub_resource type="MultiMesh" id="MultiMesh_i7up2"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_blt2j"]
-size = Vector3(1.5, 0.6, 0.5)
 
 [node name="Map" type="Node3D"]
 
@@ -152,10 +149,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.3021, 0.0500004, -6.29218
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.30581, 0.0500004, 5.46172)
 
 [node name="Tree3" parent="." instance=ExtResource("2_cbrn0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.9316, 0.0499996, -9.98556)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.9316, 0.0499996, 6.67793)
 
 [node name="Tree4" parent="." instance=ExtResource("2_cbrn0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2201, 0.0500004, -10.7504)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.85588, 0.0500004, -2.34169)
 
 [node name="street" parent="." instance=ExtResource("3_bf3eh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5294, 0.0644209, 0)
@@ -165,13 +162,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.73076, 0.0644209, 0)
 
 [node name="street3" parent="." instance=ExtResource("3_bf3eh")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.24494, 0.0644209, -4.58069)
-
-[node name="street4" parent="." instance=ExtResource("3_bf3eh")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.24494, 0.0644209, -14.4134)
-
-[node name="street5" parent="." instance=ExtResource("3_bf3eh")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.24494, 0.0644209, -24.1689)
-
-[node name="Car" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.87108, 0.414773, -0.836968)
-mesh = SubResource("BoxMesh_blt2j")

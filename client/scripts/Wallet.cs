@@ -126,7 +126,7 @@ public partial class Wallet : Node
 
       GD.Print(uri);
 
-      CallDeferred("emit_signal", "WalletQRCode", Variant.CreateFrom(uri));
+      EmitSignal(SignalName.WalletQRCode, uri);
 
       GD.Print("Waiting approval");
 
@@ -134,7 +134,7 @@ public partial class Wallet : Node
 
       GD.Print("Approved");
 
-      CallDeferred("emit_signal", "WalletConnected");
+      EmitSignal(SignalName.WalletConnected);
     }
     catch (Exception e)
     {

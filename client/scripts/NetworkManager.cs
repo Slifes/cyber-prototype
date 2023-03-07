@@ -22,6 +22,10 @@ partial class NetworkManager : Node3D
 
   PacketManager packetManager;
 
+  public ulong FirstPickTick { get; set; }
+
+  public ulong ServerTickSent { get; set; }
+
   public ulong ServerTick { get; set; }
 
   public override void _Ready()
@@ -106,6 +110,6 @@ partial class NetworkManager : Node3D
       PacketLossText.Text = string.Format("Loss: {0}", serverPeer.GetStatistic(ENetPacketPeer.PeerStatistic.PacketLoss));
     }
 
-    ServerTick += ServerTick - Time.GetTicksMsec();
+    ServerTick = ServerTickSent + (Time.GetTicksMsec() - FirstPickTick);
   }
 }

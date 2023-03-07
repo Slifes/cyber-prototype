@@ -7,7 +7,7 @@ signal compiled_resource(resource: Resource)
 
 const DialogueParser = preload("res://addons/dialogue_manager/components/parser.gd")
 const DialogueResource = preload("res://addons/dialogue_manager/dialogue_resource.gd")
-const compiler_version = 4
+const compiler_version = 5
 
 
 var editor_plugin
@@ -58,11 +58,11 @@ func _get_option_visibility(path: String, option_name: StringName, options: Dict
 	return true
 
 
-func _import(source_file: String, save_path: String, options: Dictionary, platform_variants: Array, gen_files: Array) -> int:
+func _import(source_file: String, save_path: String, options: Dictionary, platform_variants: Array[String], gen_files: Array[String]) -> Error:
 	return compile_file(source_file, "%s.%s" % [save_path, _get_save_extension()])
 
 
-func compile_file(path: String, resource_path: String, will_cascade_cache_data: bool = true) -> int:
+func compile_file(path: String, resource_path: String, will_cascade_cache_data: bool = true) -> Error:
 	# Get the raw file contents
 	if not FileAccess.file_exists(path): return ERR_FILE_NOT_FOUND
 	
@@ -71,7 +71,7 @@ func compile_file(path: String, resource_path: String, will_cascade_cache_data: 
 	
 	# Parse the text
 	var parser: DialogueParser = DialogueParser.new()
-	var err: int = parser.parse(raw_text)
+	var err: Error = parser.parse(raw_text)
 	var data: Dictionary = parser.get_data()
 	var errors: Array[Dictionary] = parser.get_errors()
 	parser.free()

@@ -9,12 +9,6 @@ partial class ZoneActor : CharacterBody3D, IActorZone
   [Signal]
   public delegate void ExecuteSkillEventHandler(int skillId, Variant data);
 
-  [Signal]
-  public delegate void MoveStartedEventHandler(Vector3 position, Vector3 dir, float speed);
-
-  [Signal]
-  public delegate void MoveStoppedEventHandler(Vector3 position);
-
   Ghosting ghosting;
 
   SkillHandler skillHandler;
@@ -31,17 +25,22 @@ partial class ZoneActor : CharacterBody3D, IActorZone
     return System.Int32.Parse(Name);
   }
 
-  public ActorType GetActorType()
+  public virtual ActorType GetActorType()
   {
     return ActorType.Player;
   }
 
   public Vector3 GetActorPosition()
   {
-    throw new System.NotImplementedException();
+    return Position;
   }
 
-  public Variant GetData()
+  public virtual void TakeDamage(int value)
+  {
+    Zone.SendActorDamage(this.GetActorID(), (int)this.GetActorType(), value);
+  }
+
+  public virtual Variant GetData()
   {
     return new Array<Variant>()
     {

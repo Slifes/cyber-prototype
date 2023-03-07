@@ -1,0 +1,14 @@
+[remap]
+
+importer="dialogue_manager_compiler_5"
+type="Resource"
+uid="uid://bl7f84lvaxlv6"
+path="res://.godot/imported/aron.dialogue-544487da9d2fdef2d52d968ac3d418ec.tres"
+
+[deps]
+
+source_file="res://dialogue/aron.dialogue"
+dest_files=["res://.godot/imported/aron.dialogue-544487da9d2fdef2d52d968ac3d418ec.tres"]
+
+[params]
+

@@ -17,9 +17,6 @@ public partial class Networking : Node3D
   public override void _Ready()
   {
     packetManager = new PacketManager();
-
-    SkillManager.CreateInstance("skills");
-    SkillManager.Instance.Load();
   }
 
   public override void _EnterTree()
@@ -51,6 +48,8 @@ public partial class Networking : Node3D
   void _PeerDisconnected(long id)
   {
     GD.Print("Disconnected: ", id);
+
+    PlayerSpawner.Instance.Despawn(id);
   }
 
   void OnPacketReceived(long id, byte[] data)
@@ -58,16 +57,33 @@ public partial class Networking : Node3D
     packetManager.OnPacketHandler(id, data);
   }
 
+  byte[] Serialize(Packets.Server.IServerCommand cmd)
+  {
+    return MessagePackSerializer.Serialize<Packets.Server.IServerCommand>(cmd);
+  }
+
   public void SendPacket(long id, Packets.Server.IServerCommand cmd)
   {
-    var pck = MessagePackSerializer.Serialize<Packets.Server.IServerCommand>(cmd);
+    var pck = Serialize(cmd);
 
     sceneMultiplayer.SendBytes(pck, (int)id);
   }
 
   public void SendPacketToMany(List<int> peers, Packets.Server.IServerCommand cmd)
   {
-    var pck = MessagePackSerializer.Serialize<Packets.Server.IServerCommand>(cmd);
+    var pck = Serialize(cmd);
+
+    foreach (int peerId in peers)
+    {
+      sceneMultiplayer.SendBytes(pck, peerId);
+    }
+  }
+
+  public void SendPacketToMany(int peer, List<int> peers, Packets.Server.IServerCommand cmd)
+  {
+    var pck = Serialize(cmd);
+
+    sceneMultiplayer.SendBytes(pck, peer);
 
     foreach (int peerId in peers)
     {

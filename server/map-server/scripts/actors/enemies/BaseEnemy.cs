@@ -8,11 +8,13 @@ partial class BaseEnemy : BaseNPC
 
   private Behavior behavior;
 
+  private ActorState state;
+
   public override void _Ready()
   {
-    onActorReady();
-
     behavior = new AgressiveBehavior(this);
+
+    state = ActorState.Idle;
   }
 
   public override void _PhysicsProcess(double delta)
@@ -25,26 +27,23 @@ partial class BaseEnemy : BaseNPC
     var data = new Godot.Collections.Array<Variant>()
     {
       ID,
-	  // currentHP,
-	  // currentSP,
-	  // maxHP,
-	  // maxSP,
-	  // (int)state,
-	  behavior.GetData(),
+      currentHP,
+      maxHP,
+    (int)state,
+      behavior.GetData(),
     };
 
     return data;
   }
 
-  // public override void TakeDamage(int damage)
-  // {
-  // base.TakeDamage(damage);
+  public override void TakeDamage(int damage)
+  {
+    base.TakeDamage(damage);
 
-  // if (currentHP <= 0)
-  // {
-  //   // this.ChangeState(AIState.Died);
-  // }
+    if (currentHP <= 0)
+    {
+      // this.ChangeState(AIState.Died);
+    }
 
-  // //ServerBridge.Instance.SendActorTookDamage(ghosting.NearestPlayers, this, damage);
-  // }
+  }
 }

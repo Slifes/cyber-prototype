@@ -1,72 +1,45 @@
 ﻿using Godot;
 
-partial class BaseNPC : CharacterBody3D, IActorZone
+partial class BaseNPC : ZoneActor
 {
   [Export]
   public int ID;
 
-  int _actorId;
+  protected int currentHP = 100;
 
-  int currentHP = 100;
+  protected int maxHP = 100;
 
-  public int GetActorID()
-  {
-    return _actorId;
-  }
-
-  public ActorType GetActorType()
+  public override ActorType GetActorType()
   {
     return ActorType.Npc;
   }
 
-  public Vector3 GetActorPosition() { return Vector3.Zero; }
-
   public int GetCurrentHP()
   {
-    return 100;
+    return currentHP;
   }
 
-  public int GetCurrentSP()
+  public int GetMaxHP()
   {
-    return 100;
+    return maxHP;
   }
 
-  public virtual Variant GetData()
+  public override Variant GetData()
   {
     var data = new Godot.Collections.Array<Variant>()
     {
       ID,
       currentHP,
-      100,
-      100,
-      100
+      maxHP,
     };
 
     return data;
   }
 
-  public int GetMaxHP()
-  {
-    return 100;
-  }
-
-  public int GetMaxSP()
-  {
-    return 100;
-  }
-
-  public void onActorReady()
-  {
-    _actorId = int.Parse(Name);
-  }
-
-  public void SetServerData(Variant data)
-  {
-
-  }
-
-  public void TakeDamage(int damage)
+  public override void TakeDamage(int damage)
   {
     currentHP -= damage;
+
+    base.TakeDamage(damage);
   }
 }

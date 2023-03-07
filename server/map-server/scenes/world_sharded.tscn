@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://wfh0ioevi7rq"]
+[gd_scene load_steps=6 format=3 uid="uid://wfh0ioevi7rq"]
 
 [ext_resource type="Script" path="res://scripts/Networking.cs" id="1_r5x5j"]
-[ext_resource type="PackedScene" uid="uid://dfk1nxvyv37dx" path="res://zones/zone_01.tscn" id="3_5g7nc"]
 [ext_resource type="Script" path="res://scripts/spawner/PlayerSpawner.cs" id="3_a3rwj"]
+[ext_resource type="PackedScene" uid="uid://cqmd0a4qbloiq" path="res://zones/zone_client.tscn" id="3_e882b"]
 [ext_resource type="Script" path="res://scripts/shards/ShardArea.cs" id="4_tv7lc"]
-[ext_resource type="PackedScene" uid="uid://xhsexve6n8g6" path="res://zones/zone_02.tscn" id="5_ajxll"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gd514"]
 size = Vector3(22.6581, 4.33858, 23.9013)
@@ -12,15 +11,14 @@ size = Vector3(22.6581, 4.33858, 23.9013)
 [node name="World" type="Node3D"]
 script = ExtResource("1_r5x5j")
 
-[node name="Spawner" type="Node" parent="."]
-
-[node name="players" type="Node3D" parent="Spawner"]
+[node name="sessions" type="Node" parent="."]
 script = ExtResource("3_a3rwj")
 
 [node name="zone_01" type="Node" parent="."]
 
-[node name="zone_01" parent="zone_01" instance=ExtResource("3_5g7nc")]
-IsServer = false
+[node name="zone_01" parent="zone_01" instance=ExtResource("3_e882b")]
+Port = 3000
+Debug = true
 
 [node name="area_01" type="Area3D" parent="zone_01" node_paths=PackedStringArray("shard")]
 collision_layer = 0
@@ -33,8 +31,9 @@ shape = SubResource("BoxShape3D_gd514")
 
 [node name="zone_02" type="Node" parent="."]
 
-[node name="zone_02" parent="zone_02" instance=ExtResource("5_ajxll")]
-IsServer = false
+[node name="zone_02" parent="zone_02" instance=ExtResource("3_e882b")]
+Port = 3002
+Debug = true
 
 [node name="area_02" type="Area3D" parent="zone_02" node_paths=PackedStringArray("shard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.2691, 0.0441532, -0.123739)

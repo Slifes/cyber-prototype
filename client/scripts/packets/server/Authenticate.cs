@@ -30,6 +30,7 @@ namespace Packets.Server
   [MessagePackObject]
   public partial struct ServerTime : IServerCommand
   {
-    [Key(0)] public long Time;
+    [Key(0)] public ulong Time;
+    [Key(1)] public double ClientTime;
   }
 }

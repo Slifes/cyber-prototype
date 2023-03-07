@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Godot;
 
 partial class CharacterActor : CharacterBody3D, IActor
@@ -43,6 +44,11 @@ partial class CharacterActor : CharacterBody3D, IActor
   public override void _Ready()
   {
     onActorReady();
+
+    if (!IsMultiplayerAuthority())
+    {
+      interpolate = new();
+    }
   }
 
   public int GetActorId()
@@ -99,6 +105,11 @@ partial class CharacterActor : CharacterBody3D, IActor
     {
       component.Update((float)delta);
     }
+
+    if (!IsMultiplayerAuthority())
+    {
+      InterpolateMove((float)delta);
+    }
   }
 
   public IComponent GetComponent<T>()
@@ -112,5 +123,59 @@ partial class CharacterActor : CharacterBody3D, IActor
     }
 
     return null;
+  }
+
+  struct InterpolateMovement
+  {
+    public Vector3 Position;
+    public float Yaw;
+    public ulong Tick;
+    public bool Stop;
+  }
+
+  List<InterpolateMovement> interpolate;
+
+  void InterpolateMove(float delta)
+  {
+    var time = NetworkManager.Instance.ServerTick - 100;
+
+    if (interpolate.Count > 1)
+    {
+      while (interpolate.Count > 2 && time > interpolate[1].Tick)
+      {
+        interpolate.RemoveAt(0);
+      }
+
+      var factor = Mathf.Clamp((float)(time - interpolate[0].Tick) / (float)(interpolate[1].Tick - interpolate[0].Tick), 0, 1);
+
+      Position = interpolate[0].Position.Lerp(interpolate[1].Position, factor);
+      Rotation = new Vector3(0, Mathf.Lerp(interpolate[0].Yaw, interpolate[1].Yaw, factor), 0);
+    }
+
+  }
+
+  public void PushCommand(Packets.Server.IServerCommand command)
+  {
+    switch (command)
+    {
+      case Packets.Server.SMActorStartMove pck:
+        interpolate.Add(new InterpolateMovement
+        {
+          Position = new Vector3(pck.Position[0], pck.Position[1], pck.Position[2]),
+          Yaw = pck.Yaw,
+          Tick = pck.Tick,
+          Stop = false
+        });
+        break;
+      case Packets.Server.SMActorStopMove pck:
+        interpolate.Add(new InterpolateMovement
+        {
+          Position = new Vector3(pck.Position[0], pck.Position[1], pck.Position[2]),
+          Yaw = pck.Yaw,
+          Tick = pck.Tick,
+          Stop = true
+        });
+        break;
+    }
   }
 }

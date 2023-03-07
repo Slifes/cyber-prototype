@@ -1,18 +1,22 @@
 @tool
 extends Button
 
+const DialogueConstants = preload("res://addons/dialogue_manager/constants.gd")
 
-const REMOTE_CONFIG_URL = "https://raw.githubusercontent.com/nathanhoad/godot_dialogue_manager/main/addons/dialogue_manager/plugin.cfg"
+const REMOTE_RELEASES_URL = "https://github.com/nathanhoad/godot_dialogue_manager/releases/latest"
 const LOCAL_CONFIG_PATH = "res://addons/dialogue_manager/plugin.cfg"
 
 
 @onready var http_request: HTTPRequest = $HTTPRequest
 @onready var download_dialog: AcceptDialog = $DownloadDialog
 @onready var download_update_panel = $DownloadDialog/DownloadUpdatePanel
+@onready var needs_reload_dialog: AcceptDialog = $NeedsReloadDialog
 @onready var update_failed_dialog: AcceptDialog = $UpdateFailedDialog
 
 # The main editor plugin
 var editor_plugin: EditorPlugin
+
+var needs_reload: bool = false
 
 # A lambda that gets called just before refreshing the plugin. Return false to stop the reload.
 var on_before_refresh: Callable = func(): return true
@@ -23,7 +27,7 @@ func _ready() -> void:
 	apply_theme()
 	
 	# Check for updates on GitHub
-	http_request.request(REMOTE_CONFIG_URL)
+	http_request.request(REMOTE_RELEASES_URL)
 
 
 # Get the current version
@@ -40,8 +44,18 @@ func version_to_number(version: String) -> int:
 
 
 func apply_theme() -> void:
-	add_theme_color_override("font_color", get_theme_color("success_color", "Editor"))
-	add_theme_color_override("font_hover_color", get_theme_color("success_color", "Editor"))
+	var color: Color = get_theme_color("success_color", "Editor")
+	
+	if needs_reload:
+		color = get_theme_color("error_color", "Editor")
+		icon = get_theme_icon("Reload", "EditorIcons")
+		add_theme_color_override("icon_normal_color", color)
+		add_theme_color_override("icon_focus_color", color)
+		add_theme_color_override("icon_hover_color", color)
+	
+	add_theme_color_override("font_color", color)
+	add_theme_color_override("font_focus_color", color)
+	add_theme_color_override("font_hover_color", color)
 
 
 ### Signals
@@ -52,8 +66,7 @@ func _on_http_request_request_completed(result: int, response_code: int, headers
 	
 	# Parse the version number from the remote config file
 	var response = body.get_string_from_utf8()
-	var regex = RegEx.new()
-	regex.compile("version=\"(?<version>\\d+\\.\\d+\\.\\d+)\"")
+	var regex = RegEx.create_from_string("/nathanhoad/godot_dialogue_manager/releases/tag/v(?<version>\\d+\\.\\d+\\.\\d+)")
 	var found = regex.search(response)
 	
 	if not found: return
@@ -62,14 +75,19 @@ func _on_http_request_request_completed(result: int, response_code: int, headers
 	var next_version = found.strings[found.names.get("version")]
 	if version_to_number(next_version) > version_to_number(current_version):
 		download_update_panel.next_version = next_version
-		text = "v%s available" % next_version
+		text = DialogueConstants.translate("update.available").format({ version = next_version })
 		show()
 
 
 func _on_update_button_pressed() -> void:
-	var scale: float = editor_plugin.get_editor_interface().get_editor_scale()
-	download_dialog.min_size = Vector2(300, 250) * scale
-	download_dialog.popup_centered()
+	if needs_reload:
+		var will_refresh = on_before_refresh.call()
+		if will_refresh:
+			editor_plugin.get_editor_interface().restart_editor(true)
+	else:
+		var scale: float = editor_plugin.get_editor_interface().get_editor_scale()
+		download_dialog.min_size = Vector2(300, 250) * scale
+		download_dialog.popup_centered()
 
 
 func _on_download_dialog_close_requested() -> void:
@@ -79,16 +97,21 @@ func _on_download_dialog_close_requested() -> void:
 func _on_download_update_panel_updated(updated_to_version: String) -> void:
 	download_dialog.hide()
 	
-	editor_plugin.get_editor_interface().get_resource_filesystem().scan()
+	needs_reload_dialog.dialog_text = DialogueConstants.translate("update.needs_reload")
+	needs_reload_dialog.ok_button_text = DialogueConstants.translate("update.reload_ok_button")
+	needs_reload_dialog.cancel_button_text = DialogueConstants.translate("update.reload_cancel_button")
+	needs_reload_dialog.popup_centered()
 	
-	var will_refresh = on_before_refresh.call()
-	if will_refresh:
-		print_rich("\n[b]Updated Dialogue Manager to v%s[/b]\n" % updated_to_version)
-		editor_plugin.get_editor_interface().call_deferred("set_plugin_enabled", "dialogue_manager", true)
-		editor_plugin.get_editor_interface().set_plugin_enabled("dialogue_manager", false)
+	needs_reload = true
+	text = DialogueConstants.translate("update.reload_project")
+	apply_theme()
 
 
 func _on_download_update_panel_failed() -> void:
 	download_dialog.hide()
-	update_failed_dialog.dialog_text = "There was a problem downloading the update."
+	update_failed_dialog.dialog_text = DialogueConstants.translate("update.failed")
 	update_failed_dialog.popup_centered()
+
+
+func _on_needs_reload_dialog_confirmed() -> void:
+	editor_plugin.get_editor_interface().restart_editor(true)

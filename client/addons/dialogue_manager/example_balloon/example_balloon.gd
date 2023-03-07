@@ -1,11 +1,13 @@
 extends CanvasLayer
 
-@onready var balloon: ColorRect = $VBoxContainer/Balloon
-@onready var margin: MarginContainer = $VBoxContainer/Balloon/Margin
-@onready var character_label: RichTextLabel = $VBoxContainer/Balloon/Margin/VBox/CharacterLabel
-@onready var dialogue_label := $VBoxContainer/Balloon/Margin/VBox/DialogueLabel
-@onready var responses_menu: VBoxContainer = $VBoxContainer/Responses/Responses
-@onready var response_template: RichTextLabel = $VBoxContainer/Responses/ResponseTemplate
+
+@onready var balloon: ColorRect = $Balloon
+@onready var margin: MarginContainer = $Balloon/Margin
+@onready var character_label: RichTextLabel = $Balloon/Margin/VBox/CharacterLabel
+@onready var dialogue_label := $Balloon/Margin/VBox/DialogueLabel
+@onready var responses_menu: VBoxContainer = $Balloon/Margin/VBox/Responses
+@onready var response_template: RichTextLabel = %ResponseTemplate
+
 ## The dialogue resource
 var resource: DialogueResource
 
@@ -14,6 +16,9 @@ var temporary_game_states: Array = []
 
 ## See if we are waiting for the player
 var is_waiting_for_input: bool = false
+
+## See if we are running a long mutation and should hide the balloon
+var will_hide_balloon: bool = false
 
 ## The current line
 var dialogue_line: DialogueLine:
@@ -34,9 +39,8 @@ var dialogue_line: DialogueLine:
 		character_label.text = dialogue_line.character
 		
 		dialogue_label.modulate.a = 0
-		dialogue_label.size.x = dialogue_label.get_parent().size.x - 1
+		dialogue_label.custom_minimum_size.x = dialogue_label.get_parent().size.x - 1
 		dialogue_label.dialogue_line = dialogue_line
-		await dialogue_label.reset_height()
 
 		# Show any responses we have
 		responses_menu.modulate.a = 0
@@ -53,7 +57,8 @@ var dialogue_line: DialogueLine:
 				responses_menu.add_child(item)
 		
 		# Show our balloon
-		balloon.visible = true
+		balloon.show()
+		will_hide_balloon = false
 		
 		dialogue_label.modulate.a = 1
 		if not dialogue_line.text.is_empty():
@@ -79,22 +84,28 @@ var dialogue_line: DialogueLine:
 func _ready() -> void:
 	response_template.hide()
 	balloon.hide()
-	# balloon.custom_minimum_size.x = balloon.get_viewport_rect().size.x
+	balloon.custom_minimum_size.x = balloon.get_viewport_rect().size.x
 	
-	DialogueManager.mutation.connect(_on_mutation)
+	Engine.get_singleton("DialogueManager").mutation.connect(_on_mutation)
+
+
+func _unhandled_input(_event: InputEvent) -> void:
+	# Only the balloon is allowed to handle input while it's showing
+	get_viewport().set_input_as_handled()
 
 
 ## Start some dialogue
-func start(dialogue_resource: Resource, title: String, extra_game_states: Array = []) -> void:
+func start(dialogue_resource: DialogueResource, title: String, extra_game_states: Array = []) -> void:
 	temporary_game_states = extra_game_states
 	is_waiting_for_input = false
 	resource = dialogue_resource
-	self.dialogue_line = await DialogueManager.get_next_dialogue_line(resource, title, temporary_game_states)
+	
+	self.dialogue_line = await resource.get_next_dialogue_line(title, temporary_game_states)
 
 
 ## Go to the next line
 func next(next_id: String) -> void:
-	self.dialogue_line = await DialogueManager.get_next_dialogue_line(resource, next_id, temporary_game_states)
+	self.dialogue_line = await resource.get_next_dialogue_line(next_id, temporary_game_states)
 
 
 ### Helpers
@@ -148,11 +159,11 @@ func handle_resize() -> void:
 		call_deferred("handle_resize")
 		return
 		
-	# balloon.custom_minimum_size.y = margin.size.y
+	balloon.custom_minimum_size.y = margin.size.y
 	# Force a resize on only the height
-	#balloon.size.y = 0
-	#var viewport_size = balloon.get_viewport_rect().size
-	#balloon.global_position = Vector2((viewport_size.x - balloon.size.x) * 0.5, viewport_size.y - balloon.size.y)
+	balloon.size.y = 0
+	var viewport_size = balloon.get_viewport_rect().size
+	balloon.global_position = Vector2((viewport_size.x - balloon.size.x) * 0.5, viewport_size.y - balloon.size.y)
 
 
 ### Signals
@@ -160,7 +171,12 @@ func handle_resize() -> void:
 
 func _on_mutation() -> void:
 	is_waiting_for_input = false
-	balloon.hide()
+	will_hide_balloon = true
+	get_tree().create_timer(0.1).timeout.connect(func():
+		if will_hide_balloon:
+			will_hide_balloon = false
+			balloon.hide()
+	)
 
 
 func _on_response_mouse_entered(item: Control) -> void:
