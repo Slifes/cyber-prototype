@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using MessagePack;
 using Packets.Client;
 
@@ -30,86 +30,86 @@ partial class NetworkManager : Node3D
 
   public override void _Ready()
   {
-	_instance = this;
+    _instance = this;
 
-	auth = GetNode<AuthClient>("../AuthClient");
-	LatencyText = GetNode<Label>("UI/Network/Ping");
-	PacketLossText = GetNode<Label>("UI/Network/Loss");
+    auth = GetNode<AuthClient>("../AuthClient");
+    LatencyText = GetNode<Label>("UI/Network/Ping");
+    PacketLossText = GetNode<Label>("UI/Network/Loss");
 
-	packetManager = new PacketManager();
+    packetManager = new PacketManager();
 
-	SkillManager.CreateInstance();
-	SkillManager.Instance.Load();
+    SkillManager.CreateInstance();
+    SkillManager.Instance.Load();
   }
 
   public override void _EnterTree()
   {
-	StartNetwork();
+    StartNetwork();
   }
 
   void StartNetwork()
   {
-	sceneMultiplayer = new SceneMultiplayer();
+    sceneMultiplayer = new SceneMultiplayer();
 
-	clientPeer = new ENetMultiplayerPeer();
+    clientPeer = new ENetMultiplayerPeer();
 
-	sceneMultiplayer.ConnectedToServer += ConnectedToServer;
-	sceneMultiplayer.ServerDisconnected += Disconnected;
-	sceneMultiplayer.PeerPacket += OnPeerPacket;
+    sceneMultiplayer.ConnectedToServer += ConnectedToServer;
+    sceneMultiplayer.ServerDisconnected += Disconnected;
+    sceneMultiplayer.PeerPacket += OnPeerPacket;
 
-	clientPeer.CreateClient("127.0.0.1", 4242);
+    clientPeer.CreateClient("127.0.0.1", 4242);
 
-	sceneMultiplayer.MultiplayerPeer = clientPeer;
+    sceneMultiplayer.MultiplayerPeer = clientPeer;
 
-	GetTree().SetMultiplayer(sceneMultiplayer);
+    GetTree().SetMultiplayer(sceneMultiplayer);
   }
 
   void ConnectedToServer()
   {
-	serverPeer = clientPeer.GetPeer(1);
+    serverPeer = clientPeer.GetPeer(1);
 
-	var authToken = "pGmmzfP3tYZybrYbFLr6SVJKVA4";
+    var authToken = "pGmmzfP3tYZybrYbFLr6SVJKVA4";
 
-	GD.Print("Sending session token: ", authToken);
+    GD.Print("Sending session token: ", authToken);
 
-	SyncServerTime();
+    SyncServerTime();
 
-	SendPacket(new EnterSessionMap { AuthToken = authToken });
+    SendPacket(new EnterSessionMap { AuthToken = authToken });
   }
 
   void Disconnected()
   {
-	GetTree().Quit();
+    GetTree().Quit();
   }
 
   void OnPeerPacket(long id, byte[] data)
   {
-	packetManager.OnPacketHandler(id, data);
+    packetManager.OnPacketHandler(id, data);
   }
 
   void SyncServerTime()
   {
-	var now = Time.GetUnixTimeFromSystem() * 1000.0f;
-	var pck = new FetchServerTime { ClientTime = now };
+    var now = Time.GetUnixTimeFromSystem() * 1000.0f;
+    var pck = new FetchServerTime { ClientTime = now };
 
-	SendPacket(pck);
+    SendPacket(pck);
   }
 
   public void SendPacket(IClientCommand command)
   {
-	var pck = MessagePackSerializer.Serialize<IClientCommand>(command);
+    var pck = MessagePackSerializer.Serialize<IClientCommand>(command);
 
-	sceneMultiplayer.SendBytes(pck, 1, mode: MultiplayerPeer.TransferModeEnum.Reliable);
+    sceneMultiplayer.SendBytes(pck, 1, mode: MultiplayerPeer.TransferModeEnum.Reliable);
   }
 
   public override void _PhysicsProcess(double delta)
   {
-	if (serverPeer != null)
-	{
-	  LatencyText.Text = string.Format("Ping: {0}ms", serverPeer.GetStatistic(ENetPacketPeer.PeerStatistic.RoundTripTime));
-	  PacketLossText.Text = string.Format("Loss: {0}", serverPeer.GetStatistic(ENetPacketPeer.PeerStatistic.PacketLoss));
-	}
+    if (serverPeer != null)
+    {
+      LatencyText.Text = string.Format("Ping: {0}ms", serverPeer.GetStatistic(ENetPacketPeer.PeerStatistic.RoundTripTime));
+      PacketLossText.Text = string.Format("Loss: {0}", serverPeer.GetStatistic(ENetPacketPeer.PeerStatistic.PacketLoss));
+    }
 
-	ServerTick = ServerTickSent + (Time.GetTicksMsec() - FirstPickTick);
+    ServerTick = ServerTickSent + (Time.GetTicksMsec() - FirstPickTick);
   }
 }

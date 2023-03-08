@@ -41,13 +41,15 @@ offset_bottom = 200.0
 
 [node name="HealthStats" parent="." instance=ExtResource("1_t6i5m")]
 layout_mode = 1
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 325.0
-offset_bottom = 47.0
-grow_horizontal = 1
-grow_vertical = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+offset_left = -154.0
+offset_top = -109.0
+offset_right = 163.0
+offset_bottom = -62.0
+grow_vertical = 0
 mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]

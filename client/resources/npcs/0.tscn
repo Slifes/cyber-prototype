@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://rn3qdpj7h4pf"]
+[gd_scene load_steps=10 format=3 uid="uid://rn3qdpj7h4pf"]
 
 [ext_resource type="Script" path="res://scripts/actors/npcs/BaseEnemy.cs" id="1_3nq8s"]
 [ext_resource type="PackedScene" uid="uid://crlc10pg7xm6k" path="res://meshes/kirt/kirt.tscn" id="2_lw2jo"]
@@ -15,9 +15,12 @@ _data = {
 "Walking": ExtResource("3_1mcw7")
 }
 
+[sub_resource type="Animation" id="Animation_d77ii"]
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_a877w"]
 _data = {
-"0": ExtResource("5_5bxa4")
+"0": ExtResource("5_5bxa4"),
+"1": SubResource("Animation_d77ii")
 }
 
 [node name="ID" type="CharacterBody3D"]
