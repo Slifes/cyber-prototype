@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://wg0i8s2cmvy"]
+[gd_scene load_steps=7 format=3 uid="uid://wg0i8s2cmvy"]
 
 [ext_resource type="Script" path="res://scripts/actors/enemies/BaseEnemy.cs" id="1_eg6ml"]
 [ext_resource type="Resource" uid="uid://cnigfbnwlkp0n" path="res://resources/skills/normal_attack.tres" id="2_74ylq"]
+[ext_resource type="Resource" uid="uid://bustiw36y71tb" path="res://resources/skills/projectile.tres" id="3_rrbi8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3788e"]
 size = Vector3(0.2, 0.2, 0.2)
@@ -20,16 +21,10 @@ input_ray_pickable = false
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1_eg6ml")
-skills = Array[Resource]([ExtResource("2_74ylq")])
+skills = Array[Resource]([ExtResource("2_74ylq"), ExtResource("3_rrbi8")])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_3788e")
-
-[node name="BasedContextSteering" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
-visible = false
-enabled = false
-target_position = Vector3(0, 0, 0.6)
 
 [node name="AgressiveArea" type="Area3D" parent="."]
 collision_layer = 0
