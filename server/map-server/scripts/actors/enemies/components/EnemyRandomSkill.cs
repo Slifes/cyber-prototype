@@ -11,7 +11,10 @@ class EnemyRandomSkill
 
   public void Execute()
   {
-    var i = Mathf.Abs(GD.RandRange(0, actor.skills.Count - 1));
+    var skill = actor.skills[Mathf.Abs(GD.RandRange(0, actor.skills.Count - 1))];
 
+    GD.Print("Execute Random Skill: ", skill.ID);
+
+    actor.EmitSignal(ZoneActor.SignalName.ExecuteSkill, skill.ID, new Variant());
   }
 }

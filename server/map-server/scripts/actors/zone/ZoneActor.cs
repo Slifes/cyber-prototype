@@ -11,13 +11,15 @@ partial class ZoneActor : CharacterBody3D, IActorZone
 
   Ghosting ghosting;
 
-  SkillHandler skillHandler;
+  protected SkillHandler skillHandler;
 
   public override void _Ready()
   {
     ghosting = new Ghosting(this);
 
     skillHandler = new SkillHandler(this);
+
+    GD.Print("Actor SKill: ", GetActorType());
   }
 
   public int GetActorID()

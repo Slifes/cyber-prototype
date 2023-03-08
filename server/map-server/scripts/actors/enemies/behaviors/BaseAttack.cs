@@ -12,9 +12,13 @@ class BaseAttack : IBehavior
 
   private Area3D AttackArea;
 
+  private EnemyRandomSkill randomSkill;
+
   public BaseAttack(Behavior actor)
   {
     this.behavior = actor;
+
+    this.randomSkill = new EnemyRandomSkill(actor.Actor);
 
     AttackArea = actor.Actor.GetNode<Area3D>("AttackArea");
   }
@@ -28,7 +32,8 @@ class BaseAttack : IBehavior
   {
     if (time >= targetTime)
     {
-      // behavior.Actor.EmitSignal(ZoneActor.SignalName.ExecuteSkill, )
+      randomSkill.Execute();
+
       time = 0;
     }
     else

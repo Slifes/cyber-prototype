@@ -15,6 +15,15 @@ run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.1", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[debug]
+
+settings/stdout/print_fps=true
+
+[display]
+
+window/size/resizable=false
+window/vsync/vsync_mode=0
+
 [dotnet]
 
 project/assembly_name="GameServer"
@@ -32,6 +41,10 @@ attack={
 3d_physics/layer_1="World"
 3d_physics/layer_2="Player"
 3d_physics/layer_10="AreaMob"
+
+[network]
+
+limits/debugger/max_queued_messages=4096
 
 [physics]
 

@@ -5,6 +5,9 @@ partial class EnemySpawner : Node3D
   [Export]
   public PackedScene Mob;
 
+  [Export]
+  public int MobCount;
+
   public override void _Ready()
   {
     if (!Multiplayer.IsServer()) return;
@@ -22,7 +25,7 @@ partial class EnemySpawner : Node3D
   {
     GD.Print("Spawn COunt: ", GetChildCount());
 
-    if (GetChildCount() != 1000)
+    if (GetChildCount() < MobCount)
     {
       var mob = Mob.Instantiate<Node3D>();
 

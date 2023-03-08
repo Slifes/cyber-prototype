@@ -27,6 +27,7 @@ actorScene = ExtResource("4_f7ti5")
 [node name="mobs" type="Node3D" parent="zone"]
 script = ExtResource("6_a2xos")
 Mob = ExtResource("7_21f8w")
+MobCount = 20
 
 [node name="skills" type="Node3D" parent="zone"]
 script = ExtResource("6_gp58d")

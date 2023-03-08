@@ -115,12 +115,10 @@ partial class Zone
     {
       actor.EmitSignal(ZoneActor.SignalName.ExecuteSkill, skillId, data);
     }
-
-    Rpc("ExecuteSkill", actorId, skillId, data);
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ExecuteSkill(int actorId, int skillId, Variant data)
+  public void ExecuteSkill(int actorId, int actorType, int skillId, Variant data)
   {
     var peers = GetPlayerNearest(actorId);
 
@@ -128,7 +126,7 @@ partial class Zone
     {
       SkillId = skillId,
       ActorId = actorId,
-      ActorType = (int)ActorType.Player
+      ActorType = actorType
     });
   }
 

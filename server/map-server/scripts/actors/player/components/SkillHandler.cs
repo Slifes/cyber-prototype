@@ -7,6 +7,8 @@ class SkillHandler
 
   Array<Skill> skills;
 
+  public Array<Skill> Skills { get { return skills; } }
+
   public SkillHandler(ZoneActor actor)
   {
     skills = new();
@@ -15,13 +17,13 @@ class SkillHandler
 
     actor.SkillList += LoadSkillList;
     actor.ExecuteSkill += ExecuteSkill;
-
-    LoadSkill(new Array<int>() { 0, 1 });
   }
 
   void LoadSkillList(Array<int> skillsId)
   {
     LoadSkill(skillsId);
+
+    GD.Print("Load SKill: ", skillsId);
   }
 
   public void LoadSkill(Array<int> dbSkills)
@@ -43,6 +45,7 @@ class SkillHandler
 
     if (skill.Type == SkillType.Active)
     {
+      GD.Print("Executed Skill");
       var instance = skill.Scene.Instantiate<Node3D>();
 
       instance.Rotation = actor.Rotation;
@@ -50,6 +53,8 @@ class SkillHandler
       SkillNode.Spawn((AreaSkillBase)instance);
 
       instance.CallDeferred("set_global_position", actor.GlobalPosition);
+
+      Zone.Instance.Rpc("ExecuteSkill", actor.GetActorID(), (int)actor.GetActorType(), id, data);
     }
   }
 }

@@ -10,15 +10,23 @@ partial class BaseEnemy : BaseNPC
 
   private ActorState state;
 
-  Ghosting ghosting;
-
   public override void _Ready()
   {
+
+    base._Ready();
+
     behavior = new AgressiveBehavior(this);
 
     state = ActorState.Idle;
 
-    ghosting = new Ghosting(this);
+    Array<int> ids = new();
+
+    foreach (var id in skills)
+    {
+      ids.Add(id.ID);
+    }
+
+    EmitSignal(ZoneActor.SignalName.SkillList, ids);
   }
 
   public override void _PhysicsProcess(double delta)
@@ -33,8 +41,6 @@ partial class BaseEnemy : BaseNPC
       ID,
       currentHP,
       maxHP,
-    (int)state,
-      behavior.GetData(),
     };
 
     return data;
