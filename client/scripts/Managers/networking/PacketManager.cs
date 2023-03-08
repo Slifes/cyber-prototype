@@ -33,6 +33,7 @@ partial class PacketManager
     catch (Exception e)
     {
       GD.Print(string.Format("Packet Unknow: {0}", e.Message));
+      GD.Print(e.StackTrace);
     }
   }
 }
