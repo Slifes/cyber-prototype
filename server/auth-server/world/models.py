@@ -21,3 +21,47 @@ class Character(models.Model):
     class Meta:
         verbose_name = "Character"
         verbose_name_plural = "Characteres"
+
+
+class Inventory(models.Model):
+
+    character = models.ForeignKey(
+        Character,
+        on_delete=models.CASCADE
+    )
+
+    itemId = models.PositiveIntegerField(
+        verbose_name="Item Name"
+    )
+
+    amount = models.PositiveIntegerField(
+        verbose_name="Amount"
+    )
+
+    source = models.CharField(
+        verbose_name="Source",
+        max_length=32
+    )
+
+    class Meta:
+        verbose_name = "Inventory"
+
+
+class Equipment(models.Model):
+
+    character = models.ForeignKey(
+        Character,
+        on_delete=models.CASCADE
+    )
+
+    item_id = models.PositiveIntegerField(
+        verbose_name="Item ID"
+    )
+
+    item_slot = models.PositiveSmallIntegerField(
+        verbose_name="Slot"
+    )
+
+    class Meta:
+        verbose_name = "Equipment"
+        unique_together = (('character', 'item_slot'), )
