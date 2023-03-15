@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://cgac7wisaj32f"]
+
+[ext_resource type="Script" path="res://scripts/resources/items/Equipment.cs" id="1_a28r6"]
+[ext_resource type="Resource" uid="uid://ccngc8v67v10k" path="res://resources/attributes/10_melee.tres" id="1_y52n0"]
+
+[resource]
+script = ExtResource("1_a28r6")
+Slot = 2
+Attributes = Array[Resource]([ExtResource("1_y52n0")])
+Name = "Weapon"
+Type = 2
+ID = 2

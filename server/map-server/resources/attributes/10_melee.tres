@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://ccngc8v67v10k"]
+
+[ext_resource type="Script" path="res://scripts/resources/items/Attribute.cs" id="1_h1c13"]
+
+[resource]
+script = ExtResource("1_h1c13")
+Type = 0
+Value = 10

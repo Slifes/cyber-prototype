@@ -26,9 +26,6 @@ partial class Zone : BaseShard
     if (GetParent<ShardConnect>().IsServer)
     {
       _instance = this;
-
-      SkillManager.CreateInstance("skills");
-      SkillManager.Instance.Load();
     }
   }
 

@@ -7,10 +7,4 @@ partial class Item : Base
 
   [Export]
   public ItemType Type;
-
-  [Export]
-  public EquipmentSlot EquipSlot;
-
-  [Export]
-  public int SkillId;
 }

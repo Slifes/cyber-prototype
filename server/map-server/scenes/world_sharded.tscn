@@ -18,6 +18,7 @@ script = ExtResource("3_a3rwj")
 
 [node name="zone_01" parent="zone_01" instance=ExtResource("3_e882b")]
 Port = 3000
+Debug = true
 
 [node name="area_01" type="Area3D" parent="zone_01" node_paths=PackedStringArray("shard")]
 collision_layer = 0

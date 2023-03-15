@@ -14,7 +14,7 @@
     return value >= requested;
   }
 
-  public void Transfer(int amount)
+  public void Transfer(int amount, IActorZone target)
   {
     value -= amount;
   }

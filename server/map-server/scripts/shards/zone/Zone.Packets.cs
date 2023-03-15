@@ -122,7 +122,7 @@ partial class Zone
   {
     var peers = GetPlayerNearest(actorId);
 
-    Networking.Instance.SendPacketToMany(actorId, peers, new Packets.Server.SMExecuteSkill
+    Networking.Instance.SendPacketToMany(actorId, peers, new Packets.Server.SMActorExecuteSkill
     {
       SkillId = skillId,
       ActorId = actorId,

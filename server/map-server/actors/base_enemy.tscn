@@ -46,7 +46,8 @@ shape = SubResource("CylinderShape3D_0p85v")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 avoidance_enabled = true
-radius = 0.2
+radius = 0.3
 neighbor_distance = 2.0
 max_neighbors = 20
+max_speed = 8.0
 debug_enabled = true

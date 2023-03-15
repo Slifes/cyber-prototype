@@ -9,10 +9,10 @@ partial class Skill : Base
   public int Level;
 
   [Export]
-  public int MinDamage;
+  public int MinValue;
 
   [Export]
-  public int MaxDamage;
+  public int MaxValue;
 
   [Export]
   public SkillType Type;

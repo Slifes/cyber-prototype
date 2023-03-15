@@ -10,12 +10,15 @@ partial class BaseEnemy : BaseNPC
 
   private ActorState state;
 
+  private Ghosting ghosting;
+
   public override void _Ready()
   {
-
     base._Ready();
 
     behavior = new AgressiveBehavior(this);
+
+    ghosting = new Ghosting(this);
 
     state = ActorState.Idle;
 

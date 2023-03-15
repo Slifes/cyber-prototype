@@ -20,7 +20,7 @@ namespace Packets.Server
   }
 
   [MessagePackObject]
-  public partial struct SMExecuteSkill : IServerCommand
+  public partial struct SMActorExecuteSkill : IServerCommand
   {
     [Key(0)] public int ActorId;
     [Key(1)] public int ActorType;
@@ -51,5 +51,14 @@ namespace Packets.Server
     [Key(0)] public int ActorId;
     [Key(1)] public int ActorType;
     [Key(2)] public int Damage;
+    [Key(3)] public int CurrentHP;
+  }
+
+  [MessagePackObject]
+  public partial struct SMActorState : IServerCommand
+  {
+    [Key(0)] public int ActorId;
+    [Key(1)] public int ActorType;
+    [Key(2)] public int State;
   }
 }

@@ -1,12 +1,23 @@
 ﻿using Godot;
+using Godot.Collections;
 
 partial class PlayerZone : ZoneActor
 {
-  float gravity = ProjectSettings.GetSetting("physics/3d/default_gravity").AsSingle();
+  [Signal]
+  public delegate void StatisticStateEventHandler(Dictionary<int, int> data);
 
-  float testTimePhysics = 0;
+  Ghosting ghosting;
 
-  bool RunPhysics = true;
+  Statistic statistic;
+
+  public override void _Ready()
+  {
+    base._Ready();
+
+    ghosting = new Ghosting(this);
+
+    statistic = new Statistic(this);
+  }
 
   public override void _PhysicsProcess(double delta)
   {

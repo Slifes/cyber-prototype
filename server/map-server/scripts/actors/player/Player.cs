@@ -1,29 +1,19 @@
 ﻿using Godot;
 using System.Collections.Generic;
 
-
 partial class Player : SessionActor
 {
-  [Signal]
-  public delegate void EquipmentChangedEventHandler(Variant slot, Variant id);
-
-  [Signal]
-  public delegate void PickUpItemEventHandler(Variant itemId);
-
-  [Signal]
-  public delegate void MoneyValueChangedEventHandler(Variant value);
-
   Money money;
 
   Inventory inventory;
 
-  Equipment equipment;
+  ActorEquipment equipment;
 
   List<BaseShard> zones;
 
   public Inventory Inv { get { return inventory; } }
 
-  public Equipment Equip { get { return equipment; } }
+  public ActorEquipment Equip { get { return equipment; } }
 
   public Money Zeny { get { return money; } }
 
@@ -35,7 +25,7 @@ partial class Player : SessionActor
 
     money = new Money(this);
     inventory = new Inventory(this);
-    equipment = new Equipment(this);
+    equipment = new ActorEquipment(this);
 
     zones = new();
   }

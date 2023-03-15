@@ -6,22 +6,23 @@ partial class Seller : BaseNPC
   [Export]
   public Array<Item> items;
 
-  Array<Node> actorsTalking;
+  Array<Player> actorsTalking;
 
-  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  void ListItems(Array<int> item, Array<float> price) { }
-
-  [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  void ActionBuy(Variant item, Variant _amount)
+  void ActionBuy(int peerId, int itemId, int amount)
   {
-    var itemId = (int)item;
-    var amount = (int)_amount;
-
-    var peerId = Multiplayer.GetRemoteSenderId();
-
     var player = PlayerSpawner.Instance.GetNode<Player>(peerId.ToString());
+
+    var item = ItemManager.Instance.Get(itemId);
+
+    if (item != null)
+    {
+      // player.Zeny.Transfer(amount, this);
+      player.Inv.Add(itemId, amount);
+    }
   }
 
-  [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  void ActionSell(Variant item, Variant amount) { }
+  void ActionSell(Variant item, Variant amount)
+  {
+
+  }
 }

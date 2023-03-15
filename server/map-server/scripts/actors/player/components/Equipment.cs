@@ -1,29 +1,39 @@
 ﻿using Godot;
 using System.Collections.Generic;
 
-enum EquipmentSlot
+public enum EquipmentSlot
 {
   Head,
   RightHand,
   LeftHand,
 }
 
-class Equipment
+class ActorEquipment
 {
   Player actor;
 
   public Dictionary<EquipmentSlot, Item> slots;
 
-  public Equipment(Player actor)
+  public ActorEquipment(Player actor)
   {
+    slots = new();
 
+    this.actor = actor;
   }
 
-  public void ApplyEquipment(Variant itemId)
+  public void Apply(int itemId)
+  {
+    var item = ItemManager.Instance.Get(itemId);
+
+    if (item == null || item is not Equipment) return;
+
+    var equip = (Equipment)item;
+
+    actor.SendPacketToZone("StatisticChanged", equip.ID, equip.Attributes);
+  }
+
+  public void Remove(int itemId)
   {
 
-    // ServerBridge.Instance.UpdateEquipment(actor.GetActorId(), itemId);
-
-    actor.EmitSignal(Player.SignalName.EquipmentChanged, itemId);
   }
 }
