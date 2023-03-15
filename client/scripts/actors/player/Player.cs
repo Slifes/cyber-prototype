@@ -51,13 +51,13 @@ partial class Player : CharacterActor
     if (!IsMultiplayerAuthority())
     {
       SetProcessUnhandledInput(false);
-      return new IComponent[5]
+      return new IComponent[4]
       {
-        new SkillController(this, new List<int>() { 0, 1, 2 }),
-        new PredictMovement(this),
-        new MiniHPBar(this),
-        new ActorHover(this),
-        new DamageLabel(this)
+      new SkillController(this, new List<int>() { 0, 1, 2 }),
+	  //new PredictMovement(this),
+	  new MiniHPBar(this),
+      new ActorHover(this),
+      new DamageLabel(this)
       };
     }
     else

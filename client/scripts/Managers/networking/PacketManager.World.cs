@@ -14,7 +14,7 @@ partial class PacketManager
 
   void OnActorExecuteSkill(IServerCommand command)
   {
-    var pck = (SMExecuteSkill)command;
+    var pck = (SMActorExecuteSkill)command;
 
     var actor = Spawner.Instance.GetActor<CharacterActor>(pck.ActorId);
 

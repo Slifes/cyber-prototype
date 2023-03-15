@@ -12,10 +12,10 @@ partial class PacketManager
   {
     handlers = new()
     {
-      {typeof(ServerTime), OnServerTime},
+      {typeof(SMServerTime), OnServerTime},
       {typeof(SMActorEnteredZone), OnActorEnteredZone},
       {typeof(SMActorExitedZone), OnActorExitedZone},
-      {typeof(SMExecuteSkill), OnActorExecuteSkill},
+      {typeof(SMActorExecuteSkill), OnActorExecuteSkill},
       {typeof(SMActorStartMove), OnActorStartMove},
       {typeof(SMActorStopMove), OnActorStopMove},
       {typeof(SMActorDamage), OnActorTakeDamage}

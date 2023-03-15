@@ -1,0 +1,156 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm5cn7wwthnh3"]
+
+[ext_resource type="PackedScene" uid="uid://cqbj1c8en243h" path="res://ui/inventory/item_detail.tscn" id="1_5w5r5"]
+[ext_resource type="Script" path="res://scripts/ui/Window.cs" id="1_kk4kx"]
+
+[node name="inventory" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kk4kx")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="Consume" type="MarginContainer" parent="Panel/TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/TabContainer/Consume"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/TabContainer/Consume/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="BoxContainer" type="BoxContainer" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Panel" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel" instance=ExtResource("1_5w5r5")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Panel2" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel2" instance=ExtResource("1_5w5r5")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Panel3" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel3" instance=ExtResource("1_5w5r5")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Panel4" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel4" instance=ExtResource("1_5w5r5")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Panel5" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel5" instance=ExtResource("1_5w5r5")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Panel6" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel6" instance=ExtResource("1_5w5r5")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Panel7" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel7" instance=ExtResource("1_5w5r5")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Equipments" type="MarginContainer" parent="Panel/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/TabContainer/Equipments"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/TabContainer/Equipments/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12

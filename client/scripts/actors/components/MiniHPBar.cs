@@ -6,19 +6,17 @@ class MiniHPBar : IComponent
 
   ProgressBar hpBar;
 
-  Viewport view;
+  SubViewport view;
 
   Sprite3D HP;
 
   public MiniHPBar(CharacterActor actor)
   {
-    var node = healthScene.Instantiate();
-
-    actor.AddChild(node);
+    var node = actor.GetNode<Node3D>("Health");
 
     HP = node.GetNode<Sprite3D>("HP");
 
-    // view = node.GetNode<Viewport>("SubViewport");
+    view = node.GetNode<SubViewport>("SubViewport");
 
     hpBar = node.GetNode<ProgressBar>("SubViewport/ProgressBar");
 
@@ -26,7 +24,7 @@ class MiniHPBar : IComponent
     actor.TakeDamage += TakeDamage;
 
     // var texture = new ViewportTexture();
-    // texture.ViewportPath = "../SubViewport";
+    // texture.ViewportPath = HP.GetPathTo(view);
 
     // HP.Texture = texture;
   }

@@ -1,9 +1,19 @@
 ﻿using Godot;
 
+enum TalkType
+{
+  Talk,
+  Mechanic,
+  Shop
+}
+
 partial class Talk : BaseNPC
 {
   [Export]
   public Resource Dialogue;
+
+  [Export]
+  public TalkType Type;
 
   protected override IComponent[] CreateComponents()
   {

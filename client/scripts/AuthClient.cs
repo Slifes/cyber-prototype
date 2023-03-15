@@ -33,6 +33,8 @@ public partial class AuthClient : Node2D
 
   private string _authToken;
 
+  private string _sessionToken;
+
   private readonly System.Net.Http.HttpClient client = new();
 
   private SessionMapData _session;
@@ -46,6 +48,11 @@ public partial class AuthClient : Node2D
   public string SessionToken()
   {
     return Session.auth_token;
+  }
+
+  public string GetAuthSessionToken()
+  {
+    return _sessionToken;
   }
 
   public async Task<bool> Connect(string address, string signature)
@@ -96,6 +103,8 @@ public partial class AuthClient : Node2D
     _session = await sendSessionRequest(characterId);
 
     target.CallDeferred("emit_signal", "_session_map_created", _session.auth_token);
+
+    _sessionToken = _session.auth_token;
   }
 
   private async Task<AuthenticatedData> sendAuthRequest(string address, string signature)
