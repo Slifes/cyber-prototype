@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://v465o4rvghi5"]
+[gd_scene load_steps=4 format=3 uid="uid://v465o4rvghi5"]
 
 [ext_resource type="Script" path="res://scripts/ui/HealthStats.cs" id="1_jpsr5"]
 
@@ -6,11 +6,6 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ole1f"]
 bg_color = Color(0.360784, 0.847059, 0.34902, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bpbh5"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2v3o3"]
-bg_color = Color(0.6, 0.596078, 0.105882, 1)
 
 [node name="HealthStats" type="MarginContainer"]
 anchors_preset = 15
@@ -35,11 +30,4 @@ size_flags_vertical = 3
 theme_override_styles/background = SubResource("StyleBoxFlat_03ako")
 theme_override_styles/fill = SubResource("StyleBoxFlat_ole1f")
 value = 100.0
-show_percentage = false
-
-[node name="SP" type="ProgressBar" parent="Container"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/background = SubResource("StyleBoxFlat_bpbh5")
-theme_override_styles/fill = SubResource("StyleBoxFlat_2v3o3")
 show_percentage = false

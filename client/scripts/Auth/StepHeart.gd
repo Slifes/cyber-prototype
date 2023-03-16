@@ -4,56 +4,82 @@ var _wallet
 
 @onready var step_manager = get_parent()
 @onready var auth = $"/root/AuthClient"
-@onready var scene_manager = $"../../../SceneManager"
-@onready var button = $AspectRatioContainer/Control/Button
-@onready var char_container = $AspectRatioContainer/Control/ScrollContainer/VBoxContainer
+@onready var scene_manager = $"/root/SceneManager"
+@onready var char_container = $MarginContainer/Control/ScrollContainer/VBoxContainer
+@onready var selector = $Selector
+@onready var empty_character = $EMPTY_CHARACTER
 
-signal _mint_txsended()
+# Buttons
+@onready var mint_btn = $MarginContainer/HBoxContainer/Mint
+@onready var create_btn = $MarginContainer/HBoxContainer/Create
+@onready var enter_world_btn = $MarginContainer/HBoxContainer/Enter
+
+var character_list: Array = []
+var character_selected: int
+
 signal _receive_characters(characters: Array)
 signal _session_map_created(token: String)
 
 func active(wallet):
 	_wallet = wallet
-	button.connect("pressed", _mint_pressed)
+
+	enter_world_btn.pressed.connect(_enter_world)
+	create_btn.pressed.connect(_character_creator)
 	
-	_mint_txsended.connect(_mint_tx)
 	_receive_characters.connect(_characters)
 	_session_map_created.connect(_session_map)
 	
-	auth.GetCharacters(self)
+	selector.Load(self)
 
-func _mint_pressed():
-	_wallet.MintHeart(self)
-
-func _mint_tx(tx_id):
-	print("arrived")
-	print(tx_id)
-	goto_map()
 
 func _characters(characters: Array):
 	print(characters)
 	
+	character_list = characters
+	
 	for char in characters:
-		print("token_id: " + char["token_id"])
-		
-		var d = func ():
-			print(char["token_id"])
+		var on_click = func ():
+			print(char["id"])
 			_select_character(char["id"])
 		
-		var c = BoxContainer.new()
-		var t = TextureButton.new()
-		t.texture_normal = load("res://icon.svg")
-		c.add_child(t)
-		t.pressed.connect(d)
-		
-		char_container.add_child(c)
+		var container: TextureButton = empty_character.duplicate()
+		container.visible = true
+		container.pressed.connect(on_click)
 
-func _select_character(id):
-	auth.CreateSessionMap(id, self);
+		char_container.add_child(container)
+
+func _select_character(id: int):
+	character_selected = id
+	
+	auth.SetTokenSelected(id)
+	
+	for char in character_list:
+		if id == char["id"]:
+			if "character" in char:
+				create_btn.visible = false
+				enter_world_btn.visible = true
+			else:
+				enter_world_btn.visible = false
+				create_btn.visible = true
+			break
+	
+
+func _enter_world():
+	selector.CreateSession(character_selected, self)
+
+
+func _character_creator():
+	goto_character_creator()
+
 
 func _session_map(token):
 	print(token)
 	goto_map()
 
+
 func goto_map():
 	scene_manager.ChangeState("world")
+
+
+func goto_character_creator():
+	scene_manager.ChangeState("character_creator")

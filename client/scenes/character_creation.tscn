@@ -1,0 +1,136 @@
+[gd_scene load_steps=7 format=3 uid="uid://4e2ks137oppi"]
+
+[ext_resource type="Script" path="res://scripts/ui/character/CharacterCreator.cs" id="1_d7gag"]
+[ext_resource type="PackedScene" uid="uid://sqrclnnv67jl" path="res://actors/player_placeholder.tscn" id="1_qu5ck"]
+
+[sub_resource type="Sky" id="Sky_awoj1"]
+
+[sub_resource type="Environment" id="Environment_immee"]
+background_mode = 1
+background_color = Color(0.921569, 0.94902, 0.898039, 1)
+sky = SubResource("Sky_awoj1")
+ambient_light_source = 3
+ambient_light_color = Color(1, 0, 0.905882, 1)
+reflected_light_source = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_534fm"]
+albedo_color = Color(0.972549, 0.984314, 0.945098, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1cyvl"]
+material = SubResource("StandardMaterial3D_534fm")
+
+[node name="character_creation" type="Node3D"]
+script = ExtResource("1_d7gag")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_immee")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, -3.61738e-15, -8.74228e-08, 7.6726e-09, 0.996141, -0.0877643, 8.70854e-08, -0.0877643, -0.996141, 0, -0.25292, 0.112859)
+mesh = SubResource("PlaneMesh_1cyvl")
+skeleton = NodePath("../DirectionalLight3D")
+
+[node name="Player" parent="." instance=ExtResource("1_qu5ck")]
+
+[node name="Control2" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Color" type="Control" parent="Control2"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -37.0
+offset_bottom = 37.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control2/Color"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control2/Color/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2/Color/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Control2/Color/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Choose color"
+color = Color(1, 0.14902, 0.254902, 1)
+
+[node name="Label" type="Label" parent="Control2/Color/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Choose color
+"
+
+[node name="Name" type="Control" parent="Control2"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control2/Name"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.265
+offset_left = -132.0
+offset_top = -136.0
+offset_right = 133.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2/Name/MarginContainer"]
+layout_mode = 2
+
+[node name="Input" type="Label" parent="Control2/Name/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Insert a name"
+
+[node name="TextEdit" type="TextEdit" parent="Control2/Name/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="Control2/Name/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Create
+"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, -1.94175e-08, 0.975022, 0.22211, 8.52391e-08, 0.22211, -0.975022, 0, 0, -1.37577)

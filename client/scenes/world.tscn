@@ -68,3 +68,9 @@ offset_right = 115.014
 offset_bottom = 34.989
 text = "Loss 1000ms"
 horizontal_alignment = 1
+
+[node name="VisibleOnScreenEnabler3D" type="VisibleOnScreenEnabler3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+aabb = AABB(-14, -1, -11, 28, 2, 22)
+enable_mode = 1
+enable_node_path = NodePath("../Map")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dybc1untres54"]
 
-[ext_resource type="Script" path="res://scripts/ui/Window.cs" id="1_jw1m0"]
+[ext_resource type="Script" path="res://scripts/ui/Window.cs" id="1_c1y1l"]
 
 [node name="equipments" type="Control"]
 layout_mode = 3
@@ -9,7 +9,7 @@ anchor_bottom = 1.0
 offset_right = 0.167969
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_jw1m0")
+script = ExtResource("1_c1y1l")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 2

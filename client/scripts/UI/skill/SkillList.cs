@@ -11,10 +11,6 @@ partial class SkillList : Window
   public override void _Ready()
   {
     SkillControl.CreateInstance();
-
-    //Button btn = GetNode<Button>("Button");
-
-    //btn.Pressed += OnButtonPressed;
   }
 
   public void SetSkills(List<Skill> skills)

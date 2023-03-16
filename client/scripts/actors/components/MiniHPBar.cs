@@ -12,7 +12,9 @@ class MiniHPBar : IComponent
 
   public MiniHPBar(CharacterActor actor)
   {
-    var node = actor.GetNode<Node3D>("Health");
+    var node = healthScene.Instantiate();
+
+    actor.AddChild(node);
 
     HP = node.GetNode<Sprite3D>("HP");
 

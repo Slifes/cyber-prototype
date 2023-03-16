@@ -18,16 +18,16 @@ partial class SkillItem : Control
     SkillControl.Instance.Add(this);
   }
 
+  public override void _ExitTree()
+  {
+    SkillControl.Instance.Remove(this);
+  }
+
   public override void _Ready()
   {
     Overlay = GetNode<ColorRect>("View/overlay");
 
     GetNode<ColorRect>("View/bkg").Color = skill.iconColor;
-  }
-
-  public override void _ExitTree()
-  {
-    SkillControl.Instance.Remove(this);
   }
 
   public void Used()

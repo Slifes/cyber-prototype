@@ -74,7 +74,7 @@ partial class NetworkManager : Node3D
 
     SyncServerTime();
 
-    SendPacket(new EnterSessionMap { AuthToken = auth.GetAuthSessionToken() });
+    SendPacket(new EnterSessionMap { AuthToken = auth.SessionToken() });
   }
 
   void Disconnected()

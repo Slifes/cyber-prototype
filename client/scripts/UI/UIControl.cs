@@ -10,6 +10,8 @@ class UIControl
 
   SkillShortcut skillShortcut;
 
+  UIEquipment equipment;
+
   private static UIControl _instance;
 
   public static UIControl Instance
@@ -35,9 +37,12 @@ class UIControl
 
     target.GetNode("/root/World/UI").AddChild(ui);
 
-    healthStats = ui.GetNode<HealthStats>("HealthStats");
-    skillList = ui.GetNode<SkillList>("SkillList");
-    skillShortcut = ui.GetNode<SkillShortcut>("MarginContainer2/SkillShortcut");
+    healthStats = ui.GetNode<HealthStats>("Health");
+    skillList = ui.GetNode<SkillList>("SkillBook");
+    skillShortcut = ui.GetNode<SkillShortcut>("Shortcuts/SkillShortcut");
+    equipment = ui.GetNode<UIEquipment>("Equipment");
+
+    equipment.setPlayer(target);
 
     target.HealthStatusChanged += UpdateHealthStats;
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://t2ee00o86gdd"]
+[gd_scene load_steps=7 format=3 uid="uid://t2ee00o86gdd"]
 
 [ext_resource type="PackedScene" uid="uid://v465o4rvghi5" path="res://ui/health_stats.tscn" id="1_t6i5m"]
 [ext_resource type="PackedScene" uid="uid://dpgq1n7xsrbgx" path="res://ui/skill/skill_shortcut.tscn" id="2_b5vg5"]
 [ext_resource type="PackedScene" uid="uid://ca5usv3fi5xx8" path="res://ui/skill/skill_list.tscn" id="3_k6r3f"]
 [ext_resource type="PackedScene" uid="uid://bm5cn7wwthnh3" path="res://ui/inventory/inventory.tscn" id="5_4lg4e"]
 [ext_resource type="Script" path="res://scripts/ui/ToggleButton.cs" id="5_ttgev"]
+[ext_resource type="PackedScene" uid="uid://b1fcuyy7wt0wx" path="res://ui/mechanic/equipment.tscn" id="6_r8nxp"]
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -35,12 +36,23 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.259
 anchor_top = 0.066
-anchor_right = 0.888
-anchor_bottom = 0.781
+anchor_right = 0.613
+anchor_bottom = 0.454
 offset_left = -0.368011
 offset_top = 0.231998
-offset_right = 0.0239258
-offset_bottom = -0.0880127
+offset_right = -0.176025
+offset_bottom = -0.192017
+
+[node name="Equipment" parent="." instance=ExtResource("6_r8nxp")]
+layout_mode = 1
+anchor_left = 0.547
+anchor_top = 0.117
+anchor_right = 0.845
+anchor_bottom = 0.713
+offset_left = -0.144043
+offset_top = 0.183998
+offset_right = -0.440063
+offset_bottom = -0.0240479
 
 [node name="Health" parent="." instance=ExtResource("1_t6i5m")]
 layout_mode = 1
@@ -49,7 +61,7 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 offset_left = -154.0
-offset_top = -109.0
+offset_top = -82.0
 offset_right = 163.0
 offset_bottom = -62.0
 grow_vertical = 0
@@ -105,3 +117,10 @@ layout_mode = 2
 text = "Inventory	"
 script = ExtResource("5_ttgev")
 target = NodePath("../../../Inventory")
+
+[node name="Equipment" type="Button" parent="Tools/HBoxContainer" node_paths=PackedStringArray("target")]
+layout_mode = 2
+text = "Equip
+"
+script = ExtResource("5_ttgev")
+target = NodePath("../../../Equipment")

@@ -1,5 +1,4 @@
 ﻿using Godot;
-using System;
 
 public partial class SceneManager : Node
 {
@@ -12,7 +11,7 @@ public partial class SceneManager : Node
 
   private State currentState;
 
-  public Variant GetCurrentState()
+  public string GetCurrentState()
   {
     return currentState.ToString();
   }
@@ -27,21 +26,31 @@ public partial class SceneManager : Node
     {
       return State.Authenticate;
     }
+    else if (state == "character_creator")
+    {
+      return State.CharacterCreate;
+    }
 
     return State.Authenticate;
   }
 
-  public void ChangeState(Variant state)
+  public void ChangeState(string state)
   {
-    var _state = GetStateByString(state.ToString());
+    var _state = GetStateByString(state);
 
-    if (_state == State.Authenticate)
+    switch (_state)
     {
-      GetTree().ChangeSceneToFile("res://scenes/intro.tscn");
-    }
-    else if (_state == State.World)
-    {
-      GetTree().ChangeSceneToFile("res://scenes/world.tscn");
+      case State.Authenticate:
+        GetTree().ChangeSceneToFile("res://scenes/intro.tscn");
+        break;
+
+      case State.World:
+        GetTree().ChangeSceneToFile("res://scenes/world.tscn");
+        break;
+
+      case State.CharacterCreate:
+        GetTree().ChangeSceneToFile("res://scenes/character_creation.tscn");
+        break;
     }
 
     currentState = _state;

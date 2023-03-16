@@ -148,7 +148,7 @@ public partial class Wallet : Node
     {
       string signature = await RequestSignature(target);
 
-      var connected = await auth.Connect(Account, signature);
+      var connected = await auth.Login(Account, signature);
 
       if (connected)
       {

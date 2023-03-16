@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://sqrclnnv67jl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v1mq3"]
+albedo_color = Color(1, 0.870588, 0.654902, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_aumip"]
+material = SubResource("StandardMaterial3D_v1mq3")
+radius = 0.05
+height = 0.2
+
+[node name="Player" type="Node3D"]
+
+[node name="Body" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
+mesh = SubResource("CapsuleMesh_aumip")

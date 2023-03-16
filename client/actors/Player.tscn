@@ -69,6 +69,7 @@ shape = SubResource("CapsuleShape3D_0f2vn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+layers = 524289
 mesh = SubResource("CapsuleMesh_72b5w")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_wahlt")
