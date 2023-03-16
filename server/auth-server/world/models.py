@@ -3,9 +3,10 @@ from django.db import models
 
 class Character(models.Model):
 
-    token = models.ForeignKey(
+    token = models.OneToOneField(
         "account.Token",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="character"
     )
 
     name = models.CharField(

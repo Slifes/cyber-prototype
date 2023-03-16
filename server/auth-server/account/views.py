@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView, CreateAPIView
 
 from .models import Token, Authentication, SessionMap
-from .serializers import CharacterSerializer, AuthenticationSerializer, SessionMapSerializer
+from .serializers import TokenSerializer, AuthenticationSerializer, SessionMapSerializer
 from .permissions import IsServerAuthenticated
 
 
@@ -14,7 +14,7 @@ authenticate_view = AuthenticateView.as_view()
 
 class CharacterListView(ListAPIView):
     model = Token
-    serializer_class = CharacterSerializer
+    serializer_class = TokenSerializer
     permission_classes = (IsServerAuthenticated, )
 
     def get_queryset(self):

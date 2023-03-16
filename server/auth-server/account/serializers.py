@@ -11,12 +11,23 @@ from rest_framework import serializers
 from .utils import validate_eth_address, recover_to_addr
 from .models import Token, Authentication, SessionMap
 
+from world.models import Character
+
 
 class CharacterSerializer(serializers.ModelSerializer):
 
     class Meta:
+        model = Character
+        fields = ('name', 'color', )
+
+
+class TokenSerializer(serializers.ModelSerializer):
+
+    character = CharacterSerializer()
+
+    class Meta:
         model = Token
-        fields = ('id', 'owner', 'token_id', )
+        fields = ('id', 'owner', 'token_id', 'character')
 
 
 class AuthenticationSerializer(serializers.ModelSerializer):
@@ -69,26 +80,30 @@ class AuthenticationSerializer(serializers.ModelSerializer):
 
 class SessionMapSerializer(serializers.ModelSerializer):
 
-    character = serializers.PrimaryKeyRelatedField(queryset=Token.objects.all(), write_only=True)
+    token = serializers.PrimaryKeyRelatedField(queryset=Token.objects.all(), write_only=True)
     auth_token = serializers.CharField(read_only=True)
     expire_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = SessionMap
-        fields = ('character', 'auth_token', 'expire_at')
+        fields = ('token', 'auth_token', 'expire_at')
 
-    def validate_character(self, value):
+    def validate_token(self, value):
         request = self.context['request']
         user = request.user_server
 
         if value.owner != user.address:
-            raise serializers.ValidationError(_("Invalid Character"))
-        
+            raise serializers.ValidationError(_("Invalid Token"))
+    
+        if not Character.objects.filter(token=value).exists():
+            return serializers.ValidationError(_("Character not available"))
+
         return value
 
     def create(self, validated_data):
         return SessionMap.objects.create(
-            character=validated_data['character'],
+            character=Character.objects.get(token=validated_data["token"]),
+            token=validated_data['token'],
             auth_token=secrets.token_urlsafe(20),
             expire_at=timezone.now() + timezone.timedelta(minutes=10)
         )

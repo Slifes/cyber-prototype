@@ -55,8 +55,13 @@ class SessionMap(models.Model):
         db_index=True
     )
 
-    character = models.ForeignKey(
+    token = models.ForeignKey(
         Token,
+        on_delete=models.CASCADE
+    )
+
+    character = models.ForeignKey(
+        "world.Character",
         on_delete=models.CASCADE
     )
 
