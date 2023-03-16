@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Godot;
 using Packets.Client;
+using Database;
 
 partial class PacketManager
 {
@@ -8,7 +9,7 @@ partial class PacketManager
   {
     var pck = (EnterSessionMap)command;
 
-    using var db = new GameServer.Database.WorldContext();
+    using var db = new WorldContext();
 
     // var instance = db.Sessions
     //   .Where(x => x.AuthToken == pck.AuthToken)

@@ -1,18 +1,31 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace GameServer.Database.Models
+namespace Database.Models
 {
   [Table("account_sessionmap")]
   public class Session
   {
     [Column("id")]
     public ulong Id { get; set; }
+
     [Column("auth_token")]
     public string AuthToken { get; set; }
-    [Column("character_id")]
-    public uint CharacterId { get; set; }
 
-    // public string ExpireAt { get; set; }
+    [Column("token_id")]
+    public int TokenId;
+
+    [ForeignKey("TokenId")]
+    public Token Token;
+
+    [Column("character_id")]
+    public int CharacterId;
+
+    [ForeignKey("CharacterId")]
+    public Character Character { get; set; }
+
+    [Column("expire_at")]
+    [Timestamp]
+    public string ExpireAt { get; set; }
   }
 }

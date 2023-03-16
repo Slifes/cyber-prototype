@@ -4,6 +4,8 @@ using Godot.Collections;
 
 partial class SessionActor : Node3D, IActor
 {
+  protected Database.Models.Character Character;
+
   protected int _actorId;
 
   protected ActorType _type;

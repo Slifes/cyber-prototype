@@ -7,4 +7,7 @@ partial class Item : Base
 
   [Export]
   public ItemType Type;
+
+  [Export]
+  public int Price;
 }

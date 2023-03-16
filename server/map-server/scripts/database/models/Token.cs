@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Database.Models
 {
-  [Table("world_inventory")]
-  public class Inventory
+  [Table("account_token")]
+  public class Token
   {
     [Key]
     public int Id;
 
-    [ForeignKey("character_id")]
-    public Character character;
+    [Column("token_id")]
+    public int TokenId;
 
-    [Column("item_id")]
-    public int ItemId;
+    [Column("owner")]
+    public int Address;
   }
 }

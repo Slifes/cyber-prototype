@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using GameServer.Database.Models;
+using Database.Models;
 
-namespace GameServer.Database
+namespace Database
 {
   public class WorldContext : DbContext
   {
