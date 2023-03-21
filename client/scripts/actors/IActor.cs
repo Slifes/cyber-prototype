@@ -22,5 +22,5 @@ interface IActor
 
   int GetActorId();
 
-  void SetServerData(Variant data);
+  void SetServerData(Godot.Collections.Array dataArray);
 }

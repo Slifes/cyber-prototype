@@ -54,10 +54,10 @@ partial class Player : CharacterActor
       return new IComponent[4]
       {
       new SkillController(this, new List<int>() { 0, 1, 2 }),
-	  //new PredictMovement(this),
-	  new MiniHPBar(this),
+      //new PredictMovement(this),
+      new MiniHPBar(this),
       new ActorHover(this),
-      new DamageLabel(this)
+      new EffectComponent(this)
       };
     }
     else
@@ -68,7 +68,7 @@ partial class Player : CharacterActor
         new CameraController(this),
         new MovementController(this),
         new MovementNetwork(this),
-        new DamageLabel(this),
+        new EffectComponent(this),
         new UIComponent(this)
       };
     }
@@ -93,7 +93,7 @@ partial class Player : CharacterActor
   {
     SkillController controller = (SkillController)GetComponent<SkillController>();
 
-    UIControl.SetSkills(controller.Skills);
+    PlayerUI.SetSkills(controller.Skills);
   }
 
 }

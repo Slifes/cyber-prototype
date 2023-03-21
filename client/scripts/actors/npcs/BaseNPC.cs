@@ -32,10 +32,8 @@ partial class BaseNPC : CharacterActor
     return ActorType.Npc;
   }
 
-  public override void SetServerData(Variant data)
+  public override void SetServerData(Godot.Collections.Array dataArray)
   {
-    var dataArray = data.AsGodotArray<Variant>();
-
     currentHP = (int)dataArray[1];
     maxHP = (int)dataArray[2];
   }

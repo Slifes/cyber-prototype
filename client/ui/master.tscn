@@ -1,13 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://t2ee00o86gdd"]
+[gd_scene load_steps=8 format=3 uid="uid://b3fhxgo1tibra"]
 
-[ext_resource type="PackedScene" uid="uid://v465o4rvghi5" path="res://ui/health_stats.tscn" id="1_t6i5m"]
-[ext_resource type="PackedScene" uid="uid://dpgq1n7xsrbgx" path="res://ui/skill/skill_shortcut.tscn" id="2_b5vg5"]
+[ext_resource type="PackedScene" path="res://ui/health_stats.tscn" id="1_t6i5m"]
+[ext_resource type="Script" path="res://scripts/ui/PlayerUI.cs" id="1_ue5bj"]
+[ext_resource type="PackedScene" uid="uid://j2nhg3672dd1" path="res://ui/shortcut/shortcut.tscn" id="2_b5vg5"]
 [ext_resource type="PackedScene" uid="uid://ca5usv3fi5xx8" path="res://ui/skill/skill_list.tscn" id="3_k6r3f"]
 [ext_resource type="PackedScene" uid="uid://bm5cn7wwthnh3" path="res://ui/inventory/inventory.tscn" id="5_4lg4e"]
 [ext_resource type="Script" path="res://scripts/ui/ToggleButton.cs" id="5_ttgev"]
 [ext_resource type="PackedScene" uid="uid://b1fcuyy7wt0wx" path="res://ui/mechanic/equipment.tscn" id="6_r8nxp"]
 
-[node name="UI" type="Control"]
+[node name="PlayerUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,6 +16,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("1_ue5bj")
 
 [node name="SkillBook" parent="." instance=ExtResource("3_k6r3f")]
 visible = false
@@ -30,20 +32,8 @@ offset_right = 0.0
 offset_bottom = 201.0
 grow_horizontal = 0
 
-[node name="Inventory" parent="." instance=ExtResource("5_4lg4e")]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.259
-anchor_top = 0.066
-anchor_right = 0.613
-anchor_bottom = 0.454
-offset_left = -0.368011
-offset_top = 0.231998
-offset_right = -0.176025
-offset_bottom = -0.192017
-
 [node name="Equipment" parent="." instance=ExtResource("6_r8nxp")]
+visible = false
 layout_mode = 1
 anchor_left = 0.547
 anchor_top = 0.117
@@ -53,6 +43,15 @@ offset_left = -0.144043
 offset_top = 0.183998
 offset_right = -0.440063
 offset_bottom = -0.0240479
+
+[node name="Inventory" parent="." instance=ExtResource("5_4lg4e")]
+visible = false
+layout_mode = 1
+anchor_left = 0.28559
+anchor_top = 0.239198
+anchor_right = 0.739583
+anchor_bottom = 0.674383
+metadata/_edit_vertical_guides_ = [500.0]
 
 [node name="Health" parent="." instance=ExtResource("1_t6i5m")]
 layout_mode = 1

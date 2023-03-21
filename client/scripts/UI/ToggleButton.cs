@@ -13,5 +13,6 @@ partial class ToggleButton : Button
   void ToggleEvent()
   {
     target.Visible = !target.Visible;
+    target.MoveToFront();
   }
 }

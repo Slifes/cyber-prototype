@@ -51,12 +51,13 @@ class CameraController : IComponent
 
     player.AddChild(pivot);
 
-    player.TakeDamage += TakeDamage;
+    player.Effect += OnEffect;
   }
 
-  void TakeDamage(int damage, int currentHP, int maxHP)
+  void OnEffect(int effectType, int effectValue)
   {
-    ApplyTrauma(0.2f);
+    if ((EffectType)effectType == EffectType.Damage)
+      ApplyTrauma(0.2f);
   }
 
   public void ApplyTrauma(float value)

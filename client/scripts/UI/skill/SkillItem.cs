@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-partial class SkillItem : Control
+partial class SkillItem : Control, IUsable
 {
   ColorRect Overlay;
 
@@ -39,6 +39,14 @@ partial class SkillItem : Control
     Overlay.Size = new Vector2(Overlay.Size.X, this.Size.Y);
   }
 
+  public void Use()
+  {
+    NetworkManager.Instance.SendPacket(new Packets.Client.PlayerRequestSkill
+    {
+      skillId = skill.ID
+    });
+  }
+
   public override void _Process(double delta)
   {
     if (!Available)
@@ -60,5 +68,15 @@ partial class SkillItem : Control
         Overlay.Size = new Vector2(Overlay.Size.X, this.Size.Y - size);
       }
     }
+  }
+
+  public Node GetData()
+  {
+    return this;
+  }
+
+  public bool IsAvailable()
+  {
+    return Available;
   }
 }

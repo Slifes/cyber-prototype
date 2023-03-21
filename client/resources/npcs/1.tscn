@@ -1,31 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c0r4e783jfwyy"]
+[gd_scene load_steps=6 format=3 uid="uid://c0r4e783jfwyy"]
 
 [ext_resource type="Script" path="res://scripts/actors/npcs/Talk.cs" id="1_u6n3n"]
 [ext_resource type="Resource" uid="uid://bl7f84lvaxlv6" path="res://dialogue/aron.dialogue" id="2_gv8w3"]
 
-[sub_resource type="Shader" id="Shader_kxsue"]
-code = "shader_type spatial;
-
-uniform float outline_width : hint_range(0, 10);
-uniform vec4 outline_color : source_color;
-
-void vertex() {
-	NORMAL = vec3(0.0, 0.0, 0.0);
-	float distance = abs(dot(VERTEX, vec3(0.0, 0.0, 1.0))) * outline_width;
-	VERTEX.xyz += distance * NORMAL;
-}
-
-void fragment() {
-	vec4 color = vec4(255,255,255, 255);
-	color.rgb = outline_color.rgb;
-	color.a = max(max(color.r, color.g), color.b);
-	
-	COLOR.rgb = color.rgb;
-}"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g6afe"]
-render_priority = 0
-shader = SubResource("Shader_kxsue")
 
 [sub_resource type="BoxMesh" id="BoxMesh_dwy3e"]
 material = SubResource("ShaderMaterial_g6afe")

@@ -40,6 +40,11 @@ partial class NetworkManager : Node3D
 
     SkillManager.CreateInstance();
     SkillManager.Instance.Load();
+
+    ItemManager.CreateInstance();
+
+    // UIControl.CreateInstance();
+    // UIControl.Instance.LoadUI();
   }
 
   public override void _EnterTree()

@@ -11,7 +11,7 @@ partial class CharacterActor : CharacterBody3D, IActor
   public delegate void HealthStatusChangedEventHandler(int currentHP, int currentSP, int maxHP, int maxSP);
 
   [Signal]
-  public delegate void TakeDamageEventHandler(int damage, int currentHP, int maxHP);
+  public delegate void EffectEventHandler(int effectType, int value);
 
   [Signal]
   public delegate void ExecuteSkillEventHandler(Variant Id);
@@ -71,10 +71,8 @@ partial class CharacterActor : CharacterBody3D, IActor
     return maxSP;
   }
 
-  public virtual void SetServerData(Variant data)
+  public virtual void SetServerData(Godot.Collections.Array dataArray)
   {
-    var dataArray = data.AsGodotArray<Variant>();
-
     currentHP = (int)dataArray[0];
     currentSP = (int)dataArray[1];
     maxHP = (int)dataArray[2];

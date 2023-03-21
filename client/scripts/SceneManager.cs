@@ -41,7 +41,7 @@ public partial class SceneManager : Node
     switch (_state)
     {
       case State.Authenticate:
-        GetTree().ChangeSceneToFile("res://scenes/intro.tscn");
+        GetTree().ChangeSceneToFile("res://scenes/main.tscn");
         break;
 
       case State.World:

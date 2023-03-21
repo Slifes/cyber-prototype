@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dpgq1n7xsrbgx"]
+[gd_scene load_steps=3 format=3 uid="uid://j2nhg3672dd1"]
 
-[ext_resource type="PackedScene" uid="uid://ba6mh28om2ohu" path="res://ui/skill/skill_slot.tscn" id="1_gori0"]
-[ext_resource type="Script" path="res://scripts/ui/skill/SkillShortcut.cs" id="1_ut1mo"]
+[ext_resource type="PackedScene" uid="uid://dmi243thyyaqq" path="res://ui/shortcut/shortcut_slot.tscn" id="1_gori0"]
+[ext_resource type="Script" path="res://scripts/ui/shortcut/Shortcut.cs" id="1_ut1mo"]
 
 [node name="skill_shortcut" type="Control"]
 layout_mode = 3

@@ -21,4 +21,10 @@ namespace Packets.Client
   {
     [Key(0)] public int skillId;
   }
+
+  [MessagePackObject]
+  public partial struct PlayerUseItem : IClientCommand
+  {
+    [Key(0)] public int itemId;
+  }
 }

@@ -52,10 +52,7 @@ partial class SkillList : Window
       {
         var skillControl = (Control)hContainer.GetChild(skillIndex);
 
-        var dragHelper = new DragHelper();
-
-        dragHelper.AddData(skill);
-        skillControl.AddChild(dragHelper);
+        skillControl.AddChild(DragHelper.Create(skill, new Vector2(85, 85)));
 
         skillIndex++;
       }

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dn1ajx7ib0tdd"]
+
+[ext_resource type="Script" path="res://scripts/resources/Item.cs" id="1_c8akj"]
+
+[resource]
+script = ExtResource("1_c8akj")
+ID = 0
+Type = 0
+Name = "Potion HP"
+Description = "Heal with 100"
+Icon = Color(0, 0.960784, 0, 1)
+StackLimit = 10

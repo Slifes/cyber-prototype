@@ -1,16 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://bm5cn7wwthnh3"]
+[gd_scene load_steps=2 format=3 uid="uid://bm5cn7wwthnh3"]
 
-[ext_resource type="PackedScene" uid="uid://cqbj1c8en243h" path="res://ui/inventory/item_detail.tscn" id="1_5w5r5"]
-[ext_resource type="Script" path="res://scripts/ui/Window.cs" id="1_kk4kx"]
+[ext_resource type="Script" path="res://scripts/ui/inventory/Inventory.cs" id="1_5gm0h"]
 
-[node name="inventory" type="Control"]
+[node name="Inventory" type="Control"]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 0.455729
+anchor_bottom = 0.435185
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_kk4kx")
+script = ExtResource("1_5gm0h")
+metadata/_edit_vertical_guides_ = [525.0]
+metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -27,7 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 12
 
 [node name="Consume" type="MarginContainer" parent="Panel/TabContainer"]
 layout_mode = 2
@@ -44,65 +44,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="BoxContainer" type="BoxContainer" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Panel" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
-custom_minimum_size = Vector2(0, 120)
+[node name="HFlowContainer" type="HFlowContainer" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel" instance=ExtResource("1_5w5r5")]
-layout_mode = 1
-
-[node name="Panel2" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel2" instance=ExtResource("1_5w5r5")]
-layout_mode = 1
-
-[node name="Panel3" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel3" instance=ExtResource("1_5w5r5")]
-layout_mode = 1
-
-[node name="Panel4" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel4" instance=ExtResource("1_5w5r5")]
-layout_mode = 1
-
-[node name="Panel5" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel5" instance=ExtResource("1_5w5r5")]
-layout_mode = 1
-
-[node name="Panel6" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel6" instance=ExtResource("1_5w5r5")]
-layout_mode = 1
-
-[node name="Panel7" type="Panel" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer"]
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="item_detail" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/BoxContainer/Panel7" instance=ExtResource("1_5w5r5")]
-layout_mode = 1
+size_flags_vertical = 3
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
 
 [node name="Equipments" type="MarginContainer" parent="Panel/TabContainer"]
 visible = false

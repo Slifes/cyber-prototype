@@ -2,28 +2,38 @@
 
 partial class DragHelper : Control
 {
+  public Vector2 FutureSize;
+
+  public static DragHelper Create(Control node, Vector2 size)
+  {
+    var dragHelper = new DragHelper();
+
+    dragHelper.AddData(node);
+    dragHelper.FutureSize = size;
+
+    return dragHelper;
+  }
+
   public override void _Ready()
   {
     this.SetAnchorsPreset(LayoutPreset.FullRect);
-    this.SizeFlagsHorizontal = SizeFlags.ExpandFill;
-    this.SizeFlagsVertical = SizeFlags.ExpandFill;
+    this.SizeFlagsHorizontal = SizeFlags.Fill;
+    this.SizeFlagsVertical = SizeFlags.Fill;
     this.CallDeferred("Set");
-
   }
 
   void Set()
   {
-    this.Size = new Vector2(85, 85);
+    this.Size = FutureSize;
+    this.CustomMinimumSize = FutureSize;
   }
 
 
   public void AddData(Control data)
   {
-    var self = data.Duplicate();
+    data.Name = "Data";
 
-    self.Name = "Data";
-
-    AddChild(self);
+    AddChild(data);
   }
 
   public Control GetData()

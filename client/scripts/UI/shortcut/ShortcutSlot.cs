@@ -1,21 +1,20 @@
 ﻿using Godot;
 
-partial class SkillSlot : Control
+partial class ShortcutSlot : Control
 {
-  [Export]
-  public SkillItem skill;
-
   [Signal]
-  public delegate void SkillChangedEventHandler(SkillItem newSkill, int index);
+  public delegate void ChangedEventHandler(Node usable, int index);
+
+  public IUsable usable;
 
   public override Variant _GetDragData(Vector2 atPosition)
   {
-    if (skill == null)
+    if (usable == null)
     {
       return base._GetDragData(atPosition);
     }
 
-    var node = (SkillItem)GetNode("Data");
+    var node = GetNode("Data");
 
     var self = (Control)node.GetNode("View").Duplicate();
 
@@ -33,28 +32,28 @@ partial class SkillSlot : Control
 
   public override bool _CanDropData(Vector2 atPosition, Variant data)
   {
-    var control = (SkillItem)data;
+    var control = (Node)data;
 
-    return control.skill.Type == SkillType.Active;
+    return control is IUsable;
   }
 
   public override void _DropData(Vector2 atPosition, Variant data)
   {
     var node = (Control)data;
 
-    var skillItem = (SkillItem)node.Duplicate();
+    var item = node.Duplicate();
 
-    skillItem.Name = "Data";
+    item.Name = "Data";
 
-    AddChild(skillItem);
+    AddChild(item);
 
-    UpdateDraggedSkill(skillItem);
+    UpdateDraggedSkill(item);
   }
 
-  void UpdateDraggedSkill(SkillItem skillItem)
+  void UpdateDraggedSkill(Node item)
   {
-    skill = skillItem;
+    usable = (IUsable)item;
 
-    EmitSignal(nameof(SkillChanged), skill, GetIndex());
+    EmitSignal(SignalName.Changed, (Node)item, GetIndex());
   }
 }

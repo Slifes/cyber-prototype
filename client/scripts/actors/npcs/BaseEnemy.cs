@@ -19,7 +19,7 @@ partial class BaseEnemy : BaseNPC
     {
       new ActorHover(this),
       new MiniHPBar(this),
-      new DamageLabel(this),
+      new EffectComponent(this),
       new NpcSkillHandler(this)
     };
   }

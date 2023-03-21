@@ -41,7 +41,7 @@ class SkillController : IComponent
 
       ((ISkillEffect)instance).SetOwner(actor);
 
-      actor.GetNode("/root/World/Effects").AddChild(instance);
+      actor.GetNode("/root/World").AddChild(instance);
 
       ((ISkillEffect)instance).SetEffectRotation(actor.GetBodyRotation());
       ((ISkillEffect)instance).SetEffectPosition(actor.GlobalPosition);

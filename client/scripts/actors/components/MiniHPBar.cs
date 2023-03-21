@@ -23,12 +23,9 @@ class MiniHPBar : IComponent
     hpBar = node.GetNode<ProgressBar>("SubViewport/ProgressBar");
 
     actor.HealthStatusChanged += HealthChanged;
-    actor.TakeDamage += TakeDamage;
+    actor.Effect += OnEffect;
 
-    // var texture = new ViewportTexture();
-    // texture.ViewportPath = HP.GetPathTo(view);
-
-    // HP.Texture = texture;
+    HealthChanged(actor.GetCurrentHP(), actor.GetMaxHP(), actor.GetCurrentSP(), actor.GetMaxSP());
   }
 
   void HealthChanged(int currentHP, int maxHP, int currentSP, int maxSP)
@@ -37,14 +34,20 @@ class MiniHPBar : IComponent
     hpBar.MaxValue = maxHP;
   }
 
-  void TakeDamage(int damage, int currentHP, int maxHP)
+  void OnEffect(int effectType, int effectValue)
   {
-    GD.Print(hpBar.Value);
+    switch ((EffectType)effectType)
+    {
+      case EffectType.Damage:
+        hpBar.Value -= effectValue;
+        break;
 
-    hpBar.Value = currentHP;
+      case EffectType.Heal:
+        hpBar.Value += effectValue;
+        break;
+    }
+
     HP.Visible = true;
-
-    GD.Print("Took Damage");
   }
 
   public void InputHandler(InputEvent @event) { }

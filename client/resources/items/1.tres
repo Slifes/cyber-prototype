@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://x4fob4ioixt4"]
+
+[ext_resource type="PackedScene" uid="uid://co1cx60fvis72" path="res://items/equips/normal_sword.tscn" id="1_x4p2u"]
+[ext_resource type="Script" path="res://scripts/resources/Item.cs" id="2_b4q4k"]
+
+[resource]
+script = ExtResource("2_b4q4k")
+ID = 1
+Type = 2
+Name = "Weapon"
+Description = "Weapon"
+Icon = Color(1, 0.00784314, 0.878431, 1)
+Mesh = ExtResource("1_x4p2u")

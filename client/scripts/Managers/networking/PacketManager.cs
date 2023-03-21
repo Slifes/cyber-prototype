@@ -1,7 +1,7 @@
-﻿using Godot;
-using MessagePack;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using MessagePack;
+using Godot;
 using Packets.Server;
 
 partial class PacketManager
@@ -18,7 +18,9 @@ partial class PacketManager
       {typeof(SMActorExecuteSkill), OnActorExecuteSkill},
       {typeof(SMActorStartMove), OnActorStartMove},
       {typeof(SMActorStopMove), OnActorStopMove},
-      {typeof(SMActorDamage), OnActorTakeDamage}
+      {typeof(SMActorEffect), OnActorEffect},
+      {typeof(SMInventoryAddItem), OnInventoryAddItem},
+      {typeof(SMInventoryRemoveItem), OnInventoryRemoveItem}
     };
   }
 

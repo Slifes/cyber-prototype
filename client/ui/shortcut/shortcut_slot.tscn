@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://ba6mh28om2ohu"]
+[gd_scene load_steps=2 format=3 uid="uid://dmi243thyyaqq"]
 
-[ext_resource type="Script" path="res://scripts/ui/skill/SkillSlot.cs" id="1_ctp88"]
+[ext_resource type="Script" path="res://scripts/ui/shortcut/ShortcutSlot.cs" id="1_ctp88"]
 
 [node name="Slot" type="Control"]
 layout_mode = 3

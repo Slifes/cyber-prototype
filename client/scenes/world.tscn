@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://scripts/spawner/Spawner.cs" id="3_rfrc8"]
 [ext_resource type="PackedScene" uid="uid://c1diiei6qulof" path="res://maps/main.tscn" id="4_8g7r1"]
 [ext_resource type="Script" path="res://scripts/spawner/NpcSpawner.cs" id="5_1pxo1"]
-[ext_resource type="Script" path="res://scripts/ui/Damage.cs" id="7_e86s1"]
+[ext_resource type="PackedScene" uid="uid://b3fhxgo1tibra" path="res://ui/master.tscn" id="6_n5hbl"]
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_3xphb")
@@ -21,11 +21,6 @@ script = ExtResource("3_mu8xm")
 script = ExtResource("5_1pxo1")
 
 [node name="Map" parent="." instance=ExtResource("4_8g7r1")]
-
-[node name="Damage" type="Node3D" parent="."]
-script = ExtResource("7_e86s1")
-
-[node name="Effects" type="Node3D" parent="."]
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -69,8 +64,5 @@ offset_bottom = 34.989
 text = "Loss 1000ms"
 horizontal_alignment = 1
 
-[node name="VisibleOnScreenEnabler3D" type="VisibleOnScreenEnabler3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
-aabb = AABB(-14, -1, -11, 28, 2, 22)
-enable_mode = 1
-enable_node_path = NodePath("../Map")
+[node name="PlayerUI" parent="UI" instance=ExtResource("6_n5hbl")]
+layout_mode = 1

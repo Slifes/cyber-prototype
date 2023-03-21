@@ -42,12 +42,12 @@ partial class PacketManager
     ActorPushCommand(pck.ActorId, command);
   }
 
-  void OnActorTakeDamage(IServerCommand command)
+  void OnActorEffect(IServerCommand command)
   {
-    var pck = (SMActorDamage)command;
+    var pck = (SMActorEffect)command;
 
     var actor = Spawner.Instance.GetActor<CharacterActor>(pck.ActorId);
 
-    actor.EmitSignal(CharacterActor.SignalName.TakeDamage, pck.Damage, actor.GetCurrentHP(), actor.GetMaxHP());
+    actor.EmitSignal(CharacterActor.SignalName.Effect, pck.EffectType, pck.Value);
   }
 }
