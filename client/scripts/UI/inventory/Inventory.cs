@@ -15,7 +15,7 @@ partial class Inventory : Window
 
   public override void _Ready()
   {
-    container = GetNode<HFlowContainer>("Panel/TabContainer/Consume/ScrollContainer/VBoxContainer/HFlowContainer");
+    container = GetNode<HFlowContainer>("TabContainer/Consume/ScrollContainer/VBoxContainer/HFlowContainer");
 
     items = new();
   }
@@ -27,6 +27,18 @@ partial class Inventory : Window
       Control item = AddItemControl(itemId, amount);
 
       container.AddChild(item);
+    }
+    else
+    {
+      var itemsUpdate = items.Where((x) => x.item.ID == itemId).ToList();
+
+      var amountToBeUpdated = amount;
+
+      foreach (var item in itemsUpdate)
+      {
+        item.Amount = item.Amount + amount;
+        break;
+      }
     }
   }
 
@@ -40,7 +52,7 @@ partial class Inventory : Window
     {
       if (item.Amount <= amountToBeRemoved)
       {
-        item.QueueFree();
+        item.GetParent().QueueFree();
 
         items.Remove(item);
 

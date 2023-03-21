@@ -41,28 +41,26 @@ partial class Player : CharacterActor
 
     _body = GetNode<Node3D>("Body");
 
-    components = CreateComponents();
-
-    LoadSkills();
+    MountComponents();
   }
 
-  IComponent[] CreateComponents()
+  void MountComponents()
   {
     if (!IsMultiplayerAuthority())
     {
       SetProcessUnhandledInput(false);
-      return new IComponent[4]
+      components = new IComponent[4]
       {
-      new SkillController(this, new List<int>() { 0, 1, 2 }),
-      //new PredictMovement(this),
-      new MiniHPBar(this),
-      new ActorHover(this),
-      new EffectComponent(this)
+        new SkillController(this, new List<int>() { 0, 1, 2 }),
+        //new PredictMovement(this),
+        new MiniHPBar(this),
+        new ActorHover(this),
+        new EffectComponent(this)
       };
     }
     else
     {
-      return new IComponent[6]
+      components = new IComponent[6]
       {
         new SkillController(this, new List<int>() { 0, 1, 2 }),
         new CameraController(this),
@@ -71,6 +69,8 @@ partial class Player : CharacterActor
         new EffectComponent(this),
         new UIComponent(this)
       };
+
+      LoadSkills();
     }
   }
 

@@ -55,7 +55,7 @@ partial class DragHelper : Control
     return data;
   }
 
-  public override void _Input(InputEvent @event)
+  public override void _GuiInput(InputEvent @event)
   {
     if (@event is InputEventMouseButton)
     {
@@ -63,7 +63,7 @@ partial class DragHelper : Control
 
       if (inputEvent.DoubleClick)
       {
-        GD.Print("Double click");
+        ((IUsable)GetData()).Use();
       }
     }
   }

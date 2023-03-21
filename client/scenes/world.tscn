@@ -22,6 +22,8 @@ script = ExtResource("5_1pxo1")
 
 [node name="Map" parent="." instance=ExtResource("4_8g7r1")]
 
+[node name="Items" type="Node3D" parent="."]
+
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15

@@ -15,6 +15,7 @@ partial class PacketManager
       {typeof(SMServerTime), OnServerTime},
       {typeof(SMActorEnteredZone), OnActorEnteredZone},
       {typeof(SMActorExitedZone), OnActorExitedZone},
+      {typeof(SMActorDrop), OnActorDrop},
       {typeof(SMActorExecuteSkill), OnActorExecuteSkill},
       {typeof(SMActorStartMove), OnActorStartMove},
       {typeof(SMActorStopMove), OnActorStopMove},

@@ -8,5 +8,6 @@ namespace Packets.Client
   [Union(3, typeof(PlayerStopMovement))]
   [Union(4, typeof(PlayerRequestSkill))]
   [Union(5, typeof(PlayerUseItem))]
+  [Union(6, typeof(PlayerPickUpItem))]
   public interface IClientCommand { }
 }

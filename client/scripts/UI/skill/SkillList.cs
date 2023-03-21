@@ -1,6 +1,5 @@
 ﻿using Godot;
 using System.Collections.Generic;
-using System.Linq;
 
 partial class SkillList : Window
 {
@@ -39,34 +38,12 @@ partial class SkillList : Window
 
     var verticalBox = GetNode<VBoxContainer>("ScrollContainer/MarginContainer/VBoxContainer");
 
-    var chunckedData = ChunkList<SkillItem>(skillItens, 4);
+    var flow = GetNode<HFlowContainer>("ScrollContainer/MarginContainer/VBoxContainer/HFlowContainer");
+    //var chunckedData = ChunkList<SkillItem>(skillItens, 4);
 
-    var index = 0;
-
-    foreach (var c in chunckedData)
+    foreach (var skill in skillItens)
     {
-      var hContainer = (HBoxContainer)verticalBox.GetChild(index);
-      var skillIndex = 0;
-
-      foreach (var skill in c)
-      {
-        var skillControl = (Control)hContainer.GetChild(skillIndex);
-
-        skillControl.AddChild(DragHelper.Create(skill, new Vector2(85, 85)));
-
-        skillIndex++;
-      }
-
-      index++;
+      flow.AddChild(DragHelper.Create(skill, new Vector2(85, 85)));
     }
-  }
-
-  public static List<List<T>> ChunkList<T>(List<T> data, int size)
-  {
-    return data
-      .Select((x, i) => new { Index = i, Value = x })
-      .GroupBy(x => x.Index / size)
-      .Select(x => x.Select(v => v.Value).ToList())
-      .ToList();
   }
 }

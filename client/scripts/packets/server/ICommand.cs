@@ -3,6 +3,7 @@
   [MessagePack.Union(1, typeof(SMServerTime))]
   [MessagePack.Union(10, typeof(SMActorEnteredZone))]
   [MessagePack.Union(11, typeof(SMActorExitedZone))]
+  [MessagePack.Union(12, typeof(SMActorDrop))]
   [MessagePack.Union(20, typeof(SMInvetoryList))]
   [MessagePack.Union(21, typeof(SMInventoryAddItem))]
   [MessagePack.Union(22, typeof(SMInventoryRemoveItem))]

@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://c15bcroth5fdx"]
+
+[ext_resource type="PackedScene" uid="uid://cv40q1jv4vmq" path="res://items/icon.tscn" id="1_1q158"]
+[ext_resource type="Resource" uid="uid://dn1ajx7ib0tdd" path="res://resources/items/0.tres" id="2_eu2nt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_anbe6"]
+size = Vector3(20, 0.01, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qwxoa"]
+size = Vector3(20, 0.01, 20)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.34202, 0.939693, 0, -0.939693, 0.34202, 0, 4, 1.5)
+fov = 70.0
+near = 0.01
+far = 10000.0
+
+[node name="Item" parent="." instance=ExtResource("1_1q158")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0244876, 0)
+item = ExtResource("2_eu2nt")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_anbe6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_qwxoa")

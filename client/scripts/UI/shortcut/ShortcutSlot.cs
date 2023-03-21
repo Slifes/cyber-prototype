@@ -14,25 +14,25 @@ partial class ShortcutSlot : Control
       return base._GetDragData(atPosition);
     }
 
-    var node = GetNode("Data");
+    var node = GetData();
 
-    var self = (Control)node.GetNode("View").Duplicate();
+    var self = (Control)node.Duplicate();
 
     self.Size = new Vector2(50, 50);
     self.SetAnchorsPreset(LayoutPreset.TopLeft);
 
     SetDragPreview(self);
 
-    GetNode("Data").QueueFree();
+    RemoveChild(node);
 
-    UpdateDraggedSkill(null);
+    UpdateDraggedItem(null);
 
     return node;
   }
 
   public override bool _CanDropData(Vector2 atPosition, Variant data)
   {
-    var control = (Node)data;
+    var control = (Control)data;
 
     return control is IUsable;
   }
@@ -47,13 +47,31 @@ partial class ShortcutSlot : Control
 
     AddChild(item);
 
-    UpdateDraggedSkill(item);
+    UpdateDraggedItem(item);
   }
 
-  void UpdateDraggedSkill(Node item)
+  void UpdateDraggedItem(Node item)
   {
     usable = (IUsable)item;
 
     EmitSignal(SignalName.Changed, (Node)item, GetIndex());
+  }
+
+  public Control GetData()
+  {
+    return GetNode<Control>("Data");
+  }
+
+  public override void _GuiInput(InputEvent @event)
+  {
+    if (@event is InputEventMouseButton)
+    {
+      var inputEvent = (InputEventMouseButton)@event;
+
+      if (inputEvent.DoubleClick)
+      {
+        ((IUsable)GetData()).Use();
+      }
+    }
   }
 }

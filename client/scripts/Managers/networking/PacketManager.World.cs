@@ -1,4 +1,5 @@
-﻿using Packets.Server;
+﻿using Godot;
+using Packets.Server;
 
 partial class PacketManager
 {
@@ -49,5 +50,28 @@ partial class PacketManager
     var actor = Spawner.Instance.GetActor<CharacterActor>(pck.ActorId);
 
     actor.EmitSignal(CharacterActor.SignalName.Effect, pck.EffectType, pck.Value);
+  }
+
+  void OnActorDrop(IServerCommand command)
+  {
+    var pck = (SMActorDrop)command;
+
+    var actor = Spawner.Instance.GetActor<CharacterActor>(pck.ActorId);
+
+    var packedScene = ResourceLoader.Load<PackedScene>("res://items/icon.tscn");
+
+    foreach (var item in pck.Items)
+    {
+      GD.Print("Item data: ", item.id);
+
+      var itemData = ItemManager.Instance.GetItem(item.id);
+
+      var instance = packedScene.Instantiate<ItemDropped>();
+
+      instance.item = itemData;
+      instance.Position = actor.GlobalPosition;
+
+      actor.GetNode("/root/World/Items").AddChild(instance);
+    }
   }
 }

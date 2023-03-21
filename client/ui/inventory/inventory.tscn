@@ -2,25 +2,19 @@
 
 [ext_resource type="Script" path="res://scripts/ui/inventory/Inventory.cs" id="1_5gm0h"]
 
-[node name="Inventory" type="Control"]
-layout_mode = 3
+[node name="Inventory" type="Panel" node_paths=PackedStringArray("shortcut_context")]
+anchors_preset = -1
 anchor_right = 0.455729
 anchor_bottom = 0.435185
 grow_horizontal = 2
 grow_vertical = 2
+mouse_force_pass_scroll_events = false
+shortcut_context = NodePath("")
 script = ExtResource("1_5gm0h")
 metadata/_edit_vertical_guides_ = [525.0]
 metadata/_edit_use_anchors_ = true
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TabContainer" type="TabContainer" parent="Panel"]
+[node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,29 +23,29 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 12
 
-[node name="Consume" type="MarginContainer" parent="Panel/TabContainer"]
+[node name="Consume" type="MarginContainer" parent="TabContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/TabContainer/Consume"]
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Consume"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/TabContainer/Consume/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Consume/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="HFlowContainer" type="HFlowContainer" parent="Panel/TabContainer/Consume/ScrollContainer/VBoxContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="TabContainer/Consume/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/h_separation = 12
 theme_override_constants/v_separation = 12
 
-[node name="Equipments" type="MarginContainer" parent="Panel/TabContainer"]
+[node name="Equipments" type="MarginContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 12
@@ -59,10 +53,10 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/TabContainer/Equipments"]
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Equipments"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/TabContainer/Equipments/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Equipments/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12

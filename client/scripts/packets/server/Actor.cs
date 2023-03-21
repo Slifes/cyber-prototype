@@ -61,4 +61,13 @@ namespace Packets.Server
     [Key(1)] public int ActorType;
     [Key(2)] public int State;
   }
+
+  [MessagePackObject]
+  public partial struct SMActorDrop : IServerCommand
+  {
+    [Key(0)] public int ActorId;
+    [Key(1)] public int ActorType;
+    [Key(2)] public int Money;
+    [Key(3)] public PckItem[] Items;
+  }
 }
