@@ -2,7 +2,7 @@
 
 partial class AreaSkillBase : Area3D
 {
-  protected IActor actor;
+  public IActorZone Actor;
 
   [Export]
   public float LifeTime;

@@ -27,3 +27,9 @@ enum JobType
   Mechanic,
   Healing,
 }
+
+enum EffectType
+{
+  Heal,
+  Damage,
+}

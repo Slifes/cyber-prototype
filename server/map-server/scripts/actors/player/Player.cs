@@ -28,14 +28,18 @@ partial class Player : SessionActor
     equipment = new ActorEquipment(this);
 
     zones = new();
+
+    AddItems();
+  }
+
+  void AddItems()
+  {
+    inventory.Add(0, 2);
   }
 
   public void SendPacketToZone(string name, params Variant[] args)
   {
-    foreach (var zone in zones)
-    {
-      zone.Rpc(name, args);
-    }
+    zones.ForEach((zone) => zone.Rpc(name, args));
   }
 
   public void AddZone(BaseShard zone)
@@ -58,7 +62,8 @@ partial class Player : SessionActor
       ActorId = GetActorId(),
       ActorType = (int)ActorType.Player,
       Position = new float[3] { Position.X, Position.Y, Position.Z },
-      Yaw = Rotation.Y
+      Yaw = Rotation.Y,
+      Data = GetData().AsByteArray()
     };
   }
 }

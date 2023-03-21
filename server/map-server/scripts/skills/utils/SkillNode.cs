@@ -6,12 +6,11 @@ partial class SkillNode : Node3D
 
   public override void _Ready()
   {
-    if (Multiplayer.IsServer())
-      instance = this;
+    instance = this;
   }
 
-  public static void Spawn(AreaSkillBase areaSkill)
+  public static void Spawn(Node skill)
   {
-    instance.CallDeferred("add_child", areaSkill);
+    instance.CallDeferred("add_child", skill);
   }
 }

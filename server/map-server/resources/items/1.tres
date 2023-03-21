@@ -9,4 +9,5 @@ Slot = 2
 Attributes = Array[Resource]([ExtResource("1_y52n0")])
 Name = "Weapon"
 Type = 2
-ID = 2
+Price = 0
+ID = 1

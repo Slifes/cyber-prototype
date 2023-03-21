@@ -24,6 +24,8 @@ partial class BaseShard : Node
     ((Player)actor).RemoveZone(this);
 
     Rpc("ActorDisconnected", actor.GetActorId());
+
+
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

@@ -4,11 +4,9 @@ using Packets.Server;
 partial class Zone
 {
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorEnteredZone(int peerId, int actorId, int type, Vector3 position, float yaw, Variant data, bool broadcast)
+  public void ActorEnteredZone(int peerId, int actorId, int type, Vector3 position, float yaw, Variant data)
   {
     AddActorToNearest(peerId, actorId, (ActorType)type);
-
-    if (!broadcast) return;
 
     Networking.Instance.SendPacket(peerId, new SMActorEnteredZone
     {
@@ -21,11 +19,9 @@ partial class Zone
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorExitedZone(int peerId, int actorId, int type, bool broadcast)
+  public void ActorExitedZone(int peerId, int actorId, int type)
   {
     RemoveActorFromNearests(peerId, actorId, (ActorType)type);
-
-    if (!broadcast) return;
 
     Networking.Instance.SendPacket(peerId, new SMActorExitedZone
     {
@@ -107,7 +103,7 @@ partial class Zone
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void RequestSkill(Variant actorId, Variant skillId, Variant data)
+  public void RequestSkill(int actorId, int skillId, Variant data)
   {
     var actor = spawner.Get((int)actorId);
 
@@ -130,14 +126,46 @@ partial class Zone
     });
   }
 
-  [Rpc(MultiplayerApi.RpcMode.Authority, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void ActorTakeDamage(int actorId, int actorType, int damage)
+  [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void UseItem(int actorId, int itemId)
   {
-    Networking.Instance.SendPacketToMany(actorId, GetPlayerNearest(actorId), new SMActorDamage
+    var item = ItemManager.Instance.Get(itemId);
+
+    GD.Print("Item: ", item);
+
+    if (item != null && item.Type == ItemType.Active)
+    {
+      var usable = (Usable)item;
+
+      var actor = (PlayerZone)spawner.Get(actorId);
+
+      GD.Print("Send Usable skill");
+
+      actor.EmitSignal(ZoneActor.SignalName.ExecuteSkill, usable.skillId, new Variant());
+    }
+  }
+
+  [Rpc(MultiplayerApi.RpcMode.Authority, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void ActorEffect(int actorId, int actorType, int effectType, int effectValue)
+  {
+    if ((ActorType)actorType == ActorType.Player)
+    {
+      var actor = SessionManager.Instance.GetActor(actorId);
+
+      switch ((EffectType)effectType)
+      {
+        case EffectType.Damage:
+          actor.TakeDamage(effectValue);
+          break;
+      }
+    }
+
+    Networking.Instance.SendPacketToMany(actorId, GetPlayerNearest(actorId), new SMActorEffect
     {
       ActorId = actorId,
       ActorType = actorType,
-      Damage = damage
+      EffectType = effectType,
+      Value = effectValue
     });
   }
 }

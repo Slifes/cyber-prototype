@@ -39,29 +39,56 @@ partial class Zone : BaseShard
     return EMPTY_LIST;
   }
 
+  void AddToNearestPlayer(int peerId, int actorId)
+  {
+    if (!nearestsPlayer.ContainsKey(peerId))
+    {
+      nearestsPlayer.Add(peerId, new List<int>() { actorId });
+    }
+    else
+    {
+      nearestsPlayer[peerId].Add(actorId);
+    }
+  }
+
+  void AddToNearestActors(int peerId, int actorId)
+  {
+    if (!neraests.ContainsKey(peerId))
+    {
+      neraests.Add(peerId, new List<int>() { actorId });
+    }
+    else
+    {
+      neraests[peerId].Add(actorId);
+    }
+  }
+
+  void RemoveFromNearestPlayer(int peerId, int actorId)
+  {
+    if (nearestsPlayer.ContainsKey(peerId))
+    {
+      nearestsPlayer[peerId].Remove(actorId);
+    }
+  }
+
+  void RemoveFromNearestActors(int peerId, int actorId)
+  {
+    if (neraests.ContainsKey(peerId))
+    {
+      neraests[peerId].Remove(actorId);
+    }
+  }
+
   void AddActorToNearest(int peerId, int actorId, ActorType type)
   {
     if (type == ActorType.Player)
     {
-      if (!nearestsPlayer.ContainsKey(peerId))
-      {
-        nearestsPlayer.Add(peerId, new List<int>() { actorId });
-      }
-      else
-      {
-        nearestsPlayer[peerId].Add(actorId);
-      }
+      AddToNearestPlayer(peerId, actorId);
     }
     else
     {
-      if (!neraests.ContainsKey(peerId))
-      {
-        neraests.Add(peerId, new List<int>() { actorId });
-      }
-      else
-      {
-        neraests[peerId].Add(actorId);
-      }
+      AddToNearestActors(peerId, actorId);
+      AddToNearestPlayer(actorId, peerId);
     }
   }
 
@@ -69,17 +96,12 @@ partial class Zone : BaseShard
   {
     if (type == ActorType.Player)
     {
-      if (nearestsPlayer.ContainsKey(peerId))
-      {
-        nearestsPlayer[peerId].Remove(actorId);
-      }
+      RemoveFromNearestPlayer(peerId, actorId);
     }
     else
     {
-      if (neraests.ContainsKey(peerId))
-      {
-        neraests[peerId].Remove(actorId);
-      }
+      RemoveFromNearestActors(peerId, actorId);
+      RemoveFromNearestPlayer(actorId, peerId);
     }
   }
 }

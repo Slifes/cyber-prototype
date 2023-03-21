@@ -10,15 +10,11 @@ partial class BaseEnemy : BaseNPC
 
   private ActorState state;
 
-  private Ghosting ghosting;
-
   public override void _Ready()
   {
     base._Ready();
 
     behavior = new AgressiveBehavior(this);
-
-    ghosting = new Ghosting(this);
 
     state = ActorState.Idle;
 
@@ -35,28 +31,5 @@ partial class BaseEnemy : BaseNPC
   public override void _PhysicsProcess(double delta)
   {
     behavior.Update(delta);
-  }
-
-  public override Variant GetData()
-  {
-    var data = new Godot.Collections.Array<Variant>()
-    {
-      ID,
-      currentHP,
-      maxHP,
-    };
-
-    return data;
-  }
-
-  public override void TakeDamage(int damage)
-  {
-    base.TakeDamage(damage);
-
-    if (currentHP <= 0)
-    {
-      // this.ChangeState(AIState.Died);
-    }
-
   }
 }

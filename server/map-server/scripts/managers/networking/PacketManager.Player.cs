@@ -16,4 +16,9 @@ partial class PacketManager
   {
     actor.RequestSkill((PlayerRequestSkill)command);
   }
+
+  void OnPlayerUseItem(long peerId, Player actor, IClientCommand command)
+  {
+    actor.UseItem((PlayerUseItem)command);
+  }
 }

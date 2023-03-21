@@ -43,18 +43,17 @@ class SkillHandler
   {
     var skill = SkillManager.Instance.Get(id);
 
-    if (skill.Type == SkillType.Active)
+    switch (skill.Type)
     {
-      GD.Print("Executed Skill");
-      var instance = skill.Scene.Instantiate<Node3D>();
+      case SkillType.Active:
+        ActiveSkill.Execute(actor, skill);
+        break;
 
-      instance.Rotation = actor.Rotation;
-
-      SkillNode.Spawn((AreaSkillBase)instance);
-
-      instance.CallDeferred("set_global_position", actor.GlobalPosition);
-
-      Zone.Instance.Rpc("ExecuteSkill", actor.GetActorID(), (int)actor.GetActorType(), id, data);
+      case SkillType.Buff:
+        BuffSkill.Execute(actor, skill);
+        break;
     }
+
+    Zone.Instance.Rpc("ExecuteSkill", actor.GetActorID(), (int)actor.GetActorType(), id, data);
   }
 }

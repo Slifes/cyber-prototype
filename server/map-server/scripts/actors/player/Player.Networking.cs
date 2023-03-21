@@ -27,4 +27,14 @@ partial class Player
 
     SendPacketToZone("RequestSkill", GetActorId(), command.skillId, new Variant());
   }
+
+  public void UseItem(PlayerUseItem command)
+  {
+    if (inventory.Contains(command.itemId))
+    {
+      SendPacketToZone("UseItem", GetActorId(), command.itemId);
+
+      inventory.Remove(command.itemId, 1);
+    }
+  }
 }

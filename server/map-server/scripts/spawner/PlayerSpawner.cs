@@ -22,13 +22,12 @@ partial class PlayerSpawner : Node
       var player = playerScene.Instantiate<Player>();
 
       player.Name = name.ToString();
-
-      player.SetServerData(data);
       player.Position = (Vector3)position;
+      player.SetServerData(data);
 
       AddChild(player);
 
-      SessionManager.Instance.AddActor(int.Parse(player.Name), player);
+      SessionManager.Instance.AddActor(player.GetActorId(), player);
 
       return player;
     }

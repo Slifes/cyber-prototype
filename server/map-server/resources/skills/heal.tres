@@ -1,14 +1,16 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cufs3lyd3rjyh"]
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://cufs3lyd3rjyh"]
 
+[ext_resource type="PackedScene" uid="uid://k5a2awk2mfc7" path="res://skills/heal.tscn" id="1_86kr0"]
 [ext_resource type="Script" path="res://scripts/resources/Skill.cs" id="1_b71ba"]
 
 [resource]
 script = ExtResource("1_b71ba")
 Name = "Heal"
 Level = 1
-MinDamage = 0
-MaxDamage = 0
-Type = 0
+MinValue = 0
+MaxValue = 0
+Type = 2
 SP = 10
 Delay = 20.0
+Scene = ExtResource("1_86kr0")
 ID = 2

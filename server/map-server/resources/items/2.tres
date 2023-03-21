@@ -1,0 +1,13 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://bbl1pf7wuy4ps"]
+
+[ext_resource type="Resource" uid="uid://ccngc8v67v10k" path="res://resources/attributes/10_melee.tres" id="1_tox6j"]
+[ext_resource type="Script" path="res://scripts/resources/items/Equipment.cs" id="2_tfp3t"]
+
+[resource]
+script = ExtResource("2_tfp3t")
+Slot = 0
+Attributes = Array[Resource]([ExtResource("1_tox6j")])
+Name = "Hat"
+Type = 2
+Price = 0
+ID = 2

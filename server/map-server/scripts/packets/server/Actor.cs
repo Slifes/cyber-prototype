@@ -46,12 +46,12 @@ namespace Packets.Server
   }
 
   [MessagePackObject]
-  public partial struct SMActorDamage : IServerCommand
+  public partial struct SMActorEffect : IServerCommand
   {
     [Key(0)] public int ActorId;
     [Key(1)] public int ActorType;
-    [Key(2)] public int Damage;
-    [Key(3)] public int CurrentHP;
+    [Key(2)] public int EffectType;
+    [Key(3)] public int Value;
   }
 
   [MessagePackObject]

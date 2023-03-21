@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://k5a2awk2mfc7"]
+
+[ext_resource type="Script" path="res://scripts/skills/Heal.cs" id="1_5a4vi"]
+
+[node name="heal" type="Node3D"]
+script = ExtResource("1_5a4vi")
+Value = 10

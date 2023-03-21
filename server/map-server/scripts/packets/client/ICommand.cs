@@ -7,5 +7,6 @@ namespace Packets.Client
   [Union(2, typeof(PlayerStartMovement))]
   [Union(3, typeof(PlayerStopMovement))]
   [Union(4, typeof(PlayerRequestSkill))]
+  [Union(5, typeof(PlayerUseItem))]
   public interface IClientCommand { }
 }

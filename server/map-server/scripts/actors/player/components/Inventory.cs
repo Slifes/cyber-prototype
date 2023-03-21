@@ -1,5 +1,4 @@
-﻿using Godot;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Packets.Server;
 
 class Inventory
@@ -42,7 +41,7 @@ class Inventory
     Networking.Instance.SendPacket(player.GetActorId(), new SMInventoryRemoveItem
     {
       itemId = itemId,
-      amount = item.amount
+      amount = amount
     });
   }
 
@@ -72,5 +71,10 @@ class Inventory
       itemId = itemId,
       amount = amount
     });
+  }
+
+  public bool Contains(int id)
+  {
+    return items.ContainsKey(id);
   }
 }

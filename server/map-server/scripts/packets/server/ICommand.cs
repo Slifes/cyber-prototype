@@ -12,7 +12,7 @@
   [MessagePack.Union(26, typeof(SMSkillList))]
   [MessagePack.Union(30, typeof(SMActorStartMove))]
   [MessagePack.Union(31, typeof(SMActorStopMove))]
-  [MessagePack.Union(32, typeof(SMActorDamage))]
+  [MessagePack.Union(32, typeof(SMActorEffect))]
   [MessagePack.Union(33, typeof(SMActorExecuteSkill))]
   public interface IServerCommand { }
 }

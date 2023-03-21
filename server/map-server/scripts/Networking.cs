@@ -73,10 +73,7 @@ public partial class Networking : Node3D
   {
     var pck = Serialize(cmd);
 
-    foreach (int peerId in peers)
-    {
-      sceneMultiplayer.SendBytes(pck, peerId);
-    }
+    peers.ForEach((peerId) => sceneMultiplayer.SendBytes(pck, peerId));
   }
 
   public void SendPacketToMany(int peer, List<int> peers, Packets.Server.IServerCommand cmd)
@@ -85,10 +82,7 @@ public partial class Networking : Node3D
 
     sceneMultiplayer.SendBytes(pck, peer);
 
-    foreach (int peerId in peers)
-    {
-      sceneMultiplayer.SendBytes(pck, peerId);
-    }
+    peers.ForEach((peerId) => sceneMultiplayer.SendBytes(pck, peerId));
   }
 
   public void Disconnect(int peerId)
