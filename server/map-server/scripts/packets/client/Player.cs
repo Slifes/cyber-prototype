@@ -27,4 +27,10 @@ namespace Packets.Client
   {
     [Key(0)] public int itemId;
   }
+
+  [MessagePackObject]
+  public partial struct PlayerPickUpItem : IClientCommand
+  {
+    [Key(0)] public int itemId;
+  }
 }

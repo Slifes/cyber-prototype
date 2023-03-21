@@ -20,6 +20,7 @@ partial class PacketManager
       {typeof(PlayerStopMovement), OnPlayerStopMovement},
       {typeof(PlayerRequestSkill), OnPlayerRequestSkill},
       {typeof(PlayerUseItem), OnPlayerUseItem},
+      {typeof(PlayerPickUpItem), OnPlayerPickUpItem},
       {typeof(EnterSessionMap), OnEnterSessionMap},
       {typeof(FetchServerTime), OnFetchServerTime}
     };

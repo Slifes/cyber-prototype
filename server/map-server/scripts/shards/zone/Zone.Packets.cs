@@ -102,6 +102,40 @@ partial class Zone
     });
   }
 
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void ActorState(int actorId, int actorType, int state)
+  {
+    Networking.Instance.SendPacketToMany(GetPlayerNearest(actorId), new SMActorState
+    {
+      ActorId = actorId,
+      ActorType = actorType,
+      State = state
+    });
+  }
+
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void ActorDrop(int actorId, int actorType, int money, Variant data)
+  {
+    var items = data.AsGodotArray();
+    var converted = new PckItem[items.Count];
+
+    for (var i = 0; i < items.Count; i++)
+    {
+      var instance = items[i].AsGodotDictionary();
+      converted[i].id = instance["item"].AsInt32();
+      GD.Print("Received Item: ", converted[i].id);
+      converted[i].amount = instance["amount"].AsInt32();
+    }
+
+    Networking.Instance.SendPacketToMany(GetPlayerNearest(actorId), new SMActorDrop
+    {
+      ActorId = actorId,
+      ActorType = actorType,
+      Money = money,
+      Items = converted
+    });
+  }
+
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void RequestSkill(int actorId, int skillId, Variant data)
   {

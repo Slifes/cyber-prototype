@@ -14,4 +14,9 @@
   {
     Instance.Rpc("ActorEffect", actorId, (int)actorType, (int)type, value);
   }
+
+  public static void SendActorDrop(int actorId, ActorType actorType, int money, Godot.Collections.Array items)
+  {
+    Instance.Rpc("ActorDrop", actorId, (int)actorType, money, items);
+  }
 }

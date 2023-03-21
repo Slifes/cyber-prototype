@@ -7,7 +7,8 @@ enum AIState
 {
   Walking,
   Steering,
-  Attacking
+  Attacking,
+  Died
 }
 
 abstract class Behavior
