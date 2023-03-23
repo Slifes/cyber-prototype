@@ -26,9 +26,9 @@ partial class PhysicalAttack : AreaSkillBase
   {
     if (body.IsInGroup("Actor"))
     {
-      ZoneActor actor = (ZoneActor)body;
+      ZoneActor target = (ZoneActor)body;
 
-      actor.TakeDamage(CalculateDamage());
+      target.TakeDamage(Actor.GetActorID(), CalculateDamage());
     }
   }
 }

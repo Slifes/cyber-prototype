@@ -17,7 +17,7 @@ partial class ShardConnect : Node
   [Export]
   public bool AutoLoad = true;
 
-  protected ENetMultiplayerPeer multiplayerPeer;
+  ENetMultiplayerPeer multiplayerPeer;
 
   SceneMultiplayer MultiplayerCustom;
 

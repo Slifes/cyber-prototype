@@ -15,6 +15,7 @@ class BaseMovement : IBehavior
 
   public void Start()
   {
+    behavior.Actor.ClearBattleStats();
     AgressiveArea.BodyEntered += TargetEntered;
   }
 

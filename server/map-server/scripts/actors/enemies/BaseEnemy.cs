@@ -7,7 +7,7 @@ partial class BaseEnemy : BaseNPC
   public Array<Skill> skills;
 
   [Export]
-  public Array<Item> items;
+  public Array<int> itemsId;
 
   [Export]
   public int MoneyMax;
@@ -15,6 +15,8 @@ partial class BaseEnemy : BaseNPC
   private Behavior behavior;
 
   private ActorState state;
+
+  BattleStats battleStats;
 
   public override void _Ready()
   {
@@ -25,6 +27,8 @@ partial class BaseEnemy : BaseNPC
     state = ActorState.Idle;
 
     Array<int> ids = new();
+
+    battleStats = new(this);
 
     foreach (var id in skills)
     {
@@ -39,9 +43,11 @@ partial class BaseEnemy : BaseNPC
     behavior.Update(delta);
   }
 
-  public override void TakeDamage(int damage)
+  public override void TakeDamage(int actorId, int damage)
   {
-    base.TakeDamage(damage);
+    base.TakeDamage(actorId, damage);
+
+    battleStats.ComputeDamage(actorId, damage);
 
     if (currentHP <= 0)
     {
@@ -49,20 +55,16 @@ partial class BaseEnemy : BaseNPC
     }
   }
 
-  public void SendDropitems()
+  public void SendDead()
   {
-    var list = new Godot.Collections.Array();
+    var actorId = battleStats.GetActorByMaxDamage();
 
-    foreach (var item in items)
-    {
-      var obj = new Godot.Collections.Dictionary();
+    Zone.SendActorDead(GetActorID(), GetActorType());
+    // Zone.SendActorDrop(GetActorID(), GetActorType(), actorId, MoneyMax, itemsId);
+  }
 
-      obj.Add("item", item.ID);
-      obj.Add("amount", 1);
-
-      list.Add(obj);
-    }
-
-    Zone.SendActorDrop(GetActorID(), GetActorType(), MoneyMax, list);
+  public void ClearBattleStats()
+  {
+    battleStats.ClearDamage();
   }
 }

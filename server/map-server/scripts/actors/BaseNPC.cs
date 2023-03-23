@@ -36,10 +36,10 @@ partial class BaseNPC : ZoneActor
     return data;
   }
 
-  public override void TakeDamage(int damage)
+  public override void TakeDamage(int actorId, int damage)
   {
     currentHP -= damage;
 
-    base.TakeDamage(damage);
+    base.TakeDamage(actorId, damage);
   }
 }

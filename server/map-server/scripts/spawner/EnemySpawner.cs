@@ -30,7 +30,6 @@ partial class EnemySpawner : Node3D
       var mob = Mob.Instantiate<Node3D>();
 
       mob.Name = Multiplayer.MultiplayerPeer.GenerateUniqueId().ToString();
-
       mob.Position = new Vector3(GD.Randf() * -5, 1, GD.Randf() * 5);
 
       AddChild(mob);

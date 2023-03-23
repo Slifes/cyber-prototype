@@ -4,11 +4,9 @@
 [ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="2_papxf"]
 [ext_resource type="Script" path="res://scripts/shards/ShardSpawner.cs" id="3_w5anj"]
 [ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_8e5xc"]
-[ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/main_server.tscn" id="5_iorl7"]
+[ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/_.tscn" id="5_iorl7"]
 [ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_1tomd"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ylmw0"]
-size = Vector3(4, 0.2, 20)
+[ext_resource type="Script" path="res://scripts/shards/zone/components/DropItems.cs" id="7_6ge0o"]
 
 [node name="zone_02" type="Node3D"]
 script = ExtResource("1_3i3in")
@@ -34,8 +32,5 @@ current = true
 [node name="skills" type="Node3D" parent="zone"]
 script = ExtResource("6_1tomd")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.99531, 0, 0)
-shape = SubResource("BoxShape3D_ylmw0")
+[node name="items" type="Node" parent="zone"]
+script = ExtResource("7_6ge0o")

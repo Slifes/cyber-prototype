@@ -1,107 +1,44 @@
 ﻿using Godot;
-using System.Collections.Generic;
+using Packets.Server;
 
-partial class Zone : BaseShard
+partial class Zone : Node
 {
   static PackedScene packedScene = ResourceLoader.Load<PackedScene>("res://actors/player_zone.tscn");
 
-  public Dictionary<int, List<int>> neraests;
+  ShardSpawner spawner;
 
-  public Dictionary<int, List<int>> nearestsPlayer;
+  Nearests nearests;
+
+  DropItems dropItems;
 
   private static Zone _instance;
 
   public static Zone Instance { get { return _instance; } }
 
-  public static List<int> EMPTY_LIST = new List<int>();
-
   public override void _Ready()
   {
     base._Ready();
 
-    neraests = new();
-
-    nearestsPlayer = new();
-
     if (GetParent<ShardConnect>().IsServer)
     {
       _instance = this;
-    }
-  }
 
-  public List<int> GetPlayerNearest(int actorId)
-  {
-    if (nearestsPlayer.ContainsKey(actorId))
-    {
-      return nearestsPlayer[actorId];
-    }
-
-    return EMPTY_LIST;
-  }
-
-  void AddToNearestPlayer(int peerId, int actorId)
-  {
-    if (!nearestsPlayer.ContainsKey(peerId))
-    {
-      nearestsPlayer.Add(peerId, new List<int>() { actorId });
+      spawner = GetNode<ShardSpawner>("spawner");
+      dropItems = GetNode<DropItems>("items");
     }
     else
     {
-      nearestsPlayer[peerId].Add(actorId);
+      nearests = new();
     }
   }
 
-  void AddToNearestActors(int peerId, int actorId)
+  void SendPacketToAllNearest(int actorId, IServerCommand command)
   {
-    if (!neraests.ContainsKey(peerId))
-    {
-      neraests.Add(peerId, new List<int>() { actorId });
-    }
-    else
-    {
-      neraests[peerId].Add(actorId);
-    }
+    Networking.Instance.SendPacketToMany(nearests.GetPlayerNearest(actorId), command);
   }
 
-  void RemoveFromNearestPlayer(int peerId, int actorId)
+  void SendPacketToAllNearestAndMe(int actorId, IServerCommand command)
   {
-    if (nearestsPlayer.ContainsKey(peerId))
-    {
-      nearestsPlayer[peerId].Remove(actorId);
-    }
-  }
-
-  void RemoveFromNearestActors(int peerId, int actorId)
-  {
-    if (neraests.ContainsKey(peerId))
-    {
-      neraests[peerId].Remove(actorId);
-    }
-  }
-
-  void AddActorToNearest(int peerId, int actorId, ActorType type)
-  {
-    if (type == ActorType.Player)
-    {
-      AddToNearestPlayer(peerId, actorId);
-    }
-    else
-    {
-      AddToNearestActors(peerId, actorId);
-      AddToNearestPlayer(actorId, peerId);
-    }
-  }
-
-  void RemoveActorFromNearests(int peerId, int actorId, ActorType type)
-  {
-    if (type == ActorType.Player)
-    {
-      RemoveFromNearestPlayer(peerId, actorId);
-    }
-    else
-    {
-      RemoveFromNearestActors(peerId, actorId);
-      RemoveFromNearestPlayer(actorId, peerId);
-    }
+    Networking.Instance.SendPacketToMany(actorId, nearests.GetPlayerNearest(actorId), command);
   }
 }

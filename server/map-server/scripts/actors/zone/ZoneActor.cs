@@ -31,7 +31,7 @@ partial class ZoneActor : CharacterBody3D, IActorZone
     return Position;
   }
 
-  public virtual void TakeDamage(int value)
+  public virtual void TakeDamage(int actorId, int value)
   {
     Zone.SendActorEffect(this.GetActorID(), this.GetActorType(), EffectType.Damage, value);
   }

@@ -24,8 +24,6 @@ partial class PacketManager
 
   void OnPlayerPickUpItem(long peerId, Player actor, IClientCommand command)
   {
-    var pck = (PlayerPickUpItem)command;
-
-    actor.Inv.Add(pck.itemId, 1);
+    actor.PickUp((PlayerPickUpItem)command);
   }
 }

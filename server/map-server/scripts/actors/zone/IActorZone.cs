@@ -6,9 +6,7 @@
 
   Godot.Vector3 GetActorPosition();
 
-  // float GetActorYaw();
-
   Godot.Variant GetData();
 
-  void TakeDamage(int value);
+  void TakeDamage(int actorId, int value);
 }

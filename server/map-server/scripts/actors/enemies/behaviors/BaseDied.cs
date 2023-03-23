@@ -30,7 +30,7 @@ class BaseDied : IBehavior
   {
     GD.Print("Dead");
 
-    behavior.Actor.SendDropitems();
+    behavior.Actor.SendDead();
   }
 
   public Variant GetData()

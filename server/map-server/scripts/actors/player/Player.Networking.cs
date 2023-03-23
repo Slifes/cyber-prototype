@@ -37,4 +37,9 @@ partial class Player
       inventory.Remove(command.itemId, 1);
     }
   }
+
+  public void PickUp(PlayerPickUpItem command)
+  {
+    SendPacketToZone("PickUp", GetActorId(), command.dropID);
+  }
 }

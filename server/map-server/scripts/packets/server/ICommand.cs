@@ -1,9 +1,11 @@
 ﻿namespace Packets.Server
 {
   [MessagePack.Union(1, typeof(SMServerTime))]
+  [MessagePack.Union(2, typeof(SMError))]
   [MessagePack.Union(10, typeof(SMActorEnteredZone))]
   [MessagePack.Union(11, typeof(SMActorExitedZone))]
-  [MessagePack.Union(12, typeof(SMActorDrop))]
+  [MessagePack.Union(12, typeof(SMActorDroppedItems))]
+  [MessagePack.Union(13, typeof(SMDroppedItemRemove))]
   [MessagePack.Union(20, typeof(SMInvetoryList))]
   [MessagePack.Union(21, typeof(SMInventoryAddItem))]
   [MessagePack.Union(22, typeof(SMInventoryRemoveItem))]

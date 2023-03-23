@@ -1,20 +1,12 @@
 ﻿using Godot;
 
-partial class BaseShard : Node
+partial class Zone
 {
-  protected ShardSpawner spawner;
-
-  public override void _Ready()
-  {
-    if (GetParent<ShardConnect>().IsServer)
-    {
-      spawner = GetNode<ShardSpawner>("spawner");
-    }
-  }
-
   public void SendActorConnected(SessionActor actor)
   {
     ((Player)actor).AddZone(this);
+
+    nearests.CreateActorList(actor.GetActorId());
 
     Rpc("ActorConnected", actor.GetActorId(), (int)actor.GetActorType(), actor.Position, actor.Yaw);
   }
@@ -23,9 +15,9 @@ partial class BaseShard : Node
   {
     ((Player)actor).RemoveZone(this);
 
+    nearests.RemoveActorList(actor.GetActorId());
+
     Rpc("ActorDisconnected", actor.GetActorId());
-
-
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

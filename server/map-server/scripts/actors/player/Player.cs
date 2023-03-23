@@ -9,7 +9,7 @@ partial class Player : SessionActor
 
   ActorEquipment equipment;
 
-  List<BaseShard> zones;
+  List<Zone> zones;
 
   public Inventory Inv { get { return inventory; } }
 
@@ -42,7 +42,7 @@ partial class Player : SessionActor
     zones.ForEach((zone) => zone.Rpc(name, args));
   }
 
-  public void AddZone(BaseShard zone)
+  public void AddZone(Zone zone)
   {
     if (!zones.Contains(zone))
     {
@@ -50,7 +50,7 @@ partial class Player : SessionActor
     }
   }
 
-  public void RemoveZone(BaseShard zone)
+  public void RemoveZone(Zone zone)
   {
     zones.Remove(zone);
   }

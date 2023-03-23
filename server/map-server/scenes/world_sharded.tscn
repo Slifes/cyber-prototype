@@ -18,6 +18,7 @@ script = ExtResource("3_a3rwj")
 
 [node name="zone_01" parent="zone_01" instance=ExtResource("3_e882b")]
 Port = 3000
+AutoLoad = false
 
 [node name="area_01" type="Area3D" parent="zone_01" node_paths=PackedStringArray("shard")]
 collision_layer = 0
@@ -34,13 +35,14 @@ shape = SubResource("BoxShape3D_gd514")
 Port = 3002
 
 [node name="area_02" type="Area3D" parent="zone_02" node_paths=PackedStringArray("shard")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.2691, 0.0441532, -0.123739)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.2989, 0, 0)
 collision_layer = 0
 monitorable = false
 script = ExtResource("4_tv7lc")
 shard = NodePath("../zone_02")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="zone_02/area_02"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.33697, 0, 0)
 shape = SubResource("BoxShape3D_gd514")
 
 [node name="Camera3D" type="Camera3D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dfk1nxvyv37dx"]
+[gd_scene load_steps=11 format=3 uid="uid://dfk1nxvyv37dx"]
 
 [ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="1_bkhae"]
 [ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_plbjr"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_gp58d"]
 [ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/base_enemy.tscn" id="7_21f8w"]
 [ext_resource type="PackedScene" uid="uid://b42w2rdd5cjb1" path="res://actors/base_npc.tscn" id="9_scssu"]
+[ext_resource type="Script" path="res://scripts/shards/zone/components/DropItems.cs" id="10_tpxm1"]
 
 [node name="zone_01" type="Node3D"]
 script = ExtResource("1_plbjr")
@@ -18,6 +19,12 @@ AutoLoad = false
 
 [node name="zone" type="Node3D" parent="."]
 script = ExtResource("1_bkhae")
+
+[node name="npcs" type="Node3D" parent="zone"]
+
+[node name="1" parent="zone/npcs" instance=ExtResource("9_scssu")]
+transform = Transform3D(0.72175, -0.000399443, -0.692154, 0.000432871, 1, -0.000125724, 0.692154, -0.000208877, 0.72175, -11.3615, 0.364864, -5.24418)
+ID = 1
 
 [node name="map" parent="zone" instance=ExtResource("4_1328x")]
 
@@ -33,11 +40,8 @@ MobCount = 5
 [node name="skills" type="Node3D" parent="zone"]
 script = ExtResource("6_gp58d")
 
-[node name="npcs" type="Node3D" parent="zone"]
-
-[node name="1" parent="zone/npcs" instance=ExtResource("9_scssu")]
-transform = Transform3D(0.72175, -0.000399443, -0.692154, 0.000432871, 1, -0.000125724, 0.692154, -0.000208877, 0.72175, -11.3615, 0.364864, -5.24418)
-ID = 1
+[node name="items" type="Node" parent="zone"]
+script = ExtResource("10_tpxm1")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15, 0)
