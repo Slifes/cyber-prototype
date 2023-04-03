@@ -54,7 +54,11 @@ partial class PacketManager
 
   void OnActorDrop(IServerCommand command)
   {
-    var pck = (SMActorDrop)command;
+    GD.Print("Dropped Item");
+
+    var pck = (SMActorDroppedItems)command;
+
+    GD.Print(pck);
 
     var actor = Spawner.Instance.GetActor<CharacterActor>(pck.ActorId);
 
@@ -62,16 +66,29 @@ partial class PacketManager
 
     foreach (var item in pck.Items)
     {
-      GD.Print("Item data: ", item.id);
+      GD.Print("Item data: ", item.itemId);
 
-      var itemData = ItemManager.Instance.GetItem(item.id);
+      var itemData = ItemManager.Instance.GetItem(item.itemId);
 
       var instance = packedScene.Instantiate<ItemDropped>();
 
+      instance.Name = item.dropId.ToString();
       instance.item = itemData;
       instance.Position = actor.GlobalPosition;
 
       actor.GetNode("/root/World/Items").AddChild(instance);
+    }
+  }
+
+  void OnItemDroppedRemove(IServerCommand command)
+  {
+    var pck = (SMDroppedItemRemove)command;
+
+    var node = Spawner.Instance.GetNode("/root/World/Items/" + pck.dropId.ToString());
+
+    if (node != null)
+    {
+      node.QueueFree();
     }
   }
 }

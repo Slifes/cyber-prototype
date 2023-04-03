@@ -63,11 +63,29 @@ namespace Packets.Server
   }
 
   [MessagePackObject]
-  public partial struct SMActorDrop : IServerCommand
+  public struct DroppedItem
+  {
+    [Key(0)] public int dropId;
+    [Key(1)] public int itemId;
+  }
+
+  [MessagePackObject]
+  public partial struct SMActorDroppedItems : IServerCommand
   {
     [Key(0)] public int ActorId;
     [Key(1)] public int ActorType;
-    [Key(2)] public int Money;
-    [Key(3)] public PckItem[] Items;
+    [Key(3)] public DroppedItem[] Items;
+  }
+
+  [MessagePackObject]
+  public partial struct SMDroppedItemRemove : IServerCommand
+  {
+    [Key(0)] public int dropId;
+  }
+
+  [MessagePackObject]
+  public partial struct SMError : IServerCommand
+  {
+    [Key(0)] public int ErrorCode;
   }
 }

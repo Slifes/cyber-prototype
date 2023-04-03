@@ -31,6 +31,6 @@ namespace Packets.Client
   [MessagePackObject]
   public partial struct PlayerPickUpItem : IClientCommand
   {
-    [Key(0)] public int itemId;
+    [Key(0)] public int dropID;
   }
 }

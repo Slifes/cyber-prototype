@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c1diiei6qulof"]
+[gd_scene load_steps=17 format=3 uid="uid://c1diiei6qulof"]
 
 [ext_resource type="PackedScene" uid="uid://bj8ruaoigjn37" path="res://maps/bridge.tscn" id="1_3v6sk"]
 [ext_resource type="PackedScene" uid="uid://c4frf05kt4lu2" path="res://maps/tree.tscn" id="2_cbrn0"]
@@ -52,6 +52,8 @@ data = PackedVector3Array(-5, 0.5, 10, 5, 0.5, 10, -5, -0.5, 10, 5, 0.5, 10, 5, 
 data = PackedVector3Array(-1, 0.1, 0.5, 1, 0.1, 0.5, -1, -0.1, 0.5, 1, 0.1, 0.5, 1, -0.1, 0.5, -1, -0.1, 0.5, 1, 0.1, -0.5, -1, 0.1, -0.5, 1, -0.1, -0.5, -1, 0.1, -0.5, -1, -0.1, -0.5, 1, -0.1, -0.5, 1, 0.1, 0.5, 1, 0.1, -0.5, 1, -0.1, 0.5, 1, 0.1, -0.5, 1, -0.1, -0.5, 1, -0.1, 0.5, -1, 0.1, -0.5, -1, 0.1, 0.5, -1, -0.1, -0.5, -1, 0.1, 0.5, -1, -0.1, 0.5, -1, -0.1, -0.5, 1, 0.1, 0.5, -1, 0.1, 0.5, 1, 0.1, -0.5, -1, 0.1, 0.5, -1, 0.1, -0.5, 1, 0.1, -0.5, -1, -0.1, 0.5, 1, -0.1, 0.5, -1, -0.1, -0.5, 1, -0.1, 0.5, 1, -0.1, -0.5, -1, -0.1, -0.5)
 
 [sub_resource type="MultiMesh" id="MultiMesh_i7up2"]
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_je075"]
 
 [node name="Map" type="Node3D"]
 
@@ -161,3 +163,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.73076, 0.0644209, 0)
 
 [node name="street3" parent="." instance=ExtResource("3_bf3eh")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.24494, 0.0644209, -4.58069)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.83372, 0)
+shape = SubResource("HeightMapShape3D_je075")

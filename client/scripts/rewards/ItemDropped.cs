@@ -44,12 +44,11 @@ partial class ItemDropped : RigidBody3D
   {
     if (@event.IsPressed())
     {
+      GD.Print("Pick UP");
       NetworkManager.Instance.SendPacket(new Packets.Client.PlayerPickUpItem
       {
-        itemId = item.ID
+        dropID = int.Parse(Name)
       });
-
-      QueueFree();
     }
   }
 }

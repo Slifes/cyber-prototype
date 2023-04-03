@@ -45,41 +45,28 @@ class PredictMovement : IComponent
 
   public void UpdatePosition(Vector3 newPosition)
   {
-    var now = Time.GetTicksMsec();
-
     if (LastUpdateTime == 0)
     {
-      LastUpdateTime = now - 16;
+      LastUpdateTime = Time.GetTicksMsec();
+      LastPositionUpdated = newPosition;
+      return;
     }
 
-    var velocity = (newPosition - actor.GlobalPosition) / (float)(now - LastUpdateTime);
+    var elapsedTime = (float)(Time.GetTicksMsec() - LastUpdateTime);
 
-    if (velocity.IsFinite())
-    {
-      PredictedVelocity = velocity;
-    }
-    else
-    {
-      GD.Print("NEwPosition: ", newPosition);
-      GD.Print("Current Position: ", actor.GlobalPosition);
-      GD.Print("Now: ", now);
-      GD.Print("LastTime: ", LastUpdateTime);
-    }
-
-    GD.Print("PredictedVelocity", PredictedVelocity);
-
-    actor.GlobalPosition = newPosition;
+    PredictedVelocity = (newPosition - LastPositionUpdated) / elapsedTime;
 
     LastPositionUpdated = newPosition;
-
-    LastUpdateTime = now;
+    LastUpdateTime = Time.GetTicksMsec();
   }
 
   void InterpolatePosition()
   {
     var elapsedTime = (float)(Time.GetTicksMsec() - LastUpdateTime);
 
-    actor.GlobalPosition = ((LastPositionUpdated + (PredictedVelocity * elapsedTime)) * PredictionDecayFactor) + (LastPositionUpdated * (1 - PredictionDecayFactor));
+    var predictedPosition = LastPositionUpdated + PredictedVelocity * elapsedTime;
+
+    actor.GlobalPosition = predictedPosition;
   }
 
   public void Update(float delta)
