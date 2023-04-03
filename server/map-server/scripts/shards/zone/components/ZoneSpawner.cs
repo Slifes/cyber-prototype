@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System.Collections.Generic;
 
-partial class ShardSpawner : Node
+partial class ZoneSpawner : Node
 {
   [Export]
   PackedScene actorScene;
@@ -25,6 +25,8 @@ partial class ShardSpawner : Node
     instance.Rotation = new Vector3(0, yaw, 0);
 
     actors.Add(actorId, instance);
+
+    GD.Print("Actors Online: ", actors.Count);
   }
 
   public void Despawn(int actorId)
@@ -34,6 +36,8 @@ partial class ShardSpawner : Node
       actors[actorId].QueueFree();
       actors.Remove(actorId);
     }
+
+    GD.Print("Actors Online: ", actors.Count);
   }
 
   public Node3D Get(int actorId)

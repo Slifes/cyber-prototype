@@ -3,7 +3,7 @@
 partial class ShardArea : Area3D
 {
   [Export]
-  ShardConnect shard;
+  ShardTransport shard;
 
   Zone zone;
 
@@ -29,5 +29,15 @@ partial class ShardArea : Area3D
     SessionActor actor = (SessionActor)body;
 
     zone.SendActorDisconnected(actor);
+  }
+
+  public override string[] _GetConfigurationWarnings()
+  {
+    if (shard == null)
+    {
+      return new string[] { "Shard is not set." };
+    }
+
+    return new string[] { };
   }
 }

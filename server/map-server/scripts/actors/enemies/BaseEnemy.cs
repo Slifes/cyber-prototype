@@ -22,13 +22,13 @@ partial class BaseEnemy : BaseNPC
   {
     base._Ready();
 
+    battleStats = new(this);
+
     behavior = new AgressiveBehavior(this);
 
     state = ActorState.Idle;
 
     Array<int> ids = new();
-
-    battleStats = new(this);
 
     foreach (var id in skills)
     {
@@ -58,9 +58,8 @@ partial class BaseEnemy : BaseNPC
   public void SendDead()
   {
     var actorId = battleStats.GetActorByMaxDamage();
-
+    DropItems.Instance.PublishDrop(GetActorID(), GetActorType(), actorId, itemsId);
     Zone.SendActorDead(GetActorID(), GetActorType());
-    // Zone.SendActorDrop(GetActorID(), GetActorType(), actorId, MoneyMax, itemsId);
   }
 
   public void ClearBattleStats()

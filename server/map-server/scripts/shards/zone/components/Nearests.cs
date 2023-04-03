@@ -6,9 +6,16 @@ class Nearests
 
   Dictionary<int, List<int>> nearests;
 
+  List<int> peers = new();
+
   public Nearests()
   {
     nearests = new();
+  }
+
+  public List<int> GetPeers()
+  {
+    return peers;
   }
 
   public List<int> GetPlayerNearest(int actorId)
@@ -25,6 +32,7 @@ class Nearests
   {
     if (!nearests.ContainsKey(actorId))
     {
+      peers.Add(actorId);
       nearests.Add(actorId, new());
     }
   }
@@ -33,6 +41,7 @@ class Nearests
   {
     if (nearests.ContainsKey(actorId))
     {
+      peers.Remove(actorId);
       nearests.Remove(actorId);
     }
   }

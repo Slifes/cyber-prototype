@@ -27,15 +27,29 @@ partial class Zone
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
   public void PickUp(int actorId, int dropId)
   {
-    var actor = (ZoneActor)spawner.Get(actorId); ;
+    var actor = (ZoneActor)spawner.Get(actorId);
 
     dropItems.PickUp(actor, dropId);
   }
 
   [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-  public void DropItemRemove(int actorId, int dropId)
+  public void DropItemRemove(int dropId)
   {
-    SendPacketToAllNearest(actorId, new SMDroppedItemRemove
+    SendPacketToAllInZone(new SMDroppedItemRemove
+    {
+      dropId = dropId
+    });
+  }
+
+  [Rpc(TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+  public void DropCollected(int actorId, int dropId, int itemId)
+  {
+    PlayerSpawner.Instance
+      .GetNode<Player>(actorId.ToString())
+      .Inv
+      .Add(itemId, 1);
+
+    SendPacketToAllInZone(new SMDroppedItemRemove
     {
       dropId = dropId
     });

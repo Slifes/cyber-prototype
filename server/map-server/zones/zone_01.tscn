@@ -1,8 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dfk1nxvyv37dx"]
+[gd_scene load_steps=11 format=3 uid="uid://cysj768dg3lm0"]
 
 [ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="1_bkhae"]
-[ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_plbjr"]
-[ext_resource type="Script" path="res://scripts/shards/ShardSpawner.cs" id="3_t3pxj"]
+[ext_resource type="Script" path="res://scripts/shards/ShardTransport.cs" id="1_plbjr"]
+[ext_resource type="Script" path="res://scripts/shards/zone/components/ZoneSpawner.cs" id="3_t3pxj"]
 [ext_resource type="PackedScene" uid="uid://crynnsfjvt3wx" path="res://map/main_server.tscn" id="4_1328x"]
 [ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_f7ti5"]
 [ext_resource type="Script" path="res://scripts/spawner/EnemySpawner.cs" id="6_a2xos"]

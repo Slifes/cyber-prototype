@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/Networking.cs" id="1_r5x5j"]
 [ext_resource type="Script" path="res://scripts/spawner/PlayerSpawner.cs" id="3_a3rwj"]
-[ext_resource type="PackedScene" uid="uid://cqmd0a4qbloiq" path="res://zones/zone_client.tscn" id="3_e882b"]
+[ext_resource type="PackedScene" uid="uid://ch0x4nmnn5o8a" path="res://zones/zone_client.tscn" id="3_e882b"]
 [ext_resource type="Script" path="res://scripts/shards/ShardArea.cs" id="4_tv7lc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gd514"]
@@ -18,7 +18,6 @@ script = ExtResource("3_a3rwj")
 
 [node name="zone_01" parent="zone_01" instance=ExtResource("3_e882b")]
 Port = 3000
-AutoLoad = false
 
 [node name="area_01" type="Area3D" parent="zone_01" node_paths=PackedStringArray("shard")]
 collision_layer = 0

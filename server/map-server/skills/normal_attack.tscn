@@ -11,8 +11,8 @@ collision_mask = 2048
 input_ray_pickable = false
 monitorable = false
 script = ExtResource("1_k6faq")
-MinDamage = 2
-MaxDamage = 12
+MinDamage = 100
+MaxDamage = 200
 LifeTime = 0.2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

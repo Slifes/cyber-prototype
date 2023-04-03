@@ -11,6 +11,8 @@ struct Drop
 
 partial class DropItems : Node
 {
+  public static DropItems Instance { get; set; }
+
   [Export]
   public ulong LifeTime = 10000;
 
@@ -19,9 +21,34 @@ partial class DropItems : Node
 
   Dictionary<int, Drop> droppedItems = new();
 
-  public int AddItem(int actorId, int itemId)
+  public override void _Ready()
   {
-    var dropId = Multiplayer.MultiplayerPeer.GetUniqueId();
+    Instance = this;
+  }
+
+  public void PublishDrop(int actorId, ActorType actorType, int actorTarget, Godot.Collections.Array<int> itemIds)
+  {
+    var items = new Godot.Collections.Array();
+
+    foreach (var itemId in itemIds)
+    {
+      var dropId = AddItem(actorTarget, itemId);
+
+      var item = new Godot.Collections.Dictionary<string, int>()
+      {
+        {"itemId", itemId},
+        {"dropId", dropId}
+      };
+
+      items.Add(item);
+    }
+
+    Zone.SendActorDrop(actorId, actorType, actorTarget, items);
+  }
+
+  int AddItem(int actorId, int itemId)
+  {
+    var dropId = (int)Multiplayer.MultiplayerPeer.GenerateUniqueId();
 
     droppedItems.Add(dropId, new Drop
     {
@@ -42,7 +69,7 @@ partial class DropItems : Node
 
       if (actor.GetActorID() == drop.ActorId || (Time.GetTicksMsec() - drop.TickTime) > OpenToAnyoneTime)
       {
-        // Zone.SendDropItemRemove()
+        Zone.SendDropCollected(actor.GetActorID(), dropId, drop.ItemId);
 
         droppedItems.Remove(dropId);
       }
@@ -57,7 +84,7 @@ partial class DropItems : Node
     {
       if (ticks - item.Value.TickTime > LifeTime)
       {
-        // Zone.SendDropItemRemove()
+        Zone.SendDropItemRemove(item.Key);
 
         droppedItems.Remove(item.Key);
       }

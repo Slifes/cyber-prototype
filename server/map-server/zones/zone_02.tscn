@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://xhsexve6n8g6"]
+[gd_scene load_steps=8 format=3 uid="uid://bhh7yd8ltiva6"]
 
-[ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_3i3in"]
+[ext_resource type="Script" path="res://scripts/shards/ShardTransport.cs" id="1_3i3in"]
 [ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="2_papxf"]
-[ext_resource type="Script" path="res://scripts/shards/ShardSpawner.cs" id="3_w5anj"]
+[ext_resource type="Script" path="res://scripts/shards/zone/components/ZoneSpawner.cs" id="3_w5anj"]
 [ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_8e5xc"]
 [ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/_.tscn" id="5_iorl7"]
 [ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_1tomd"]
@@ -12,6 +12,7 @@
 script = ExtResource("1_3i3in")
 IsServer = true
 Port = 3002
+AutoLoad = false
 
 [node name="zone" type="Node3D" parent="."]
 script = ExtResource("2_papxf")

@@ -5,7 +5,7 @@ partial class Zone : Node
 {
   static PackedScene packedScene = ResourceLoader.Load<PackedScene>("res://actors/player_zone.tscn");
 
-  ShardSpawner spawner;
+  ZoneSpawner spawner;
 
   Nearests nearests;
 
@@ -19,11 +19,11 @@ partial class Zone : Node
   {
     base._Ready();
 
-    if (GetParent<ShardConnect>().IsServer)
+    if (GetParent<ShardTransport>().IsServer)
     {
       _instance = this;
 
-      spawner = GetNode<ShardSpawner>("spawner");
+      spawner = GetNode<ZoneSpawner>("spawner");
       dropItems = GetNode<DropItems>("items");
     }
     else
@@ -40,5 +40,12 @@ partial class Zone : Node
   void SendPacketToAllNearestAndMe(int actorId, IServerCommand command)
   {
     Networking.Instance.SendPacketToMany(actorId, nearests.GetPlayerNearest(actorId), command);
+  }
+
+  void SendPacketToAllInZone(IServerCommand command)
+  {
+    var peers = nearests.GetPeers();
+
+    Networking.Instance.SendPacketToMany(peers, command);
   }
 }

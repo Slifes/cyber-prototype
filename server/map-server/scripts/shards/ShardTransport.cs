@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-partial class ShardConnect : Node
+partial class ShardTransport : Node
 {
   [Export]
   public bool IsServer;
@@ -44,6 +44,8 @@ partial class ShardConnect : Node
 
     MultiplayerCustom.PeerConnected += _PeerConnected;
     MultiplayerCustom.PeerDisconnected += _PeerDisconnected;
+
+    GD.Print("Create ServerÇ: ", port);
 
     var error = multiplayerPeer.CreateServer(port);
 

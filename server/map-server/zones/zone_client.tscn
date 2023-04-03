@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqmd0a4qbloiq"]
+[gd_scene load_steps=3 format=3 uid="uid://ch0x4nmnn5o8a"]
 
-[ext_resource type="Script" path="res://scripts/shards/ShardConnect.cs" id="1_q2kvi"]
+[ext_resource type="Script" path="res://scripts/shards/ShardTransport.cs" id="1_q2kvi"]
 [ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="2_rn2gt"]
 
 [node name="zone_client" type="Node"]
