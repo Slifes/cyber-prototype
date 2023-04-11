@@ -82,6 +82,6 @@ partial class Inventory : Window
 
     items.Add(instance);
 
-    return DragHelper.Create(instance, new Vector2(60, 60));
+    return DragHelper.Create(instance, new Vector2(40, 40));
   }
 }

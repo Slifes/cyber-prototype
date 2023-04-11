@@ -22,7 +22,8 @@ partial class PacketManager
       {typeof(SMActorStopMove), OnActorStopMove},
       {typeof(SMActorEffect), OnActorEffect},
       {typeof(SMInventoryAddItem), OnInventoryAddItem},
-      {typeof(SMInventoryRemoveItem), OnInventoryRemoveItem}
+      {typeof(SMInventoryRemoveItem), OnInventoryRemoveItem},
+      {typeof(SMActorVoiceData), OnActorVoice}
     };
   }
 

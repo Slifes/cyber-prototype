@@ -1,0 +1,58 @@
+[gd_scene load_steps=8 format=3 uid="uid://db30ue6osuoh8"]
+
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="1_qic26"]
+[ext_resource type="Resource" path="res://terrain/data.hterrain" id="2_3jkyr"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="3_eku30"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8vq1i"]
+sky_top_color = Color(0.239216, 0.698039, 0.984314, 1)
+sky_horizon_color = Color(0.862745, 0.87451, 0.894118, 1)
+sky_curve = 0.0430762
+sun_angle_max = 30.3
+
+[sub_resource type="Sky" id="Sky_5rcfn"]
+sky_material = SubResource("ProceduralSkyMaterial_8vq1i")
+process_mode = 3
+
+[sub_resource type="Environment" id="Environment_ox6xy"]
+background_mode = 2
+sky = SubResource("Sky_5rcfn")
+ambient_light_source = 3
+ambient_light_color = Color(0.737255, 0.737255, 0.737255, 1)
+ambient_light_sky_contribution = 0.75
+reflected_light_source = 2
+ssr_enabled = true
+ssil_enabled = true
+
+[sub_resource type="Resource" id="Resource_cwxej"]
+script = ExtResource("3_eku30")
+mode = 0
+textures = [[], []]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.739737, 0.492285, -0.458742, 0, 0.681743, 0.731592, 0.672896, 0.541185, -0.50431, 0, 107.126, 4.66633)
+light_color = Color(0.996078, 1, 0.976471, 1)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ox6xy")
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("1_qic26")
+_terrain_data = ExtResource("2_3jkyr")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_cwxej")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null

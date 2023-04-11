@@ -81,6 +81,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, 0)
 
 [node name="NormalSword" parent="Body/Arm/Hand" instance=ExtResource("2_tme2q")]
 
+[node name="SpotLight3D" type="SpotLight3D" parent="Body"]
+spot_range = 20.0
+spot_angle = 22.9994
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Body/SpotLight3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.911561, 0)
+omni_range = 1.0
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_nek2o"),

@@ -4,8 +4,8 @@
 
 [node name="Inventory" type="Panel" node_paths=PackedStringArray("shortcut_context")]
 anchors_preset = -1
-anchor_right = 0.455729
-anchor_bottom = 0.435185
+anchor_right = 0.317708
+anchor_bottom = 0.308642
 grow_horizontal = 2
 grow_vertical = 2
 mouse_force_pass_scroll_events = false

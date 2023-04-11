@@ -2,6 +2,7 @@
 {
   [MessagePack.Union(1, typeof(SMServerTime))]
   [MessagePack.Union(2, typeof(SMError))]
+  [MessagePack.Union(3, typeof(SMActorVoiceData))]
   [MessagePack.Union(10, typeof(SMActorEnteredZone))]
   [MessagePack.Union(11, typeof(SMActorExitedZone))]
   [MessagePack.Union(12, typeof(SMActorDroppedItems))]

@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://cbv2e3udchdgk"
+path="res://.godot/imported/height.png-6f827a7dcd263390a58c8a487b642028.image"
+
+[deps]
+
+source_file="res://terrain/height.png"
+dest_files=["res://.godot/imported/height.png-6f827a7dcd263390a58c8a487b642028.image"]
+
+[params]
+

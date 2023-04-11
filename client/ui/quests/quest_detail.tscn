@@ -1,0 +1,83 @@
+[gd_scene load_steps=2 format=3 uid="uid://coj5c04iutafl"]
+
+[ext_resource type="Script" path="res://scripts/ui/quests/QuestDetail.cs" id="1_qk3fh"]
+
+[node name="quest_detail" type="Panel"]
+anchors_preset = -1
+anchor_right = 0.341146
+anchor_bottom = 0.646605
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qk3fh")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 24
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Quest"
+
+[node name="Title" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Title"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Title	"
+
+[node name="Value" type="Label" parent="MarginContainer/VBoxContainer/Title"]
+layout_mode = 2
+
+[node name="Reputation" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Reputation"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Reputation	"
+
+[node name="Value" type="Label" parent="MarginContainer/VBoxContainer/Reputation"]
+layout_mode = 2
+
+[node name="Description" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Description"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Descrption
+"
+
+[node name="Value" type="Label" parent="MarginContainer/VBoxContainer/Description"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="Join" type="Button" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Join
+"
+
+[node name="Leave" type="Button" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Leave
+"

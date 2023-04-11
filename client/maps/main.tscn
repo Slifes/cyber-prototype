@@ -1,25 +1,29 @@
-[gd_scene load_steps=17 format=3 uid="uid://c1diiei6qulof"]
+[gd_scene load_steps=18 format=3 uid="uid://c1diiei6qulof"]
 
 [ext_resource type="PackedScene" uid="uid://bj8ruaoigjn37" path="res://maps/bridge.tscn" id="1_3v6sk"]
 [ext_resource type="PackedScene" uid="uid://c4frf05kt4lu2" path="res://maps/tree.tscn" id="2_cbrn0"]
 [ext_resource type="PackedScene" uid="uid://c526cj2dwfbya" path="res://maps/street.tscn" id="3_bf3eh"]
 
+[sub_resource type="Sky" id="Sky_jhfwv"]
+
 [sub_resource type="Environment" id="Environment_56xau"]
-background_mode = 1
-background_color = Color(0.0862745, 0.0980392, 0.156863, 1)
+background_mode = 2
+background_color = Color(0.0823529, 0.121569, 0.25098, 1)
+sky = SubResource("Sky_jhfwv")
 sky_custom_fov = 18.0
-ambient_light_source = 1
-ambient_light_color = Color(0.796078, 0.945098, 0.929412, 1)
-reflected_light_source = 1
+ambient_light_source = 3
+ambient_light_color = Color(0.243137, 0.290196, 0.517647, 1)
+reflected_light_source = 2
 ssao_enabled = true
 ssil_enabled = true
-sdfgi_enabled = true
 sdfgi_min_cell_size = 7.8125
+sdfgi_cascade0_distance = 500.0
+sdfgi_max_distance = 8000.0
 sdfgi_energy = 2.0
 fog_light_color = Color(0.247059, 0.607843, 0.556863, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w1ron"]
-albedo_color = Color(0.490196, 0.329412, 0.184314, 1)
+albedo_color = Color(0.372549, 0.25098, 0.141176, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_1kpws"]
 material = SubResource("StandardMaterial3D_w1ron")
@@ -57,13 +61,12 @@ data = PackedVector3Array(-1, 0.1, 0.5, 1, 0.1, 0.5, -1, -0.1, 0.5, 1, 0.1, 0.5,
 
 [node name="Map" type="Node3D"]
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.461958, 0.833243, -0.30381, -0.250573, 0.451215, 0.856515, 0.850769, -0.319547, 0.41723, 0, 3.05879, 0)
+shadow_enabled = true
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_56xau")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.743892, 0.6683, 0, -0.6683, 0.743892, 0, 2.66148, 0)
-shadow_enabled = true
-sky_mode = 1
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5216, 1.64483, 0)
@@ -74,7 +77,7 @@ shadow_enabled = true
 omni_range = 3.68642
 
 [node name="Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.28277, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.27984, 2.38419e-07, -0.0096761)
 layers = 32
 mesh = SubResource("BoxMesh_1kpws")
 skeleton = NodePath("../..")

@@ -9,6 +9,10 @@ partial class ItemDropped : RigidBody3D
 
   Area3D area;
 
+  double maxLifeTime = 10;
+
+  double lifeTime = 0;
+
   public override void _Ready()
   {
     base._Ready();
@@ -21,6 +25,8 @@ partial class ItemDropped : RigidBody3D
     CallDeferred("RandomApplyForce");
 
     area.InputEvent += OnInputEvent;
+    area.MouseEntered += OnMouseEntered;
+    area.MouseExited += OnMouseLeft;
   }
 
   public override void _Input(InputEvent @event)
@@ -49,6 +55,28 @@ partial class ItemDropped : RigidBody3D
       {
         dropID = int.Parse(Name)
       });
+
+      OnMouseLeft();
+    }
+  }
+
+  void OnMouseEntered()
+  {
+    Input.SetDefaultCursorShape(Input.CursorShape.PointingHand);
+  }
+
+  void OnMouseLeft()
+  {
+    Input.SetDefaultCursorShape(Input.CursorShape.Arrow);
+  }
+
+  public override void _Process(double delta)
+  {
+    lifeTime += delta;
+
+    if (lifeTime > maxLifeTime)
+    {
+      QueueFree();
     }
   }
 }

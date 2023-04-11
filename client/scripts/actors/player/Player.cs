@@ -19,6 +19,9 @@ partial class Player : CharacterActor
   [Signal]
   public delegate void SvLoadSkillsEventHandler(Variant skillIds);
 
+  [Signal]
+  public delegate void VoiceReceivedEventHandler(byte[] data);
+
   public const float Speed = 1.0f;
 
   PlayerState _state = PlayerState.Idle;
@@ -49,25 +52,27 @@ partial class Player : CharacterActor
     if (!IsMultiplayerAuthority())
     {
       SetProcessUnhandledInput(false);
-      components = new IComponent[4]
+      components = new IComponent[5]
       {
         new SkillController(this, new List<int>() { 0, 1, 2 }),
-        //new PredictMovement(this),
-        new MiniHPBar(this),
+		//new PredictMovement(this),
+		new MiniHPBar(this),
         new ActorHover(this),
-        new EffectComponent(this)
+        new EffectComponent(this),
+    new SpeakerComponent(this)
       };
     }
     else
     {
-      components = new IComponent[6]
+      components = new IComponent[7]
       {
         new SkillController(this, new List<int>() { 0, 1, 2 }),
         new CameraController(this),
         new MovementController(this),
         new MovementNetwork(this),
         new EffectComponent(this),
-        new UIComponent(this)
+        new UIComponent(this),
+    new TalkerComponent(this)
       };
 
       LoadSkills();

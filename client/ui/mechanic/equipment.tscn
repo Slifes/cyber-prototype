@@ -1,10 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://b1fcuyy7wt0wx"]
+[gd_scene load_steps=2 format=3 uid="uid://b1fcuyy7wt0wx"]
 
 [ext_resource type="Script" path="res://scripts/ui/equipment/UIEquipment.cs" id="1_3t4ue"]
-[ext_resource type="Script" path="res://scripts/ui/equipment/UICameraEquip.cs" id="2_k18mw"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_lkm12"]
-viewport_path = NodePath("SubViewport")
 
 [node name="equipment" type="Control"]
 layout_mode = 3
@@ -25,22 +21,6 @@ anchor_bottom = 1.0
 offset_right = 4.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="TextureRect" type="TextureRect" parent="Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.07
-anchor_top = 0.105
-anchor_right = 0.935
-anchor_bottom = 0.895
-offset_left = 70.28
-offset_top = 51.96
-offset_right = -73.26
-offset_bottom = -51.96
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.00656, 1)
-texture = SubResource("ViewportTexture_lkm12")
 
 [node name="LeftHand" type="Panel" parent="Panel"]
 layout_mode = 1
@@ -77,15 +57,3 @@ offset_left = -0.200012
 offset_top = 0.0639954
 offset_right = -0.200012
 offset_bottom = 0.231964
-
-[node name="SubViewport" type="SubViewport" parent="."]
-transparent_bg = true
-canvas_cull_mask = 4294443008
-
-[node name="CameraPivot" type="Node3D" parent="SubViewport"]
-script = ExtResource("2_k18mw")
-
-[node name="Camera3D" type="Camera3D" parent="SubViewport/CameraPivot"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.999534)
-cull_mask = 524288
-current = true

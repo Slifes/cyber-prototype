@@ -62,7 +62,7 @@ partial class NetworkManager : Node3D
     sceneMultiplayer.ServerDisconnected += Disconnected;
     sceneMultiplayer.PeerPacket += OnPeerPacket;
 
-    clientPeer.CreateClient("127.0.0.1", 4242);
+    GD.Print("Connection: ", clientPeer.CreateClient("54.166.79.54", 9060));
 
     sceneMultiplayer.MultiplayerPeer = clientPeer;
 

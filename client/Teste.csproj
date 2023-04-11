@@ -9,6 +9,7 @@
     <PackageReference Include="Nethereum.Contracts" Version="4.12.0" />
     <PackageReference Include="Nethereum.Web3" Version="4.12.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="sharpcompress" Version="0.33.0" />
     <PackageReference Include="WalletConnect.Sign" Version="2.0.3" />
     <PackageReference Include="Websocket.Client" Version="4.4.43" />
   </ItemGroup>

@@ -15,4 +15,13 @@ partial class PacketManager
 
     PlayerUI.Instance.inventory.Remove(pck.itemId, pck.amount);
   }
+
+  void OnActorVoice(IServerCommand command)
+  {
+    var pck = (SMActorVoiceData)command;
+
+    var player = Spawner.Instance.GetActor<Player>(pck.ActorId);
+
+    player.EmitSignal(Player.SignalName.VoiceReceived, pck.Data);
+  }
 }

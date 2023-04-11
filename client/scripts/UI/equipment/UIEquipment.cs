@@ -8,11 +8,11 @@ partial class UIEquipment : Window
   {
     base._Ready();
 
-    camera = GetNode<UICameraEquip>("SubViewport/CameraPivot");
+    // camera = GetNode<UICameraEquip>("SubViewport/CameraPivot");
   }
 
   public void setPlayer(Player player)
   {
-    camera.player = player;
+    // camera.player = player;
   }
 }
