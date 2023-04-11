@@ -32,12 +32,12 @@ partial class Zone : Node
     }
   }
 
-  void SendPacketToAllNearest(int actorId, IServerCommand command)
+  public void SendPacketToAllNearest(int actorId, IServerCommand command)
   {
     Networking.Instance.SendPacketToMany(nearests.GetPlayerNearest(actorId), command);
   }
 
-  void SendPacketToAllNearestAndMe(int actorId, IServerCommand command)
+  public void SendPacketToAllNearestAndMe(int actorId, IServerCommand command)
   {
     Networking.Instance.SendPacketToMany(actorId, nearests.GetPlayerNearest(actorId), command);
   }

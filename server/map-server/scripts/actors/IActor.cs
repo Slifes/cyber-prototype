@@ -1,11 +1,5 @@
 ﻿using Godot;
 
-enum ActorType
-{
-  Player,
-  Npc
-}
-
 interface IActor
 {
   void onActorReady();

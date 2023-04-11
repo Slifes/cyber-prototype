@@ -22,7 +22,8 @@ partial class PacketManager
       {typeof(PlayerUseItem), OnPlayerUseItem},
       {typeof(PlayerPickUpItem), OnPlayerPickUpItem},
       {typeof(EnterSessionMap), OnEnterSessionMap},
-      {typeof(FetchServerTime), OnFetchServerTime}
+      {typeof(FetchServerTime), OnFetchServerTime},
+      {typeof(CMAudioVoiceData), OnCMAudioVoiceData}
     };
   }
 

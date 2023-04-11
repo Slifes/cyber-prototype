@@ -9,5 +9,6 @@ namespace Packets.Client
   [Union(4, typeof(PlayerRequestSkill))]
   [Union(5, typeof(PlayerUseItem))]
   [Union(6, typeof(PlayerPickUpItem))]
+  [Union(7, typeof(CMAudioVoiceData))]
   public interface IClientCommand { }
 }

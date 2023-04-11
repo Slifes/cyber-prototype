@@ -50,6 +50,11 @@ partial class Player : SessionActor
     }
   }
 
+  public Zone GetZone()
+  {
+    return zones[0];
+  }
+
   public void RemoveZone(Zone zone)
   {
     zones.Remove(zone);

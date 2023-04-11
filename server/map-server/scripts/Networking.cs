@@ -17,10 +17,7 @@ public partial class Networking : Node3D
   public override void _Ready()
   {
     packetManager = new PacketManager();
-  }
 
-  public override void _EnterTree()
-  {
     _instance = this;
 
     sceneMultiplayer = new SceneMultiplayer();
@@ -32,12 +29,14 @@ public partial class Networking : Node3D
 
     multiplayerPeer = new ENetMultiplayerPeer();
 
-    Multiplayer.PeerConnected += _PeerConnected;
-    Multiplayer.PeerDisconnected += _PeerDisconnected;
+    sceneMultiplayer.PeerConnected += _PeerConnected;
+    sceneMultiplayer.PeerDisconnected += _PeerDisconnected;
 
-    multiplayerPeer.CreateServer(4242, 1000);
+    var error = multiplayerPeer.CreateServer(9060, 1000);
 
-    Multiplayer.MultiplayerPeer = multiplayerPeer;
+    GD.Print("Server network error: ", error);
+
+    sceneMultiplayer.MultiplayerPeer = multiplayerPeer;
   }
 
   void _PeerConnected(long id)

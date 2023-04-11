@@ -45,8 +45,6 @@ partial class ShardTransport : Node
     MultiplayerCustom.PeerConnected += _PeerConnected;
     MultiplayerCustom.PeerDisconnected += _PeerDisconnected;
 
-    GD.Print("Create ServerÇ: ", port);
-
     var error = multiplayerPeer.CreateServer(port);
 
     GD.Print("Server shard error: ", error);
@@ -60,7 +58,7 @@ partial class ShardTransport : Node
   {
     if (AutoLoad)
     {
-      PID = OS.CreateProcess(OS.GetExecutablePath(), new string[] { (Debug ? "" : "--headless"), "--debug-collisions", "shard", GetParent().Name }, false);
+      PID = OS.CreateProcess(OS.GetExecutablePath(), new string[] { (Debug ? "" : "--headless"), "shard", GetParent().Name }, false);
     }
 
     GD.Print("Connect to shard: ", port);

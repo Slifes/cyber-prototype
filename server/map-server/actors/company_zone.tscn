@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cituqt7ju2dp7"]
+
+[ext_resource type="Script" path="res://scripts/actors/company/Company.cs" id="1_31mw6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_27vmi"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="company" type="CharacterBody3D"]
+script = ExtResource("1_31mw6")
+ID = 5
+Level = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_27vmi")

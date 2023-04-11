@@ -33,4 +33,10 @@ namespace Packets.Client
   {
     [Key(0)] public int dropID;
   }
+
+  [MessagePackObject]
+  public partial struct CMAudioVoiceData : IClientCommand
+  {
+    [Key(0)] public byte[] data;
+  }
 }

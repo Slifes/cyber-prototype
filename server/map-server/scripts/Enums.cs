@@ -1,4 +1,11 @@
-﻿enum ActorState
+﻿enum ActorType
+{
+  Player,
+  Npc,
+  Company
+}
+
+enum ActorState
 {
   Idle,
   Walking,

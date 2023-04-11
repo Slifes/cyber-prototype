@@ -26,4 +26,13 @@ partial class PacketManager
   {
     actor.PickUp((PlayerPickUpItem)command);
   }
+
+  void OnCMAudioVoiceData(long peerId, Player actor, IClientCommand command)
+  {
+    actor.GetZone().SendPacketToAllNearest((int)peerId, new Packets.Server.SMActorVoiceData
+    {
+      ActorId = (int)peerId,
+      Data = ((CMAudioVoiceData)command).data
+    });
+  }
 }

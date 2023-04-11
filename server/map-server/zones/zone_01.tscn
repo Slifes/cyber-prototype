@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://cysj768dg3lm0"]
+[gd_scene load_steps=12 format=3 uid="uid://cysj768dg3lm0"]
 
 [ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="1_bkhae"]
 [ext_resource type="Script" path="res://scripts/shards/ShardTransport.cs" id="1_plbjr"]
 [ext_resource type="Script" path="res://scripts/shards/zone/components/ZoneSpawner.cs" id="3_t3pxj"]
 [ext_resource type="PackedScene" uid="uid://crynnsfjvt3wx" path="res://map/main_server.tscn" id="4_1328x"]
 [ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_f7ti5"]
+[ext_resource type="PackedScene" uid="uid://cituqt7ju2dp7" path="res://actors/company_zone.tscn" id="4_jlwwp"]
 [ext_resource type="Script" path="res://scripts/spawner/EnemySpawner.cs" id="6_a2xos"]
 [ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_gp58d"]
 [ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/base_enemy.tscn" id="7_21f8w"]
@@ -25,6 +26,9 @@ script = ExtResource("1_bkhae")
 [node name="1" parent="zone/npcs" instance=ExtResource("9_scssu")]
 transform = Transform3D(0.72175, -0.000399443, -0.692154, 0.000432871, 1, -0.000125724, 0.692154, -0.000208877, 0.72175, -11.3615, 0.364864, -5.24418)
 ID = 1
+
+[node name="5" parent="zone/npcs" instance=ExtResource("4_jlwwp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.4495, 0.0500007, -2.25151)
 
 [node name="map" parent="zone" instance=ExtResource("4_1328x")]
 

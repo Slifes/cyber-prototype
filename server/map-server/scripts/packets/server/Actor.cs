@@ -88,4 +88,11 @@ namespace Packets.Server
   {
     [Key(0)] public int ErrorCode;
   }
+
+  [MessagePackObject]
+  public partial struct SMActorVoiceData : IServerCommand
+  {
+    [Key(0)] public int ActorId;
+    [Key(1)] public byte[] Data;
+  }
 }

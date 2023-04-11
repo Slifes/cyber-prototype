@@ -84,7 +84,7 @@ partial class DropItems : Node
     {
       if (ticks - item.Value.TickTime > LifeTime)
       {
-        Zone.SendDropItemRemove(item.Key);
+        // Zone.SendDropItemRemove(item.Key);
 
         droppedItems.Remove(item.Key);
       }

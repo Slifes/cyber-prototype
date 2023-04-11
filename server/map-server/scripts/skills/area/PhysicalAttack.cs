@@ -24,7 +24,7 @@ partial class PhysicalAttack : AreaSkillBase
 
   void Collided(Node body)
   {
-    if (body.IsInGroup("Actor"))
+    if (body != Actor && body.IsInGroup("Actor"))
     {
       ZoneActor target = (ZoneActor)body;
 
