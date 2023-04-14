@@ -23,7 +23,8 @@ partial class PacketManager
       {typeof(PlayerPickUpItem), OnPlayerPickUpItem},
       {typeof(EnterSessionMap), OnEnterSessionMap},
       {typeof(FetchServerTime), OnFetchServerTime},
-      {typeof(CMAudioVoiceData), OnCMAudioVoiceData}
+      {typeof(CMAudioVoiceData), OnCMAudioVoiceData},
+      {typeof(CMQuestRequestList), OnQuestListRequested},
     };
   }
 

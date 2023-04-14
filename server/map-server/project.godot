@@ -20,10 +20,6 @@ config/icon="res://icon.svg"
 
 Manager="*res://scripts/Manager.cs"
 
-[debug]
-
-settings/stdout/print_fps=true
-
 [display]
 
 window/size/resizable=false

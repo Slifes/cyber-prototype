@@ -39,4 +39,23 @@ namespace Packets.Client
   {
     [Key(0)] public byte[] data;
   }
+
+  [MessagePackObject]
+  public partial struct CMStartAudioVoice : IClientCommand
+  {
+    [Key(0)] public int channel;
+  }
+
+  [MessagePackObject]
+  public partial struct CMUpdateAudioVoice : IClientCommand
+  {
+    [Key(0)] public int channel;
+    [Key(1)] public byte[] data;
+  }
+
+  [MessagePackObject]
+  public partial struct CMEndAudioVoice : IClientCommand
+  {
+    [Key(0)] public int channel;
+  }
 }
