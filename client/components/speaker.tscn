@@ -3,13 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://b3scqswxnq76l" path="res://audio/icons/sound.png" id="1_k2113"]
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_r4hrr"]
-format = 1
+mix_rate = 11025
 stereo = true
 
 [node name="Node3D" type="Node3D"]
 
 [node name="Talking" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.594735, 0)
+visible = false
 modulate = Color(0.396078, 0.784314, 1, 1)
 pixel_size = 0.002
 billboard = 1
@@ -21,6 +22,7 @@ texture = ExtResource("1_k2113")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 stream = SubResource("AudioStreamWAV_r4hrr")
+attenuation_model = 2
 autoplay = true
 max_distance = 2.0
 emission_angle_enabled = true

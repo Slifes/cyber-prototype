@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://btrdcy4o7chlf"]
+
+[ext_resource type="Script" path="res://scripts/resources/QuestDescription.cs" id="1_v7jdp"]
+
+[resource]
+script = ExtResource("1_v7jdp")
+ID = 0
+Title = "Com Medo"
+Description = "Mate um monte de kirts"

@@ -13,7 +13,7 @@ partial class QuestList : Window
     container = GetNode<VBoxContainer>("MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer");
   }
 
-  public void SetQuests(Quest[] quests)
+  public void OpenQuestList(Quest[] quests)
   {
     this.quests = quests;
 
@@ -25,5 +25,7 @@ partial class QuestList : Window
 
       container.AddChild(item);
     }
+
+    Visible = true;
   }
 }

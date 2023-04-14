@@ -18,6 +18,6 @@ partial class QuestItem : Button
 
   void OnPressed()
   {
-    // NetworkManager.Instance.SendPacket(new CMQuestDetail { ID = Quest.ID });
+    QuestManager.Instance.OpenQuestDetail(Quest);
   }
 }

@@ -18,5 +18,10 @@
   [MessagePack.Union(31, typeof(SMActorStopMove))]
   [MessagePack.Union(32, typeof(SMActorEffect))]
   [MessagePack.Union(33, typeof(SMActorExecuteSkill))]
+  [MessagePack.Union(40, typeof(SMQuestList))]
+  [MessagePack.Union(41, typeof(SMQuestPlayerList))]
+  [MessagePack.Union(42, typeof(SMQuestPlayerJoined))]
+  [MessagePack.Union(43, typeof(SMQuestPlayerLeft))]
+  [MessagePack.Union(44, typeof(SMQuestCompleted))]
   public interface IServerCommand { }
 }

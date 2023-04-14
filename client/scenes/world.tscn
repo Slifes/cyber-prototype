@@ -24,17 +24,11 @@ script = ExtResource("5_1pxo1")
 
 [node name="Items" type="Node3D" parent="."]
 
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
+[node name="UI" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
 
 [node name="Network" type="Control" parent="UI"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -67,4 +61,3 @@ text = "Loss 1000ms"
 horizontal_alignment = 1
 
 [node name="PlayerUI" parent="UI" instance=ExtResource("6_n5hbl")]
-layout_mode = 1

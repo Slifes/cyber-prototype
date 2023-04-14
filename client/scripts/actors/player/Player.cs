@@ -64,6 +64,7 @@ partial class Player : CharacterActor
     }
     else
     {
+      GetNode<Node>("/root/Console").Call("register_env", "player", this);
       components = new IComponent[7]
       {
         new SkillController(this, new List<int>() { 0, 1, 2 }),

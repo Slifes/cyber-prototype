@@ -2,7 +2,7 @@
 
 partial class TalkerComponent : IComponent
 {
-  static PackedScene scene = ResourceLoader.Load<PackedScene>("res://components/microphone.tscn");
+  static PackedScene scene = GD.Load<PackedScene>("res://components/microphone.tscn");
 
   CharacterActor actor;
 
@@ -49,7 +49,21 @@ partial class TalkerComponent : IComponent
     }
   }
 
-  public void Update(float delta) { }
+  public void Update(float delta)
+  {
+    if (RecordEffect.IsRecordingActive())
+    {
+      if (RecordEffect.GetRecording() != null)
+      {
+        var recording = RecordEffect.GetRecording();
+        // recording.MixRate = 11025;
+        // recording.Format = AudioStreamWav.FormatEnum.Format8Bits;
+        GD.Print("RecordStream: ", RecordEffect.GetRecording().Data.Length);
+        // Player.Stream = RecordEffect.GetRecording();
+        // Player.Play();
+      }
+    }
+  }
 
   void StartRecording()
   {
@@ -67,6 +81,8 @@ partial class TalkerComponent : IComponent
     TalkingSprite.Visible = false;
 
     GD.Print("RecordStream: ", RecordStream.Data.Length);
+    GD.Print("MixRate: ", RecordStream.MixRate);
+    GD.Print("Format: ", RecordStream.Format);
 
     NetworkManager.Instance.SendPacket(new Packets.Client.CMAudioVoiceData
     {

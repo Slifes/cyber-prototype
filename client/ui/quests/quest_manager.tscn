@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://blr6xe01hfivb"]
+
+[ext_resource type="Script" path="res://scripts/quests/QuestManager.cs" id="1_wdwom"]
+[ext_resource type="PackedScene" uid="uid://t8vxupw2qt7l" path="res://ui/quests/quest_list.tscn" id="2_we4wm"]
+[ext_resource type="PackedScene" uid="uid://coj5c04iutafl" path="res://ui/quests/quest_detail.tscn" id="3_21nd7"]
+
+[node name="QuestManager" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wdwom")
+
+[node name="QuestList" parent="." instance=ExtResource("2_we4wm")]
+layout_mode = 1
+anchor_left = 0.0876736
+anchor_top = 0.152778
+anchor_right = 0.498264
+anchor_bottom = 0.794753
+offset_right = -6.10352e-05
+offset_bottom = 6.10352e-05
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="QuestDetail" parent="." instance=ExtResource("3_21nd7")]
+visible = false
+layout_mode = 1
+anchor_left = 0.553819
+anchor_top = 0.154321
+anchor_right = 0.894965
+anchor_bottom = 0.800926
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="Quests" type="Node" parent="."]
