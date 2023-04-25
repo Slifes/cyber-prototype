@@ -1,2 +1,2 @@
-mod player;
-mod server;
+pub mod player;
+pub mod server;

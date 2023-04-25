@@ -3,9 +3,9 @@ mod client;
 
 #[tokio::main]
 async fn main() {
-    let mut shard = shard::ShardServer::new();
+    let mut shard = shard::SHARD_SERVER.write().unwrap();
 
-    println!("Hello, world!");
+    println!("Starting shard server...");
 
     shard.run().await.unwrap();
 }

@@ -1,4 +1,6 @@
 use serde::{Serialize, Deserialize};
+use super::parser::deserialize; 
+use std::io;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ShardAuthentication {
@@ -9,14 +11,14 @@ pub struct ShardAuthentication {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ShardPlayerConnect {
-  pub shard_id: u32,
-  pub player_id: u32,
+  pub packet_id: u32,
+  pub player_id: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ShardPlayerDisconnect {
-  pub shard_id: u32,
-  pub player_id: u32,
+  pub packet_id: u32,
+  pub player_id: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -46,4 +48,22 @@ pub enum ShardPacket {
   // PlayerAddCloser(ShardPlayerAddCloser),
   // #[serde(rename = "5")]
   // PlayerRemovePlayer(ShardPlayerRemovePlayer),
+}
+
+#[derive(Debug)]
+pub enum ShardPackets {
+  Authentication(ShardAuthentication),
+  PlayerConnect(ShardPlayerConnect),
+  PlayerDisconnect(ShardPlayerDisconnect),
+}
+
+impl ShardPackets {
+  pub fn parser(value: &[u8]) -> Result<Self, io::Error> {
+    Ok(match value[1] {
+      1 => ShardPackets::Authentication(deserialize(value)?),
+      2 => ShardPackets::PlayerConnect(deserialize(value)?),
+      3 => ShardPackets::PlayerDisconnect(deserialize(value)?),
+      _ => panic!("Invalid packet id: {}", value[1]),
+    })
+  }
 }
