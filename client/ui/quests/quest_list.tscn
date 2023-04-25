@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://t8vxupw2qt7l"]
+[gd_scene load_steps=2 format=3 uid="uid://t8vxupw2qt7l"]
+
+[ext_resource type="Script" path="res://scripts/ui/quests/QuestList.cs" id="1_icqew"]
 
 [node name="quest_list" type="Panel"]
 anchors_preset = -1
@@ -6,6 +8,7 @@ anchor_right = 0.486979
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_icqew")
 metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b3fhxgo1tibra"]
+[gd_scene load_steps=10 format=3 uid="uid://b3fhxgo1tibra"]
 
 [ext_resource type="PackedScene" uid="uid://cxq2o1plpci8y" path="res://ui/health_stats.tscn" id="1_t6i5m"]
 [ext_resource type="Script" path="res://scripts/ui/PlayerUI.cs" id="1_ue5bj"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/ui/ToggleButton.cs" id="5_ttgev"]
 [ext_resource type="PackedScene" uid="uid://b1fcuyy7wt0wx" path="res://ui/mechanic/equipment.tscn" id="6_r8nxp"]
 [ext_resource type="PackedScene" uid="uid://dpgkysqlynqni" path="res://ui/chat.tscn" id="8_v4a0n"]
+[ext_resource type="PackedScene" uid="uid://pvdr5foqvwp8" path="res://ui/quests/quest_manager.tscn" id="9_d1xr6"]
 
 [node name="PlayerUI" type="Control"]
 layout_mode = 3
@@ -134,3 +135,6 @@ offset_top = -201.0
 offset_right = 0.0
 offset_bottom = 201.0
 grow_horizontal = 0
+
+[node name="QuestManager" parent="." instance=ExtResource("9_d1xr6")]
+layout_mode = 1

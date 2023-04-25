@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://cwrq2q0avtqvh"]
+[gd_scene load_steps=2 format=3 uid="uid://ct8soi551tya3"]
+
+[ext_resource type="Script" path="res://scripts/ui/quests/QuestItem.cs" id="1_tu60v"]
 
 [node name="quest_item" type="Button"]
 custom_minimum_size = Vector2(0, 50)
@@ -8,6 +10,7 @@ anchor_bottom = 0.0771605
 offset_bottom = -42.0
 grow_horizontal = 2
 size_flags_horizontal = 3
+script = ExtResource("1_tu60v")
 metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

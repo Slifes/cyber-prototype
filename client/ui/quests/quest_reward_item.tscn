@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/ui/quests/QuestRewardItem.cs" id="1_rwmq6"]
 
 [node name="QuestRewardItem" type="Control"]
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 3
 anchor_right = 0.0520833
 anchor_bottom = 0.0925926

@@ -17,6 +17,7 @@ partial class QuestRewardItem : Control
 
   public void SetReward(QuestReward reward)
   {
+    GD.Print("Reward: " + reward.Type + " " + reward.Value);
     switch (reward.Type)
     {
       case QuestRewardType.Item:

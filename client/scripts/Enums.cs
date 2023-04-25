@@ -12,7 +12,7 @@ public enum QuestRewardType
   Reputation,
 }
 
-enum QuestAction
+public enum QuestAction
 {
   ItemCollected,
   EnemyKilled,
@@ -20,7 +20,7 @@ enum QuestAction
   ChallengeCompleted,
 }
 
-enum QuestStatus
+public enum QuestStatus
 {
   Accepted,
   Completed,

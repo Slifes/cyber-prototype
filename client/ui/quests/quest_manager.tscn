@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://blr6xe01hfivb"]
+[gd_scene load_steps=4 format=3 uid="uid://pvdr5foqvwp8"]
 
-[ext_resource type="Script" path="res://scripts/quests/QuestManager.cs" id="1_wdwom"]
+[ext_resource type="Script" path="res://scripts/ui/quests/QuestManager.cs" id="1_wdwom"]
 [ext_resource type="PackedScene" uid="uid://t8vxupw2qt7l" path="res://ui/quests/quest_list.tscn" id="2_we4wm"]
 [ext_resource type="PackedScene" uid="uid://coj5c04iutafl" path="res://ui/quests/quest_detail.tscn" id="3_21nd7"]
 
@@ -11,9 +11,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_wdwom")
 
 [node name="QuestList" parent="." instance=ExtResource("2_we4wm")]
+visible = false
 layout_mode = 1
 anchor_left = 0.0876736
 anchor_top = 0.152778

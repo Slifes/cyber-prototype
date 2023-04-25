@@ -1,18 +1,21 @@
 ﻿using Godot;
 using System.Collections.Generic;
 using Packets.Client;
+using MessagePack;
 
+[MessagePackObject]
 public struct QuestReward
 {
-  public QuestRewardType Type;
-  public int Value;
+  [Key(0)] public QuestRewardType Type;
+  [Key(1)] public int Value;
 }
 
-struct QuestTarget
+[MessagePackObject]
+public struct QuestTarget
 {
-  public QuestAction Action;
-  public int ReferenceID;
-  public int Amount;
+  [Key(0)] public QuestAction Action;
+  [Key(1)] public int ReferenceID;
+  [Key(2)] public int Amount;
 }
 
 partial class Quest : RefCounted
@@ -42,7 +45,7 @@ partial class QuestManager : Control
     questDetail = GetNode<QuestDetail>("QuestDetail");
     questList = GetNode<QuestList>("QuestList");
 
-    GetNode("/root/Console").Call("register_env", "quest_manager", this);
+    GetNode<Node>("/root/Console").Call("register_env", "quest_manager", this);
   }
 
   public void GetQuestList(int boardId)
