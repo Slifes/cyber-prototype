@@ -25,6 +25,7 @@ partial class PacketManager
       {typeof(FetchServerTime), OnFetchServerTime},
       {typeof(CMAudioVoiceData), OnCMAudioVoiceData},
       {typeof(CMQuestRequestList), OnQuestListRequested},
+      {typeof(CMQuestJoin), OnQuestJoin},
     };
   }
 

@@ -2,7 +2,7 @@
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_xl46x"]
 height = 1.0
-radius = 10.0
+radius = 5.0
 
 [node name="AABB" type="Area3D"]
 collision_layer = 0

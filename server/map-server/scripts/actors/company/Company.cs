@@ -27,7 +27,7 @@ partial class Company : Node3D, IActorZone
   [Export]
   public CompanyType Type;
 
-  public List<Quest> Quests;
+  // public List<Quest> Quests;
   public int Money;
   public Supply[] supplies;
   public int Experience;

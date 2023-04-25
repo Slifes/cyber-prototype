@@ -25,23 +25,18 @@ public enum QuestStatus
 }
 
 [MessagePackObject]
-struct QuestReward
+public struct QuestReward
 {
-  [Key(0)]
-  public QuestRewardType Type;
-  [Key(1)]
-  public int Value;
+  [Key(0)] public QuestRewardType Type;
+  [Key(1)] public int Value;
 }
 
 [MessagePackObject]
 public struct QuestTarget
 {
-  [Key(0)]
-  public QuestAction Action;
-  [Key(1)]
-  public int ReferenceID;
-  [Key(2)]
-  public int Amount;
+  [Key(0)] public QuestAction Action;
+  [Key(1)] public int ReferenceID;
+  [Key(2)] public int Amount;
 }
 
 class QuestDetail
@@ -54,6 +49,7 @@ class QuestDetail
   public int QuestRequiredID;
   public QuestTarget Target;
   public QuestReward[] Rewards;
+  public Dictionary<int, QuestProgress> Progress = new();
 }
 
 class QuestProgress

@@ -9,5 +9,7 @@ partial class Manager : Node
 
     SkillManager.CreateInstance("skills");
     SkillManager.Instance.Load();
+
+    new QuestManager();
   }
 }

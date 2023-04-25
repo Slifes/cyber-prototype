@@ -25,6 +25,8 @@ partial class Zone : Node
 
       spawner = GetNode<ZoneSpawner>("spawner");
       dropItems = GetNode<DropItems>("items");
+
+      ConnectToVoip();
     }
     else
     {

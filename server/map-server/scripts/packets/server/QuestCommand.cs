@@ -8,7 +8,7 @@ namespace Packets.Server
     [Key(0)] public int ID;
     [Key(1)] public int DescriptionID;
     [Key(2)] public int Reputation;
-    [Key(3)] public QuestRewardType[] Rewards;
+    [Key(3)] public QuestReward[] Rewards;
     [Key(4)] public QuestTarget Target;
   }
 
@@ -43,7 +43,7 @@ namespace Packets.Server
   public partial struct SMQuestCompleted : IServerCommand
   {
     [Key(0)] public int QuestID;
-    [Key(1)] public QuestRewardType[] Rewards;
+    [Key(1)] public QuestReward[] Rewards;
   }
 
   [MessagePackObject]
