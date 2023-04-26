@@ -1,11 +1,15 @@
+use log::info;
+
 mod shard;
 mod client;
 
 #[tokio::main]
 async fn main() {
-    let mut shard = shard::SHARD_SERVER.write().unwrap();
+    env_logger::init();
 
-    println!("Starting shard server...");
+    info!("Starting shard server...");
+
+    let mut shard = shard::SHARD_SERVER.write().await;
 
     shard.run().await.unwrap();
 }

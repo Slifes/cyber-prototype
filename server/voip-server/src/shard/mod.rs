@@ -1,4 +1,4 @@
-use std::sync::RwLock;
+use tokio::sync::RwLock;
 use lazy_static::lazy_static;
 
 mod server;

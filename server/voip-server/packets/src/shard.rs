@@ -23,9 +23,9 @@ pub struct ShardPlayerDisconnect {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ShardPlayerAddCloser {
-  pub shard_id: u32,
-  pub player_id: u32,
-  pub closer_id: u32,
+  pub packet_id: u32,
+  pub player_id: i32,
+  pub closer_id: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -59,11 +59,11 @@ pub enum ShardPackets {
 
 impl ShardPackets {
   pub fn parser(value: &[u8]) -> Result<Self, io::Error> {
-    Ok(match value[1] {
-      1 => ShardPackets::Authentication(deserialize(value)?),
-      2 => ShardPackets::PlayerConnect(deserialize(value)?),
-      3 => ShardPackets::PlayerDisconnect(deserialize(value)?),
-      _ => panic!("Invalid packet id: {}", value[1]),
-    })
+    match value[1] {
+      1 => Ok(ShardPackets::Authentication(deserialize(value)?)),
+      2 => Ok(ShardPackets::PlayerConnect(deserialize(value)?)),
+      3 => Ok(ShardPackets::PlayerDisconnect(deserialize(value)?)),
+      _ => Err(io::Error::new(io::ErrorKind::Other, "Invalid packet id")),
+    }
   }
 }

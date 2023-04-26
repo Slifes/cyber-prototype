@@ -1,9 +1,14 @@
+use log::info;
 use serde::Deserialize;
+use async_trait::async_trait;
+
+use crate::client::CLIENTS;
 
 use packets::shard::{
   ShardAuthentication,
   ShardPlayerConnect,
   ShardPlayerDisconnect,
+  ShardPlayerAddCloser
 };
 
 #[derive(Debug)]
@@ -30,29 +35,33 @@ impl Shard {
   }
 }
 
+#[async_trait]
 pub trait ReceivePacket<T> where T: Deserialize<'static> {
-  fn receive_packet(&mut self, packet: T);
+  async fn receive_packet(&mut self, packet: T);
 }
 
+#[async_trait]
 impl ReceivePacket<ShardAuthentication> for Shard {
-  fn receive_packet(&mut self, packet: ShardAuthentication) {
+  async fn receive_packet(&mut self, packet: ShardAuthentication) {
     self.is_authenticated = true;
 
-    println!("Received authentication packet: {:?}", packet);
+    info!("Received authentication packet: {:?}", packet);
   }
 }
 
+#[async_trait]
 impl ReceivePacket<ShardPlayerConnect> for Shard {
-  fn receive_packet(&mut self, packet: ShardPlayerConnect) {
+  async fn receive_packet(&mut self, packet: ShardPlayerConnect) {
     self.peers.push(packet.player_id);
 
-    println!("Received player connect packet: {:?}", packet);
-    println!("Shard peers: {:?}", self.peers)
+    info!("Received player connect packet: {:?}", packet);
+    info!("Shard peers: {:?}", self.peers)
   }
 }
 
+#[async_trait]
 impl ReceivePacket<ShardPlayerDisconnect> for Shard {
-  fn receive_packet(&mut self, packet: ShardPlayerDisconnect) {
+  async fn receive_packet(&mut self, packet: ShardPlayerDisconnect) {
     let index = self.peers
       .iter()
       .position(|x| x == &packet.player_id);
@@ -61,7 +70,22 @@ impl ReceivePacket<ShardPlayerDisconnect> for Shard {
       self.peers.remove(idx);
     }
 
-    println!("Received player disconnect packet: {:?}", packet);
-    println!("Shard peers: {:?}", self.peers);
+    info!("Received player disconnect packet: {:?}", packet);
+    info!("Shard peers: {:?}", self.peers);
+  }
+}
+
+#[async_trait]
+impl ReceivePacket<ShardPlayerAddCloser> for Shard {
+  async fn receive_packet(&mut self, packet: ShardPlayerAddCloser) {
+    let clients = CLIENTS.read().await;
+
+    let client = clients.get(&packet.player_id).unwrap();
+    let closer = clients.get(&packet.closer_id).unwrap();
+
+    // client.write().await.add_player(closer.clone());
+    // closer.write().await.add_player(client.clone());
+
+    info!("Received player add closer packet: {:?}", packet);
   }
 }

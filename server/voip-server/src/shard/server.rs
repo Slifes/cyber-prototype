@@ -1,3 +1,5 @@
+use log::info;
+
 use std::io;
 use std::sync::Arc;
 
@@ -39,30 +41,30 @@ impl ShardServer {
 
         let result = handler_connect(shard_threaded, &mut stream).await;
 
-        println!("Connection closed: {:?}", result);
+        info!("Connection closed: {:?}", result);
       });
 
       self.tasks.push(task);
     }
-}
+  }
 }
 
 
-async fn handler_connect(shard: Arc<RwLock<Shard>>, stream: &mut TcpStream) -> Result<(), io::Error>{
+async fn handler_connect(shard: Arc<RwLock<Shard>>, stream: &mut TcpStream) -> Result<(), io::Error> {
   loop {
     let mut buf = [0; 1024];
     let size = stream.read(&mut buf).await?;
 
     let mut shard_data = shard.write().await;
-    
-    println!("Received packet: {:?}", buf[..size].to_vec());
+
+    info!("Received packet: {:?}", buf[..size].to_vec());
 
     let packet_type: ShardPackets = ShardPackets::parser(&buf[..size])?;
-    
+
     match packet_type {
-      ShardPackets::Authentication(packet) => shard_data.receive_packet(packet),
-      ShardPackets::PlayerConnect(packet) => shard_data.receive_packet(packet),
-      ShardPackets::PlayerDisconnect(packet) => shard_data.receive_packet(packet)
+      ShardPackets::Authentication(packet) => shard_data.receive_packet(packet).await,
+      ShardPackets::PlayerConnect(packet) => shard_data.receive_packet(packet).await,
+      ShardPackets::PlayerDisconnect(packet) => shard_data.receive_packet(packet).await
     }
   }
 }
