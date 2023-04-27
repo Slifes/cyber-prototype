@@ -1,5 +1,7 @@
 use godot::prelude::*;
 
+mod mic;
+mod client;
 mod speaker;
 
 struct VoipLibrary;
