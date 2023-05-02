@@ -14,6 +14,7 @@ pub struct VoipSpeaker {
   decoded_frame: Vec<Vec<f32>>,
   audio_stream: Option<Gd<AudioStreamPlayer3D>>,
   sprite: Option<Gd<Sprite3D>>,
+  decoder: Decoder,
 
   #[base]
   base: Base<Node3D>,
@@ -35,12 +36,10 @@ impl VoipSpeaker {
     self.opus_packet.push(frame);
   }
 
-  fn decoder(&mut self, data: &Vec<u8>) {
+  fn decode(&mut self, data: &Vec<u8>) {
     let output: &mut [f32] = &mut [0f32; OPUS_FRAME_TIME];
 
-    let data = Decoder::new(48000, Channels::Mono)
-      .unwrap()
-      .decode_float(data, output, false);
+    let data = self.decoder.decode_float(data, output, false);
 
     godot_print!("Decoded frame: {:?}", data);
 
@@ -60,8 +59,6 @@ impl VoipSpeaker {
       .get_stream_playback().unwrap()
       .try_cast().unwrap();
 
-    godot_print!("Playing audio");
-
     for frame in &self.decoded_frame {
       for data in frame {
         playback.push_frame(Vector2::new(*data, *data));
@@ -75,11 +72,13 @@ impl VoipSpeaker {
 #[godot_api]
 impl Node3DVirtual for VoipSpeaker {
   fn init(base: Base<Node3D>) -> Self {
+    let decode = Decoder::new(48000, Channels::Mono).unwrap();
     VoipSpeaker {
       id: 0,
       base,
       audio_stream: None,
       sprite: None,
+      decoder: decode,
       opus_packet: Vec::new(),
       decoded_frame: Vec::new()
     }
@@ -117,10 +116,10 @@ impl Node3DVirtual for VoipSpeaker {
     if self.opus_packet.len() > 0 {
       let packet = self.opus_packet.remove(0);
       
-      self.decoder(&packet);
+      self.decode(&packet);
     }
 
-    if self.decoded_frame.len() > 5 {
+    if self.decoded_frame.len() > 6 {
       self.play_audio();
     }
   }

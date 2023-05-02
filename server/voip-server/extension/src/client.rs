@@ -40,7 +40,7 @@ impl VoipClient {
   pub fn start(&mut self) -> Result<(), std::io::Error> {
     let socket = UdpSocket::bind("0.0.0.0:0").expect("Failed to bind socket");
 
-    socket.connect("127.0.0.1:8081").expect("Failed to connect to server");
+    socket.connect("54.166.79.54:8081").expect("Failed to connect to server");
 
     let sck = Arc::new(socket);
 
@@ -136,7 +136,9 @@ impl NodeVirtual for VoipClient {
         audio_frame: packets,
       });
       
-      self.send(packet);
+      let result = self.send(packet);
+
+      godot_print!("Result send streaming: {:?}", result);
     }
     
     if let Some(record_tx) = self.record_tx.as_mut() {

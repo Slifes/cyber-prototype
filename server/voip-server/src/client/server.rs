@@ -43,7 +43,7 @@ impl ClientServer {
   pub async fn run(&mut self) -> Result<(), io::Error> {
     info!("Starting client server...");
 
-    let socket = UdpSocket::bind("127.0.0.1:8081").await?;
+    let socket = UdpSocket::bind("0.0.0.0:8081").await?;
 
     let sck = Arc::new(socket);
 
