@@ -2,21 +2,27 @@ use godot::prelude::*;
 use godot::engine::{Engine, NodeVirtual, Node, AudioStreamGeneratorPlayback, AudioStreamPlayer3D};
 use opus::{Decoder, Channels};
 
+use super::manager::VoipManager;
+
 const OPUS_FRAME_TIME: usize = 2880;
 
 #[derive(GodotClass)]
 #[class(base=Node)]
-struct VoipSpeaker {
+pub struct VoipSpeaker {
   id: u32,
   opus_packet: Vec<Vec<u8>>,
   decoded_frame: Vec<Vec<f32>>,
   audio_stream: Option<Gd<AudioStreamPlayer3D>>,
+
+  #[base]
   base: Base<Node>,
 }
 
+#[godot_api]
 impl VoipSpeaker {
-  pub fn set_id(&mut self, id: String) {
-    self.id = id.parse().unwrap();
+  #[func]
+  pub fn set_id(&mut self, id: Variant) {
+    self.id = id.to();
   }
 
   pub fn add_opus_packet(&mut self, frame: Vec<u8>) {
@@ -35,7 +41,7 @@ impl VoipSpeaker {
     }
   }
 
-  fn play_audio(&mut self) {
+  fn play_audio(&mut self)  {
     let audio_stream: &mut Gd<AudioStreamPlayer3D> = self.audio_stream.as_mut().unwrap();
 
     audio_stream.set("playing".into(), Variant::from(true));
@@ -72,6 +78,10 @@ impl NodeVirtual for VoipSpeaker {
     }
 
     self.audio_stream = Some(self.base.get_node_as("AudioStreamPlayer3D"));
+
+    self.base.get_node_as::<VoipManager>("/root/GlobalVoipManager")
+      .bind_mut()
+      .add_speaker(self.id, self.base.get_node_as::<VoipSpeaker>("."));
   }
 
   fn process(&mut self, _delta: f64) {

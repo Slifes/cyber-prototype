@@ -1,38 +1,30 @@
 use godot::prelude::*;
 use godot::engine::{
   Engine, AudioEffectCapture, AudioServer, InputEvent,
-  AudioStreamPlayer, Node, NodeVirtual
+  AudioStreamPlayer, AudioStreamPlayerVirtual
 };
 use opus::{Encoder, Channels, Application};
 
 const OPUS_FRAME_TIME: usize = 2880;
-
+ 
 fn packed_vector_to_mono_pcm(samples: &Vec<Vector2>) -> Vec<f32> {
-  let mut pcm_data = Vec::new();
-
-  for i in 0..samples.len() {
-    let left = samples[i];
-    let mono_sample = (left.x + left.y) / 2.0;
-    pcm_data.push(mono_sample);
-  }
-
-  pcm_data
+  samples.iter()
+    .map(|x| (x.x + x.y) / 2.0)
+    .collect::<Vec<f32>>()
 }
 
 #[derive(GodotClass)]
-#[class(base=Node)]
+#[class(base=AudioStreamPlayer)]
 pub struct VoipMicrophone {
   recording: bool,
   prev_recording: bool,
 
   frames: Vec<Vec<Vector2>>, 
   opus_packets: Vec<Vec<u8>>,
-  
-  stream: Option<Gd<AudioStreamPlayer>>,
   record_effect: Option<Gd<AudioEffectCapture>>,
 
   #[base]
-  base: Base<Node>,
+  base: Base<AudioStreamPlayer>,
 }
 
 #[godot_api]
@@ -42,7 +34,7 @@ impl VoipMicrophone {
 
     let len = self.opus_packets.len().min(3);
 
-    for i in 0..len {
+    for _ in 0..len {
       packets.push(self.opus_packets.remove(0));
     }
 
@@ -82,9 +74,10 @@ impl VoipMicrophone {
       godot_print!("Error: {:?}", x);
     } else {
       let result_data = result.unwrap();
+
       godot_print!("Encoded: {:?}", result_data.len());
 
-      self.opus_packets.push(result_data.clone());
+      self.opus_packets.push(result_data);
     }
   }
 
@@ -118,12 +111,11 @@ impl VoipMicrophone {
 }  
 
 #[godot_api]
-impl NodeVirtual for VoipMicrophone {
-  fn init(base: Base<Node>) -> Self {
+impl AudioStreamPlayerVirtual for VoipMicrophone {
+  fn init(base: Base<AudioStreamPlayer>) -> Self {
     Self {
       recording: false,
       prev_recording: false,
-      stream: None,
       record_effect: None,
       frames: Vec::new(),
       opus_packets: Vec::new(),
@@ -138,18 +130,12 @@ impl NodeVirtual for VoipMicrophone {
 
     godot_print!("Speaker is ready!");
 
-    self.stream = Some(self.base
-      .get_node_as("AudioStreamPlayer"));
-
     let audio_server = &mut AudioServer::singleton();
     let record_index = audio_server.get_bus_index("Record".into());
-
     self.record_effect = audio_server.get_bus_effect(record_index, 0).unwrap().try_cast();
   }
 
   fn input(&mut self, event: Gd<InputEvent>) {
-    godot_print!("Speaker received input: {:?}", event);
-
     if event.is_action_pressed("voip_active".into(), false, true) {
       godot_print!("Pressed voip_active");
       self.recording = true;
