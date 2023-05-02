@@ -1,29 +1,29 @@
+use log::info;
+
 use tokio::sync::RwLock;
 use std::sync::Arc;
 use std::net::SocketAddr;
 
-pub struct Client {
-  id: i32,
-  shard_id: u32,
-  sck_addr: SocketAddr,
-  near_players: Vec<Arc<RwLock<Client>>>,
+pub struct Peer {
+  pub id: i64,
+  pub sck_addr: SocketAddr,
+  near_players: Vec<Arc<RwLock<Peer>>>,
 }
 
-impl Client {
+impl Peer {
   pub fn new(sck_addr: SocketAddr) -> Self {
     Self {
-      id: i32::MAX,
-      shard_id: u32::MAX,
+      id: i64::MAX,
       sck_addr,
       near_players: Vec::new(),
     }
   }
 
-  pub fn set_client_id(&mut self, id: i32) {
+  pub fn set_client_id(&mut self, id: i64) {
     self.id = id;
   }
 
-  pub async fn add_player(&mut self, player: Arc<RwLock<Client>>) {
+  pub async fn add_player(&mut self, player: Arc<RwLock<Peer>>) {
     let player_id = {
       player.read().await.id
     };
@@ -39,5 +39,11 @@ impl Client {
     //   .iter()
     //   .map(|(_, player)| async { player.write().await.socket.send(packet) })
     //   .collect::<Vec<_>>();
+  }
+}
+
+impl Drop for Peer {
+  fn drop(&mut self) {
+    info!("Dropping peer: {:?}", self.sck_addr);
   }
 }

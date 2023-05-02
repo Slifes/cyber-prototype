@@ -18,7 +18,7 @@ fn packed_vector_to_mono_pcm(samples: &Vec<Vector2>) -> Vec<f32> {
 pub struct VoipMicrophone {
   recording: bool,
   prev_recording: bool,
-
+  encoder: Encoder,
   frames: Vec<Vec<Vector2>>, 
   opus_packets: Vec<Vec<u8>>,
   record_effect: Option<Gd<AudioEffectCapture>>,
@@ -29,6 +29,9 @@ pub struct VoipMicrophone {
 
 #[godot_api]
 impl VoipMicrophone {
+  #[signal]
+  fn broadcast();
+
   pub fn get_latest_opus_packet(&mut self) -> Vec<Vec<u8>> {
     let mut packets = Vec::new();
 
@@ -63,12 +66,10 @@ impl VoipMicrophone {
     }
   }
 
-  pub fn _encode(&mut self, data: Vec<f32>) {
-    let mut encoder = Encoder::new(48000, Channels::Mono, Application::Voip).unwrap();
-
+  fn encode(&mut self, data: Vec<f32>) {
     godot_print!("Data: {:?}", data.len());
 
-    let result = encoder.encode_vec_float(&data, 1276);
+    let result = self.encoder.encode_vec_float(&data, 1276);
 
     if let Err(x) = result {
       godot_print!("Error: {:?}", x);
@@ -113,12 +114,14 @@ impl VoipMicrophone {
 #[godot_api]
 impl AudioStreamPlayerVirtual for VoipMicrophone {
   fn init(base: Base<AudioStreamPlayer>) -> Self {
+    let encoder = Encoder::new(48000, Channels::Mono, Application::Voip).unwrap();
     Self {
       recording: false,
       prev_recording: false,
       record_effect: None,
       frames: Vec::new(),
       opus_packets: Vec::new(),
+      encoder,
       base,
     }
   }
@@ -162,10 +165,14 @@ impl AudioStreamPlayerVirtual for VoipMicrophone {
 
         let mono_pcm = packed_vector_to_mono_pcm(frame);
 
-        self._encode(mono_pcm);
+        self.encode(mono_pcm);
 
         self.frames.remove(0);
       }
+    }
+
+    if self.opus_packets.len() > 2 {
+      self.emit_signal("broadcast".into(), &[]);
     }
   }
 }

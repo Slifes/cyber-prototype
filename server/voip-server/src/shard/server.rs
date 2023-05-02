@@ -49,7 +49,6 @@ impl ShardServer {
   }
 }
 
-
 async fn handler_connect(shard: Arc<RwLock<Shard>>, stream: &mut TcpStream) -> Result<(), io::Error> {
   loop {
     let mut buf = [0; 1024];

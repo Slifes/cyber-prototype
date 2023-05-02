@@ -1,4 +1,4 @@
-use super::player::Client;
+use super::peer::Peer;
 
 use tokio::sync::RwLock;
 use std::sync::Arc;
@@ -7,5 +7,5 @@ use std::collections::HashMap;
 use lazy_static::lazy_static;
 
 lazy_static! {
-  pub static ref CLIENTS: RwLock<HashMap<i32, Arc<RwLock<Client>>>> = RwLock::new(HashMap::new());
+  pub static ref CLIENTS: RwLock<HashMap<i32, Arc<RwLock<Peer>>>> = RwLock::new(HashMap::new());
 }

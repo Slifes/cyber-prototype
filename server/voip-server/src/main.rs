@@ -9,7 +9,14 @@ async fn main() {
 
   info!("Starting shard server...");
 
-  let mut shard = shard::SHARD_SERVER.write().await;
+  let mut shard = shard::server::ShardServer::new();
 
-  shard.run().await.unwrap();
-}
+  let mut client_server = client::server::ClientServer::new();
+
+  let result = tokio::join!(
+    shard.run(),
+    client_server.run()
+  );
+
+  info!("Server closed: {:?}", result);
+} 

@@ -1,5 +1,5 @@
 use godot::prelude::*;
-use godot::engine::{Engine, Node, NodeVirtual};
+use godot::engine::{Node, NodeVirtual};
 
 use std::collections::HashMap;
 
@@ -10,23 +10,25 @@ use crate::speaker::VoipSpeaker;
 pub struct VoipManager {
   #[base]
   base: Base<Node>,
-  speakers: HashMap<u32, Gd<VoipSpeaker>>,
+  speakers: HashMap<i64, Gd<VoipSpeaker>>,
 }
 
 #[godot_api]
 impl VoipManager {
-  pub fn add_speaker(&mut self, id: u32, speaker: Gd<VoipSpeaker>) {
+  pub fn add_speaker(&mut self, id: i64, speaker: Gd<VoipSpeaker>) {
     self.speakers.insert(id, speaker);
     godot_print!("Added speaker: {}", id);
     godot_print!("Speakers: {:?}", self.speakers);
   }
 
-  pub fn remove_speaker(&mut self, id: u32) {
+  pub fn remove_speaker(&mut self, id: i64) {
     self.speakers.remove(&id);
   }
 
-  pub fn on_speak_data(&mut self, id: u32, data: Vec<Vec<u8>>) {
+  pub fn on_speak_data(&mut self, id: i64, data: Vec<Vec<u8>>) {
+    godot_print!("Received data: {:?}, {:?}", id, data.len());
     if let Some(speaker) = self.speakers.get_mut(&id) {
+      godot_print!("Found speaker: {}", id);
       let mut speaker_mut: GdMut<VoipSpeaker> = speaker.bind_mut();
       for d in data {
         speaker_mut.add_opus_packet(d);

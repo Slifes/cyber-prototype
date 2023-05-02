@@ -1,17 +1,15 @@
 use serde::{Serialize, Deserialize};
-use super::parser::{serialize, deserialize};
-use std::io;
+use super::parser::PacketParser;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CMAuth {
-  client_id: u32,
-  client_key: String,
+  pub client_id: i64,
+  pub client_key: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CMStreaming {
-  frame_length: u16,
-  audio_frame: Vec<Vec<u8>>,
+  pub audio_frame: Vec<Vec<u8>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -23,12 +21,6 @@ pub enum ClientPacket {
   Streaming(CMStreaming),
 }
 
-impl ClientPacket {
-  pub fn parser(packet: ClientPacket) -> Result<Vec<u8>, io::Error> {
-    serialize(packet)
-  }
-}
-
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SMAuth {
   pub status: bool,
@@ -36,7 +28,7 @@ pub struct SMAuth {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SMStreaming {
-  pub id: u32,
+  pub id: i64,
   pub audio_frame: Vec<Vec<u8>>,
 }
 
@@ -49,8 +41,5 @@ pub enum SMPackets {
   Streaming(SMStreaming),
 }
 
-impl SMPackets {
-  pub fn parser(value: &[u8]) -> Result<Self, io::Error> {
-    deserialize(value)
-  }
-}
+impl PacketParser<ClientPacket> for ClientPacket { }
+impl PacketParser<SMPackets> for SMPackets { }

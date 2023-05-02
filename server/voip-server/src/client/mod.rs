@@ -1,4 +1,4 @@
-pub mod player;
+pub mod peer;
 pub mod server;
 mod global;
 

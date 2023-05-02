@@ -18,9 +18,6 @@ pub struct Shard {
   peers: Vec<i32>,
 }
 
-unsafe impl Send for Shard {}
-unsafe impl Sync for Shard {}
-
 impl Shard {
   pub fn new() -> Self {
     Self {

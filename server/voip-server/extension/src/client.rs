@@ -1,12 +1,15 @@
 use godot::prelude::*;
 use godot::engine::Engine;
+use packets::client::{CMStreaming, SMStreaming};
 
-use std::sync::Arc;
+use std::sync::{Arc, mpsc};
+use std::net::UdpSocket;
+use std::thread;
 
-use tokio::net::UdpSocket;
-use tokio::sync::mpsc;
-
-use packets::client::{ClientPacket, SMPackets};
+use packets::{
+  PacketParser,
+  client::{ClientPacket, CMAuth, SMPackets}
+};
 
 use super::mic::VoipMicrophone;
 use super::manager::VoipManager;
@@ -23,48 +26,59 @@ struct VoipClient {
   base: Base<Node>,
 }
 
+#[godot_api]
 impl VoipClient {
-  pub async fn send(&mut self, packet: ClientPacket) -> Result<(), std::io::Error>{
+  pub fn send(&mut self, packet: ClientPacket) -> Result<(), std::io::Error>{
     if let Some(socket) = &self.socket {
-      let data = ClientPacket::parser(packet)?;
-      socket.send(&data).await?;
+      let data = ClientPacket::serialize(packet)?;
+      socket.send(&data)?;
     } 
 
     Ok(())
   }
 
-  pub async fn start(&mut self) -> Result<(), std::io::Error> {
-    let mut socket = UdpSocket::bind("0.0.0.0:0").await?;
+  pub fn start(&mut self) -> Result<(), std::io::Error> {
+    let socket = UdpSocket::bind("0.0.0.0:0").expect("Failed to bind socket");
 
-    socket.connect("127.0.0.1:8081").await?;
+    socket.connect("127.0.0.1:8081").expect("Failed to connect to server");
 
     let sck = Arc::new(socket);
 
-    self.run_handler(sck.clone());
+    let sck_handler = sck.clone();
 
     self.socket = Some(sck);
+
+    let client_id = self.base.get_multiplayer()
+      .unwrap().get_unique_id();
+
+    self.send(ClientPacket::Auth(CMAuth {
+      client_id,
+      client_key: "asjduioasjdoiasjd".to_string(),
+    }));
+
+    self.run_handler(sck_handler);
 
     Ok(())
   }
 
   pub fn run_handler(&mut self, socket: Arc<UdpSocket>) {
-    let (record_tx, record_rx) = mpsc::channel(1024);
+    let (record_tx, record_rx) = mpsc::channel();
 
     self.record_tx = Some(record_rx);
 
-    tokio::spawn(async move {
+    thread::spawn(move || {
       loop {
         let mut buffer = [0u8; 1024];
 
-        match socket.recv(&mut buffer).await {
+        match socket.recv(&mut buffer) {
           Ok(size) => {
             if size == 0 {
               continue;
             }
 
-            let pck = SMPackets::parser(&buffer[..size]).unwrap();
+            let pck = SMPackets::deserialize(&buffer[..size]).unwrap();
 
-            let _ = record_tx.send(pck).await;
+            let _ = record_tx.send(pck);
           }
           Err(e) => {
             godot_print!("Error: {}", e);
@@ -96,6 +110,8 @@ impl NodeVirtual for VoipClient {
     self.microphone = Some(self.base.get_node_as::<VoipMicrophone>("VoipMicrophone"));
 
     self.manager = Some(self.base.get_node_as::<VoipManager>("/root/GlobalVoipManager"));
+  
+    self.start();
   }
 
   fn process(&mut self, _delta: f64) {
@@ -103,14 +119,31 @@ impl NodeVirtual for VoipClient {
       return;
     }
 
+    let mut microphone = self.microphone.as_mut().unwrap();
+
+    let packets = {
+      let mut mic_mut = microphone.bind_mut();
+      mic_mut.get_latest_opus_packet()
+    };
+
+    if packets.len() > 0 {
+      let packet = ClientPacket::Streaming(CMStreaming {
+        audio_frame: packets,
+      });
+      
+      self.send(packet);
+    }
+    
     if let Some(record_tx) = self.record_tx.as_mut() {
       let pck = record_tx.try_recv();
-      
+
       if let Ok(packet) = pck {
         match packet {
           SMPackets::Streaming(streaming) => {
+            godot_print!("Streaming id: {:?}", streaming.id);
             if let Some(manager) = &mut self.manager {
-              manager.bind_mut().on_speak_data(streaming.id, streaming.audio_frame);
+              manager.bind_mut()
+                .on_speak_data(streaming.id, streaming.audio_frame);
             }
           }
           SMPackets::Auth(auth) => {

@@ -9,7 +9,7 @@ const OPUS_FRAME_TIME: usize = 2880;
 #[derive(GodotClass)]
 #[class(base=Node)]
 pub struct VoipSpeaker {
-  id: u32,
+  id: i64,
   opus_packet: Vec<Vec<u8>>,
   decoded_frame: Vec<Vec<f32>>,
   audio_stream: Option<Gd<AudioStreamPlayer3D>>,
@@ -21,20 +21,22 @@ pub struct VoipSpeaker {
 #[godot_api]
 impl VoipSpeaker {
   #[func]
-  pub fn set_id(&mut self, id: Variant) {
-    self.id = id.to();
+  pub fn set_id(&mut self, id: i64) {
+    self.id = id;
   }
 
   pub fn add_opus_packet(&mut self, frame: Vec<u8>) {
     self.opus_packet.push(frame);
   }
 
-  fn _decoder(&mut self, data: &Vec<u8>) {
+  fn decoder(&mut self, data: &Vec<u8>) {
     let output: &mut [f32] = &mut [0f32; OPUS_FRAME_TIME];
 
     let data = Decoder::new(48000, Channels::Mono)
       .unwrap()
       .decode_float(data, output, false);
+
+    godot_print!("Decoded frame: {:?}", data);
 
     if let Ok(output_size) = data {
       self.decoded_frame.push(output[..output_size].to_vec());
@@ -49,6 +51,8 @@ impl VoipSpeaker {
     let mut playback: Gd<AudioStreamGeneratorPlayback> = audio_stream
       .get_stream_playback().unwrap()
       .try_cast().unwrap();
+
+    godot_print!("Playing audio");
 
     for frame in &self.decoded_frame {
       for data in frame {
@@ -79,6 +83,12 @@ impl NodeVirtual for VoipSpeaker {
 
     self.audio_stream = Some(self.base.get_node_as("AudioStreamPlayer3D"));
 
+    let name = self.base.get_parent().unwrap().get_parent().unwrap().get_parent().unwrap().get_name();
+
+    godot_print!("Speaker ready: {}", name);
+
+    self.set_id(name.to_string().parse().unwrap());
+
     self.base.get_node_as::<VoipManager>("/root/GlobalVoipManager")
       .bind_mut()
       .add_speaker(self.id, self.base.get_node_as::<VoipSpeaker>("."));
@@ -92,7 +102,7 @@ impl NodeVirtual for VoipSpeaker {
     if self.opus_packet.len() > 0 {
       let packet = self.opus_packet.remove(0);
       
-      self._decoder(&packet);
+      self.decoder(&packet);
     }
 
     if self.decoded_frame.len() > 1 {
