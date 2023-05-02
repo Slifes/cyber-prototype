@@ -1,5 +1,5 @@
 use godot::prelude::*;
-use godot::engine::{Engine, NodeVirtual, Node, AudioStreamGeneratorPlayback, AudioStreamPlayer3D};
+use godot::engine::{Engine, Sprite3D, Node3DVirtual, Node3D, AudioStreamGeneratorPlayback, AudioStreamPlayer3D};
 use opus::{Decoder, Channels};
 
 use super::manager::VoipManager;
@@ -7,15 +7,16 @@ use super::manager::VoipManager;
 const OPUS_FRAME_TIME: usize = 2880;
 
 #[derive(GodotClass)]
-#[class(base=Node)]
+#[class(base=Node3D)]
 pub struct VoipSpeaker {
   id: i64,
   opus_packet: Vec<Vec<u8>>,
   decoded_frame: Vec<Vec<f32>>,
   audio_stream: Option<Gd<AudioStreamPlayer3D>>,
+  sprite: Option<Gd<Sprite3D>>,
 
   #[base]
-  base: Base<Node>,
+  base: Base<Node3D>,
 }
 
 #[godot_api]
@@ -23,6 +24,11 @@ impl VoipSpeaker {
   #[func]
   pub fn set_id(&mut self, id: i64) {
     self.id = id;
+  }
+
+  #[func]
+  pub fn on_finished_audio(&mut self) {
+    self.sprite.as_mut().unwrap().set_visible(false);
   }
 
   pub fn add_opus_packet(&mut self, frame: Vec<u8>) {
@@ -46,6 +52,8 @@ impl VoipSpeaker {
   fn play_audio(&mut self)  {
     let audio_stream: &mut Gd<AudioStreamPlayer3D> = self.audio_stream.as_mut().unwrap();
 
+    self.sprite.as_mut().unwrap().set_visible(true);
+
     audio_stream.set("playing".into(), Variant::from(true));
 
     let mut playback: Gd<AudioStreamGeneratorPlayback> = audio_stream
@@ -65,12 +73,13 @@ impl VoipSpeaker {
 }
 
 #[godot_api]
-impl NodeVirtual for VoipSpeaker {
-  fn init(base: Base<Node>) -> Self {
+impl Node3DVirtual for VoipSpeaker {
+  fn init(base: Base<Node3D>) -> Self {
     VoipSpeaker {
       id: 0,
       base,
       audio_stream: None,
+      sprite: None,
       opus_packet: Vec::new(),
       decoded_frame: Vec::new()
     }
@@ -81,7 +90,13 @@ impl NodeVirtual for VoipSpeaker {
       return;
     }
 
-    self.audio_stream = Some(self.base.get_node_as("AudioStreamPlayer3D"));
+    let mut audio_stream = self.base.get_node_as::<AudioStreamPlayer3D>("AudioStreamPlayer3D");
+
+    audio_stream.connect("finished".into(), Callable::from_object_method(self.base.get_node_as::<VoipSpeaker>("."), "on_finished_audio"), 0);
+
+    self.audio_stream = Some(audio_stream);
+
+    self.sprite = Some(self.base.get_node_as("Speaker"));
 
     let name = self.base.get_parent().unwrap().get_parent().unwrap().get_parent().unwrap().get_name();
 
@@ -105,7 +120,7 @@ impl NodeVirtual for VoipSpeaker {
       self.decoder(&packet);
     }
 
-    if self.decoded_frame.len() > 1 {
+    if self.decoded_frame.len() > 5 {
       self.play_audio();
     }
   }

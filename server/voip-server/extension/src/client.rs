@@ -68,7 +68,7 @@ impl VoipClient {
 
     thread::spawn(move || {
       loop {
-        let mut buffer = [0u8; 1024];
+        let mut buffer = [0u8; 2048];
 
         match socket.recv(&mut buffer) {
           Ok(size) => {
@@ -119,14 +119,19 @@ impl NodeVirtual for VoipClient {
       return;
     }
 
-    let mut microphone = self.microphone.as_mut().unwrap();
+    let microphone = self.microphone.as_mut().unwrap();
 
-    let packets = {
-      let mut mic_mut = microphone.bind_mut();
-      mic_mut.get_latest_opus_packet()
+    let packet_count = {
+      let mic_mut = microphone.bind();
+      mic_mut.get_opus_packet_count()
     };
 
-    if packets.len() > 0 {
+    if packet_count > 1 {
+      let packets = {
+        let mut mic_mut = microphone.bind_mut();
+        mic_mut.get_latest_opus_packet()
+      };
+
       let packet = ClientPacket::Streaming(CMStreaming {
         audio_frame: packets,
       });

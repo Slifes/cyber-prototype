@@ -24,7 +24,9 @@ async fn send_bulk(socket: Arc<UdpSocket>, packet: SMPackets, peers: Vec<SocketA
   let data = SMPackets::serialize(packet)?;
 
   for peer_id in peers {
-    socket.send_to(&data, peer_id).await?;
+    if let Err(x) = socket.send_to(&data, peer_id).await {
+      error!("Error sending packet to peer: {}", x);
+    }
   }
 
   Ok(())
@@ -52,7 +54,7 @@ impl ClientServer {
     self.socket = Some(sck);
 
     tokio::spawn(async move {
-      let mut buf = [0; 1024]; 
+      let mut buf = [0; 2048]; 
       loop {
         let received = sck_handler.recv_from(&mut buf).await;
 

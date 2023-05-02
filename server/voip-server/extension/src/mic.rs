@@ -29,8 +29,9 @@ pub struct VoipMicrophone {
 
 #[godot_api]
 impl VoipMicrophone {
-  #[signal]
-  fn broadcast();
+  pub fn get_opus_packet_count(&self) -> usize {
+    self.opus_packets.len()
+  }
 
   pub fn get_latest_opus_packet(&mut self) -> Vec<Vec<u8>> {
     let mut packets = Vec::new();
