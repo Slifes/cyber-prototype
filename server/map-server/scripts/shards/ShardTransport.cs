@@ -58,7 +58,7 @@ partial class ShardTransport : Node
   {
     if (AutoLoad)
     {
-      PID = OS.CreateProcess(OS.GetExecutablePath(), new string[] { (Debug ? "" : "--headless"), "--debug-collisions", "shard", GetParent().Name }, false);
+      PID = OS.CreateProcess(OS.GetExecutablePath(), new string[] { "shard", GetParent().Name, (Debug ? "" : "--headless") }, false);
     }
 
     GD.Print("Connect to shard: ", port);

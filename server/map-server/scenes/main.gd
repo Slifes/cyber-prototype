@@ -5,6 +5,7 @@ extends Node
 func _ready():
 	var args = OS.get_cmdline_args()
 	
+	print(args)
 	if "shard" in args:
 		var zone = args[1]
 		get_tree().change_scene_to_file("res://zones/%s.tscn" % zone)

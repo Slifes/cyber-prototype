@@ -26,6 +26,8 @@ partial class Zone
     GD.Print("Actor Connected");
 
     spawner.Spawn(actorId, position, yaw);
+
+    proxyClient.SendPlayerConnected(actorId);
   }
 
   [Rpc(MultiplayerApi.RpcMode.AnyPeer, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
@@ -34,5 +36,7 @@ partial class Zone
     GD.Print("Actor Disconnected");
 
     spawner.Despawn(actorId);
+
+    proxyClient.SendPlayerDisconnected(actorId);
   }
 }

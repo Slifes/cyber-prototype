@@ -1,11 +1,12 @@
 ﻿using Godot;
+using System;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using MessagePack;
 using System.Collections.Generic;
 
 [MessagePackObject]
-public partial struct ShardAuthentication : IVoipCommand
+public partial struct ShardAuthentication
 {
   [Key(0)] public uint PacketId => 1;
   [Key(1)] public uint ShardId;
@@ -13,70 +14,94 @@ public partial struct ShardAuthentication : IVoipCommand
 }
 
 [MessagePackObject]
-public partial struct ShardPlayerConnect : IVoipCommand
+public partial struct ShardPlayerConnect
 {
   [Key(0)] public uint PacketId => 2;
-  [Key(1)] public uint PlayerId;
+  [Key(1)] public int PlayerId;
 }
 
-[Union(1, typeof(ShardAuthentication))]
-[Union(2, typeof(ShardPlayerConnect))]
-public interface IVoipCommand { }
+[MessagePackObject]
+public partial struct ShardPlayerDisconnected
+{
+  [Key(0)] public uint PacketId => 3;
+  [Key(1)] public int PlayerId;
+}
 
-class GodotVoip
+partial class ProxyClient : GodotObject
 {
   TcpClient client;
 
-  Mutex mutex = new Mutex();
+  NetworkStream stream;
 
   GodotThread threadHandler;
 
-  List<IVoipCommand> queue = new();
+  public string Name { get; set; }
+
+  public ProxyClient(string Name)
+  {
+    this.Name = Name;
+  }
 
   public void Connect(string ip, int port)
   {
+    GD.Print("Connecting to proxy client...");
+
     client = new TcpClient();
 
-    client.Connect(ip, port);
-
-    client.GetStream().Write(MessagePackSerializer.Serialize(new ShardAuthentication()
+    try
     {
-      ShardId = 20,
-      ShardKey = "test"
-    }));
+
+      client.Connect(ip, port);
+
+      stream = client.GetStream();
+
+      SendShardAuthentication();
+    }
+    catch (Exception e)
+    {
+      GD.Print("Failed to connect to proxy client: " + e.Message);
+      GD.PrintErr(e);
+    }
   }
 
-  public void SendPackets()
+  public async void SendShardAuthentication()
   {
-    mutex.Lock();
-
-    queue.ForEach((IVoipCommand data) =>
+    await SendPacket(new ShardAuthentication()
     {
-      client.GetStream().Write(MessagePackSerializer.Serialize(data));
+      ShardId = 1,
+      ShardKey = Name
     });
+  }
 
-    mutex.Free();
+  public async void SendPlayerConnected(int peerId)
+  {
+    await SendPacket(new ShardPlayerConnect()
+    {
+      PlayerId = peerId
+    });
+  }
+
+  public async void SendPlayerDisconnected(int peerId)
+  {
+    await SendPacket(new ShardPlayerDisconnected()
+    {
+      PlayerId = peerId
+    });
+  }
+
+  async Task SendPacket<T>(T packet)
+  {
+    await stream.WriteAsync(MessagePackSerializer.Serialize(packet));
   }
 }
 
 partial class Zone
 {
-  GodotVoip voip;
+  ProxyClient proxyClient;
 
-  void ConnectToVoip()
+  void InitializeProxyClient()
   {
-    voip = new();
-    voip.Connect("127.0.0.1", 8080);
-
-    // var threadVoip = new GodotThread();
-
-    // threadVoip.Start(new Callable(this, nameof(ConnectToVoipThread)));
-  }
-
-  void ConnectToVoipThread()
-  {
-    var voip = new TcpClient();
-
-    voip.Connect("127.0.0.1", 8080);
+    proxyClient = new(Name);
+    proxyClient.Connect("127.0.0.1", 8080);
   }
 }

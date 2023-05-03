@@ -2,6 +2,7 @@
 {
   public static void SendActorEnteredZone(ZoneActor actor, ZoneActor target)
   {
+
     Instance.Rpc("ActorEnteredZone", actor.GetActorID(), target.GetActorID(), (int)target.GetActorType(), target.Position, target.Rotation.Y, target.GetData());
   }
 
