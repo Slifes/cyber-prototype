@@ -1,5 +1,5 @@
 use godot::prelude::*;
-use godot::engine::{Engine, Sprite3D, Node3DVirtual, Node3D, AudioStreamGeneratorPlayback, AudioStreamPlayer3D};
+use godot::engine::{Engine, Time, Sprite3D, Node3DVirtual, Node3D, AudioStreamGeneratorPlayback, AudioStreamPlayer3D};
 use opus::{Decoder, Channels};
 
 use super::manager::VoipManager;
@@ -53,19 +53,29 @@ impl VoipSpeaker {
 
     self.sprite.as_mut().unwrap().set_visible(true);
 
-    audio_stream.set("playing".into(), Variant::from(true));
+    if !audio_stream.is_playing() {
+      audio_stream.set("playing".into(), Variant::from(true));
+    }
 
     let mut playback: Gd<AudioStreamGeneratorPlayback> = audio_stream
       .get_stream_playback().unwrap()
       .try_cast().unwrap();
 
-    for frame in &self.decoded_frame {
-      for data in frame {
-        playback.push_frame(Vector2::new(*data, *data));
-      }
-    }
+    if playback.can_push_buffer(i64::try_from(OPUS_FRAME_TIME).unwrap()) {
+      let mut frames = PackedVector2Array::new();
 
-    self.decoded_frame.clear();
+      let len = self.decoded_frame.len().min(2);
+
+      for _ in 0..len {
+        let frame_f32 = self.decoded_frame.remove(0);
+
+        for frame in frame_f32 {
+          frames.push(Vector2::new(frame, frame));
+        }
+      }      
+
+      playback.push_buffer(frames);
+    }
   }
 }
 
@@ -80,7 +90,7 @@ impl Node3DVirtual for VoipSpeaker {
       sprite: None,
       decoder: decode,
       opus_packet: Vec::new(),
-      decoded_frame: Vec::new()
+      decoded_frame: Vec::new(),
     }
   }
 
@@ -109,6 +119,8 @@ impl Node3DVirtual for VoipSpeaker {
   }
 
   fn process(&mut self, _delta: f64) {
+    // let time = Time::singleton().get_ticks_msec();
+
     if Engine::singleton().is_editor_hint() {
       return;
     }
@@ -119,14 +131,18 @@ impl Node3DVirtual for VoipSpeaker {
       self.decode(&packet);
     }
 
-    if self.decoded_frame.len() > 6 {
+    if self.decoded_frame.len() > 2 {
       self.play_audio();
     }
+
+    // godot_print!("Time playing audio: {:?}", Time::singleton().get_ticks_msec() - time);
   }
 }
 
 impl Drop for VoipSpeaker {
   fn drop(&mut self) {
-    godot_print!("Speaker dropped!");
+    // self.base.get_node_as::<VoipManager>("/root/GlobalVoipManager")
+    //   .bind_mut()
+    //   .remove_speaker(self.id);
   }
 }

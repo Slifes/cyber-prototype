@@ -1,7 +1,7 @@
 use log::info;
 
 mod shard;
-mod client;
+mod peers;
 
 #[tokio::main]
 async fn main() {
@@ -11,7 +11,7 @@ async fn main() {
 
   let mut shard = shard::server::ShardServer::new();
 
-  let mut client_server = client::server::ClientServer::new();
+  let mut client_server = peers::server::PeerServer::new();
 
   let result = tokio::join!(
     shard.run(),

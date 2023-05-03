@@ -14,7 +14,7 @@ use packets::client::{SMPackets, SMStreaming, ClientPacket, SMAuth};
 use super::global::CLIENTS;
 use super::peer::Peer;
 
-pub struct ClientServer {
+pub struct PeerServer {
   socket: Option<Arc<UdpSocket>>,
   peers: Arc<RwLock<HashMap<SocketAddr, Peer>>>
 }
@@ -32,7 +32,7 @@ async fn send_bulk(socket: Arc<UdpSocket>, packet: SMPackets, peers: Vec<SocketA
   Ok(())
 }
 
-impl ClientServer {
+impl PeerServer {
   pub fn new() -> Self {
     Self {
       socket: None,
@@ -78,6 +78,7 @@ impl ClientServer {
                   info!("Result: {:?}", result);
                 }
                 _ => {
+                  peers.remove(&addr);
                   error!("Client not authenticated");
                 }
               }

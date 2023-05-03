@@ -7,6 +7,7 @@ use std::net::SocketAddr;
 pub struct Peer {
   pub id: i64,
   pub sck_addr: SocketAddr,
+  pub ping_time: u64,
   near_players: Vec<Arc<RwLock<Peer>>>,
 }
 
@@ -15,6 +16,7 @@ impl Peer {
     Self {
       id: i64::MAX,
       sck_addr,
+      ping_time: 0,
       near_players: Vec::new(),
     }
   }

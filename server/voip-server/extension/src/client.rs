@@ -1,6 +1,5 @@
 use godot::prelude::*;
 use godot::engine::Engine;
-use packets::client::{CMStreaming, SMStreaming};
 
 use std::sync::{Arc, mpsc};
 use std::net::UdpSocket;
@@ -8,7 +7,7 @@ use std::thread;
 
 use packets::{
   PacketParser,
-  client::{ClientPacket, CMAuth, SMPackets}
+  client::{ClientPacket, CMStreaming, CMAuth, SMPackets}
 };
 
 use super::mic::VoipMicrophone;
@@ -31,6 +30,7 @@ impl VoipClient {
   pub fn send(&mut self, packet: ClientPacket) -> Result<(), std::io::Error>{
     if let Some(socket) = &self.socket {
       let data = ClientPacket::serialize(packet)?;
+      godot_print!("Sending packet: {:?}", data.len());
       socket.send(&data)?;
     } 
 
@@ -63,7 +63,7 @@ impl VoipClient {
 
   pub fn run_handler(&mut self, socket: Arc<UdpSocket>) {
     let (record_tx, record_rx) = mpsc::channel();
-
+ 
     self.record_tx = Some(record_rx);
 
     thread::spawn(move || {
@@ -127,6 +127,7 @@ impl NodeVirtual for VoipClient {
     };
 
     if packet_count > 1 {
+      godot_print!("Running packet send");
       let packets = {
         let mut mic_mut = microphone.bind_mut();
         mic_mut.get_latest_opus_packet()
@@ -149,9 +150,10 @@ impl NodeVirtual for VoipClient {
           SMPackets::Streaming(streaming) => {
             godot_print!("Streaming id: {:?}", streaming.id);
             if let Some(manager) = &mut self.manager {
+              godot_print!("Running manager");
               manager.bind_mut()
                 .on_speak_data(streaming.id, streaming.audio_frame);
-            }
+            } 
           }
           SMPackets::Auth(auth) => {
             godot_print!("Auth: {:?}", auth)

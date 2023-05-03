@@ -2,7 +2,7 @@ use log::info;
 use serde::Deserialize;
 use async_trait::async_trait;
 
-use crate::client::CLIENTS;
+use crate::peers::CLIENTS;
 
 use packets::shard::{
   ShardAuthentication,

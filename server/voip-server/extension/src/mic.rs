@@ -1,6 +1,6 @@
 use godot::prelude::*;
 use godot::engine::{
-  Engine, AudioEffectCapture, AudioServer, InputEvent,
+  Engine, Time, AudioEffectCapture, AudioServer, InputEvent,
   AudioStreamPlayer, AudioStreamPlayerVirtual
 };
 use opus::{Encoder, Channels, Application};
@@ -19,9 +19,9 @@ pub struct VoipMicrophone {
   recording: bool,
   prev_recording: bool,
   encoder: Encoder,
-  frames: Vec<Vec<Vector2>>, 
   opus_packets: Vec<Vec<u8>>,
   record_effect: Option<Gd<AudioEffectCapture>>,
+  frame: Vec<Vector2>,
 
   #[base]
   base: Base<AudioStreamPlayer>,
@@ -34,9 +34,8 @@ impl VoipMicrophone {
   }
 
   pub fn get_latest_opus_packet(&mut self) -> Vec<Vec<u8>> {
-    let mut packets = Vec::new();
-
-    let len = self.opus_packets.len().min(3);
+    let len = self.opus_packets.len().min(2);
+    let mut packets = Vec::with_capacity(len);
 
     for _ in 0..len {
       packets.push(self.opus_packets.remove(0));
@@ -45,18 +44,41 @@ impl VoipMicrophone {
     packets
   }
 
+  fn process_frame(&mut self, buffer: &[Vector2]) {
+    let frame_len = self.frame.len();
+    let frame_missing = OPUS_FRAME_TIME - frame_len;
+    let buffer_to_collect = frame_missing.min(buffer.len());
+
+    if frame_missing > 0 {
+      self.frame.extend(buffer[..buffer_to_collect].iter());
+    }
+
+    if self.frame.len() == OPUS_FRAME_TIME {
+      let mono_pcm = packed_vector_to_mono_pcm(&self.frame);
+
+      self.encode(mono_pcm);
+
+      self.frame.clear();
+    }
+
+    if (buffer.len() - buffer_to_collect) > 0 {
+      self.frame.extend(buffer[buffer_to_collect..].iter());
+    }
+  }
+
   fn recording(&mut self) {
     if self.recording {
       let capture = self.record_effect.as_mut().unwrap();
 
       if self.prev_recording {
-
         let frames = capture.get_frames_available();
     
         if frames > 0 {
           let buffer: Vec<Vector2> = capture.get_buffer(frames).to_vec();
-    
-          self.add_frame(buffer);
+
+          for buff in buffer.chunks(OPUS_FRAME_TIME) {
+            self.process_frame(buff);
+          }
         }
   
       } else {
@@ -72,41 +94,14 @@ impl VoipMicrophone {
 
     let result = self.encoder.encode_vec_float(&data, 1276);
 
-    if let Err(x) = result {
-      godot_print!("Error: {:?}", x);
-    } else {
-      let result_data = result.unwrap();
-
-      godot_print!("Encoded: {:?}", result_data.len());
-
-      self.opus_packets.push(result_data);
-    }
-  }
-
-  fn add_frame(&mut self, buffer: Vec<Vector2>) {
-    for buff in buffer.chunks(OPUS_FRAME_TIME) {
-      let frame = self.frames.last_mut();
-
-      if let Some(last_frame) = frame {
-        if last_frame.len() != OPUS_FRAME_TIME {
-          let frame_missing = OPUS_FRAME_TIME - last_frame.len();
-
-          let frame_difference = if buff.len() <= frame_missing {
-            buffer.len()
-          } else {
-            frame_missing
-          };
-        
-          last_frame.append(buffer[..frame_difference].to_vec().as_mut());
-          
-          if frame_difference != buffer.len() {
-            self.frames.push(buff[(buff.len() - frame_missing)..].to_vec());
-          }
-        } else {
-          self.frames.push(buff.to_vec());
-        }
-      } else {
-        self.frames.push(buff.to_vec());
+    match result {
+      Ok(result_data) => {
+        godot_print!("Encoded: {:?}", result_data.len());
+  
+        self.opus_packets.push(result_data);
+      },
+      Err(x) => {
+        godot_print!("Error: {:?}", x);
       }
     }
   }
@@ -120,7 +115,7 @@ impl AudioStreamPlayerVirtual for VoipMicrophone {
       recording: false,
       prev_recording: false,
       record_effect: None,
-      frames: Vec::new(),
+      frame: Vec::with_capacity(OPUS_FRAME_TIME),
       opus_packets: Vec::new(),
       encoder,
       base,
@@ -149,31 +144,19 @@ impl AudioStreamPlayerVirtual for VoipMicrophone {
 
       self.recording = false;
       self.prev_recording = false;
+      self.frame.clear();
     }
   }
 
-  fn process(&mut self, delta: f64) {
+  fn process(&mut self, _delta: f64) {
+    // let time = Time::singleton().get_ticks_msec();
+
     if Engine::singleton().is_editor_hint() {
       return;
     }
 
     self.recording();
-    
-    let last_frame = self.frames.first_mut();
 
-    if let Some(frame) = last_frame {
-      if frame.len() == OPUS_FRAME_TIME {
-
-        let mono_pcm = packed_vector_to_mono_pcm(frame);
-
-        self.encode(mono_pcm);
-
-        self.frames.remove(0);
-      }
-    }
-
-    if self.opus_packets.len() > 2 {
-      self.emit_signal("broadcast".into(), &[]);
-    }
+    // godot_print!("Time recording audio: {:?}", Time::singleton().get_ticks_msec() - time);
   }
 }

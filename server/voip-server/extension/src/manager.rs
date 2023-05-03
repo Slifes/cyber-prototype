@@ -1,5 +1,5 @@
 use godot::prelude::*;
-use godot::engine::{Node, NodeVirtual};
+use godot::engine::{Node, Time, NodeVirtual};
 
 use std::collections::HashMap;
 
@@ -26,14 +26,16 @@ impl VoipManager {
   }
 
   pub fn on_speak_data(&mut self, id: i64, data: Vec<Vec<u8>>) {
-    godot_print!("Received data: {:?}, {:?}", id, data.len());
+    let time = Time::singleton().get_ticks_msec();
+
     if let Some(speaker) = self.speakers.get_mut(&id) {
-      godot_print!("Found speaker: {}", id);
       let mut speaker_mut: GdMut<VoipSpeaker> = speaker.bind_mut();
       for d in data {
         speaker_mut.add_opus_packet(d);
       }
     }
+
+    godot_print!("Time speak data: {:?}", Time::singleton().get_ticks_msec() - time);
   }
 }
 
