@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcgnd2cjgdp1j"]
+
+[ext_resource type="Texture2D" uid="uid://b3scqswxnq76l" path="res://audio/icons/sound.png" id="1_u0n3v"]
+
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_vqicq"]
+mix_rate = 48000.0
+buffer_length = 0.6
+
+[node name="Voip" type="Node3D"]
+
+[node name="VoipSpeaker" type="VoipSpeaker" parent="."]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="VoipSpeaker"]
+stream = SubResource("AudioStreamGenerator_vqicq")
+attenuation_model = 2
+max_distance = 2.0
+emission_angle_enabled = true
+emission_angle_degrees = 30.0
+
+[node name="Speaker" type="Sprite3D" parent="VoipSpeaker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.594735, 0)
+visible = false
+modulate = Color(0.396078, 0.784314, 1, 1)
+pixel_size = 0.002
+billboard = 1
+double_sided = false
+no_depth_test = true
+fixed_size = true
+alpha_cut = 1
+texture = ExtResource("1_u0n3v")

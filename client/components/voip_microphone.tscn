@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://quinm3pklplf"]
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_xtk5v"]
+
+[node name="VoipClient" type="Node3D"]
+
+[node name="VoipClient" type="VoipClient" parent="."]
+
+[node name="VoipMicrophone" type="VoipMicrophone" parent="VoipClient"]
+stream = SubResource("AudioStreamMicrophone_xtk5v")
+autoplay = true
+bus = &"Record"
+
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
+current = true

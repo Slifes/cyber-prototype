@@ -1,7 +1,8 @@
 [gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://ukcx4n3gjltc"]
 
-[sub_resource type="AudioEffectRecord" id="AudioEffectRecord_rn138"]
-resource_name = "Record"
+[sub_resource type="AudioEffectCapture" id="AudioEffectCapture_n0oee"]
+resource_name = "Capture"
+buffer_length = 1.0
 
 [resource]
 bus/1/name = &"Record"
@@ -10,5 +11,5 @@ bus/1/mute = true
 bus/1/bypass_fx = false
 bus/1/volume_db = 0.0
 bus/1/send = &"Master"
-bus/1/effect/0/effect = SubResource("AudioEffectRecord_rn138")
+bus/1/effect/0/effect = SubResource("AudioEffectCapture_n0oee")
 bus/1/effect/0/enabled = true

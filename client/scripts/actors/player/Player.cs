@@ -54,12 +54,12 @@ partial class Player : CharacterActor
       SetProcessUnhandledInput(false);
       components = new IComponent[5]
       {
-        new SkillController(this, new List<int>() { 0, 1, 2 }),
-		//new PredictMovement(this),
-		new MiniHPBar(this),
-        new ActorHover(this),
-        new EffectComponent(this),
-    new SpeakerComponent(this)
+      new SkillController(this, new List<int>() { 0, 1, 2 }),
+	  //new PredictMovement(this),
+	  new MiniHPBar(this),
+      new ActorHover(this),
+      new EffectComponent(this),
+      new SpeakerComponent(this)
       };
     }
     else
@@ -67,13 +67,13 @@ partial class Player : CharacterActor
       GetNode<Node>("/root/Console").Call("register_env", "player", this);
       components = new IComponent[7]
       {
-        new SkillController(this, new List<int>() { 0, 1, 2 }),
-        new CameraController(this),
-        new MovementController(this),
-        new MovementNetwork(this),
-        new EffectComponent(this),
-        new UIComponent(this),
-    new TalkerComponent(this)
+      new SkillController(this, new List<int>() { 0, 1, 2 }),
+      new CameraController(this),
+      new MovementController(this),
+      new MovementNetwork(this),
+      new EffectComponent(this),
+      new UIComponent(this),
+      new TalkerComponent(this)
       };
 
       LoadSkills();
