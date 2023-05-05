@@ -10,22 +10,22 @@ use crate::speaker::VoipSpeaker;
 pub struct VoipManager {
   #[base]
   base: Base<Node>,
-  speakers: HashMap<i64, Gd<VoipSpeaker>>,
+  speakers: HashMap<i32, Gd<VoipSpeaker>>,
 }
 
 #[godot_api]
 impl VoipManager {
-  pub fn add_speaker(&mut self, id: i64, speaker: Gd<VoipSpeaker>) {
+  pub fn add_speaker(&mut self, id: i32, speaker: Gd<VoipSpeaker>) {
     self.speakers.insert(id, speaker);
     godot_print!("Added speaker: {}", id);
     godot_print!("Speakers: {:?}", self.speakers);
   }
 
-  pub fn remove_speaker(&mut self, id: i64) {
+  pub fn remove_speaker(&mut self, id: i32) {
     self.speakers.remove(&id);
   }
 
-  pub fn on_speak_data(&mut self, id: i64, data: Vec<Vec<u8>>) {
+  pub fn on_speak_data(&mut self, id: i32, data: Vec<Vec<u8>>) {
     let time = Time::singleton().get_ticks_msec();
 
     if let Some(speaker) = self.speakers.get_mut(&id) {

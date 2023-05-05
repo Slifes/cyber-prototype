@@ -9,7 +9,7 @@ const OPUS_FRAME_TIME: usize = 2880;
 #[derive(GodotClass)]
 #[class(base=Node3D)]
 pub struct VoipSpeaker {
-  id: i64,
+  id: i32,
   opus_packet: Vec<Vec<u8>>,
   decoded_frame: Vec<Vec<f32>>,
   audio_stream: Option<Gd<AudioStreamPlayer3D>>,
@@ -23,7 +23,7 @@ pub struct VoipSpeaker {
 #[godot_api]
 impl VoipSpeaker {
   #[func]
-  pub fn set_id(&mut self, id: i64) {
+  pub fn set_id(&mut self, id: i32) {
     self.id = id;
   }
 
@@ -136,13 +136,5 @@ impl Node3DVirtual for VoipSpeaker {
     }
 
     // godot_print!("Time playing audio: {:?}", Time::singleton().get_ticks_msec() - time);
-  }
-}
-
-impl Drop for VoipSpeaker {
-  fn drop(&mut self) {
-    // self.base.get_node_as::<VoipManager>("/root/GlobalVoipManager")
-    //   .bind_mut()
-    //   .remove_speaker(self.id);
   }
 }

@@ -11,36 +11,23 @@ use tokio::sync::RwLock;
 use packets::PacketParser;
 use packets::client::{SMPackets, SMStreaming, ClientPacket, SMAuth};
 
-use super::global::CLIENTS;
 use super::peer::Peer;
+use crate::types::Peers;
 
 pub struct PeerServer {
   socket: Option<Arc<UdpSocket>>,
-  peers: Arc<RwLock<HashMap<SocketAddr, Peer>>>
-}
-
-async fn send_bulk(socket: Arc<UdpSocket>, packet: SMPackets, peers: Vec<SocketAddr>) -> Result<(), io::Error> {
-
-  let data = SMPackets::serialize(packet)?;
-
-  for peer_id in peers {
-    if let Err(x) = socket.send_to(&data, peer_id).await {
-      error!("Error sending packet to peer: {}", x);
-    }
-  }
-
-  Ok(())
+  peers_by_addr: Arc<RwLock<HashMap<SocketAddr, i32>>>
 }
 
 impl PeerServer {
   pub fn new() -> Self {
     Self {
       socket: None,
-      peers: Arc::new(RwLock::new(HashMap::new())),
+      peers_by_addr: Arc::new(RwLock::new(HashMap::new())),
     }
   }
 
-  pub async fn run(&mut self) -> Result<(), io::Error> {
+  pub async fn run(&mut self, peers: Peers) -> Result<(), io::Error> {
     info!("Starting client server...");
 
     let socket = UdpSocket::bind("0.0.0.0:8081").await?;
@@ -49,7 +36,7 @@ impl PeerServer {
 
     let sck_handler = sck.clone();
 
-    let peers_handler = self.peers.clone();
+    let peers_handler = self.peers_by_addr.clone();
 
     self.socket = Some(sck);
 
@@ -58,27 +45,50 @@ impl PeerServer {
       loop {
         let received = sck_handler.recv_from(&mut buf).await;
 
+        let mut peers_id = peers_handler.write().await;
+        let mut peers = peers.write().await;
+
         match received {
           Ok((len, addr)) => {
-            let packet = ClientPacket::deserialize(&buf[..len]).unwrap();
-
             info!("Received client packet");
-            let mut peers = peers_handler.write().await;
 
-            if peers.contains_key(&addr) {
-              let peer = peers.get(&addr).unwrap();
+            let packet = match ClientPacket::deserialize(&buf[..len]) {
+              Ok(packet) => packet,
+              Err(e) => {
+                error!("Error: {}", e);
+                peers_id.remove(&addr);
+                continue;
+              }
+            };
+
+            if peers_id.contains_key(&addr) {
+              let peer_id = peers_id.get(&addr).unwrap();
+              let peer = peers.get(peer_id).unwrap().read().await;
 
               match packet {
                 ClientPacket::Streaming(stream) => {
                   info!("Received streaming packet");
+                  
                   let packet = SMPackets::Streaming(SMStreaming { id: peer.id, audio_frame: stream.audio_frame });
 
-                  let result = send_bulk(sck_handler.clone(), packet, peers.keys().into_iter().map(|x| x.clone()).filter(|x| *x != addr).collect()).await;
+                  peer.send_packet_to_near_players(sck_handler.clone(), packet).await;
+                }
+                ClientPacket::Ping {
+                  ping_time
+                } => {
+                  info!("Received ping packet");
+
+                  let packet = SMPackets::Pong {
+                    ping_time
+                  };
+
+                  let result = sck_handler.send_to(&SMPackets::serialize(packet).unwrap(), addr).await;
                 
                   info!("Result: {:?}", result);
                 }
                 _ => {
-                  peers.remove(&addr);
+                  // peers_id.remove(&addr);
+                  // peers.remove(peer_id);
                   error!("Client not authenticated");
                 }
               }
@@ -91,7 +101,9 @@ impl PeerServer {
                 ClientPacket::Auth(auth) => {
                   info!("Client authenticated {:?}", auth);
                   peer.set_client_id(auth.client_id);
-                  peers.insert(addr, peer);
+
+                  peers_id.insert(addr, auth.client_id);
+                  peers.insert(auth.client_id, Arc::new(RwLock::new(peer)));
 
                   let packet = SMPackets::Auth(SMAuth { status: true });
                   

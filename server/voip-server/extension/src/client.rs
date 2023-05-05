@@ -16,6 +16,9 @@ use super::manager::VoipManager;
 #[derive(GodotClass)]
 #[class(base=Node)]
 struct VoipClient {
+  #[export]
+  address: GodotString,
+
   socket:  Option<Arc<UdpSocket>>,
   microphone: Option<Gd<VoipMicrophone>>,
   manager: Option<Gd<VoipManager>>,
@@ -40,7 +43,7 @@ impl VoipClient {
   pub fn start(&mut self) -> Result<(), std::io::Error> {
     let socket = UdpSocket::bind("0.0.0.0:0").expect("Failed to bind socket");
 
-    socket.connect("54.166.79.54:8081").expect("Failed to connect to server");
+    socket.connect(self.address.to_string()).expect("Failed to connect to server");
 
     let sck = Arc::new(socket);
 
@@ -48,8 +51,8 @@ impl VoipClient {
 
     self.socket = Some(sck);
 
-    let client_id = self.base.get_multiplayer()
-      .unwrap().get_unique_id();
+    let client_id: i32 = self.base.get_multiplayer()
+      .unwrap().get_unique_id().try_into().unwrap();
 
     self.send(ClientPacket::Auth(CMAuth {
       client_id,
@@ -94,6 +97,7 @@ impl VoipClient {
 impl NodeVirtual for VoipClient {
   fn init(base: Base<Node>) -> Self {
     Self {
+      address: GodotString::from("127.0.0.1:8081"),
       socket: None,
       microphone: None,
       manager: None,
@@ -160,6 +164,9 @@ impl NodeVirtual for VoipClient {
             // if let Some(manager) = &self.manager {
             //   manager.bind_mut().on_auth(auth.id);
             // }
+          }
+          SMPackets::Pong { ping_time } => {
+            godot_print!("Pong: {:?}", ping_time);
           }
         }
       } 

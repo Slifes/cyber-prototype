@@ -3,7 +3,7 @@ use super::parser::PacketParser;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CMAuth {
-  pub client_id: i64,
+  pub client_id: i32,
   pub client_key: String,
 }
 
@@ -19,6 +19,8 @@ pub enum ClientPacket {
   Auth(CMAuth),
   #[serde(rename="2")]
   Streaming(CMStreaming),
+  #[serde(rename="3")]
+  Ping { ping_time: i64 }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -28,7 +30,7 @@ pub struct SMAuth {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SMStreaming {
-  pub id: i64,
+  pub id: i32,
   pub audio_frame: Vec<Vec<u8>>,
 }
 
@@ -39,6 +41,8 @@ pub enum SMPackets {
   Auth(SMAuth),
   #[serde(rename="2")]
   Streaming(SMStreaming),
+  #[serde(rename="3")]
+  Pong { ping_time: i64 }
 }
 
 impl PacketParser<ClientPacket> for ClientPacket { }

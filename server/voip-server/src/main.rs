@@ -2,21 +2,18 @@ use log::info;
 
 mod shard;
 mod peers;
+mod server;
+mod types;
 
 #[tokio::main]
 async fn main() {
   env_logger::init();
 
-  info!("Starting shard server...");
+  info!("Starting voip server...");
 
-  let mut shard = shard::server::ShardServer::new();
+  let server = server::Server::new();
 
-  let mut client_server = peers::server::PeerServer::new();
+  server.run().await;
 
-  let result = tokio::join!(
-    shard.run(),
-    client_server.run()
-  );
-
-  info!("Server closed: {:?}", result);
+  info!("Server closed");
 } 

@@ -9,5 +9,4 @@ crate-type = ["cdylib"]
 [dependencies]
 godot = { git = "https://github.com/godot-rust/gdext", branch = "master" }
 opus = "0.3.0"
-lazy_static = "1.4.0"
 packets = { path = "../packets" }

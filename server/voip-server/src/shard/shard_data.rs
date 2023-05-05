@@ -2,28 +2,31 @@ use log::info;
 use serde::Deserialize;
 use async_trait::async_trait;
 
-use crate::peers::CLIENTS;
+use crate::types::Peers;
 
 use packets::shard::{
   ShardAuthentication,
   ShardPlayerConnect,
   ShardPlayerDisconnect,
-  ShardPlayerAddCloser
+  ShardPlayerAddCloser,
+  ShardPlayerRemovePlayer
 };
 
 #[derive(Debug)]
 pub struct Shard {
   id: u32,
   is_authenticated: bool,
-  peers: Vec<i32>,
+  peers_id: Vec<i32>,
+  peers: Peers,
 }
 
 impl Shard {
-  pub fn new() -> Self {
+  pub fn new(peers: Peers) -> Self {
     Self {
       id: u32::MAX,
       is_authenticated: false,
-      peers: Vec::new(),
+      peers,
+      peers_id: Vec::new(),
     }
   }
 
@@ -49,7 +52,7 @@ impl ReceivePacket<ShardAuthentication> for Shard {
 #[async_trait]
 impl ReceivePacket<ShardPlayerConnect> for Shard {
   async fn receive_packet(&mut self, packet: ShardPlayerConnect) {
-    self.peers.push(packet.player_id);
+    self.peers_id.push(packet.player_id);
 
     info!("Received player connect packet: {:?}", packet);
     info!("Shard peers: {:?}", self.peers)
@@ -59,30 +62,52 @@ impl ReceivePacket<ShardPlayerConnect> for Shard {
 #[async_trait]
 impl ReceivePacket<ShardPlayerDisconnect> for Shard {
   async fn receive_packet(&mut self, packet: ShardPlayerDisconnect) {
-    let index = self.peers
+    let index = self.peers_id
       .iter()
       .position(|x| x == &packet.player_id);
 
     if let Some(idx) = index {
-      self.peers.remove(idx);
+      self.peers_id.remove(idx);
     }
 
     info!("Received player disconnect packet: {:?}", packet);
-    info!("Shard peers: {:?}", self.peers);
   }
 }
 
 #[async_trait]
 impl ReceivePacket<ShardPlayerAddCloser> for Shard {
   async fn receive_packet(&mut self, packet: ShardPlayerAddCloser) {
-    let clients = CLIENTS.read().await;
+    let mut clients = self.peers.write().await;
 
-    let client = clients.get(&packet.player_id).unwrap();
-    let closer = clients.get(&packet.closer_id).unwrap();
+    let closer_peer = clients.get(&packet.closer_id);
 
-    // client.write().await.add_player(closer.clone());
-    // closer.write().await.add_player(client.clone());
+    if closer_peer.is_none() {
+      return;
+    }
+
+    let addr = closer_peer.unwrap().read().await.sck_addr;
+
+    if let Some(peer) = clients.get_mut(&packet.player_id) {
+      peer
+        .write().await
+        .add_player(packet.closer_id, addr).await;
+    }
 
     info!("Received player add closer packet: {:?}", packet);
+  }
+}
+
+#[async_trait]
+impl ReceivePacket<ShardPlayerRemovePlayer> for Shard {
+  async fn receive_packet(&mut self, packet: ShardPlayerRemovePlayer) {
+    let mut clients = self.peers.write().await;
+
+    if let Some(peer) = clients.get_mut(&packet.player_id) {
+      peer
+        .write().await
+        .remove_player(packet.closer_id);
+    }
+
+    info!("Received player remove player packet: {:?}", packet);
   }
 }

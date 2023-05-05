@@ -30,9 +30,9 @@ pub struct ShardPlayerAddCloser {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ShardPlayerRemovePlayer {
-  pub shard_id: u32,
-  pub player_id: u32,
-  pub closer_id: u32,
+  pub packet_id: u32,
+  pub player_id: i32,
+  pub closer_id: i32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -42,12 +42,12 @@ pub enum ShardPacket {
   Authentication(ShardAuthentication),
   #[serde(rename = "2")]
   PlayerConnect(ShardPlayerConnect),
-  // #[serde(rename = "3")]
-  // PlayerDisconnect(ShardPlayerDisconnect),
-  // #[serde(rename = "4")]
-  // PlayerAddCloser(ShardPlayerAddCloser),
-  // #[serde(rename = "5")]
-  // PlayerRemovePlayer(ShardPlayerRemovePlayer),
+  #[serde(rename = "3")]
+  PlayerDisconnect(ShardPlayerDisconnect),
+  #[serde(rename = "4")]
+  PlayerAddCloser(ShardPlayerAddCloser),
+  #[serde(rename = "5")]
+  PlayerRemovePlayer(ShardPlayerRemovePlayer),
 }
 
 #[derive(Debug)]
@@ -55,6 +55,8 @@ pub enum ShardPackets {
   Authentication(ShardAuthentication),
   PlayerConnect(ShardPlayerConnect),
   PlayerDisconnect(ShardPlayerDisconnect),
+  PlayerAddCloser(ShardPlayerAddCloser),
+  PlayerRemoveCloser(ShardPlayerRemovePlayer)
 }
 
 impl ShardPackets {
@@ -63,6 +65,8 @@ impl ShardPackets {
       1 => Ok(ShardPackets::Authentication(deserialize(value)?)),
       2 => Ok(ShardPackets::PlayerConnect(deserialize(value)?)),
       3 => Ok(ShardPackets::PlayerDisconnect(deserialize(value)?)),
+      4 => Ok(ShardPackets::PlayerAddCloser(deserialize(value)?)),
+      5 => Ok(ShardPackets::PlayerRemoveCloser(deserialize(value)?)),
       _ => Err(io::Error::new(io::ErrorKind::Other, "Invalid packet id")),
     }
   }

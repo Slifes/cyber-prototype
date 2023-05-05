@@ -1,51 +1,56 @@
 use log::info;
 
-use tokio::sync::RwLock;
 use std::sync::Arc;
 use std::net::SocketAddr;
 
+use tokio::net::UdpSocket;
+
+use packets::PacketParser;
+use packets::client::SMPackets;
+
+#[derive(Debug)]
+struct NearPeer {
+  id: i32,
+  addr: SocketAddr,
+}
+
+#[derive(Debug)]
 pub struct Peer {
-  pub id: i64,
+  pub id: i32,
   pub sck_addr: SocketAddr,
   pub ping_time: u64,
-  near_players: Vec<Arc<RwLock<Peer>>>,
+  near_players: Vec<NearPeer>,
 }
 
 impl Peer {
   pub fn new(sck_addr: SocketAddr) -> Self {
     Self {
-      id: i64::MAX,
+      id: i32::MAX,
       sck_addr,
       ping_time: 0,
       near_players: Vec::new(),
     }
   }
 
-  pub fn set_client_id(&mut self, id: i64) {
+  pub fn set_client_id(&mut self, id: i32) {
     self.id = id;
   }
 
-  pub async fn add_player(&mut self, player: Arc<RwLock<Peer>>) {
-    let player_id = {
-      player.read().await.id
-    };
-    self.near_players.push(player);
+  pub async fn add_player(&mut self, id: i32, addr: SocketAddr) {
+    self.near_players.push(NearPeer { id, addr });
   }
 
   pub fn remove_player(&mut self, player_id: i32) {
-    //self.near_players.remove(&player_id);
+    self.near_players.remove(self.near_players.iter().position(|x| x.id == player_id).unwrap());
   }
 
-  pub async fn send_packet_to_near_players(&self, packet: &[u8]) {
-    // let write = self.near_players
-    //   .iter()
-    //   .map(|(_, player)| async { player.write().await.socket.send(packet) })
-    //   .collect::<Vec<_>>();
-  }
-}
+  pub async fn send_packet_to_near_players(&self, socket: Arc<UdpSocket>, packet: SMPackets) {
+    let data = SMPackets::serialize(packet).unwrap();
 
-impl Drop for Peer {
-  fn drop(&mut self) {
-    info!("Dropping peer: {:?}", self.sck_addr);
+    for peer in self.near_players.iter() {
+      if let Err(x) = socket.send_to(&data, peer.addr).await {
+        info!("Error sending packet to peer: {}", x);
+      }
+    }
   }
 }
