@@ -2,13 +2,18 @@
 {
   public static void SendActorEnteredZone(ZoneActor actor, ZoneActor target)
   {
-
     Instance.Rpc("ActorEnteredZone", actor.GetActorID(), target.GetActorID(), (int)target.GetActorType(), target.Position, target.Rotation.Y, target.GetData());
+
+    if (actor.GetActorType() == ActorType.Player && target.GetActorType() == ActorType.Player)
+      Instance.proxyClient.SendPlayerAddCloser(actor.GetActorID(), target.GetActorID());
   }
 
   public static void SendActorExitedZone(ZoneActor actor, ZoneActor target)
   {
     Instance.Rpc("ActorExitedZone", actor.GetActorID(), target.GetActorID(), (int)target.GetActorType());
+
+    if (actor.GetActorType() == ActorType.Player && target.GetActorType() == ActorType.Player)
+      Instance.proxyClient.SendPlayerRemoveCloser(actor.GetActorID(), target.GetActorID());
   }
 
   public static void SendActorEffect(int actorId, ActorType actorType, EffectType type, int value)

@@ -3,7 +3,6 @@ using System;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using MessagePack;
-using System.Collections.Generic;
 
 [MessagePackObject]
 public partial struct ShardAuthentication
@@ -25,6 +24,22 @@ public partial struct ShardPlayerDisconnected
 {
   [Key(0)] public uint PacketId => 3;
   [Key(1)] public int PlayerId;
+}
+
+[MessagePackObject]
+public partial struct ShardPlayerAddCloser
+{
+  [Key(0)] public uint PacketId => 4;
+  [Key(1)] public int PlayerId;
+  [Key(2)] public int CloserId;
+}
+
+[MessagePackObject]
+public partial struct ShardPlayerRemoveCloser
+{
+  [Key(0)] public uint PacketId => 5;
+  [Key(1)] public int PlayerId;
+  [Key(2)] public int CloserId;
 }
 
 partial class ProxyClient : GodotObject
@@ -50,7 +65,6 @@ partial class ProxyClient : GodotObject
 
     try
     {
-
       client.Connect(ip, port);
 
       stream = client.GetStream();
@@ -86,6 +100,24 @@ partial class ProxyClient : GodotObject
     await SendPacket(new ShardPlayerDisconnected()
     {
       PlayerId = peerId
+    });
+  }
+
+  public async void SendPlayerAddCloser(int peerId, int closerId)
+  {
+    await SendPacket(new ShardPlayerAddCloser()
+    {
+      PlayerId = peerId,
+      CloserId = closerId
+    });
+  }
+
+  public async void SendPlayerRemoveCloser(int peerId, int closerId)
+  {
+    await SendPacket(new ShardPlayerRemoveCloser()
+    {
+      PlayerId = peerId,
+      CloserId = closerId
     });
   }
 
