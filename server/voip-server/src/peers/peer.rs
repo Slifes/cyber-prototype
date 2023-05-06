@@ -41,7 +41,9 @@ impl Peer {
   }
 
   pub fn remove_player(&mut self, player_id: i32) {
-    self.near_players.remove(self.near_players.iter().position(|x| x.id == player_id).unwrap());
+    if let Some(position) = self.near_players.iter().position(|x| x.id == player_id) {
+      self.near_players.remove(position);
+    }
   }
 
   pub async fn send_packet_to_near_players(&self, socket: Arc<UdpSocket>, packet: SMPackets) {
