@@ -26,7 +26,7 @@ impl Server {
 
     let result = tokio::join!(
       shard.run(self.peers.clone()),
-      peer_server.run(self.peers.clone())
+      peer_server.run(self.peers.clone()) 
     );
 
     info!("Server closed: {:?}", result);

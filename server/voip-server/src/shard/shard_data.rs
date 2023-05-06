@@ -1,3 +1,6 @@
+use tokio::net::TcpStream;
+use std::sync::Arc;
+
 use log::info;
 use serde::Deserialize;
 use async_trait::async_trait;
@@ -37,21 +40,23 @@ impl Shard {
 
 #[async_trait]
 pub trait ReceivePacket<T> where T: Deserialize<'static> {
-  async fn receive_packet(&mut self, packet: T);
+  async fn receive_packet(&mut self, packet: T, sck: &mut TcpStream);
 }
 
 #[async_trait]
 impl ReceivePacket<ShardAuthentication> for Shard {
-  async fn receive_packet(&mut self, packet: ShardAuthentication) {
+  async fn receive_packet(&mut self, packet: ShardAuthentication, sck: &mut TcpStream) {
     self.is_authenticated = true;
 
     info!("Received authentication packet: {:?}", packet);
+
+    sck.try_write(&[0, 10]);
   }
 }
 
 #[async_trait]
 impl ReceivePacket<ShardPlayerConnect> for Shard {
-  async fn receive_packet(&mut self, packet: ShardPlayerConnect) {
+  async fn receive_packet(&mut self, packet: ShardPlayerConnect, sck: &mut TcpStream) {
     self.peers_id.push(packet.player_id);
 
     info!("Received player connect packet: {:?}", packet);
@@ -61,7 +66,7 @@ impl ReceivePacket<ShardPlayerConnect> for Shard {
 
 #[async_trait]
 impl ReceivePacket<ShardPlayerDisconnect> for Shard {
-  async fn receive_packet(&mut self, packet: ShardPlayerDisconnect) {
+  async fn receive_packet(&mut self, packet: ShardPlayerDisconnect, sck: &mut TcpStream) {
     let index = self.peers_id
       .iter()
       .position(|x| x == &packet.player_id);
@@ -76,7 +81,7 @@ impl ReceivePacket<ShardPlayerDisconnect> for Shard {
 
 #[async_trait]
 impl ReceivePacket<ShardPlayerAddCloser> for Shard {
-  async fn receive_packet(&mut self, packet: ShardPlayerAddCloser) {
+  async fn receive_packet(&mut self, packet: ShardPlayerAddCloser, sck: &mut TcpStream) {
     let mut clients = self.peers.write().await;
 
     let closer_peer = clients.get(&packet.closer_id);
@@ -99,7 +104,7 @@ impl ReceivePacket<ShardPlayerAddCloser> for Shard {
 
 #[async_trait]
 impl ReceivePacket<ShardPlayerRemovePlayer> for Shard {
-  async fn receive_packet(&mut self, packet: ShardPlayerRemovePlayer) {
+  async fn receive_packet(&mut self, packet: ShardPlayerRemovePlayer, sck: &mut TcpStream) {
     let mut clients = self.peers.write().await;
 
     if let Some(peer) = clients.get_mut(&packet.player_id) {
