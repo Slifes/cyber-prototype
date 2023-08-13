@@ -3,12 +3,16 @@
 partial class ShardArea : Area3D
 {
   [Export]
+  NodePath shardPath;
+
   ShardTransport shard;
 
   Zone zone;
 
   public override void _Ready()
   {
+    shard = GetNode<ShardTransport>(shardPath);
+
     zone = shard.GetNode<Zone>("zone");
 
     BodyEntered += OnBodyEntered;

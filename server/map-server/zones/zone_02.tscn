@@ -1,27 +1,27 @@
 [gd_scene load_steps=8 format=3 uid="uid://bhh7yd8ltiva6"]
 
-[ext_resource type="Script" path="res://scripts/shards/ShardTransport.cs" id="1_3i3in"]
-[ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="2_papxf"]
-[ext_resource type="Script" path="res://scripts/shards/zone/components/ZoneSpawner.cs" id="3_w5anj"]
-[ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_8e5xc"]
-[ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/_.tscn" id="5_iorl7"]
-[ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_1tomd"]
-[ext_resource type="Script" path="res://scripts/shards/zone/components/DropItems.cs" id="7_6ge0o"]
+[ext_resource type="Script" path="res://scripts/shards/ShardTransport.cs" id="1_50vyy"]
+[ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="2_jt83r"]
+[ext_resource type="Script" path="res://scripts/shards/zone/components/ZoneSpawner.cs" id="3_6lxl2"]
+[ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_k4uxc"]
+[ext_resource type="PackedScene" uid="uid://8mvg3k2ln38k" path="res://map/_.tscn" id="5_n5x6d"]
+[ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_i854s"]
+[ext_resource type="Script" path="res://scripts/shards/zone/components/DropItems.cs" id="7_r3mbx"]
 
 [node name="zone_02" type="Node3D"]
-script = ExtResource("1_3i3in")
+script = ExtResource("1_50vyy")
 IsServer = true
 Port = 3002
 AutoLoad = false
 
 [node name="zone" type="Node3D" parent="."]
-script = ExtResource("2_papxf")
+script = ExtResource("2_jt83r")
 
 [node name="spawner" type="Node3D" parent="zone"]
-script = ExtResource("3_w5anj")
-actorScene = ExtResource("4_8e5xc")
+script = ExtResource("3_6lxl2")
+actorScene = ExtResource("4_k4uxc")
 
-[node name="map" parent="zone" instance=ExtResource("5_iorl7")]
+[node name="map" parent="zone" instance=ExtResource("5_n5x6d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="zone/map"]
@@ -31,7 +31,7 @@ current = true
 [node name="mobs" type="Node3D" parent="zone"]
 
 [node name="skills" type="Node3D" parent="zone"]
-script = ExtResource("6_1tomd")
+script = ExtResource("6_i854s")
 
 [node name="items" type="Node" parent="zone"]
-script = ExtResource("7_6ge0o")
+script = ExtResource("7_r3mbx")

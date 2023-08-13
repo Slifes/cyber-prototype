@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://2580k02b3vt6"]
 
-[ext_resource type="Texture2D" uid="uid://bqcxhoi8d4lbp" path="res://audio/icons/microphone.png" id="1_uc7sc"]
+[ext_resource type="Texture2D" uid="uid://bqcxhoi8d4lbp" path="res://audio/icons/microphone.png" id="1_hubmb"]
 
 [sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_2o442"]
 
@@ -23,5 +23,5 @@ modulate = Color(0.666667, 0.419608, 1, 1)
 pixel_size = 0.001
 billboard = 1
 fixed_size = true
-texture = ExtResource("1_uc7sc")
+texture = ExtResource("1_hubmb")
 region_rect = Rect2(30, 10, 40, 80)

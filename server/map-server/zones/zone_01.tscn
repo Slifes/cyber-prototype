@@ -1,51 +1,51 @@
 [gd_scene load_steps=12 format=3 uid="uid://cysj768dg3lm0"]
 
-[ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="1_bkhae"]
-[ext_resource type="Script" path="res://scripts/shards/ShardTransport.cs" id="1_plbjr"]
-[ext_resource type="Script" path="res://scripts/shards/zone/components/ZoneSpawner.cs" id="3_t3pxj"]
-[ext_resource type="PackedScene" uid="uid://crynnsfjvt3wx" path="res://map/main_server.tscn" id="4_1328x"]
-[ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="4_f7ti5"]
-[ext_resource type="PackedScene" uid="uid://cituqt7ju2dp7" path="res://actors/company_zone.tscn" id="4_jlwwp"]
-[ext_resource type="Script" path="res://scripts/spawner/EnemySpawner.cs" id="6_a2xos"]
-[ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="6_gp58d"]
-[ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/base_enemy.tscn" id="7_21f8w"]
-[ext_resource type="PackedScene" uid="uid://b42w2rdd5cjb1" path="res://actors/base_npc.tscn" id="9_scssu"]
-[ext_resource type="Script" path="res://scripts/shards/zone/components/DropItems.cs" id="10_tpxm1"]
+[ext_resource type="Script" path="res://scripts/shards/ShardTransport.cs" id="1_mlmnp"]
+[ext_resource type="Script" path="res://scripts/shards/zone/Zone.cs" id="2_7gnhb"]
+[ext_resource type="PackedScene" uid="uid://b42w2rdd5cjb1" path="res://actors/base_npc.tscn" id="3_pd0pq"]
+[ext_resource type="PackedScene" uid="uid://cituqt7ju2dp7" path="res://actors/company_zone.tscn" id="4_r8gcj"]
+[ext_resource type="PackedScene" uid="uid://crynnsfjvt3wx" path="res://map/main_server.tscn" id="5_yj2p5"]
+[ext_resource type="Script" path="res://scripts/shards/zone/components/ZoneSpawner.cs" id="6_gqf4k"]
+[ext_resource type="PackedScene" uid="uid://c03xxd0i5l880" path="res://actors/player_zone.tscn" id="7_363qc"]
+[ext_resource type="Script" path="res://scripts/spawner/EnemySpawner.cs" id="8_o6xqh"]
+[ext_resource type="PackedScene" uid="uid://wg0i8s2cmvy" path="res://actors/base_enemy.tscn" id="9_7pf4o"]
+[ext_resource type="Script" path="res://scripts/skills/utils/SkillNode.cs" id="10_y228n"]
+[ext_resource type="Script" path="res://scripts/shards/zone/components/DropItems.cs" id="11_si3y2"]
 
 [node name="zone_01" type="Node3D"]
-script = ExtResource("1_plbjr")
+script = ExtResource("1_mlmnp")
 IsServer = true
 Port = 3000
 AutoLoad = false
 
 [node name="zone" type="Node3D" parent="."]
-script = ExtResource("1_bkhae")
+script = ExtResource("2_7gnhb")
 
 [node name="npcs" type="Node3D" parent="zone"]
 
-[node name="1" parent="zone/npcs" instance=ExtResource("9_scssu")]
+[node name="1" parent="zone/npcs" instance=ExtResource("3_pd0pq")]
 transform = Transform3D(0.72175, -0.000399443, -0.692154, 0.000432871, 1, -0.000125724, 0.692154, -0.000208877, 0.72175, -11.3615, 0.364864, -5.24418)
 ID = 1
 
-[node name="5" parent="zone/npcs" instance=ExtResource("4_jlwwp")]
+[node name="5" parent="zone/npcs" instance=ExtResource("4_r8gcj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.4495, 0.0500007, -2.25151)
 
-[node name="map" parent="zone" instance=ExtResource("4_1328x")]
+[node name="map" parent="zone" instance=ExtResource("5_yj2p5")]
 
 [node name="spawner" type="Node3D" parent="zone"]
-script = ExtResource("3_t3pxj")
-actorScene = ExtResource("4_f7ti5")
+script = ExtResource("6_gqf4k")
+actorScene = ExtResource("7_363qc")
 
 [node name="mobs" type="Node3D" parent="zone"]
-script = ExtResource("6_a2xos")
-Mob = ExtResource("7_21f8w")
+script = ExtResource("8_o6xqh")
+Mob = ExtResource("9_7pf4o")
 MobCount = 5
 
 [node name="skills" type="Node3D" parent="zone"]
-script = ExtResource("6_gp58d")
+script = ExtResource("10_y228n")
 
 [node name="items" type="Node" parent="zone"]
-script = ExtResource("10_tpxm1")
+script = ExtResource("11_si3y2")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15, 0)

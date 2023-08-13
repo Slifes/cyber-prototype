@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://wg0i8s2cmvy"]
 
-[ext_resource type="Script" path="res://scripts/actors/enemies/BaseEnemy.cs" id="1_eg6ml"]
-[ext_resource type="Resource" uid="uid://cnigfbnwlkp0n" path="res://resources/skills/normal_attack.tres" id="2_74ylq"]
-[ext_resource type="Resource" uid="uid://bustiw36y71tb" path="res://resources/skills/projectile.tres" id="3_rrbi8"]
+[ext_resource type="Script" path="res://scripts/actors/enemies/BaseEnemy.cs" id="1_8v3ix"]
+[ext_resource type="Resource" uid="uid://cnigfbnwlkp0n" path="res://resources/skills/normal_attack.tres" id="2_an2vd"]
+[ext_resource type="Resource" uid="uid://bustiw36y71tb" path="res://resources/skills/projectile.tres" id="3_w2ehs"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3788e"]
 size = Vector3(0.2, 0.2, 0.2)
@@ -20,8 +20,8 @@ collision_layer = 2051
 input_ray_pickable = false
 axis_lock_angular_x = true
 axis_lock_angular_z = true
-script = ExtResource("1_eg6ml")
-skills = Array[Resource]([ExtResource("2_74ylq"), ExtResource("3_rrbi8")])
+script = ExtResource("1_8v3ix")
+skills = Array[Resource]([ExtResource("2_an2vd"), ExtResource("3_w2ehs")])
 itemsId = Array[int]([0, 1])
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

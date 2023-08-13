@@ -42,6 +42,12 @@ public partial struct ShardPlayerRemoveCloser
   [Key(2)] public int CloserId;
 }
 
+[MessagePackObject]
+public partial struct SMAuth
+{
+  [Key(0)] public bool Status;
+}
+
 partial class ProxyClient : GodotObject
 {
   TcpClient client;
@@ -70,6 +76,9 @@ partial class ProxyClient : GodotObject
       stream = client.GetStream();
 
       SendShardAuthentication();
+
+      threadHandler = new GodotThread();
+      threadHandler.Start(new Callable(this, nameof(OnThreadHandler)));
     }
     catch (Exception e)
     {
@@ -78,52 +87,77 @@ partial class ProxyClient : GodotObject
     }
   }
 
-  public async void SendShardAuthentication()
+  public void SendShardAuthentication()
   {
-    await SendPacket(new ShardAuthentication()
+    SendPacket(new ShardAuthentication()
     {
       ShardId = 1,
       ShardKey = Name
     });
   }
 
-  public async void SendPlayerConnected(int peerId)
+  public void SendPlayerConnected(int peerId)
   {
-    await SendPacket(new ShardPlayerConnect()
+    SendPacket(new ShardPlayerConnect()
     {
       PlayerId = peerId
     });
   }
 
-  public async void SendPlayerDisconnected(int peerId)
+  public void SendPlayerDisconnected(int peerId)
   {
-    await SendPacket(new ShardPlayerDisconnected()
+    SendPacket(new ShardPlayerDisconnected()
     {
       PlayerId = peerId
     });
   }
 
-  public async void SendPlayerAddCloser(int peerId, int closerId)
+  public void SendPlayerAddCloser(int peerId, int closerId)
   {
-    await SendPacket(new ShardPlayerAddCloser()
+    SendPacket(new ShardPlayerAddCloser()
     {
       PlayerId = peerId,
       CloserId = closerId
     });
   }
 
-  public async void SendPlayerRemoveCloser(int peerId, int closerId)
+  public void SendPlayerRemoveCloser(int peerId, int closerId)
   {
-    await SendPacket(new ShardPlayerRemoveCloser()
+    SendPacket(new ShardPlayerRemoveCloser()
     {
       PlayerId = peerId,
       CloserId = closerId
     });
   }
 
-  async Task SendPacket<T>(T packet)
+  void SendPacket<T>(T packet)
   {
-    await stream.WriteAsync(MessagePackSerializer.Serialize(packet));
+    var data = MessagePackSerializer.Serialize(packet);
+    stream.Write(data, 0, data.Length);
+  }
+
+  void OnThreadHandler()
+  {
+    GD.Print("Thread running");
+    while (true)
+    {
+      try
+      {
+        var buffer = new byte[1024];
+
+        var read = stream.Read(buffer, 0, buffer.Length);
+
+        if (read > 0)
+        {
+          GD.Print("Packet arrived: ", read);
+        }
+      }
+      catch (Exception e)
+      {
+        GD.Print("Failed to read packet: " + e.Message);
+        GD.PrintErr(e);
+      }
+    }
   }
 }
 

@@ -16,11 +16,11 @@ class BasedPathFinding : IBehavior
   public BasedPathFinding(Behavior behavior)
   {
     this.behavior = behavior;
-    this.agent = behavior.Actor.GetNode<NavigationAgent3D>("NavigationAgent3D");
+    agent = behavior.Actor.GetNode<NavigationAgent3D>("NavigationAgent3D");
     AttackArea = behavior.Actor.GetNode<Area3D>("AttackArea");
     AgressiveArea = behavior.Actor.GetNode<Area3D>("AgressiveArea");
 
-    this.agent.VelocityComputed += OnVelocityComputed;
+    agent.VelocityComputed += OnVelocityComputed;
   }
 
   public void Start()
@@ -45,7 +45,6 @@ class BasedPathFinding : IBehavior
 
   void OnVelocityComputed(Vector3 velocity)
   {
-    // GD.Print("Velocity Computed: ", velocity);
     behavior.Actor.Velocity = velocity;
     behavior.Actor.MoveAndSlide();
 
@@ -62,7 +61,7 @@ class BasedPathFinding : IBehavior
 
     Vector3 velocity = (nextTargetPosition - behavior.Actor.GlobalPosition).Normalized() * MovementSpeed;
 
-    agent.SetVelocity(velocity);
+    agent.Velocity = velocity;
   }
 
   public void Handler(double delta)
@@ -74,6 +73,7 @@ class BasedPathFinding : IBehavior
   {
     if (behavior.Target != null && node.Name == behavior.Target.Name)
     {
+      agent.Velocity = Vector3.Zero;
       behavior.ChangeState(AIState.Walking);
       behavior.Target = null;
     }
