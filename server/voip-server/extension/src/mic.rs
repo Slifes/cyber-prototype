@@ -133,7 +133,7 @@ impl IAudioStreamPlayer for VoipMicrophone {
     let record_index = audio_server.get_bus_index("Record".into());
     self.record_effect = match audio_server.get_bus_effect(record_index, 0).unwrap().try_cast() {
       Ok(effect) => Some(effect),
-      Err => None
+      Err(_) => None
     };
   }
 

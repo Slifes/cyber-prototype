@@ -17,7 +17,7 @@ use super::manager::VoipManager;
 #[class(base=Node)]
 struct VoipClient {
   #[export]
-  address: GodotString,
+  address: GString,
 
   socket:  Option<Arc<UdpSocket>>,
   microphone: Option<Gd<VoipMicrophone>>,
