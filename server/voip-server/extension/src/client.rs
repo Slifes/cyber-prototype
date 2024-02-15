@@ -51,7 +51,7 @@ impl VoipClient {
 
     self.socket = Some(sck);
 
-    let client_id: i32 = self.base.get_multiplayer()
+    let client_id: i32 = self.base().get_multiplayer()
       .unwrap().get_unique_id().try_into().unwrap();
 
     self.send(ClientPacket::Auth(CMAuth {
@@ -94,7 +94,7 @@ impl VoipClient {
 }
 
 #[godot_api]
-impl NodeVirtual for VoipClient {
+impl INode for VoipClient {
   fn init(base: Base<Node>) -> Self {
     Self {
       address: GodotString::from("127.0.0.1:8081"),
@@ -111,9 +111,9 @@ impl NodeVirtual for VoipClient {
       return;
     }
 
-    self.microphone = Some(self.base.get_node_as::<VoipMicrophone>("VoipMicrophone"));
+    self.microphone = Some(self.base().get_node_as::<VoipMicrophone>("VoipMicrophone"));
 
-    self.manager = Some(self.base.get_node_as::<VoipManager>("/root/GlobalVoipManager"));
+    self.manager = Some(self.base().get_node_as::<VoipManager>("/root/GlobalVoipManager"));
   
     self.start();
   }

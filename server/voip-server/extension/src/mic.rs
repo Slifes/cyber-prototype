@@ -131,7 +131,10 @@ impl IAudioStreamPlayer for VoipMicrophone {
 
     let audio_server = &mut AudioServer::singleton();
     let record_index = audio_server.get_bus_index("Record".into());
-    self.record_effect = audio_server.get_bus_effect(record_index, 0).unwrap().try_cast();
+    self.record_effect = match audio_server.get_bus_effect(record_index, 0).unwrap().try_cast() {
+      Ok(effect) => Some(effect),
+      Err => None
+    };
   }
 
   fn input(&mut self, event: Gd<InputEvent>) {

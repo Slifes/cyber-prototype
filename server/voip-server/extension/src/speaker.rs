@@ -99,23 +99,23 @@ impl INode3D for VoipSpeaker {
       return;
     }
 
-    let mut audio_stream = self.base.get_node_as::<AudioStreamPlayer3D>("AudioStreamPlayer3D");
+    let mut audio_stream = self.base().get_node_as::<AudioStreamPlayer3D>("AudioStreamPlayer3D");
 
-    // audio_stream.connect("finished".into(), Callable::from_object_method(self.base.get_node_as::<VoipSpeaker>("."), "on_finished_audio"), 0);
+    // audio_stream.connect("finished".into(), Callable::from_object_method(self.base().get_node_as::<VoipSpeaker>("."), "on_finished_audio"), 0);
 
     self.audio_stream = Some(audio_stream);
 
-    self.sprite = Some(self.base.get_node_as("Speaker"));
+    self.sprite = Some(self.base().get_node_as("Speaker"));
 
-    let name = self.base.get_parent().unwrap().get_parent().unwrap().get_parent().unwrap().get_name();
+    let name = self.base().get_parent().unwrap().get_parent().unwrap().get_parent().unwrap().get_name();
 
     godot_print!("Speaker ready: {}", name);
 
     self.set_id(name.to_string().parse().unwrap());
 
-    self.base.get_node_as::<VoipManager>("/root/GlobalVoipManager")
+    self.base().get_node_as::<VoipManager>("/root/GlobalVoipManager")
       .bind_mut()
-      .add_speaker(self.id, self.base.get_node_as::<VoipSpeaker>("."));
+      .add_speaker(self.id, self.base().get_node_as::<VoipSpeaker>("."));
   }
 
   fn process(&mut self, _delta: f64) {
