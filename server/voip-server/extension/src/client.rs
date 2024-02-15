@@ -97,7 +97,7 @@ impl VoipClient {
 impl INode for VoipClient {
   fn init(base: Base<Node>) -> Self {
     Self {
-      address: GodotString::from("127.0.0.1:8081"),
+      address: GString::from("127.0.0.1:8081"),
       socket: None,
       microphone: None,
       manager: None,
