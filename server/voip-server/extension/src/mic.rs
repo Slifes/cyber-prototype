@@ -135,11 +135,11 @@ impl AudioStreamPlayerVirtual for VoipMicrophone {
   }
 
   fn input(&mut self, event: Gd<InputEvent>) {
-    if event.is_action_pressed("voip_active".into(), false, true) {
+    if event.is_action_pressed("voip_active".into()) {
       godot_print!("Pressed voip_active");
       self.recording = true;
 
-    } else if event.is_action_released("voip_active".into(), true) {
+    } else if event.is_action_released("voip_active".into()) {
       godot_print!("Released voip_active");
 
       self.recording = false;

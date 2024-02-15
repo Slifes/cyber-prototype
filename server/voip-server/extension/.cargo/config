@@ -1,0 +1,6 @@
+[target.aarch64-linux-android]
+linker = "aarch64-linux-android32-clang"
+rustflags = [
+  "-C", "link-arg=-undefined",
+  "-C", "link-arg=dynamic_lookup",
+]

@@ -1,5 +1,5 @@
 use godot::prelude::*;
-use godot::engine::{Engine, Time, Sprite3D, Node3DVirtual, Node3D, AudioStreamGeneratorPlayback, AudioStreamPlayer3D};
+use godot::engine::{Engine, Sprite3D, Node3DVirtual, Node3D, AudioStreamGeneratorPlayback, AudioStreamPlayer3D};
 use opus::{Decoder, Channels};
 
 use super::manager::VoipManager;
@@ -61,7 +61,7 @@ impl VoipSpeaker {
       .get_stream_playback().unwrap()
       .try_cast().unwrap();
 
-    if playback.can_push_buffer(i64::try_from(OPUS_FRAME_TIME).unwrap()) {
+    if playback.can_push_buffer(i32::try_from(OPUS_FRAME_TIME).unwrap()) {
       let mut frames = PackedVector2Array::new();
 
       let len = self.decoded_frame.len().min(2);
@@ -101,7 +101,7 @@ impl Node3DVirtual for VoipSpeaker {
 
     let mut audio_stream = self.base.get_node_as::<AudioStreamPlayer3D>("AudioStreamPlayer3D");
 
-    audio_stream.connect("finished".into(), Callable::from_object_method(self.base.get_node_as::<VoipSpeaker>("."), "on_finished_audio"), 0);
+    // audio_stream.connect("finished".into(), Callable::from_object_method(self.base.get_node_as::<VoipSpeaker>("."), "on_finished_audio"), 0);
 
     self.audio_stream = Some(audio_stream);
 
