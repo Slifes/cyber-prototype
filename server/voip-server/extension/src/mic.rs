@@ -1,7 +1,7 @@
 use godot::prelude::*;
 use godot::engine::{
   Engine, Time, AudioEffectCapture, AudioServer, InputEvent,
-  AudioStreamPlayer, AudioStreamPlayerVirtual
+  AudioStreamPlayer
 };
 use opus::{Encoder, Channels, Application};
 
@@ -108,7 +108,7 @@ impl VoipMicrophone {
 }  
 
 #[godot_api]
-impl AudioStreamPlayerVirtual for VoipMicrophone {
+impl IAudioStreamPlayer for VoipMicrophone {
   fn init(base: Base<AudioStreamPlayer>) -> Self {
     let encoder = Encoder::new(48000, Channels::Mono, Application::Voip).unwrap();
     Self {

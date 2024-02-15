@@ -1,5 +1,5 @@
 use godot::prelude::*;
-use godot::engine::{Node, Time, NodeVirtual};
+use godot::engine::{Node, Time};
 
 use std::collections::HashMap;
 
@@ -40,7 +40,7 @@ impl VoipManager {
 }
 
 #[godot_api]
-impl NodeVirtual for VoipManager {
+impl INode for VoipManager {
   fn init(base: Base<Node>) -> Self {
     Self {
       base,

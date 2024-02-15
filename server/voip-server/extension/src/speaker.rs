@@ -1,5 +1,5 @@
 use godot::prelude::*;
-use godot::engine::{Engine, Sprite3D, Node3DVirtual, Node3D, AudioStreamGeneratorPlayback, AudioStreamPlayer3D};
+use godot::engine::{Engine, Sprite3D, Node3D, AudioStreamGeneratorPlayback, AudioStreamPlayer3D};
 use opus::{Decoder, Channels};
 
 use super::manager::VoipManager;
@@ -80,7 +80,7 @@ impl VoipSpeaker {
 }
 
 #[godot_api]
-impl Node3DVirtual for VoipSpeaker {
+impl INode3D for VoipSpeaker {
   fn init(base: Base<Node3D>) -> Self {
     let decode = Decoder::new(48000, Channels::Mono).unwrap();
     VoipSpeaker {
