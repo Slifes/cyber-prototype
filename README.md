@@ -1,4 +1,4 @@
-## CYBER MMORPG PROTOTYPE (WIP)
+# CYBER MMORPG PROTOTYPE (WIP)
 
 ### Overview
 Welcome to the cyber prototype, an MMORPG built using the Godot Engine and incorporating dNFTs (Decentralized Non-Fungible Tokens).
